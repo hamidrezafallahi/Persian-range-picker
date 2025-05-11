@@ -1,0 +1,256 @@
+import { useEffect, useRef, useState } from "react";
+import moment from "moment-jalaali";
+import MainContent from "../core/mainContent";
+import NavigateButton from "../core/navigateButton";
+import type { IDate, IDesktopProps, ISubmittedData } from "../core/type";
+import { DownTriangle } from "../icons/DownTriangle";
+
+function DesktopRange(props: IDesktopProps) {
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const {
+    setDate,
+    date,
+    zone,
+    compareDate = { from: 0, to: 0 },
+    setOpen,
+    open,
+    handleSubmit,
+    handleReject,
+    onChange,
+    setCompareDate,
+    counter,
+    isShowNavigationButton = true,
+    primaryColor = "#000", //رنگ اصلی (برای دکمه‌ها، لینک‌ها یا تأکید اصلی برند)
+    backgroundColor = "#fff", //رنگ پس‌زمینه کلی یا نواحی بزرگ
+    tertiaryColor = "#939393", //رنگ سوم، معمولاً برای جزئیات یا عناصر کم‌اهمیت‌تر   -  رنگ متن
+    tabClassName = "",
+    dateClassName,
+    locale,
+    onError,
+    className,
+    buttonClassName,
+  } = props;
+  const initSubmittedData: ISubmittedData = {
+    date: {
+      from:
+        locale === "fa"
+          ? moment().locale("fa").startOf("jYear").valueOf()
+          : moment().locale("en").startOf("year").valueOf(),
+      to: moment().locale(locale).startOf("day").valueOf(),
+    },
+    compareDate,
+  };
+
+  // const displayYear =
+  //   locale === "fa"
+  //     ? moment(initSubmittedData.date.from).locale("fa").jYear()
+  //     : moment(initSubmittedData.date.from)
+  //         .locale("en")
+  //         .startOf("year")
+  //         .valueOf();
+
+  // console.log(
+  //   new Date(date?.to).toLocaleDateString("fa-IR", {
+  //     weekday: "long",
+  //     month: "long",
+  //     day: "numeric",
+  //     hour: "numeric",
+  //     year: "numeric",
+  //   })
+  // );
+  // console.log(initSubmittedData);
+  const [showDate, setShowDate] = useState<ISubmittedData>(initSubmittedData);
+  const handleAccept = (date: IDate, compareDate: IDate) => {
+    if (date) {
+      if (date.from && date.to && date.from < date.to) {
+        if (handleSubmit) {
+          handleSubmit(date, compareDate);
+        }
+        setShowDate({ date, compareDate });
+        setOpen(false);
+      } else {
+        if (onError) {
+          onError(
+            `${
+              locale == "fa"
+                ? "تاریخ پایان نمی‌تواند زودتر از تاریخ آغاز باشد."
+                : "The end date must not be earlier than the start date."
+            }`
+          );
+        }
+      }
+    } else {
+      if (handleSubmit) {
+        handleSubmit(date, compareDate);
+      }
+      setShowDate({ date, compareDate });
+      setOpen(false);
+    }
+  };
+  const handleCancel = () => {
+    setOpen(false);
+    setDate(showDate.date);
+
+    setCompareDate(showDate.compareDate);
+    if (handleReject) {
+      handleReject();
+    }
+  };
+  useEffect(() => {
+    if (onChange) {
+      const isEmpty = !date && !compareDate;
+      const isInvalidDateTo = date?.to == null || Number.isNaN(date?.to);
+      const isInvalid = date?.from && isInvalidDateTo;
+
+      if (!(isEmpty || isInvalid)) {
+        onChange(date, compareDate);
+        if (date) {
+          setShowDate({ date, compareDate });
+        }
+      }
+    }
+  }, [date, compareDate, onChange]);
+  useEffect(() => {
+    if (date) {
+      setShowDate({ date, compareDate });
+    }
+  }, [counter]);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setOpen(false);
+      }
+    };
+    if (open) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [open]);
+  // console.log(
+  //   new Date(showDate?.date?.from).toLocaleDateString("fa-IR", {
+  //     weekday: "long",
+  //     month: "long",
+  //     day: "numeric",
+  //     hour: "numeric",
+  //   }),
+  //   new Date(showDate?.date?.to).toLocaleDateString("fa-IR", {
+  //     weekday: "long",
+  //     month: "long",
+  //     day: "numeric",
+  //     hour: "numeric",
+  //   })
+  // );
+
+  return (
+    <>
+      <div
+        className={`relative flex flex-col justify-between w-fit h-14 ${buttonClassName}`}
+        ref={dropdownRef}
+      >
+        <label
+          className="text-xs"
+          style={{
+            color: tertiaryColor,
+          }}
+        >
+          {locale == "fa" ? "تاریخ" : "Date"}
+        </label>
+        <div className="flex gap-2">
+          <div
+            className={`flex justify-center items-center gap-2 px-2 border rounded-lg w-72 h-8 cursor-pointer ${dateClassName}`}
+            onClick={() => setOpen((prev) => !prev)}
+          >
+            <div
+              className={`px-2 w-fit  text-center `}
+              style={{
+                color: tertiaryColor,
+              }}
+            >
+              {locale === "fa"
+                ? moment(showDate.date?.from)
+                    .locale("fa")
+                    .format("jDD / jMM / jYYYY")
+                : moment(showDate.date?.from)
+                    .locale("en")
+                    .format("DD / MM / YYYY")}
+            </div>
+            <div
+              className={`text-center`}
+              style={{
+                color: tertiaryColor,
+              }}
+            >
+              -
+            </div>
+            <div
+              className={`"px-2 w-fit text-center`}
+              style={{
+                color: tertiaryColor,
+              }}
+            >
+              {locale === "fa"
+                ? moment(showDate.date?.to)
+                    .locale("fa")
+                    .format("jDD / jMM / jYYYY")
+                : moment(showDate.date?.to)
+                    .locale("en")
+                    .format("DD / MM / YYYY")}
+            </div>
+            <DownTriangle />
+          </div>
+          {zone !== "manual" && isShowNavigationButton && (
+            <NavigateButton {...props} />
+          )}
+        </div>
+
+        {open && (
+          <div
+            style={{ backgroundColor: backgroundColor }}
+            className={`absolute z-50 top-16 p-2  border rounded-lg shadow-md w-[460px] h-[495px] overflow-hidden  ${
+              locale === "fa" ? "right-0" : "left-0"
+            }`}
+          >
+            <div className="relative w-full h-full">
+              <MainContent {...props} date={date ?? initSubmittedData.date} />
+              <div
+                className={`w-full flex ${
+                  locale == "fa" ? "justify-end" : "justify-start"
+                } gap-2 absolute bottom-0 `}
+              >
+                {/* ${tabClassName} */}
+                <button
+                  style={{ color: primaryColor }}
+                  className="p-2 px-3 rounded-md"
+                  onClick={handleCancel}
+                >
+                  {locale == "fa" ? "لغو" : "Cancel"}
+                </button>
+                <button
+                  onClick={() => handleAccept(date, compareDate)}
+                  style={{
+                    background: primaryColor,
+                    borderColor: primaryColor,
+                    color: backgroundColor,
+                  }}
+                  className={` p-2 px-3 border  rounded-md`}
+                >
+                  {locale == "fa" ? "اعمال" : "Accept"}
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    </>
+  );
+}
+
+export default DesktopRange;
