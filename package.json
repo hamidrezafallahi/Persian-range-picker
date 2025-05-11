@@ -1,4 +1,23 @@
 {
+<<<<<<< HEAD
+  "name": "my-react-component",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc"
+  },
+  "peerDependencies": {
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0"
+  },
+  "dependencies": {
+    "@types/moment-jalaali": "^0.7.9",
+    "moment-jalaali": "^0.10.4"
+=======
   "name": "persian-range-picker-lib",
   "private": true,
   "version": "0.0.0",
@@ -28,5 +47,6 @@
     "typescript": "~5.8.3",
     "typescript-eslint": "^8.30.1",
     "vite": "^6.3.5"
+>>>>>>> 9c7368117babdc0db1c77bb845f8db840c99dd89
   }
 }
