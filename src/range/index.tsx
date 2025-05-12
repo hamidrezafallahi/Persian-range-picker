@@ -9,7 +9,7 @@ import MobileDate from "./mobileDate";
 import MobileRange from "./mobileRange";
 
 function Range({ ...props }: RangeProps) {
-  const { device, type, additionalElement, defaultValue } = props;
+  const { device, model, additionalElement, defaultValue } = props;
   const [date, setDate] = useState<IDate>(defaultValue ?? { from: 0, to: 0 });
   const [compareDate, setCompareDate] = useState<IDate>({ from: 0, to: 0 });
   const [counter, setCounter] = useState(0);
@@ -22,8 +22,8 @@ function Range({ ...props }: RangeProps) {
   return (
     <>
       {device == "desktop" ? (
-        type == "date" ? (
-          <DesktopDate model={type} {...props} />
+        model == "date" ? (
+          <DesktopDate model={model} {...props} />
         ) : (
           <DesktopRange
             {...props}
@@ -48,8 +48,8 @@ function Range({ ...props }: RangeProps) {
         )
       ) : (
         <>
-          {type == "date" ? (
-            <MobileDate model={type} {...props} />
+          {model == "date" ? (
+            <MobileDate model={model} {...props} />
           ) : (
             <MobileRange
               {...props}

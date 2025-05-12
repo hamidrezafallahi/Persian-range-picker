@@ -1,5 +1,5 @@
-import React from "react";
 import type { Dispatch } from "react";
+import React from "react";
 
 type TDeviceType = "desktop" | "mobile";
 export interface IAdditionalElementType {
@@ -32,7 +32,7 @@ export interface RangeProps extends IRangeOptions {
   navigation?: boolean;
 }
 export interface IRangeOptions {
-  type?: "date" | "range";
+  model?: "date" | "range";
   locale: "fa" | "en";
   isShowNavigationButton?: boolean;
   isShowComparison?: boolean;

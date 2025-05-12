@@ -1,4 +1,4 @@
-import type { ChangeEvent } from "react";
+// import type { ChangeEvent } from "react";
 
 import moment from "moment-jalaali";
 
@@ -9,68 +9,64 @@ import type { IBaseProps, IDate } from "./type";
 import { ESteps } from "./type";
 
 const Manual = (props: IBaseProps) => {
-  const currentDate = moment().locale("fa");
+  // const currentDate = moment().locale("fa");
 
   const {
     date,
-    locale,
-    defaultValue,
+    // locale,
+    // defaultValue,
     setDate,
     setZone,
     setStep,
     isShowComparison = true,
-    maskClassName,
     monthPickerClassName,
-    tertiaryColor,
-    secondaryColor,
-    dangerColor,
-    type,
+    model,
   } = props;
 
-  const defaultRange = defaultValue ??
-    date ?? {
-      from:
-        locale === "fa"
-          ? currentDate.clone().startOf("jYear").valueOf()
-          : currentDate.clone().startOf("year").valueOf(),
-      to: currentDate.clone().endOf("day").valueOf(),
-    };
-  const InputHandleChangeFrom = (e: ChangeEvent<HTMLInputElement>) => {
-    const inputDate = e.target.value.toString();
-    const dateMoment =
-      locale === "fa"
-        ? moment(inputDate, "jYYYY/jMM/jDD").locale("fa")
-        : moment(inputDate, "YYYY/MM/DD");
+  // const defaultRange = defaultValue ??
+  //   date ?? {
+  //     from:
+  //       locale === "fa"
+  //         ? currentDate.clone().startOf("jYear").valueOf()
+  //         : currentDate.clone().startOf("year").valueOf(),
+  //     to: currentDate.clone().endOf("day").valueOf(),
+  //   };
+  // const InputHandleChangeFrom = (e: ChangeEvent<HTMLInputElement>) => {
+  //   const inputDate = e.target.value.toString();
+  //   const dateMoment =
+  //     locale === "fa"
+  //       ? moment(inputDate, "jYYYY/jMM/jDD").locale("fa")
+  //       : moment(inputDate, "YYYY/MM/DD");
 
-    const dateTimestamp = new Date(dateMoment.format("YYYY/MM/DD")).setHours(
-      0,
-      0,
-      0,
-      0
-    );
-    setDate((prevState) => ({
-      ...prevState,
-      from: dateTimestamp,
-    }));
-  };
-  const InputHandleChangeTo = (e: ChangeEvent<HTMLInputElement>) => {
-    const inputDate = e.target.value.toString();
-    const dateMoment =
-      locale === "fa"
-        ? moment(inputDate, "jYYYY/jMM/jDD").locale("fa")
-        : moment(inputDate, "YYYY/MM/DD");
+  //   const dateTimestamp = new Date(dateMoment.format("YYYY/MM/DD")).setHours(
+  //     0,
+  //     0,
+  //     0,
+  //     0
+  //   );
+  //   setDate((prevState) => ({
+  //     ...prevState,
+  //     from: dateTimestamp,
+  //   }));
+  // };
+  // const InputHandleChangeTo = (e: ChangeEvent<HTMLInputElement>) => {
+  //   const inputDate = e.target.value.toString();
+  //   const dateMoment =
+  //     locale === "fa"
+  //       ? moment(inputDate, "jYYYY/jMM/jDD").locale("fa")
+  //       : moment(inputDate, "YYYY/MM/DD");
 
-    const dateTimestamp = new Date(dateMoment.format("YYYY/MM/DD")).setHours(
-      0,
-      0,
-      0,
-      0
-    );
-    setDate((prevState) => ({
-      ...prevState,
-      to: dateTimestamp,
-    }));
-  };
+  //   const dateTimestamp = new Date(dateMoment.format("YYYY/MM/DD")).setHours(
+  //     0,
+  //     0,
+  //     0,
+  //     0
+  //   );
+  //   setDate((prevState) => ({
+  //     ...prevState,
+  //     to: dateTimestamp,
+  //   }));
+  // };
   return (
     <div className="flex flex-col items-center gap-4">
       <MonthPicker
@@ -113,7 +109,7 @@ const Manual = (props: IBaseProps) => {
       </div> */}
 
       <DatePicker
-        chooseTodayClassName="!bg-red-500"
+        chooseTodayClassName="bg-red-500"
         name="custom range"
         dateFromOutside={date}
         onDateChange={(e: IDate) => {
@@ -124,7 +120,7 @@ const Manual = (props: IBaseProps) => {
           setZone("manual");
           setStep(ESteps.manual);
         }}
-        model={type}
+        model={model}
         {...props}
       />
       <div className="w-full">

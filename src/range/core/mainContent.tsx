@@ -60,7 +60,7 @@ const MainContent = ({ ...props }: Omit<IBaseProps, "componentStep">) => {
       className={`flex flex-col xs:!flex-row xs:h-full `}
     >
       <div
-        className={`flex justify-around  xs:flex-col gap-9 p-2  border-gray-300 !border-b xs:!border-b-0 ${
+        className={`flex justify-around  xs:flex-col gap-9 p-2 !border-b xs:!border-b-0 ${
           locale == "fa" ? "xs:!border-l" : "xs:!border-r"
         } max-w-[430px] xs:w-28  h-10 xs:!h-[calc(100%-52px)] xs:overflow-y-auto overflow-x-auto ${tabClassName} `}
       >

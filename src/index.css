@@ -1,3 +1,11 @@
+body {
+  position: relative;
+  text-align: right;
+  direction: rtl;
+  width: 100%;
+  height: 100%;
+}
+
 *,
 ::before,
 ::after {
@@ -109,7 +117,7 @@
 }
 .border-gray-300 {
   --tw-border-opacity: 1;
-  border-color: rgb(209 213 219 / var(--tw-border-opacity, 1));
+  border-color: rgb(209 213 219 / var(--tw-border-opacity, 1)) !important;
 }
 .\!h-\[calc\(100\%-52px\)\] {
   height: calc(100% - 52px) !important;
@@ -395,4 +403,21 @@ button {
 }
 .justify-between {
   justify-content: space-between;
+}
+.hover\:text-gray-700:hover {
+  color: rgb(55, 65, 81);
+}
+.hover\:text-gray-700:hover {
+  color: rgb(55, 65, 81);
+}
+.w-\[460px\] {
+  width: 460px;
+}
+
+.h-\[495px\] {
+  height: 495px;
+}
+.dateButton:hover {
+  background-color: rgb(243, 243, 243); /* فرض بر اینکه gray-gray5 = #f3f3f3 */
+  color: #ffffff; /* فرض بر اینکه main-white = #ffffff */
 }

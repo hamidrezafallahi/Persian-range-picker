@@ -48,9 +48,7 @@ function Comparison({ ...props }: IBaseProps) {
           checked={showCompare}
           disabled={!enableCompare}
           onChange={handleShowCompare}
-          className={`*:!shadow-none   ${
-            showCompare ? "*:before:!bg-main-black" : "*:before:!bg-gray-gray6"
-          } `}
+          className=""
         />
       </div>
       {showCompare && (
