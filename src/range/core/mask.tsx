@@ -24,7 +24,7 @@ const DateMask = ({
   secondaryColor = "#585858",
   dangerColor = "#f87171",
 }: MaskProps) => {
-  const [value, setValue] = useState(defaultValue);
+  const [value, setValue] = useState(["0000", "00", "00"]);
   const [isEdit, setIsEdit] = useState(true);
   const editor = useRef<HTMLInputElement>(null);
   const handleBlur = (e: ChangeEvent<HTMLInputElement>) => {
@@ -43,37 +43,66 @@ const DateMask = ({
       : moment(value).format("YYYY/MM/DD");
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(e.target.name, formattedValue);
-
-    let value = e.target.value.replace(/\D/g, "");
-    if (value.length > 8) value = value.slice(0, 8);
-
-    let formatted = "";
-    if (value.length > 0) {
-      formatted += value.substring(0, 4);
+    let newValue = e.target.value.replace(/\D/g, "");
+    if (e.target.name == "year") {
+      if (newValue.length == 4) {
+        console.log(newValue);
+        setValue((prev) => {
+          const newState = [...prev];
+          newState[0] = newValue;
+          return newState;
+        });
+        // setValue([...value,value[0]=newValue])
+      }
+    } else if (e.target.name == "month") {
+      if (newValue.length == 2) {
+        console.log(newValue, "month");
+        setValue((prev) => {
+          const newState = [...prev];
+          newState[1] = newValue;
+          return newState;
+        });
+      }
+    } else if (e.target.name == "day") {
+      if (newValue.length == 2) {
+        console.log(newValue, "day");
+        setValue((prev) => {
+          const newState = [...prev];
+          newState[2] = newValue;
+          return newState;
+        });
+      }
     }
-    if (value.length >= 3) {
-      formatted += "/" + value.substring(4, 6);
-    }
-    if (value.length >= 5) {
-      formatted += "/" + value.substring(6, 8);
-    }
-    console.log(formatted);
 
-    setValue(formatted);
-    const checkFormatter = formatted.split("/");
+    // console.log(e.target.name,e.target.value, value);
+    // if (value.length > 8) value = value.slice(0, 8);
+
+    // let formatted = "";
+    // if (value.length > 0) {
+    //   formatted += value.substring(0, 4);
+    // }
+    // if (value.length >= 3) {
+    //   formatted += "/" + value.substring(4, 6);
+    // }
+    // if (value.length >= 5) {
+    //   formatted += "/" + value.substring(6, 8);
+    // }
+    // console.log(formatted);
+
+    // setValue(formatted);
+    // const checkFormatter = formatted.split("/");
     // چک می‌کنیم که آیا تاریخ درست است یا خیر
-    const isValid = moment(
-      `${checkFormatter[0]}/${checkFormatter[1]}/${checkFormatter[2]}`,
-      "jYYYY/jMM/jDD",
-      true
-    ).isValid();
+    // const isValid = moment(
+    //   `${checkFormatter[0]}/${checkFormatter[1]}/${checkFormatter[2]}`,
+    //   "jYYYY/jMM/jDD",
+    //   true
+    // ).isValid();
 
-    if (isValid) {
-      // اگر تاریخ معتبر باشد، آن را تنظیم می‌کنیم
-      // setValue(newValue);
-      console.log(isValid);
-    }
+    // if (isValid) {
+    //   // اگر تاریخ معتبر باشد، آن را تنظیم می‌کنیم
+    //   // setValue(newValue);
+    //   console.log(isValid);
+    // }
     // } else {
     //   setValue(newValue);
     // }
@@ -92,39 +121,34 @@ const DateMask = ({
 
   //   return value;
   // };
+  console.log(value);
 
   return (
     <div className="" style={{ display: "flex", border: "1px solid red" }}>
       <input
-        type="number"
-        // id="date-input"
+        type="text"
         name="year"
-        value={value}
+        // value={value[0]}
         onChange={handleChange}
-        maxLength={4} // طول ورودی محدود به 10 کاراکتر است
-        // placeholder={formatInputValue(value)}
+        maxLength={4}
         className=""
         style={{ border: "1px solid red" }}
       />
       <input
-        type="number"
-        // id="date-input"
+        type="text"
         name="month"
-        value={value}
+        // value={value[1]}
         onChange={handleChange}
-        maxLength={2} // طول ورودی محدود به 10 کاراکتر است
-        // placeholder={formatInputValue(value)}
+        maxLength={2}
         className=""
         style={{ border: "1px solid red" }}
       />
       <input
-        type="number"
-        // id="date-input"
+        type="text"
         name="day"
-        value={value}
+        // value={value[2]}
         onChange={handleChange}
-        maxLength={2} // طول ورودی محدود به 10 کاراکتر است
-        // placeholder={formatInputValue(value)}
+        maxLength={2}
         className=""
         style={{ border: "1px solid red" }}
       />
