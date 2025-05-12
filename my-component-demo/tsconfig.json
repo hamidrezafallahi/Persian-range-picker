@@ -1,0 +1,18 @@
+{
+  "files": [],
+  "references": [
+    { "path": "./tsconfig.app.json" },
+    { "path": "./tsconfig.node.json" }
+  ],
+
+  "compilerOptions": {
+    "declaration": true,
+    "outDir": "dist",
+    "jsx": "react",
+    "module": "ESNext",
+    "target": "ES5",
+    "moduleResolution": "node",
+    "esModuleInterop": true
+  },
+  "include": ["components"]
+}

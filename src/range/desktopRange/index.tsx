@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from "react";
+
 import moment from "moment-jalaali";
+
 import MainContent from "../core/mainContent";
 import NavigateButton from "../core/navigateButton";
 import type { IDate, IDesktopProps, ISubmittedData } from "../core/type";
@@ -214,7 +216,7 @@ function DesktopRange(props: IDesktopProps) {
         {open && (
           <div
             style={{ backgroundColor: backgroundColor }}
-            className={`absolute z-50 top-16 p-2  border rounded-lg shadow-md w-[460px] h-[495px] overflow-hidden  ${
+            className={`absolute z-50 top-16 p-2  border rounded-lg shadow-md w-460px h-495px overflow-hidden  ${
               locale === "fa" ? "right-0" : "left-0"
             }`}
           >

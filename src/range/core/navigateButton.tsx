@@ -1,5 +1,7 @@
 import { useEffect } from "react";
+
 import moment from "moment-jalaali";
+
 import { LeftChevron } from "../icons/LeftChevron";
 import { RightChevron } from "../icons/RightChevron";
 import type { IBaseProps, ITimeZone } from "./type";
@@ -40,7 +42,7 @@ function NavigateButton({ ...props }: INavigationProps) {
   return (
     <div dir={locale == "fa" ? "rtl" : "ltr"} className="flex gap-2">
       <button
-        className="px-1 xs:border rounded-lg"
+        className="px-1 xs-border rounded-lg"
         disabled={step == ESteps.manual}
         onClick={() => {
           stepChangeHandler("increment");
@@ -49,7 +51,7 @@ function NavigateButton({ ...props }: INavigationProps) {
         <RightChevron />
       </button>
       <button
-        className="px-1 xs:border rounded-lg"
+        className="px-1 xs-border rounded-lg"
         disabled={step == ESteps.manual}
         onClick={() => {
           stepChangeHandler("decrement");

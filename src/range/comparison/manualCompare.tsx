@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+
 import moment from "moment-jalaali";
 
 import type { IBaseProps, ITime } from "../core/type";
@@ -98,7 +99,7 @@ function ManualCompare({ ...props }: IBaseProps) {
         disabled={disableButton == "manual"}
         key="manual"
         onClick={() => timeHandler("manual")}
-        className="relative flex flex-col items-start w-full h-fit"
+        className="relative flex flex-col items-start gap-2 w-full h-fit"
       >
         <div
           style={{ color: active == "manual" ? accentColor : tertiaryColor }}
