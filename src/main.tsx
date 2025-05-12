@@ -8,7 +8,7 @@ import Range from "./range";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <Range device="desktop" locale="fa" model="range" />
+    <Range device="desktop" locale="fa" model="date" />
     {/* <JalaaliDateInput /> */}
   </StrictMode>
 );
