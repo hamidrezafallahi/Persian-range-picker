@@ -1,5 +1,3 @@
-import "./customSwitchStyle.css";
-
 interface IProps {
   checked: boolean;
   disabled: boolean;

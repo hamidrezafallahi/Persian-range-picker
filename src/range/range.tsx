@@ -1,5 +1,3 @@
-import "./core/rangeStyle.css";
-
 import { useState } from "react";
 
 import type { ESteps, IDate, ITime, ITimeZone, RangeProps } from "./core/type";
