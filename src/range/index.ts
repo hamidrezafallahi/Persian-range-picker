@@ -1,2 +1,2 @@
 export { Range } from "./range";
-export { CustomerCurrencyIcon } from "./icons/CustomerCurrencyIcon";
+export { DateMask } from "../range/core/mask";

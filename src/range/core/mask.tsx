@@ -13,11 +13,11 @@ type MaskProps = {
   locale?: "fa" | "en";
 };
 
-const DateMask = ({
+export function DateMask({
   defaultValue = new Date().valueOf(),
   locale = "fa",
   onError,
-}: MaskProps) => {
+}: MaskProps) {
   const [separatedValue, setSeparatedValue] = useState<
     [string, string, string]
   >(["2024", "02", "06"]);
@@ -285,8 +285,8 @@ const DateMask = ({
       )}
     </div>
   );
-};
-export default DateMask;
+}
+
 function timestampToDateNumbers(timestamp: number, locale: "fa" | "en") {
   const year =
     locale == "fa"
