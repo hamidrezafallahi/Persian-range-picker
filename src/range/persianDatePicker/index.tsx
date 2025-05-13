@@ -40,8 +40,8 @@ export const DatePicker = ({
   return (
     <Calendar
       onChange={(from, to) => {
-        onChange({ from, to });
-        setDate({ from, to });
+        onChange({ from, to } as IDate);
+        setDate({ from, to } as IDate);
       }}
       startDate={moment(date?.from)
         .locale(locale)
