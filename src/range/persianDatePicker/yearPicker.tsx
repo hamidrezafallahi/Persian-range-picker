@@ -1,9 +1,12 @@
-import type { FC } from "react";
-import { useMemo, useState } from "react";
+import type { FC } from 'react';
+import {
+  useMemo,
+  useState,
+} from 'react';
 
-import { LeftChevron } from "../icons/LeftChevron";
-import { RightChevron } from "../icons/RightChevron";
-import { convertToPersianNumbers } from "./helper";
+import { LeftChevron } from '../icons/LeftChevron';
+import { RightChevron } from '../icons/RightChevron';
+import { convertToPersianNumbers } from './helper';
 
 interface Props {
   currentYear: number;
@@ -75,7 +78,7 @@ const YearPicker: FC<Props> = ({
               fontWeight: year === currentYear ? "500" : "",
             }}
             key={year}
-            className={`w-80px h-9 flex justify-center items-center rounded 
+            className={`w-[80px] h-9 flex justify-center items-center rounded 
            
 
             `}
