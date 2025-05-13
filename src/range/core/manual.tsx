@@ -23,50 +23,6 @@ const Manual = (props: IBaseProps) => {
     model,
   } = props;
 
-  // const defaultRange = defaultValue ??
-  //   date ?? {
-  //     from:
-  //       locale === "fa"
-  //         ? currentDate.clone().startOf("jYear").valueOf()
-  //         : currentDate.clone().startOf("year").valueOf(),
-  //     to: currentDate.clone().endOf("day").valueOf(),
-  //   };
-  // const InputHandleChangeFrom = (e: ChangeEvent<HTMLInputElement>) => {
-  //   const inputDate = e.target.value.toString();
-  //   const dateMoment =
-  //     locale === "fa"
-  //       ? moment(inputDate, "jYYYY/jMM/jDD").locale("fa")
-  //       : moment(inputDate, "YYYY/MM/DD");
-
-  //   const dateTimestamp = new Date(dateMoment.format("YYYY/MM/DD")).setHours(
-  //     0,
-  //     0,
-  //     0,
-  //     0
-  //   );
-  //   setDate((prevState) => ({
-  //     ...prevState,
-  //     from: dateTimestamp,
-  //   }));
-  // };
-  // const InputHandleChangeTo = (e: ChangeEvent<HTMLInputElement>) => {
-  //   const inputDate = e.target.value.toString();
-  //   const dateMoment =
-  //     locale === "fa"
-  //       ? moment(inputDate, "jYYYY/jMM/jDD").locale("fa")
-  //       : moment(inputDate, "YYYY/MM/DD");
-
-  //   const dateTimestamp = new Date(dateMoment.format("YYYY/MM/DD")).setHours(
-  //     0,
-  //     0,
-  //     0,
-  //     0
-  //   );
-  //   setDate((prevState) => ({
-  //     ...prevState,
-  //     to: dateTimestamp,
-  //   }));
-  // };
   return (
     <div className="flex flex-col items-center gap-4">
       <MonthPicker

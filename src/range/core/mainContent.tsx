@@ -1,4 +1,4 @@
-import React, { type ReactNode, useState } from "react";
+import { type ReactNode, useState } from "react";
 
 import Manual from "./manual";
 import PeriodList from "./periodList";
