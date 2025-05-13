@@ -3,10 +3,10 @@ import "./core/rangeStyle.css";
 import { useState } from "react";
 
 import type { ESteps, IDate, ITime, ITimeZone, RangeProps } from "./core/type";
-import { DesktopDate } from "./desktopDate/dd";
-import { DesktopRange } from "./desktopRange/dr";
-import { MobileDate } from "./mobileDate/md";
-import { MobileRange } from "./mobileRange/mr";
+import { DesktopDate } from "./desktopDate/desktopDatePicker";
+import { DesktopRange } from "./desktopRange/desktopRangePicker";
+import { MobileDate } from "./mobileDate/mobileDatePicker";
+import { MobileRange } from "./mobileRange/mobileRangePicker";
 
 export function Range({ ...props }: RangeProps) {
   const { device, model, additionalElement, defaultValue } = props;
