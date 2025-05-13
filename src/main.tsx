@@ -1,14 +1,17 @@
-import "./index.css";
+import './index.css';
 
-import { StrictMode } from "react";
+import { StrictMode } from 'react';
 
-import { createRoot } from "react-dom/client";
+import { createRoot } from 'react-dom/client';
 
-import { Range, DateMask } from "./range";
+import {
+  DateMask,
+  Range,
+} from './range';
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <Range device="desktop" locale="fa" model="date" />
-    <DateMask />
+    <DateMask inputClassName="bg-red-500" />
   </StrictMode>
 );
