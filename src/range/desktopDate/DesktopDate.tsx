@@ -96,8 +96,6 @@ export function DesktopDate({ ...props }: IDateProps) {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
-  console.log(isOpen);
-
   return (
     <div className="relative w-full h-full">
       <button
