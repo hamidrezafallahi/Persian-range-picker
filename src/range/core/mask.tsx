@@ -275,7 +275,7 @@ export function DateMask({
             onChange={handleChange}
             maxLength={8}
             minLength={8}
-            className="z-10 text-base"
+            className="z-10 opacity-0 text-base"
             style={{ width: "10ch" }}
           />
           <span className="z-10 absolute inset-0 bg-blue-600 mx-0 w-full h-full text-base text-center same-font selected-text">
