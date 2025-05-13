@@ -1,8 +1,8 @@
 import Comparison from "../comparison";
 import { TickIcon } from "../icons/TickIcon";
 import { getTimestampsForPeriod } from "./helper";
-import { ESteps } from "./type";
 import type { IBaseProps, ITimeSections } from "./type";
+import { ESteps } from "./type";
 
 function PeriodList({ ...props }: IBaseProps) {
   const { locale } = props;

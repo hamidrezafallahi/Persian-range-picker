@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from "react";
+
 import moment from "moment-jalaali";
+
 import MainContent from "../core/mainContent";
 import NavigateButton from "../core/navigateButton";
 import type { IDate, IDesktopProps, ISubmittedData } from "../core/type";
@@ -23,11 +25,11 @@ function DesktopRange(props: IDesktopProps) {
     primaryColor = "#000", //رنگ اصلی (برای دکمه‌ها، لینک‌ها یا تأکید اصلی برند)
     backgroundColor = "#fff", //رنگ پس‌زمینه کلی یا نواحی بزرگ
     tertiaryColor = "#939393", //رنگ سوم، معمولاً برای جزئیات یا عناصر کم‌اهمیت‌تر   -  رنگ متن
-    tabClassName = "",
+    // tabClassName = "",
     dateClassName,
     locale,
     onError,
-    className,
+    // className,
     buttonClassName,
   } = props;
   const initSubmittedData: ISubmittedData = {
@@ -165,7 +167,7 @@ function DesktopRange(props: IDesktopProps) {
         </label>
         <div className="flex gap-2">
           <div
-            className={`flex justify-center items-center gap-2 px-2 border rounded-lg w-72 h-8 cursor-pointer ${dateClassName}`}
+            className={`flex justify-center items-center gap-2 px-2 border border-gray-300 rounded-lg w-72 h-8 cursor-pointer ${dateClassName}`}
             onClick={() => setOpen((prev) => !prev)}
           >
             <div
@@ -214,7 +216,7 @@ function DesktopRange(props: IDesktopProps) {
         {open && (
           <div
             style={{ backgroundColor: backgroundColor }}
-            className={`absolute z-50 top-16 p-2  border rounded-lg shadow-md w-[460px] h-[495px] overflow-hidden  ${
+            className={`absolute z-50 top-16 p-2  border border-gray-300 rounded-lg shadow-md w-[460px] h-[495px] overflow-hidden  ${
               locale === "fa" ? "right-0" : "left-0"
             }`}
           >

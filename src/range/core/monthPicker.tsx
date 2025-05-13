@@ -177,10 +177,7 @@ const MonthPicker = ({
             className="flex justify-center items-center w-full h-full"
           >
             <button
-              className={`w-[clamp(24px,24px,30px)] aspect-square flex text-sm justify-center items-center !rounded-md overflow-hidden  p-1 col-span-1
-                 hover:bg-gray-gray5  hover:text-main-white 
-             
-           
+              className={`w-[clamp(24px,24px,30px)] dateButton aspect-square flex text-sm justify-center items-center !rounded-md overflow-hidden  p-1 col-span-1
                 `}
               onClick={() => {
                 handleMonthPicker(chosenMonth);

@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
+
 // import { CustomSwitch } from "@components/atoms/defaultElements";
 import { stepToTimeIndex, time } from "../core/helper";
-import { ESteps } from "../core/type";
 import type { IBaseProps } from "../core/type";
+import { ESteps } from "../core/type";
 import CompareList from "./CompareList";
+import CustomSwitch from "./customSwitch/customSwitch";
 import ManualCompare from "./manualCompare";
 
 function Comparison({ ...props }: IBaseProps) {
@@ -34,29 +36,20 @@ function Comparison({ ...props }: IBaseProps) {
 
   return (
     <>
-      <div className="flex justify-between">
+      <div className="flex justify-between w-full">
         <div
           style={{ color: primaryColor }}
           dir={locale == "fa" ? "rtl" : "ltr"}
         >
           {locale == "fa" ? "مقایسه" : "Compare"}
         </div>
-        {/* <CustomSwitch
+
+        <CustomSwitch
           checked={showCompare}
           disabled={!enableCompare}
           onChange={handleShowCompare}
-          className={`*:!shadow-none   ${
-            showCompare ? "*:before:!bg-main-black" : "*:before:!bg-gray-gray6"
-          }   [&>.ant-switch-inner]:!bg-[#F5F5F6] [&>.ant-switch-inner]:!border  [&>.ant-switch-inner]:!border-gray-gray6`}
-        /> */}
-        {/* <CustomSwitch
-          checked={showCompare}
-          disabled={!enableCompare}
-          onChange={handleShowCompare}
-          className={`*:!shadow-none   ${
-            showCompare ? "*:before:!bg-main-black" : "*:before:!bg-gray-gray6"
-          }   [&>.ant-switch-inner]:!bg-[#F5F5F6] [&>.ant-switch-inner]:!border  [&>.ant-switch-inner]:!border-gray-gray6`}
-        /> */}
+          className=""
+        />
       </div>
       {showCompare && (
         <>

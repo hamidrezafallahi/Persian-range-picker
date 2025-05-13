@@ -1,4 +1,4 @@
-import './customSwitchStyle.css';
+import "./customSwitchStyle.css";
 
 interface IProps {
   checked: boolean;

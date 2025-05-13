@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+
 import { period } from "../core/helper";
 import type { IBaseProps, ITimeSections } from "../core/type";
 import { TickIcon } from "../icons/TickIcon";
