@@ -1,18 +1,12 @@
-import './core/rangeStyle.css';
+import "./core/rangeStyle.css";
 
-import { useState } from 'react';
+import { useState } from "react";
 
-import type {
-  ESteps,
-  IDate,
-  ITime,
-  ITimeZone,
-  RangeProps,
-} from './core/type';
-import { DesktopDate } from './desktopDate/DesktopDate';
-import { DesktopRange } from './desktopRange/DesktopRange';
-import { MobileDate } from './mobileDate/MobileDate';
-import { MobileRange } from './mobileRange/MobileRange';
+import type { ESteps, IDate, ITime, ITimeZone, RangeProps } from "./core/type";
+import { DesktopDate } from "./desktopDate/dd";
+import { DesktopRange } from "./desktopRange/dr";
+import { MobileDate } from "./mobileDate/md";
+import { MobileRange } from "./mobileRange/mr";
 
 export function Range({ ...props }: RangeProps) {
   const { device, model, additionalElement, defaultValue } = props;
