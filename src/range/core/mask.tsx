@@ -1,6 +1,12 @@
-import { useEffect, useRef, useState } from "react";
-import type { IDate } from "./type";
-import moment from "moment-jalaali";
+import {
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
+
+import moment from 'moment-jalaali';
+
+import type { IDate } from './type';
 
 type MaskProps = {
   defaultValue?: IDate["from"];
@@ -11,16 +17,16 @@ type MaskProps = {
   // InputHandleChange: (e: ChangeEvent<HTMLInputElement>) => void;
   // className?: string;
   locale?: "fa" | "en";
+  inputClassName?: string;
 };
 
 export function DateMask({
   defaultValue = new Date().valueOf(),
   locale = "fa",
   onError,
+  inputClassName,
 }: MaskProps) {
-  const [separatedValue, setSeparatedValue] = useState<
-    [string, string, string]
-  >(["2024", "02", "06"]);
+  const [separatedValue, setSeparatedValue] = useState(["2024", "02", "06"]);
   const [baseValue, setBaseValue] = useState<IDate["from"]>(
     moment(defaultValue).locale(locale).valueOf()
   );
@@ -28,7 +34,7 @@ export function DateMask({
   const [isEdit, setIsEdit] = useState<0 | 1 | 2>(0);
   const focusRef = useRef<HTMLDivElement | null>(null);
   const fullRef = useRef<HTMLInputElement | null>(null);
-  const inputRef = useRef(null);
+  const inputRef = useRef<HTMLInputElement>(null);
   const clickCount = useRef(0);
   const clickTimer = useRef<number>(0);
 
@@ -115,7 +121,7 @@ export function DateMask({
   };
   const formatInputValue = (value: string) => {
     value = value.substring(0, 8);
-    let sample = "____/__/__".split(""); // Convert to array for mutability
+    const sample = "____/__/__".split(""); // Convert to array for mutability
 
     for (let index = 0; index < value.length; index++) {
       const char = value[index];
@@ -148,8 +154,11 @@ export function DateMask({
       (a, b) => a.tabIndex - b.tabIndex
     );
 
-    const active = document.activeElement;
-    const index = focusable.indexOf(active);
+    const active =
+      document.activeElement instanceof HTMLInputElement
+        ? document.activeElement
+        : null;
+    const index = focusable.indexOf(active as HTMLInputElement);
 
     // Move to next or loop to first
     if ((index + 1) % focusable.length == 0) {
@@ -228,7 +237,7 @@ export function DateMask({
                 onClick={handleClick}
                 maxLength={4}
                 minLength={4}
-                className="text-base"
+                className={inputClassName}
                 style={{ width: "4ch" }}
                 onDoubleClick={() => {
                   console.log("double");
@@ -244,7 +253,7 @@ export function DateMask({
                 onClick={handleClick}
                 maxLength={2}
                 minLength={2}
-                className="text-base"
+                className={inputClassName}
                 style={{ width: "2ch" }}
               />
               {"/"}
@@ -257,7 +266,7 @@ export function DateMask({
                 onClick={handleClick}
                 maxLength={2}
                 minLength={2}
-                className="text-base same-font"
+                className={inputClassName}
                 style={{ width: "2ch" }}
               />
             </div>
@@ -275,7 +284,7 @@ export function DateMask({
             onChange={handleChange}
             maxLength={8}
             minLength={8}
-            className="z-10 opacity-0 text-base"
+            className={inputClassName}
             style={{ width: "10ch" }}
           />
           <span className="z-10 absolute inset-0 bg-blue-600 mx-0 w-full h-full text-base text-center same-font selected-text">
