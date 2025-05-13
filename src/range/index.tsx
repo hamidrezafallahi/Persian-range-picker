@@ -20,7 +20,7 @@ function Range({ ...props }: RangeProps) {
   const [open, setOpen] = useState(false);
 
   return (
-    <>
+    <div className="range">
       {device == "desktop" ? (
         type == "date" ? (
           <DesktopDate model={type} {...props} />
@@ -72,7 +72,7 @@ function Range({ ...props }: RangeProps) {
           )}
         </>
       )}
-    </>
+    </div>
   );
 }
 
