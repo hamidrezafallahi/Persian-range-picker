@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useState } from "react";
 
 import moment from "moment-jalaali";
 
@@ -23,44 +23,16 @@ export const DatePicker = ({
   secondaryColor = "#585858",
 }: IProps) => {
   const [date, setDate] = useState<IDate>(dateFromOutside);
-  const [confirmed, setConfirmed] = useState({ state: false });
-  const onChange = useCallback(
-    (e: IDate) => {
-      if (e.from === undefined) return;
-      const startDate = new Date(date.from).valueOf();
-      const endDate = date.to
-        ? moment(date.to).locale("fa").clone().endOf("day").valueOf()
-        : 0;
-      onDateChange?.({ from: startDate, to: endDate });
-    },
-    [date, onDateChange]
-  );
-  useEffect(() => {
-    if (dateFromOutside && dateFromOutside.from && dateFromOutside.to) {
-      setDate(dateFromOutside);
-    }
-  }, [dateFromOutside]);
-  useEffect(() => {
-    // if (!visible) return;
-    if (!confirmed.state) {
-      // setDate({ from: null, to: null });
-      onChange({ from: 0, to: 0 });
-    } else if (confirmed.state && date.from) {
-      const startDate = new Date(date.from).valueOf();
-      const endDate = date.to ? new Date(date.to).valueOf() : 0;
-      onChange({ from: startDate, to: endDate });
-    }
-  }, [confirmed, date, onChange]);
+  const onChange = (e: IDate) => {
+    if (e.from === undefined) return;
+    const { from, to } = e;
+    onDateChange?.({ from, to });
+  };
   return (
     <Calendar
       onChange={(from, to) => {
-        if (onDateChange) {
-          onDateChange({
-            from: from ?? 0,
-            to: moment(to).locale("fa").clone().endOf("day").valueOf(),
-          });
-        }
-        setDate({ from: from ?? 0, to: to ?? 0 });
+        onChange({ from, to });
+        setDate({ from, to });
       }}
       startDate={moment(date?.from)
         .locale(locale)

@@ -1,45 +1,7 @@
-@font-face {
-  font-family: "IRANSans";
-  src: url("../public/assets/fonts/IRANSansWeb\(FaNum\).eot") format("eot"),
-    url("../public/assets/fonts/IRANSansWeb(FaNum).woff") format("woff"),
-    url("../public/assets/fonts/IRANSansWeb(FaNum).ttf") format("truetype");
-}
-@font-face {
-  font-family: "Bold";
-  src: url("../public/assets/fonts/IRANSansWeb\(FaNum\)_Bold.woff");
-}
-@font-face {
-  font-family: "Medium";
-  src: url("../public/assets/fonts/IRANSansWeb\(FaNum\)_Medium.woff");
-}
-@font-face {
-  font-family: "Light";
-  src: url("../public/assets/fonts/IRANSansWeb\(FaNum\)_Light.woff");
-}
-@font-face {
-  font-family: "Yekan";
-  src: url("../public/assets/fonts/Yekan.ttf") format("truetype");
-}
-@font-face {
-  font-family: "Arimo";
-  src: url("../public/assets/fonts/Arimo-VariableFont_wght.ttf")
-    format("truetype");
-}
-@font-face {
-  font-family: "BaiJamjuree";
-  src: url("../public/assets/fonts/BaiJamjuree-Medium.ttf") format("truetype");
-}
-
-* {
-  padding: 0px;
-  margin: 0px;
-  font-family: "IRANSans";
-}
-
 .bodyRange {
   position: relative;
   text-align: right;
-  direction: rtl;
+  /* direction: rtl; */
   width: 100%;
   height: 100%;
   font-family: "Helvetica Neue", Arial, sans-serif;
@@ -563,4 +525,11 @@ input {
 }
 .justify-evenly {
   justify-content: space-evenly;
+}
+.mt-10 {
+  margin-top: 40px;
+}
+.selected-text {
+  background-color: #3390ff;
+  color: #ffffff;
 }

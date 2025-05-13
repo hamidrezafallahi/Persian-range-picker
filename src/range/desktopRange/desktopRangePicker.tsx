@@ -7,7 +7,7 @@ import NavigateButton from "../core/navigateButton";
 import type { IDate, IDesktopProps, ISubmittedData } from "../core/type";
 import { DownTriangle } from "../icons/DownTriangle";
 
-function DesktopRange(props: IDesktopProps) {
+export function DesktopRange(props: IDesktopProps) {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const {
     setDate,
@@ -136,21 +136,6 @@ function DesktopRange(props: IDesktopProps) {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [open]);
-  // console.log(
-  //   new Date(showDate?.date?.from).toLocaleDateString("fa-IR", {
-  //     weekday: "long",
-  //     month: "long",
-  //     day: "numeric",
-  //     hour: "numeric",
-  //   }),
-  //   new Date(showDate?.date?.to).toLocaleDateString("fa-IR", {
-  //     weekday: "long",
-  //     month: "long",
-  //     day: "numeric",
-  //     hour: "numeric",
-  //   })
-  // );
-
   return (
     <>
       <div
@@ -254,5 +239,3 @@ function DesktopRange(props: IDesktopProps) {
     </>
   );
 }
-
-export default DesktopRange;

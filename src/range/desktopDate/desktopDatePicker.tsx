@@ -1,97 +1,4 @@
-// import React, { useState } from 'react';
-
-// import moment from 'moment-jalaali';
-// import { usePopper } from 'react-popper';
-
-// import {
-//   IDate,
-//   IDateProps,
-// } from '../core/type';
-// import { CalenderIcon } from '../icons/CalenderIcon';
-// import { DatePicker } from '../persianDatePicker';
-
-// function DesktopDate({ className, ...props }: IDateProps) {
-//   const { model, locale, defaultValue, onChange } = props;
-//   const [showDate, setShowDate] = useState<IDate>(defaultValue);
-//   const [referenceElement, setReferenceElement] =
-//     useState<HTMLButtonElement | null>(null);
-//   const [popperElement, setPopperElement] = useState<HTMLDivElement | null>(
-//     null
-//   );
-
-//   const [isOpen, setIsOpen] = useState(false);
-
-//   const { styles, attributes } = usePopper(referenceElement, popperElement, {
-//     placement: "bottom-end",
-//     strategy: "fixed",
-//     modifiers: [
-//       {
-//         name: "flip",
-//         options: {
-//           fallbackPlacements: ["top"],
-//           allowedAutoPlacements: ["top", "bottom"],
-//         },
-//       },
-//       {
-//         name: "offset",
-//         options: {
-//           offset: [0, 10],
-//         },
-//       },
-//     ],
-//   });
-
-//   const handleDropdown = () => {
-//     setIsOpen((prev) => !prev);
-//   };
-//   const persian = showDate
-//     ? moment(showDate.from).format("jYYYY/jMM/jDD")
-//     : "انتخاب تاریخ";
-
-//   const Gregorian = showDate
-//     ? moment(showDate.from).format("YYYY/MM/DD")
-//     : "Choose date";
-//   const title = locale == "fa" ? persian : Gregorian;
-//   const handleDateChange = (date: IDate) => {
-//     setShowDate(date);
-//     onChange("Date", date);
-//     setIsOpen(false);
-//   };
-
-//   return (
-//     <>
-//       <button
-//         ref={setReferenceElement}
-//         onClick={handleDropdown}
-//         className={`flex justify-center items-center gap-2 bg-[#F4F4F4] rounded-md w-40 h-10 text-[#939393] ${className}`}
-//       >
-//         <CalenderIcon />
-//         <div>{title}</div>
-//       </button>
-//       {isOpen && (
-//         <div
-//           ref={setPopperElement}
-//           style={styles.popper}
-//           {...attributes.popper}
-//           className="p-3 border rounded-lg min-w-60 aspect-auto"
-//         >
-//           <DatePicker
-//             name="DesktopDate"
-//             {...props}
-//             onDateChange={handleDateChange}
-//             dateFromOutside={{
-//               from: showDate ? showDate.from : new Date(),
-//               to: null,
-//             }}
-//           />
-//         </div>
-//       )}
-//     </>
-//   );
-// }
-
-// export default DesktopDate;
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 import moment from "moment-jalaali";
 
@@ -99,7 +6,7 @@ import type { IDate, IDateProps } from "../core/type";
 import { CalenderIcon } from "../icons/CalenderIcon";
 import { DatePicker } from "../persianDatePicker";
 
-function DesktopDate({ ...props }: IDateProps) {
+export function DesktopDate({ ...props }: IDateProps) {
   const {
     locale,
     defaultValue,
@@ -107,7 +14,13 @@ function DesktopDate({ ...props }: IDateProps) {
     tertiaryColor = "#939393", //رنگ سوم، معمولاً برای جزئیات یا عناصر کم‌اهمیت‌تر   -  رنگ متن
     highlightColor = "#f4f4f4", //رنگ برجسته‌کننده برای هاور، نوتیف یا نقاط توجه
   } = props;
-  const [showDate, setShowDate] = useState<IDate | undefined>(defaultValue);
+  const initialDate: IDate = useMemo(() => {
+    return {
+      from: defaultValue ? defaultValue.from : new Date().valueOf(),
+      to: 0,
+    };
+  }, [defaultValue]);
+  const [showDate, setShowDate] = useState<IDate>(initialDate);
   const [isOpen, setIsOpen] = useState(false);
   const [position, setPosition] = useState({ top: 0, left: 0 });
 
@@ -153,6 +66,7 @@ function DesktopDate({ ...props }: IDateProps) {
   };
 
   const handleDateChange = (date: IDate) => {
+    console.log("here", moment(date.from).format("jYYYY/jMM/jDD"));
     setShowDate(date);
     onChange?.(date);
     setIsOpen(false);
@@ -182,7 +96,6 @@ function DesktopDate({ ...props }: IDateProps) {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
-  console.log(isOpen);
   return (
     <div className="relative w-full h-full">
       <button
@@ -198,20 +111,20 @@ function DesktopDate({ ...props }: IDateProps) {
       {isOpen && (
         <div
           ref={popupRef}
-          // style={{
-          //   position: "absolute",
-          //   top: position.top,
-          //   left: position.left,
-          //   zIndex: 1000,
-          // }}
+          style={{
+            position: "absolute",
+            top: position.top,
+            left: position.left,
+            zIndex: 1000,
+          }}
           className="shadow p-3 border rounded-lg w-72 h-80"
         >
           <DatePicker
             name="DesktopDate"
             {...props}
-            // onDateChange={handleDateChange}
+            onDateChange={handleDateChange}
             dateFromOutside={{
-              from: showDate ? showDate.from : new Date().valueOf(),
+              from: showDate.from,
               to: 0,
             }}
             disablePreviousDays={false}
@@ -221,5 +134,3 @@ function DesktopDate({ ...props }: IDateProps) {
     </div>
   );
 }
-
-export default DesktopDate;
