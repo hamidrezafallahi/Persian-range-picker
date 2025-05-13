@@ -56,11 +56,11 @@ const Calendar: FC<Props> = ({
   disablePreviousDays = true,
   renderDayFn,
   containerClassName,
-  primaryColor = "#000", //رنگ اصلی (برای دکمه‌ها، لینک‌ها یا تأکید اصلی برند)
-  backgroundColor = "#fff ", //رنگ پس‌زمینه کلی یا نواحی بزرگ
-  tertiaryColor = "#939393", //رنگ سوم، معمولاً برای جزئیات یا عناصر کم‌اهمیت‌تر   -  رنگ متن
-  highlightColor = "#f4f4f4", //رنگ برجسته‌کننده برای هاور، نوتیف یا نقاط توجه
-  secondaryColor = "#585858", //رنگ فرعی یا مکمل برای تأکید ثانویه   - متن #585858   ,
+  primaryColor = "#000",
+  backgroundColor = "#fff ",
+  tertiaryColor = "#939393",
+  highlightColor = "#f4f4f4",
+  secondaryColor = "#585858",
   // calenderClassName = "",
   datePickerBodyClassName = "",
   chooseTodayClassName = "",
@@ -333,44 +333,26 @@ const Calendar: FC<Props> = ({
                 });
               }
             }}
-            className={`w-[clamp(24px,24px,30px)]  aspect-square !rounded-md cursor-pointer 
-                text-center flex flex-col justify-evenly items-center
-            ${
-              isSelectedSingleDate && {
-                color: backgroundColor,
-                backgroundColor: tertiaryColor,
-              }
-            } 
-            ${isDisabled && "pointer-events-none opacity-50"}
-          
-             ${isSelectedSingleDate && "!bg-gray-gray8 !text-white  "} 
-
-            ${
-              isSelectedSingleDate && {
-                backgroundColor: tertiaryColor,
-                color: backgroundColor,
-              }
-            }
-                  
-          
-          
-            }
-             `}
+            className="flex flex-col justify-evenly items-center !rounded-md w-[clamp(24px,24px,30px)] aspect-square text-center cursor-pointer"
             style={{
+              pointerEvents: isDisabled ? "none" : "auto",
+              opacity: isDisabled ? 0.5 : day.currentMonth ? 1 : 0,
               color:
-                isToDate || isFromDate ? `${backgroundColor}` : tertiaryColor,
+                isToDate || isFromDate || isSelectedSingleDate
+                  ? backgroundColor
+                  : tertiaryColor,
               borderColor: isToday ? secondaryColor : "",
               borderWidth: isToday ? "2px" : "",
 
               background:
                 isToDate || isFromDate
                   ? primaryColor
+                  : isSelectedSingleDate
+                  ? tertiaryColor
                   : isInrange || isHoveredDay
                   ? highlightColor
                   : "",
-
               fontSize: "14px",
-              opacity: day.currentMonth ? 1 : 0,
             }}
             onClick={() => {
               if (!day.currentMonth) return;
