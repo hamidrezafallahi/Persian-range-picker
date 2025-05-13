@@ -11,12 +11,16 @@ export function DesktopDate({ ...props }: IDateProps) {
     locale,
     defaultValue,
     onChange,
-    tertiaryColor = "#939393", //رنگ سوم، معمولاً برای جزئیات یا عناصر کم‌اهمیت‌تر   -  رنگ متن
-    highlightColor = "#f4f4f4", //رنگ برجسته‌کننده برای هاور، نوتیف یا نقاط توجه
+
+    tertiaryColor = "#939393",
+    highlightColor = "#f4f4f4",
   } = props;
   const initialDate: IDate = useMemo(() => {
     return {
-      from: defaultValue ? defaultValue.from : new Date().valueOf(),
+      from:
+        defaultValue && defaultValue.from > 0
+          ? defaultValue.from
+          : new Date().valueOf(),
       to: 0,
     };
   }, [defaultValue]);

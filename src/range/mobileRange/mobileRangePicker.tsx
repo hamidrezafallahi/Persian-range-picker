@@ -1,22 +1,18 @@
-import React, { useEffect } from 'react';
+import { useEffect, useMemo } from "react";
 
-import moment from 'moment-jalaali';
+import moment from "moment-jalaali";
 
-import { period } from '../core/helper';
-import MainContent from '../core/mainContent';
-import NavigateButton from '../core/navigateButton';
-import type {
-  IBaseProps,
-  IDate,
-} from '../core/type';
-import { CalenderIcon } from '../icons/CalenderIcon';
-import { MenuArrowBack } from '../icons/MenuArrowBack';
+import { period } from "../core/helper";
+import MainContent from "../core/mainContent";
+import NavigateButton from "../core/navigateButton";
+import type { IBaseProps, IDate } from "../core/type";
+import { CalenderIcon } from "../icons/CalenderIcon";
+import { MenuArrowBack } from "../icons/MenuArrowBack";
 
 export function MobileRange(props: IBaseProps) {
   const {
     onCompareDateChange,
     onNavigateChange,
-
     onChange,
     step,
     counter,
@@ -39,20 +35,27 @@ export function MobileRange(props: IBaseProps) {
     locale,
     className,
   } = props;
-  const initDate: IDate = {
-    from:
-      locale === "fa"
-        ? moment().locale("fa").startOf("jYear").valueOf()
-        : moment().locale("en").startOf("year").valueOf(),
-    to: moment().locale(locale).startOf("day").valueOf(),
-  };
-  const showDate = date ?? initDate;
-  const templatePeriods = period(date ?? initDate, locale);
+  const initialDate: IDate = useMemo(() => {
+    return {
+      from:
+        date && date.from > 0
+          ? date.from
+          : locale === "fa"
+          ? moment().locale("fa").startOf("jYear").valueOf()
+          : moment().locale("en").startOf("year").valueOf(),
+      to:
+        date && date.to > 0
+          ? date.to
+          : moment().locale(locale).startOf("day").valueOf(),
+    };
+  }, [date]);
+
+  const templatePeriods = period(initialDate, locale);
   useEffect(() => {
     if (onChange && (date || compareDate)) {
       onChange(date, compareDate);
     }
-  }, [date]);
+  }, [initialDate]);
   useEffect(() => {
     if (onCompareDateChange && compareDate) {
       onCompareDateChange(date, compareDate);
@@ -76,7 +79,7 @@ export function MobileRange(props: IBaseProps) {
           to: temp ? temp.to : 0,
         });
       } else {
-        onNavigateChange(date, undefined);
+        onNavigateChange(date, compareDate);
       }
     }
     if (onChange && (date || compareDate)) {
@@ -92,11 +95,13 @@ export function MobileRange(props: IBaseProps) {
       >
         <CalenderIcon />
         <div className="w-fit text-gray-gray8 text-center">
-          {showDate && moment(showDate.from as number).format("jYYYY/jMM/jDD")}
+          {initialDate &&
+            moment(initialDate.from as number).format("jYYYY/jMM/jDD")}
         </div>
         <div className="text-gray-gray8 text-center">{"-"}</div>
         <div className="w-fit text-gray-gray8 text-center">
-          {showDate && moment(showDate.to as number).format("jYYYY/jMM/jDD")}
+          {initialDate &&
+            moment(initialDate.to as number).format("jYYYY/jMM/jDD")}
         </div>
       </button>
       {zone !== "manual" && isShowNavigationButton && (
@@ -105,7 +110,7 @@ export function MobileRange(props: IBaseProps) {
           setCompareDate={setCompareDate}
           step={step}
           zone={zone}
-          date={showDate}
+          date={initialDate}
           setActiveCompareStep={setActiveCompareStep}
           activeCompareStep={activeCompareStep}
           counter={counter}
@@ -143,7 +148,7 @@ export function MobileRange(props: IBaseProps) {
           locale={locale}
           compareDate={compareDate}
           setDate={setDate}
-          date={showDate}
+          date={initialDate}
           setStep={setStep}
           setZone={setZone}
           step={step}

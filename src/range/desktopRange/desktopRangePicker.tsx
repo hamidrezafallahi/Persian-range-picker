@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 import moment from "moment-jalaali";
 
@@ -11,7 +11,7 @@ export function DesktopRange(props: IDesktopProps) {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const {
     setDate,
-    date,
+    date = { from: 0, to: 0 },
     zone,
     compareDate = { from: 0, to: 0 },
     setOpen,
@@ -32,35 +32,19 @@ export function DesktopRange(props: IDesktopProps) {
     // className,
     buttonClassName,
   } = props;
-  const initSubmittedData: ISubmittedData = {
-    date: {
-      from:
-        locale === "fa"
-          ? moment().locale("fa").startOf("jYear").valueOf()
-          : moment().locale("en").startOf("year").valueOf(),
-      to: moment().locale(locale).startOf("day").valueOf(),
-    },
-    compareDate,
-  };
 
-  // const displayYear =
-  //   locale === "fa"
-  //     ? moment(initSubmittedData.date.from).locale("fa").jYear()
-  //     : moment(initSubmittedData.date.from)
-  //         .locale("en")
-  //         .startOf("year")
-  //         .valueOf();
-
-  // console.log(
-  //   new Date(date?.to).toLocaleDateString("fa-IR", {
-  //     weekday: "long",
-  //     month: "long",
-  //     day: "numeric",
-  //     hour: "numeric",
-  //     year: "numeric",
-  //   })
-  // );
-  // console.log(initSubmittedData);
+  const initSubmittedData: ISubmittedData = useMemo(() => {
+    return {
+      date: {
+        from:
+          locale === "fa"
+            ? moment().locale("fa").startOf("jYear").valueOf()
+            : moment().locale("en").startOf("year").valueOf(),
+        to: moment().locale(locale).startOf("day").valueOf(),
+      },
+      compareDate,
+    };
+  }, [date, compareDate]);
   const [showDate, setShowDate] = useState<ISubmittedData>(initSubmittedData);
   const handleAccept = (date: IDate, compareDate: IDate) => {
     if (date) {

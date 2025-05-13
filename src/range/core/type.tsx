@@ -25,10 +25,10 @@ export interface IDateProps {
 export interface RangeProps extends IRangeOptions {
   device: TDeviceType;
   handleReject?: () => void;
-  handleSubmit?: (date?: IDate, compareDate?: IDate) => void;
-  onCompareDateChange?: (date?: IDate, compareDate?: IDate) => void;
-  onNavigateChange?: (date?: IDate, compareDate?: IDate) => void;
-  onChange?: (date?: IDate, compareDate?: IDate) => void;
+  handleSubmit?: (date: IDate, compareDate: IDate) => void;
+  onCompareDateChange?: (date: IDate, compareDate: IDate) => void;
+  onNavigateChange?: (date: IDate, compareDate: IDate) => void;
+  onChange?: (date: IDate, compareDate?: IDate) => void;
   navigation?: boolean;
 }
 export interface IRangeOptions {
@@ -81,8 +81,8 @@ export interface IBaseProps extends IRangeOptions {
   setActiveCompareStep: Dispatch<React.SetStateAction<ESteps>>;
   setTabKey: Dispatch<React.SetStateAction<ITime | string>>;
   setZone: Dispatch<React.SetStateAction<ITimeZone>>;
-  onCompareDateChange?: (date?: IDate, compareDate?: IDate) => void;
-  onNavigateChange?: (date?: IDate, compareDate?: IDate) => void;
+  onCompareDateChange?: (date: IDate, compareDate: IDate) => void;
+  onNavigateChange?: (date: IDate, compareDate: IDate) => void;
   onChange?: RangeProps["onChange"];
   componentStep?: ESteps;
   open?: boolean;

@@ -23,7 +23,7 @@ interface Props {
   secondaryColor?: string;
   accentColor?: string;
   tertiaryColor?: string;
-  onChange: (startDate: number, endDate: number) => void;
+  onChange: (startDate: number | null, endDate: number | null) => void;
   model?: "range" | "date";
   startDate?: number;
   endDate?: number;
@@ -59,7 +59,7 @@ const Calendar: FC<Props> = ({
   primaryColor = "#000", //رنگ اصلی (برای دکمه‌ها، لینک‌ها یا تأکید اصلی برند)
   backgroundColor = "#fff ", //رنگ پس‌زمینه کلی یا نواحی بزرگ
   tertiaryColor = "#939393", //رنگ سوم، معمولاً برای جزئیات یا عناصر کم‌اهمیت‌تر   -  رنگ متن
-  highlightColor = "#f4f4f4", //رنگ برجسته‌کننده برای هاور، نوتیف یا نقاط توجه
+  highlightColor = "#f4f4f4",
   secondaryColor = "#585858", //رنگ فرعی یا مکمل برای تأکید ثانویه   - متن #585858   ,
   // calenderClassName = "",
   datePickerBodyClassName = "",
@@ -118,7 +118,7 @@ const Calendar: FC<Props> = ({
           hoveredDay: null,
         };
       });
-      onChange(0, 0);
+      onChange(null, null);
       return;
     }
     if (startDate && endDate) {
@@ -129,7 +129,7 @@ const Calendar: FC<Props> = ({
           hoveredDay: selectedDay,
         };
       });
-      onChange(selectedDay, 0);
+      onChange(selectedDay, null);
       return;
     }
 
@@ -140,7 +140,7 @@ const Calendar: FC<Props> = ({
           hoveredDay: selectedDay,
         };
       });
-      onChange(selectedDay, 0);
+      onChange(selectedDay, null);
     } else {
       if (selectedDay > startDate) {
         if (
@@ -210,7 +210,7 @@ const Calendar: FC<Props> = ({
             hoveredDay: timestamp,
           };
         });
-        onChange(timestamp, 0);
+        onChange(timestamp, null);
       }
     },
     [model, onChange, endDate, startDate]
