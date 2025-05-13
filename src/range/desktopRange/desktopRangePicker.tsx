@@ -36,11 +36,12 @@ export function DesktopRange(props: IDesktopProps) {
   const initSubmittedData: ISubmittedData = useMemo(() => {
     return {
       date: {
-        from:
-          locale === "fa"
-            ? moment().locale("fa").startOf("jYear").valueOf()
-            : moment().locale("en").startOf("year").valueOf(),
-        to: moment().locale(locale).startOf("day").valueOf(),
+        from: date
+          ? date.from
+          : locale === "fa"
+          ? moment().locale("fa").startOf("jYear").valueOf()
+          : moment().locale("en").startOf("year").valueOf(),
+        to: date ? date.to : moment().locale(locale).startOf("day").valueOf(),
       },
       compareDate,
     };
@@ -190,7 +191,7 @@ export function DesktopRange(props: IDesktopProps) {
             }`}
           >
             <div className="relative w-full h-full">
-              <MainContent {...props} date={date ?? initSubmittedData.date} />
+              <MainContent {...props} date={showDate.date} />
               <div
                 className={`w-full flex ${
                   locale == "fa" ? "justify-end" : "justify-start"

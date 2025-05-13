@@ -11,7 +11,6 @@ export function DesktopDate({ ...props }: IDateProps) {
     locale,
     defaultValue,
     onChange,
-
     tertiaryColor = "#939393",
     highlightColor = "#f4f4f4",
   } = props;
@@ -70,7 +69,6 @@ export function DesktopDate({ ...props }: IDateProps) {
   };
 
   const handleDateChange = (date: IDate) => {
-    console.log("here", moment(date.from).format("jYYYY/jMM/jDD"));
     setShowDate(date);
     onChange?.(date);
     setIsOpen(false);
