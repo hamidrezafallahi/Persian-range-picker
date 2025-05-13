@@ -182,9 +182,9 @@ function DesktopDate({ ...props }: IDateProps) {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
-
+  console.log(isOpen);
   return (
-    <>
+    <div className="relative w-full h-full">
       <button
         ref={buttonRef}
         onClick={handleDropdown}
@@ -198,18 +198,18 @@ function DesktopDate({ ...props }: IDateProps) {
       {isOpen && (
         <div
           ref={popupRef}
-          style={{
-            position: "absolute",
-            top: position.top,
-            left: position.left,
-            zIndex: 1000,
-          }}
+          // style={{
+          //   position: "absolute",
+          //   top: position.top,
+          //   left: position.left,
+          //   zIndex: 1000,
+          // }}
           className="shadow p-3 border rounded-lg w-72 h-80"
         >
           <DatePicker
             name="DesktopDate"
             {...props}
-            onDateChange={handleDateChange}
+            // onDateChange={handleDateChange}
             dateFromOutside={{
               from: showDate ? showDate.from : new Date().valueOf(),
               to: 0,
@@ -218,7 +218,7 @@ function DesktopDate({ ...props }: IDateProps) {
           />
         </div>
       )}
-    </>
+    </div>
   );
 }
 

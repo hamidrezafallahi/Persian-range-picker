@@ -3,14 +3,14 @@ import type { IDate } from "./type";
 import moment from "moment-jalaali";
 
 type MaskProps = {
-  defaultValue: IDate["from"];
+  defaultValue?: IDate["from"];
   onError?: (e: string) => void;
   // tertiaryColor: string | undefined;
   // secondaryColor: string | undefined;
   // dangerColor: string | undefined;
   // InputHandleChange: (e: ChangeEvent<HTMLInputElement>) => void;
   // className?: string;
-  locale: "fa" | "en";
+  locale?: "fa" | "en";
 };
 
 const DateMask = ({
@@ -30,7 +30,7 @@ const DateMask = ({
   const fullRef = useRef<HTMLInputElement | null>(null);
   const inputRef = useRef(null);
   const clickCount = useRef(0);
-  const clickTimer = useRef<HTMLInputElement | null>(null);
+  const clickTimer = useRef<number>(0);
 
   const formatToTimeStamp = (FullValue: string) => {
     let changeToTimestamp = null;
@@ -158,14 +158,15 @@ const DateMask = ({
       const next = focusable[(index + 1) % focusable.length];
       next.focus();
     }
-    setValue((prev) => {
+    setSeparatedValue((prev) => {
       const newState = [...prev];
       newState[target] = "";
       return newState;
     });
   }
-  const handleClick = (e) => {
-    if (e.target.name !== "full") {
+  const handleClick = (e: React.MouseEvent<HTMLElement>) => {
+    const target = e.target as HTMLInputElement;
+    if (target.name !== "full") {
       clickCount.current += 1;
       if (clickCount.current === 3) {
         console.log("tripleClick");
@@ -269,17 +270,13 @@ const DateMask = ({
             type="text"
             name="full"
             ref={inputRef}
-            onFocus={() => {
-              console.log("focus trigered ");
-              handleFocus();
-            }}
+            onFocus={handleFocus}
             value={fullvalue}
             onChange={handleChange}
             maxLength={8}
             minLength={8}
             className="z-10 text-base"
             style={{ width: "10ch" }}
-            // onKeyDown={handleKeyDown}
           />
           <span className="z-10 absolute inset-0 bg-blue-600 mx-0 w-full h-full text-base text-center same-font selected-text">
             {formatInputValue(fullvalue)}
