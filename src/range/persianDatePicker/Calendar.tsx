@@ -23,7 +23,7 @@ interface Props {
   secondaryColor?: string;
   accentColor?: string;
   tertiaryColor?: string;
-  onChange: (startDate: number | null, endDate: number | null) => void;
+  onChange: (startDate: number, endDate: number) => void;
   model?: "range" | "date";
   startDate?: number;
   endDate?: number;
@@ -56,11 +56,11 @@ const Calendar: FC<Props> = ({
   disablePreviousDays = true,
   renderDayFn,
   containerClassName,
-  primaryColor = "#000", //رنگ اصلی (برای دکمه‌ها، لینک‌ها یا تأکید اصلی برند)
-  backgroundColor = "#fff ", //رنگ پس‌زمینه کلی یا نواحی بزرگ
-  tertiaryColor = "#939393", //رنگ سوم، معمولاً برای جزئیات یا عناصر کم‌اهمیت‌تر   -  رنگ متن
-  highlightColor = "#f4f4f4", //رنگ برجسته‌کننده برای هاور، نوتیف یا نقاط توجه
-  secondaryColor = "#585858", //رنگ فرعی یا مکمل برای تأکید ثانویه   - متن #585858   ,
+  primaryColor = "#000",
+  backgroundColor = "#fff ",
+  tertiaryColor = "#939393",
+  highlightColor = "#f4f4f4",
+  secondaryColor = "#585858",
   // calenderClassName = "",
   datePickerBodyClassName = "",
   chooseTodayClassName = "",
@@ -112,14 +112,13 @@ const Calendar: FC<Props> = ({
       startDate === endDate &&
       startDate === selectedDay
     ) {
-      console.log("here");
       setState((prev) => {
         return {
           ...prev,
           hoveredDay: null,
         };
       });
-      onChange(null, null);
+      onChange(0, 0);
       return;
     }
     if (startDate && endDate) {
@@ -130,7 +129,7 @@ const Calendar: FC<Props> = ({
           hoveredDay: selectedDay,
         };
       });
-      onChange(selectedDay, null);
+      onChange(selectedDay, 0);
       return;
     }
 
@@ -141,7 +140,7 @@ const Calendar: FC<Props> = ({
           hoveredDay: selectedDay,
         };
       });
-      onChange(selectedDay, null);
+      onChange(selectedDay, 0);
     } else {
       if (selectedDay > startDate) {
         if (
@@ -182,7 +181,7 @@ const Calendar: FC<Props> = ({
             hoveredDay: selectedDay,
           };
         });
-        onChange(selectedDay, null);
+        onChange(selectedDay, 0);
       } else if (startDate === selectedDay) {
         setState((prev) => {
           return {
@@ -211,7 +210,7 @@ const Calendar: FC<Props> = ({
             hoveredDay: timestamp,
           };
         });
-        onChange(timestamp, null);
+        onChange(timestamp, 0);
       }
     },
     [model, onChange, endDate, startDate]
@@ -312,7 +311,10 @@ const Calendar: FC<Props> = ({
         day.timestamp > startDate &&
         day.timestamp < endDate;
       return (
-        <div className="flex justify-center items-center w-full h-full">
+        <div
+          className="flex justify-center items-center w-full h-full"
+          key={index}
+        >
           <button
             disabled={isDisabled}
             key={index}
@@ -333,44 +335,26 @@ const Calendar: FC<Props> = ({
                 });
               }
             }}
-            className={`w-[clamp(24px,24px,30px)]  aspect-square !rounded-md cursor-pointer 
-                text-center flex flex-col justify-evenly items-center
-            ${
-              isSelectedSingleDate && {
-                color: backgroundColor,
-                backgroundColor: tertiaryColor,
-              }
-            } 
-            ${isDisabled && "pointer-events-none opacity-50"}
-          
-             ${isSelectedSingleDate && "!bg-gray-gray8 !text-white  "} 
-
-            ${
-              isSelectedSingleDate && {
-                backgroundColor: tertiaryColor,
-                color: backgroundColor,
-              }
-            }
-                  
-          
-          
-            }
-             `}
+            className="flex flex-col justify-evenly items-center !rounded-md w-[clamp(24px,24px,30px)] aspect-square text-center cursor-pointer"
             style={{
+              pointerEvents: isDisabled ? "none" : "auto",
+              opacity: isDisabled ? 0.5 : day.currentMonth ? 1 : 0,
               color:
-                isToDate || isFromDate ? `${backgroundColor}` : tertiaryColor,
+                isToDate || isFromDate || isSelectedSingleDate
+                  ? backgroundColor
+                  : tertiaryColor,
               borderColor: isToday ? secondaryColor : "",
               borderWidth: isToday ? "2px" : "",
 
               background:
                 isToDate || isFromDate
                   ? primaryColor
+                  : isSelectedSingleDate
+                  ? tertiaryColor
                   : isInrange || isHoveredDay
                   ? highlightColor
                   : "",
-
               fontSize: "14px",
-              opacity: day.currentMonth ? 1 : 0,
             }}
             onClick={() => {
               if (!day.currentMonth) return;
