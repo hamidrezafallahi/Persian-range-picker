@@ -1,15 +1,18 @@
-import React, { useEffect } from "react";
+import React, { useEffect } from 'react';
 
-import moment from "moment-jalaali";
+import moment from 'moment-jalaali';
 
-import { period } from "../core/helper";
-import MainContent from "../core/mainContent";
-import NavigateButton from "../core/navigateButton";
-import type { IBaseProps, IDate } from "../core/type";
-import { CalenderIcon } from "../icons/CalenderIcon";
-import { MenuArrowBack } from "../icons/MenuArrowBack";
+import { period } from '../core/helper';
+import MainContent from '../core/mainContent';
+import NavigateButton from '../core/navigateButton';
+import type {
+  IBaseProps,
+  IDate,
+} from '../core/type';
+import { CalenderIcon } from '../icons/CalenderIcon';
+import { MenuArrowBack } from '../icons/MenuArrowBack';
 
-function MobileRange(props: IBaseProps) {
+export function MobileRange(props: IBaseProps) {
   const {
     onCompareDateChange,
     onNavigateChange,
@@ -160,5 +163,3 @@ function MobileRange(props: IBaseProps) {
     </div>
   );
 }
-
-export default MobileRange;
