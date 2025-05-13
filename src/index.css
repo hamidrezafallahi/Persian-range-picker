@@ -1,7 +1,7 @@
 body {
   position: relative;
   text-align: right;
-  direction: rtl;
+  /* direction: rtl; */
   width: 100%;
   height: 100%;
 }
@@ -548,4 +548,11 @@ input {
 }
 .bg-blue-600 {
   background-color: #2563eb;
+}
+.mt-10 {
+  margin-top: 40px;
+}
+.selected-text {
+  background-color: #3390ff;
+  color: #ffffff;
 }
