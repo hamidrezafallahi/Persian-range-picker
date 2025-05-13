@@ -8,7 +8,7 @@ import DesktopRange from "./desktopRange";
 import MobileDate from "./mobileDate";
 import MobileRange from "./mobileRange";
 
-function Range({ ...props }: RangeProps) {
+export function Range({ ...props }: RangeProps) {
   const { device, model, additionalElement, defaultValue } = props;
   const [date, setDate] = useState<IDate>(defaultValue ?? { from: 0, to: 0 });
   const [compareDate, setCompareDate] = useState<IDate>({ from: 0, to: 0 });
@@ -77,5 +77,3 @@ function Range({ ...props }: RangeProps) {
     </div>
   );
 }
-
-export default Range;
