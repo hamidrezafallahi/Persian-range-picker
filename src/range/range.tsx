@@ -1,16 +1,34 @@
 import "./core/rangeStyle.css";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
 import type { ESteps, IDate, ITime, ITimeZone, RangeProps } from "./core/type";
 import { DesktopDate } from "./desktopDate/desktopDatePicker";
 import { DesktopRange } from "./desktopRange/desktopRangePicker";
 import { MobileDate } from "./mobileDate/mobileDatePicker";
 import { MobileRange } from "./mobileRange/mobileRangePicker";
+import moment from "moment-jalaali";
 
 export function Range({ ...props }: RangeProps) {
-  const { device, model, additionalElement, defaultValue } = props;
-  const [date, setDate] = useState<IDate>(defaultValue ?? { from: 0, to: 0 });
+  const { device, model, additionalElement, defaultValue, locale } = props;
+  const initialDate: IDate = useMemo(() => {
+    return {
+      from:
+        defaultValue && defaultValue.from > 0
+          ? defaultValue.from
+          : model == "date"
+          ? moment().locale(locale).startOf("day").valueOf()
+          : locale == "fa"
+          ? moment().locale(locale).startOf("jYear").valueOf()
+          : moment().locale(locale).startOf("year").valueOf(),
+      to:
+        defaultValue && defaultValue.to > 0
+          ? defaultValue.to
+          : moment().locale(locale).endOf("day").valueOf(),
+    };
+  }, [defaultValue]);
+
+  const [date, setDate] = useState<IDate>(initialDate);
   const [compareDate, setCompareDate] = useState<IDate>({ from: 0, to: 0 });
   const [counter, setCounter] = useState(0);
   const [activeCompareStep, setActiveCompareStep] = useState<ESteps>(366);
