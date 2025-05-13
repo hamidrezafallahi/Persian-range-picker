@@ -6,7 +6,7 @@ import type { IDate, IDateProps } from "../core/type";
 import { CalenderIcon } from "../icons/CalenderIcon";
 import { DatePicker } from "../persianDatePicker";
 
-function DesktopDate({ ...props }: IDateProps) {
+export function DesktopDate({ ...props }: IDateProps) {
   const {
     locale,
     defaultValue,
@@ -136,5 +136,3 @@ function DesktopDate({ ...props }: IDateProps) {
     </div>
   );
 }
-
-export default DesktopDate;

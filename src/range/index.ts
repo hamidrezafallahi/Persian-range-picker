@@ -1,2 +1,12 @@
-export { Range } from "./range";
-export { DateMask } from "../range/core/mask";
+export { Range } from './Range';
+export { DateMask } from '../range/core/mask';
+export { DesktopDate } from './desktopDate/DesktopDate';
+export { DesktopRange } from './desktopRange/DesktopRange';
+export { CalenderIcon } from './icons/CalenderIcon';
+export { DownTriangle } from './icons/DownTriangle';
+export { LeftChevron } from './icons/LeftChevron';
+export { MenuArrowBack } from './icons/MenuArrowBack';
+export { RightChevron } from './icons/RightChevron';
+export { TickIcon } from './icons/TickIcon';
+export { MobileDate } from './mobileDate/MobileDate';
+export { MobileRange } from './mobileRange/MobileRange';

@@ -1,12 +1,18 @@
-import { useRef, useState } from "react";
+import {
+  useRef,
+  useState,
+} from 'react';
 
-import moment from "moment-jalaali";
+import moment from 'moment-jalaali';
 
-import type { IDate, IDateProps } from "../core/type";
-import { CalenderIcon } from "../icons/CalenderIcon";
-import { DatePicker } from "../persianDatePicker";
+import type {
+  IDate,
+  IDateProps,
+} from '../core/type';
+import { CalenderIcon } from '../icons/CalenderIcon';
+import { DatePicker } from '../persianDatePicker';
 
-function MobileDate({ ...props }: IDateProps) {
+export function MobileDate({ ...props }: IDateProps) {
   const {
     onChange,
     defaultValue,
@@ -60,5 +66,3 @@ function MobileDate({ ...props }: IDateProps) {
     </>
   );
 }
-
-export default MobileDate;
