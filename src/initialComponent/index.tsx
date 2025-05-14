@@ -91,18 +91,22 @@ export function InitialComponent() {
     console.log(e);
   };
   return (
-    <div>
-      <Range
-        device="desktop"
-        locale="fa"
-        model="range"
-        onCompareDateChange={handleCompareDateChange}
-        onChange={handleDateChange}
-        onNavigateChange={handleNavigateChange}
-        handleSubmit={HandleSubmitDate}
-        handleReject={resetDate}
-      />
-      <DateMask onChange={handleChange} />
-    </div>
+    <>
+      <div className="range">
+        <Range
+          device="desktop"
+          locale="fa"
+          model="range"
+          onCompareDateChange={handleCompareDateChange}
+          onChange={handleDateChange}
+          onNavigateChange={handleNavigateChange}
+          handleSubmit={HandleSubmitDate}
+          handleReject={resetDate}
+        />
+        <DateMask onChange={handleChange} />
+        <div className="p-3 border">test</div>
+      </div>
+      <button>template</button>
+    </>
   );
 }

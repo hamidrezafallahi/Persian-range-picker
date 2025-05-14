@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from "react";
-import "../../mainTailwind.css";
 import moment from "moment-jalaali";
 
 import type { IDate } from "./type";

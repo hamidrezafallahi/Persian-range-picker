@@ -37,13 +37,38 @@ export function Range({ ...props }: RangeProps) {
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="bodyRange">
-      <div className="range" dir="rtl">
-        {device == "desktop" ? (
-          model == "date" ? (
-            <DesktopDate model={model} {...props} />
+    <div className="range" dir="rtl">
+      {device == "desktop" ? (
+        model == "date" ? (
+          <DesktopDate model={model} {...props} />
+        ) : (
+          <DesktopRange
+            {...props}
+            step={step}
+            counter={counter}
+            zone={zone}
+            date={date}
+            tabKey={tabKey}
+            compareDate={compareDate}
+            setCompareDate={setCompareDate}
+            activeCompareStep={activeCompareStep}
+            setStep={setStep}
+            setCounter={setCounter}
+            setDate={setDate}
+            setActiveCompareStep={setActiveCompareStep}
+            setTabKey={setTabKey}
+            setZone={setZone}
+            setOpen={setOpen}
+            open={open}
+            additionalElement={additionalElement}
+          />
+        )
+      ) : (
+        <>
+          {model == "date" ? (
+            <MobileDate model={model} {...props} />
           ) : (
-            <DesktopRange
+            <MobileRange
               {...props}
               step={step}
               counter={counter}
@@ -51,46 +76,19 @@ export function Range({ ...props }: RangeProps) {
               date={date}
               tabKey={tabKey}
               compareDate={compareDate}
-              setCompareDate={setCompareDate}
               activeCompareStep={activeCompareStep}
-              setStep={setStep}
-              setCounter={setCounter}
+              setCompareDate={setCompareDate}
               setDate={setDate}
               setActiveCompareStep={setActiveCompareStep}
+              setCounter={setCounter}
               setTabKey={setTabKey}
+              setStep={setStep}
               setZone={setZone}
-              setOpen={setOpen}
-              open={open}
               additionalElement={additionalElement}
             />
-          )
-        ) : (
-          <>
-            {model == "date" ? (
-              <MobileDate model={model} {...props} />
-            ) : (
-              <MobileRange
-                {...props}
-                step={step}
-                counter={counter}
-                zone={zone}
-                date={date}
-                tabKey={tabKey}
-                compareDate={compareDate}
-                activeCompareStep={activeCompareStep}
-                setCompareDate={setCompareDate}
-                setDate={setDate}
-                setActiveCompareStep={setActiveCompareStep}
-                setCounter={setCounter}
-                setTabKey={setTabKey}
-                setStep={setStep}
-                setZone={setZone}
-                additionalElement={additionalElement}
-              />
-            )}
-          </>
-        )}
-      </div>
+          )}
+        </>
+      )}
     </div>
   );
 }
