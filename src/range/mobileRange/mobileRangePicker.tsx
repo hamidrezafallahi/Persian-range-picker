@@ -50,7 +50,7 @@ export function MobileRange(props: IBaseProps) {
     };
   }, [date]);
 
-  const templatePeriods = period(initialDate, locale);
+  const templatePeriods = period(initialDate, locale, zone);
   useEffect(() => {
     if (onChange && (date || compareDate)) {
       onChange(date, compareDate);
