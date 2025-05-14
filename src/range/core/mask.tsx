@@ -1,12 +1,8 @@
-import {
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import { useEffect, useRef, useState } from "react";
 
-import moment from 'moment-jalaali';
+import moment from "moment-jalaali";
 
-import type { IDate } from './type';
+import type { IDate } from "./type";
 
 type MaskProps = {
   defaultValue?: IDate["from"];
@@ -210,88 +206,91 @@ export function DateMask({
 
     setFullValue(temp);
   }, [separatedValue]);
+
   return (
-    <div
-      className="flex mx-auto px-3 py-2 border rounded-lg w-fit"
-      // style={{ display: "flex", border: "1px solid blue" }}
-    >
-      {isEdit !== 2 ? (
-        <div ref={focusRef}>
-          {isEdit == 0 ? (
-            <div className="flex gap-1px bg-red-100 same-font">
-              <div>{separatedValue[0] || "____"}</div>
-              <div className="same-font">{"/"}</div>
-              <div>{separatedValue[1] || "__"}</div>
-              <div className="same-font">{"/"}</div>
-              <div>{separatedValue[2] || "__"}</div>
-            </div>
-          ) : (
-            <div className="bg-green-100">
-              {/* <Logger value={value} /> */}
-              <input
-                type="text"
-                name="year"
-                tabIndex={0}
-                value={separatedValue[0]}
-                onChange={handleChange}
-                onClick={handleClick}
-                maxLength={4}
-                minLength={4}
-                className={inputClassName}
-                style={{ width: "4ch" }}
-                onDoubleClick={() => {
-                  console.log("double");
-                }}
-              />
-              {"/"}
-              <input
-                type="text"
-                name="month"
-                tabIndex={1}
-                value={separatedValue[1]}
-                onChange={handleChange}
-                onClick={handleClick}
-                maxLength={2}
-                minLength={2}
-                className={inputClassName}
-                style={{ width: "2ch" }}
-              />
-              {"/"}
-              <input
-                type="text"
-                name="day"
-                tabIndex={2}
-                value={separatedValue[2]}
-                onChange={handleChange}
-                onClick={handleClick}
-                maxLength={2}
-                minLength={2}
-                className={inputClassName}
-                style={{ width: "2ch" }}
-              />
-            </div>
-          )}
-        </div>
-      ) : (
-        <div ref={fullRef} className="relative">
-          <input
-            id="full"
-            type="text"
-            name="full"
-            ref={inputRef}
-            onFocus={handleFocus}
-            value={fullvalue}
-            onChange={handleChange}
-            maxLength={8}
-            minLength={8}
-            className={inputClassName}
-            style={{ width: "10ch" }}
-          />
-          <span className="z-10 absolute inset-0 bg-blue-600 mx-0 w-full h-full text-base text-center same-font selected-text">
-            {formatInputValue(fullvalue)}
-          </span>
-        </div>
-      )}
+    <div className="range">
+      <div
+        className="flex mx-auto px-3 py-2 border rounded-lg w-fit"
+        // style={{ display: "flex", border: "1px solid blue" }}
+      >
+        {isEdit !== 2 ? (
+          <div ref={focusRef}>
+            {isEdit == 0 ? (
+              <div className="flex gap-1px bg-red-100 text-base same-font">
+                <div>{separatedValue[0] || "____"}</div>
+                <div className="same-font">{"/"}</div>
+                <div>{separatedValue[1] || "__"}</div>
+                <div className="same-font">{"/"}</div>
+                <div>{separatedValue[2] || "__"}</div>
+              </div>
+            ) : (
+              <div className="bg-green-100 text-base same-font">
+                {/* <Logger value={value} /> */}
+                <input
+                  type="text"
+                  name="year"
+                  tabIndex={0}
+                  value={separatedValue[0]}
+                  onChange={handleChange}
+                  onClick={handleClick}
+                  maxLength={4}
+                  minLength={4}
+                  className={`same-font ${inputClassName}`}
+                  style={{ width: "4ch" }}
+                  onDoubleClick={() => {
+                    console.log("double");
+                  }}
+                />
+                {"/"}
+                <input
+                  type="text"
+                  name="month"
+                  tabIndex={1}
+                  value={separatedValue[1]}
+                  onChange={handleChange}
+                  onClick={handleClick}
+                  maxLength={2}
+                  minLength={2}
+                  className={inputClassName}
+                  style={{ width: "2ch" }}
+                />
+                {"/"}
+                <input
+                  type="text"
+                  name="day"
+                  tabIndex={2}
+                  value={separatedValue[2]}
+                  onChange={handleChange}
+                  onClick={handleClick}
+                  maxLength={2}
+                  minLength={2}
+                  className={inputClassName}
+                  style={{ width: "2ch" }}
+                />
+              </div>
+            )}
+          </div>
+        ) : (
+          <div ref={fullRef} className="relative text-base">
+            <input
+              id="full"
+              type="text"
+              name="full"
+              ref={inputRef}
+              onFocus={handleFocus}
+              value={fullvalue}
+              onChange={handleChange}
+              maxLength={8}
+              minLength={8}
+              className={`opacity-0 ${inputClassName}`}
+              style={{ width: "10ch" }}
+            />
+            <span className="z-10 absolute inset-0 bg-blue-600 mx-0 w-full h-full text-base text-center same-font selected-text">
+              {formatInputValue(fullvalue)}
+            </span>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

@@ -1,18 +1,3 @@
-*,
-::before,
-::after {
-  box-sizing: border-box;
-  border-width: 0;
-  border-style: solid;
-  border-color: #e5e7eb;
-}
-.bodyRange {
-  position: relative;
-  direction: rtl;
-  width: 100%;
-  height: 100%;
-  font-family: "Helvetica Neue", Arial, sans-serif;
-}
 /*///////////////////////////////////////////////// padding /////////////////////////////////////////////////// */
 .range .p-4 {
   padding: 1rem /* 16px */;
@@ -921,4 +906,10 @@ input {
   .xs-gap-3 {
     gap: 0.75rem;
   }
+}
+.same-font {
+  font-family: Arial, Helvetica, sans-serif;
+}
+.-z-10 {
+  z-index: -10;
 }
