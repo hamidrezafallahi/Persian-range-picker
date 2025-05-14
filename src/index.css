@@ -95,7 +95,7 @@
 }
 .range .border-gray-300 {
   --tw-border-opacity: 1;
-  border-color: rgb(209 213 219 / var(--tw-border-opacity, 1)) !important;
+  border-color: rgb(209 213 219 / var(--tw-border-opacity, 1));
 }
 .range .border-state-error1 {
   border-color: #dc3545;
@@ -112,7 +112,7 @@
 .range .hover\:border-main-black:hover {
   border-color: #0e0e0e;
 }
-.range .border-blue-500 {
+.border-blue-500 {
   border-color: #3b82f6;
 }
 .range .border-b {
@@ -121,7 +121,7 @@
 .range .border-b-2 {
   border-bottom-width: 2px;
 }
-.range .border-r-4 {
+.border-r-4 {
   border-right-width: 4px;
 }
 .\!border {
