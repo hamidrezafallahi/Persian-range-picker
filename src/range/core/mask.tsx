@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-
+import "../../mainTailwind.css";
 import moment from "moment-jalaali";
 
 import type { IDate } from "./type";
@@ -7,6 +7,7 @@ import type { IDate } from "./type";
 type MaskProps = {
   defaultValue?: IDate["from"];
   onError?: (e: string) => void;
+  onChange?: (e: IDate["from"]) => void;
   // tertiaryColor: string | undefined;
   // secondaryColor: string | undefined;
   // dangerColor: string | undefined;
@@ -17,26 +18,27 @@ type MaskProps = {
 };
 
 export function DateMask({
-  defaultValue = new Date().valueOf(),
+  defaultValue,
   locale = "fa",
   onError,
   inputClassName,
+  onChange,
 }: MaskProps) {
   const [separatedValue, setSeparatedValue] = useState(["2024", "02", "06"]);
   const [baseValue, setBaseValue] = useState<IDate["from"]>(
     moment(defaultValue).locale(locale).valueOf()
   );
-  const [fullvalue, setFullValue] = useState("20240202");
+  const [fullValue, setFullValue] = useState<string>("20240202");
+  const fullValueRef = useRef<string>("20240202");
   const [isEdit, setIsEdit] = useState<0 | 1 | 2>(0);
   const focusRef = useRef<HTMLDivElement | null>(null);
   const fullRef = useRef<HTMLInputElement | null>(null);
-  const inputRef = useRef<HTMLInputElement>(null);
+  const fullInputRef = useRef<HTMLInputElement>(null);
   const clickCount = useRef(0);
   const clickTimer = useRef<number>(0);
-
+  const isInitialMount = useRef(true);
   const formatToTimeStamp = (FullValue: string) => {
     let changeToTimestamp = null;
-    console.log(FullValue);
     if (locale == "en") {
       changeToTimestamp = moment(FullValue, "YYYYMMDD").valueOf();
     } else {
@@ -72,79 +74,48 @@ export function DateMask({
         return newState;
       });
       if (newValue.length == 2) {
+        const temp =
+          separatedValue[0].toString() +
+          separatedValue[1].toString() +
+          newValue;
+        setBaseValue(changeToTimestamp(temp, locale));
         setIsEdit(0);
       }
     } else if (e.target.name == "full") {
       setFullValue(newValue);
+      fullValueRef.current = newValue;
       if (newValue.length == 8) {
         if (checkDateByRegex(formatToTimeStamp(newValue), locale)) {
           setBaseValue(formatToTimeStamp(newValue));
           setIsEdit(0);
         } else {
           onError?.(locale == "fa" ? "تاریخ نا معتبر است" : "invalid date");
+          alert(locale == "fa" ? "تاریخ نا معتبر است" : "invalid date");
         }
       }
-      // if (
-      //   locale == "fa"
-      //     ? shamsiRegex.test(formatted)
-      //     : gregorianRegex.test(formatted)
-      // ) {
-      //   console.log(locale, formatted);
-      // }
     }
-
-    // const checkFormatter = formatted.split("/");
-    // چک می‌کنیم که آیا تاریخ درست است یا خیر
-    // const isValid = moment(
-    //   `${checkFormatter[0]}/${checkFormatter[1]}/${checkFormatter[2]}`,
-    //   "jYYYY/jMM/jDD",
-    //   true
-    // ).isValid();
-
-    // if (isValid) {
-    //   // اگر تاریخ معتبر باشد، آن را تنظیم می‌کنیم
-    //   // setValue(newValue);
-    //   console.log(isValid);
-    // }
-    // } else {
-    //   setValue(newValue);
-    // }
   };
-  const handleFocus = () => {
-    if (inputRef?.current) {
-      inputRef.current.select();
+  const handleFocusFullInput = () => {
+    if (fullInputRef.current) {
+      fullInputRef.current.select();
     }
   };
   const formatInputValue = (value: string) => {
-    value = value.substring(0, 8);
-    const sample = "____/__/__".split(""); // Convert to array for mutability
-
-    for (let index = 0; index < value.length; index++) {
-      const char = value[index];
-      if (index <= 3) {
-        sample[index] = char; // YYYY
-      } else if (index <= 5) {
-        sample[index + 1] = char; // MM
-      } else if (index <= 7) {
-        sample[index + 2] = char; // DD
-      }
-    }
-
-    return sample.join("");
+    const year = value.slice(0, 4).padEnd(4, "_");
+    const month = value.slice(4, 6).padEnd(2, "_");
+    const day = value.slice(6, 8).padEnd(2, "_");
+    return `${year}/${month}/${day}`;
   };
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (fullRef?.current?.contains(event.target as Node) === true) {
-        return;
-      } else if (focusRef?.current?.contains(event.target as Node) === true) {
-        setIsEdit(1);
-      } else {
-        setIsEdit(0);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+  const handleBlurFullValue = () => {
+    setBaseValue(changeToTimestamp(fullValueRef.current, locale));
+  };
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter") {
+      setBaseValue(changeToTimestamp(fullValue, locale));
+      setIsEdit(0);
+    }
+  };
+
   function moveToNextTabindex(target: number) {
     const focusable = [...document.querySelectorAll("input")].sort(
       (a, b) => a.tabIndex - b.tabIndex
@@ -155,11 +126,7 @@ export function DateMask({
         ? document.activeElement
         : null;
     const index = focusable.indexOf(active as HTMLInputElement);
-
-    // Move to next or loop to first
-    if ((index + 1) % focusable.length == 0) {
-      setIsEdit(0);
-    } else {
+    if ((index + 1) % focusable.length !== 0) {
       const next = focusable[(index + 1) % focusable.length];
       next.focus();
     }
@@ -174,14 +141,12 @@ export function DateMask({
     if (target.name !== "full") {
       clickCount.current += 1;
       if (clickCount.current === 3) {
-        console.log("tripleClick");
         setIsEdit(2);
         clearTimeout(clickTimer.current);
         clickCount.current = 0;
         return;
       }
     }
-
     clearTimeout(clickTimer.current);
     clickTimer.current = setTimeout(() => {
       clickCount.current = 0;
@@ -189,30 +154,47 @@ export function DateMask({
   };
   useEffect(() => {
     if (isEdit == 2) {
-      inputRef.current?.focus();
-      inputRef.current?.select();
+      fullInputRef.current?.focus();
+      fullInputRef.current?.select();
     }
+    const handleClickOutside = (event: MouseEvent) => {
+      if (fullRef?.current?.contains(event.target as Node) === true) {
+        return;
+      } else if (focusRef?.current?.contains(event.target as Node) === true) {
+        setIsEdit(1);
+      } else {
+        if (isEdit == 2) {
+          handleBlurFullValue();
+        }
+        setIsEdit(0);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [isEdit]);
   useEffect(() => {
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+      return;
+    }
     const dateValues = timestampToDateNumbers(baseValue, locale);
     const [year, month, day] = dateValues;
     const temp = `${year}${month}${day}`.substring(0, 8);
     setFullValue(temp);
+    fullValueRef.current = temp;
     setSeparatedValue([year.toString(), month.toString(), day.toString()]);
+    onChange?.(baseValue);
   }, [baseValue]);
   useEffect(() => {
     const [year, month, day] = separatedValue;
     const temp = `${year}${month}${day}`.substring(0, 8);
-
     setFullValue(temp);
+    fullValueRef.current = temp;
   }, [separatedValue]);
 
   return (
     <div className="range">
-      <div
-        className="flex mx-auto px-3 py-2 border rounded-lg w-fit"
-        // style={{ display: "flex", border: "1px solid blue" }}
-      >
+      <div className="flex mx-auto px-3 py-2 border rounded-lg w-fit">
         {isEdit !== 2 ? (
           <div ref={focusRef}>
             {isEdit == 0 ? (
@@ -225,7 +207,6 @@ export function DateMask({
               </div>
             ) : (
               <div className="bg-green-100 text-base same-font">
-                {/* <Logger value={value} /> */}
                 <input
                   type="text"
                   name="year"
@@ -237,11 +218,16 @@ export function DateMask({
                   minLength={4}
                   className={`same-font ${inputClassName}`}
                   style={{ width: "4ch" }}
-                  onDoubleClick={() => {
-                    console.log("double");
-                  }}
                 />
-                {"/"}
+                <span
+                  style={{
+                    userSelect: "none",
+                    pointerEvents: "none",
+                    width: 0,
+                  }}
+                >
+                  /
+                </span>
                 <input
                   type="text"
                   name="month"
@@ -254,7 +240,15 @@ export function DateMask({
                   className={inputClassName}
                   style={{ width: "2ch" }}
                 />
-                {"/"}
+                <span
+                  style={{
+                    userSelect: "none",
+                    pointerEvents: "none",
+                    width: 0,
+                  }}
+                >
+                  /
+                </span>
                 <input
                   type="text"
                   name="day"
@@ -276,17 +270,23 @@ export function DateMask({
               id="full"
               type="text"
               name="full"
-              ref={inputRef}
-              onFocus={handleFocus}
-              value={fullvalue}
+              ref={fullInputRef}
+              onFocus={() => {
+                handleFocusFullInput();
+              }}
+              value={fullValue}
               onChange={handleChange}
+              onKeyDown={handleKeyDown}
               maxLength={8}
               minLength={8}
               className={`opacity-0 ${inputClassName}`}
               style={{ width: "10ch" }}
             />
-            <span className="z-10 absolute inset-0 bg-blue-600 mx-0 w-full h-full text-base text-center same-font selected-text">
-              {formatInputValue(fullvalue)}
+            <span
+              className="top-10 z-10 absolute inset-0 bg-blue-600 mx-0 w-full h-full text-base text-center same-font selected-text"
+              style={{ userSelect: "none", pointerEvents: "none" }}
+            >
+              {formatInputValue(fullValue)}
             </span>
           </div>
         )}
@@ -325,4 +325,37 @@ function checkDateByRegex(timestamp: number, locale: "fa" | "en") {
     const isGregorianValid = gregorianRegex.test(gDate);
     return isGregorianValid;
   }
+}
+function changeToTimestamp(fullvalue: string, locale: "fa" | "en") {
+  let changeToTimestamp = new Date().valueOf();
+  switch (fullvalue.length) {
+    case 0:
+      break;
+    case 1:
+    case 2:
+    case 3:
+    case 4:
+      changeToTimestamp =
+        locale == "fa"
+          ? moment(fullvalue, "jYYYY").valueOf()
+          : moment(fullvalue, "YYYY").valueOf();
+      break;
+    case 5:
+    case 6:
+      changeToTimestamp =
+        locale == "fa"
+          ? moment(fullvalue, "jYYYYjMM").valueOf()
+          : moment(fullvalue, "YYYYMM").valueOf();
+      break;
+    case 7:
+    case 8:
+      changeToTimestamp =
+        locale == "fa"
+          ? moment(fullvalue, "jYYYYjMMjDD").valueOf()
+          : moment(fullvalue, "YYYYMMDD").valueOf();
+      break;
+    default:
+      break;
+  }
+  return changeToTimestamp;
 }

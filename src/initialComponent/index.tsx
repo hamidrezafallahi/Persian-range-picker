@@ -1,4 +1,4 @@
-import { Range } from "../range";
+import { DateMask, Range } from "../range";
 import type { IDate } from "../range/core/type";
 
 export function InitialComponent() {
@@ -87,16 +87,22 @@ export function InitialComponent() {
   const resetDate = () => {
     console.log("Reject");
   };
+  const handleChange = (e: number) => {
+    console.log(e);
+  };
   return (
-    <Range
-      device="desktop"
-      locale="fa"
-      model="range"
-      onCompareDateChange={handleCompareDateChange}
-      onChange={handleDateChange}
-      onNavigateChange={handleNavigateChange}
-      handleSubmit={HandleSubmitDate}
-      handleReject={resetDate}
-    />
+    <div>
+      <Range
+        device="desktop"
+        locale="fa"
+        model="range"
+        onCompareDateChange={handleCompareDateChange}
+        onChange={handleDateChange}
+        onNavigateChange={handleNavigateChange}
+        handleSubmit={HandleSubmitDate}
+        handleReject={resetDate}
+      />
+      <DateMask onChange={handleChange} />
+    </div>
   );
 }
