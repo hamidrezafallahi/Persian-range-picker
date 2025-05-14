@@ -104,9 +104,7 @@ export function InitialComponent() {
           handleReject={resetDate}
         />
         <DateMask onChange={handleChange} />
-        <div className="p-3 border">test</div>
       </div>
-      <button>template</button>
     </>
   );
 }
