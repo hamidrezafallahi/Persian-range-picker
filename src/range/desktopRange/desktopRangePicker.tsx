@@ -32,7 +32,7 @@ export function DesktopRange(props: IDesktopProps) {
     // className,
     buttonClassName,
   } = props;
-
+  const isFirstRun = useRef(true);
   const initSubmittedData: ISubmittedData = useMemo(() => {
     return {
       date: {
@@ -84,6 +84,10 @@ export function DesktopRange(props: IDesktopProps) {
     }
   };
   useEffect(() => {
+    if (isFirstRun.current) {
+      isFirstRun.current = false;
+      return;
+    }
     if (onChange) {
       const isEmpty = !date && !compareDate;
       const isInvalidDateTo = date?.to == null || Number.isNaN(date?.to);
