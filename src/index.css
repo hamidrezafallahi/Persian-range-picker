@@ -832,3 +832,9 @@ input {
     gap: 0.75rem;
   }
 }
+.same-font {
+  font-family: Arial, Helvetica, sans-serif;
+}
+.-z-10 {
+  z-index: -10;
+}
