@@ -29,10 +29,6 @@ const DatePickerHeader: FC<Props> = ({
   secondaryColor = "#585858", //رنگ فرعی یا مکمل برای تأکید ثانویه   - متن #585858   ,
 }) => {
   const currentMonth = locale === "fa" ? PmonthMap[month] : monthMap[month];
-  const nextMonth =
-    locale === "fa"
-      ? PmonthMap[month === 11 ? 0 : month + 1]
-      : monthMap[month === 11 ? 0 : month + 1];
 
   return (
     <div

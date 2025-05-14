@@ -1,4 +1,4 @@
-import React, { type ReactNode, useState } from "react";
+import { type ReactNode, useState } from "react";
 
 import Manual from "./manual";
 import PeriodList from "./periodList";
@@ -17,7 +17,7 @@ const MainContent = ({ ...props }: Omit<IBaseProps, "componentStep">) => {
     periodListClassName,
     tabClassName,
     accentColor = "#2563eb",
-    locale, // تأکیدی (برای جلب توجه، مثلاً نوتیفیکیشن‌ها یا CTAها)- آبی
+    locale,
   } = props;
   const [activeTab, setActiveTab] = useState<ITime | string>("manual");
   const handleTabChange = (key: ITime | string) => {

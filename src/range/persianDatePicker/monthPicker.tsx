@@ -25,7 +25,7 @@ const MonthPicker: FC<Props> = ({
   onChangeYear,
   monthPickerClassName,
   backgroundColor = "#fff", //رنگ پس‌زمینه کلی یا نواحی بزرگ
-  tertiaryColor = "#939393", //رنگ سوم، معمولاً برای جزئیات یا عناصر کم‌اهمیت‌تر   -  رنگ متن
+  //tertiaryColor = "#939393", //رنگ سوم، معمولاً برای جزئیات یا عناصر کم‌اهمیت‌تر   -  رنگ متن
   secondaryColor = "#585858", //رنگ فرعی یا مکمل برای تأکید ثانویه- متن #585858   ,
 }) => {
   const monthList = months[locale];

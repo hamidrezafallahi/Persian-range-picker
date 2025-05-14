@@ -60,15 +60,16 @@ const MonthPicker = ({
     const date = new Date(chosenMonth);
     let newFrom = dateFromOutside.from;
     let newTo = dateFromOutside.to;
-    if (dateFromOutside.from == null || Number.isNaN(dateFromOutside.from)) {
+    if (
+      dateFromOutside.from == 0 ||
+      dateFromOutside.from == null ||
+      Number.isNaN(dateFromOutside.from)
+    ) {
       newFrom =
         locale === "fa"
           ? moment(chosenMonth).startOf("jMonth").valueOf()
           : new Date(date.getFullYear(), date.getMonth(), 1).valueOf();
-    } else if (
-      dateFromOutside.from &&
-      (dateFromOutside.to == null || Number.isNaN(dateFromOutside.to))
-    ) {
+    } else if (dateFromOutside.from && dateFromOutside.to == 0) {
       if (chosenMonth < dateFromOutside.from) {
         newFrom =
           locale === "fa"
@@ -89,7 +90,11 @@ const MonthPicker = ({
                 999
               ).valueOf();
       }
-    } else if (dateFromOutside.from && dateFromOutside.to) {
+    } else if (
+      dateFromOutside.from &&
+      dateFromOutside.to &&
+      dateFromOutside.to > 0
+    ) {
       newFrom =
         locale === "fa"
           ? moment(chosenMonth).startOf("jMonth").valueOf()
@@ -115,7 +120,7 @@ const MonthPicker = ({
             .startOf("month")
             .startOf("day")
             .valueOf();
-    if (dateFromOutside.from && dateFromOutside.to == null) {
+    if (dateFromOutside.from && dateFromOutside.to == 0) {
       setState((prev) => {
         return {
           ...prev,

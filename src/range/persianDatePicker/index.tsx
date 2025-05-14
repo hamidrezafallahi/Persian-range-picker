@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import moment from "moment-jalaali";
 
@@ -22,17 +22,26 @@ export const DatePicker = ({
   accentColor = "#2563eb",
   secondaryColor = "#585858",
 }: IProps) => {
-  const [date, setDate] = useState<IDate>(dateFromOutside);
+  const initDate: IDate = useMemo(() => {
+    return {
+      from: dateFromOutside.from,
+      to: dateFromOutside.to,
+    };
+  }, [dateFromOutside]);
+  const [date, setDate] = useState<IDate>(initDate);
   const onChange = (e: IDate) => {
     if (e.from === undefined) return;
     const { from, to } = e;
     onDateChange?.({ from, to });
   };
+  useEffect(() => {
+    setDate(dateFromOutside);
+  }, [dateFromOutside]);
   return (
     <Calendar
       onChange={(from, to) => {
-        onChange({ from, to });
-        setDate({ from, to });
+        onChange({ from, to } as IDate);
+        setDate({ from, to } as IDate);
       }}
       startDate={moment(date?.from)
         .locale(locale)
