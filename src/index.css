@@ -832,9 +832,25 @@ input {
     gap: 0.75rem;
   }
 }
-.same-font {
+/* .same-font {
   font-family: Arial, Helvetica, sans-serif;
-}
+} */
 .-z-10 {
   z-index: -10;
+}
+.same-font {
+  font-family: monospace;
+  font-size: 1rem;
+  line-height: 1.5;
+  letter-spacing: 0.05em;
+  color: #1a202c;
+  text-align: center;
+  direction: ltr;
+  box-sizing: border-box;
+  border: none;
+  outline: none;
+  padding: 0;
+  margin: 0;
+  background: transparent;
+  font-family: Arial, Helvetica, sans-serif;
 }
