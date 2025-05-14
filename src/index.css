@@ -1,3 +1,20 @@
+*,
+::before,
+::after {
+  box-sizing: border-box;
+  border-width: 0;
+  border-style: solid;
+  border-color: #e5e7eb;
+}
+.bodyRange {
+  position: relative;
+  direction: rtl;
+  width: 100%;
+  height: 100%;
+}
+.same-font {
+  font-family: Arial, Helvetica, sans-serif;
+}
 /*///////////////////////////////////////////////// padding /////////////////////////////////////////////////// */
 .range .p-4 {
   padding: 1rem /* 16px */;
@@ -109,6 +126,15 @@
 .range .border-r-4 {
   border-right-width: 4px;
 }
+.\!border {
+  border-width: 1px !important;
+}
+.range .\!border-2 {
+  border-width: 2px !important;
+}
+.range .border {
+  border-width: 1px;
+}
 /* ///////////////////////////////////////////////shadow/////////////////////////////////////////////////////// */
 .range .\*\:\!shadow-none > * {
   --tw-shadow: 0 0 #0000 !important;
@@ -176,6 +202,9 @@
   font-size: 1rem /* 16px */;
   line-height: 1.5rem /* 24px */;
 }
+.range .\!text-\[14px\] {
+  font-size: 14px !important;
+}
 /* /////////////////////////////////////////////// text-align ////////////////////////////////////////////////// */
 .range .text-center {
   text-align: center;
@@ -230,8 +259,16 @@
 .range .whitespace-nowrap {
   white-space: nowrap;
 }
+/* /////////////////////////////////////////////// overflow ////////////////////////////////////////////////// */
 .range .text-ellipsis {
   text-overflow: ellipsis;
+}
+.overflow-y-auto {
+  overflow-y: auto;
+}
+
+.overflow-hidden {
+  overflow: hidden;
 }
 /* /////////////////////////////////////////////// font-weight////////////////////////////////////////////////// */
 .range .font-extrabold {
@@ -579,42 +616,20 @@ input:checked + .slider::before {
 .rounded-2xl {
   border-radius: 1rem;
 }
-/* ////////////////////////////////////////////////////  rounded /////////////////////////////////////////////////// */
-
-.flex-col {
-  flex-direction: column;
+/* ////////////////////////////////////////////////////  overflow /////////////////////////////////////////////////// */
+.range .overflow-hidden {
+  overflow: hidden;
 }
-
+.range .overflow-y-auto {
+  overflow-y: auto;
+}
+/* ////////////////////////////////////////////////////  button /////////////////////////////////////////////////// */
 button,
 [role="button"],
 select {
   text-transform: none;
   cursor: pointer;
 }
-
-.justify-center {
-  justify-content: center;
-}
-
-.cursor-pointer {
-  cursor: pointer;
-}
-
-.z-50 {
-  z-index: 50;
-}
-
-.overflow-hidden {
-  overflow: hidden;
-}
-
-.justify-around {
-  justify-content: space-around;
-}
-.grid-cols-6 {
-  grid-template-columns: repeat(6, minmax(0, 1fr));
-}
-
 button,
 input:where([type="button"]),
 input:where([type="reset"]),
@@ -628,35 +643,94 @@ button {
   background: none;
   border: none;
 }
+/* ////////////////////////////////////////////////////  justify-content /////////////////////////////////////////////////// */
+.range .justify-end {
+  justify-content: flex-end;
+}
+.range .justify-between {
+  justify-content: space-between;
+}
+.range .justify-evenly {
+  justify-content: space-evenly;
+}
+.range .justify-center {
+  justify-content: center;
+}
+.justify-around {
+  justify-content: space-around;
+}
+/* ////////////////////////////////////////////////////   template columns /////////////////////////////////////////////////// */
+.range .\!grid-cols-6 {
+  grid-template-columns: repeat(6, minmax(0, 1fr)) !important;
+}
+.range .grid-cols-7 {
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+}
+.range .grid-cols-2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.range .col-span-1 {
+  grid-column: span 1 / span 1;
+}
+.range .flex-col {
+  flex-direction: column;
+}
 .aspect-square {
   aspect-ratio: 1 / 1;
 }
-.col-span-1 {
-  grid-column: span 1 / span 1;
+.flex-wrap {
+  flex-wrap: wrap;
 }
-.overflow-y-auto {
-  overflow-y: auto;
-}
-
-.grid-cols-7 {
-  grid-template-columns: repeat(7, minmax(0, 1fr));
+.range .\!grid-flow-row {
+  grid-auto-flow: row !important;
 }
 
-.justify-between {
-  justify-content: space-between;
+.range .aspect-square {
+  aspect-ratio: 1 / 1;
+}
+.range .flex-row-reverse {
+  flex-direction: row-reverse;
+}
+/* ////////////////////////////////////////////////////  text style /////////////////////////////////////////////////// */
+.range .\!text-main-white {
+  color: #ffffff !important;
+}
+.range .hover\:\!text-main-white:hover {
+  color: #ffffff !important;
+}
+.selected-text {
+  background-color: #3390ff;
+  color: #ffffff;
+}
+.\!text-white {
+  --tw-text-opacity: 1 !important;
+  color: rgb(255 255 255 / 1) !important;
 }
 .hover\:text-gray-700:hover {
   color: rgb(55, 65, 81);
 }
-.hover\:text-gray-700:hover {
-  color: rgb(55, 65, 81);
-}
-
 .dateButton:hover {
   background-color: rgb(243, 243, 243);
   color: #ffffff;
 }
-
+/* ////////////////////////////////////////////////////  cursor/////////////////////////////////////////////////// */
+.range .cursor-pointer {
+  cursor: pointer;
+}
+.range .pointer-events-none {
+  pointer-events: none;
+}
+/* ////////////////////////////////////////////////////  z-index://///////////////////////////////////////////////// */
+.range .z-50 {
+  z-index: 50;
+}
+.range .z-20 {
+  z-index: 20;
+}
+.z-10 {
+  z-index: 10;
+}
+/* //////////////////////////////////////////////////// input style/////////////////////////////////////////////////// */
 input:focus {
   outline: none;
   box-shadow: none; /* Optional: removes glow in some browsers */
@@ -667,165 +741,24 @@ input {
   box-shadow: none; /* Optional: removes glow in some browsers */
   border: none; /* Optional: only if you don't want any border */
 }
-
-.z-10 {
-  z-index: 10;
-}
+/* //////////////////////////////////////////////////// opacity /////////////////////////////////////////////////// */
 .opacity-0 {
   opacity: 0;
 }
-
-.flex-wrap {
-  flex-wrap: wrap;
-}
-
-.\!border {
-  border-width: 1px !important;
-}
-
-.\!text-white {
-  --tw-text-opacity: 1 !important;
-  color: rgb(255 255 255 / 1) !important;
-}
-
-.pointer-events-none {
-  pointer-events: none;
-}
-.opacity-50 {
-  opacity: 0.5;
-}
-
-.justify-evenly {
-  justify-content: space-evenly;
-}
-
-.selected-text {
-  background-color: #3390ff;
-  color: #ffffff;
-}
-
-.range .justify-center {
-  justify-content: center;
-}
-
-.range .flex-col {
-  flex-direction: column;
-}
-
-.range .overflow-y-auto {
-  overflow-y: auto;
-}
-
-.range .\[perspective\:1000px\] {
-  perspective: 1000px;
-}
-
-.range .grid-cols-2 {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-}
-
-.range .justify-between {
-  justify-content: space-between;
-}
-
-.range .overflow-hidden {
-  overflow: hidden;
-}
-
-.range .border {
-  border-width: 1px;
-}
-
-.range .cursor-pointer {
-  cursor: pointer;
-}
-
-.range .z-50 {
-  z-index: 50;
-}
-
-.range .justify-end {
-  justify-content: flex-end;
-}
-
-.range .grid-cols-6 {
-  grid-template-columns: repeat(6, minmax(0, 1fr));
-}
-
-.range .overflow-hidden {
-  overflow: hidden;
-}
-
-.range .col-span-1 {
-  grid-column: span 1 / span 1;
-}
-
-.range .hover\:\!text-main-white:hover {
-  color: #ffffff !important;
-}
-
-.range .\!border-2 {
-  border-width: 2px !important;
-}
-
-.range .z-20 {
-  z-index: 20;
-}
-
-.range .grid-cols-7 {
-  grid-template-columns: repeat(7, minmax(0, 1fr));
-}
-
-.range .aspect-video {
-  aspect-ratio: 16 / 9;
-}
-
-.range .\!text-main-white {
-  color: #ffffff !important;
-}
-
 .range .opacity-50 {
   opacity: 0.5;
 }
-
-.range .pointer-events-none {
-  pointer-events: none;
+/* //////////////////////////////////////////////////// other style /////////////////////////////////////////////////// */
+.range .\[perspective\:1000px\] {
+  perspective: 1000px;
 }
-
-.range .justify-evenly {
-  justify-content: space-evenly;
+.range .aspect-video {
+  aspect-ratio: 16 / 9;
 }
-
 .range .collapse {
   visibility: collapse;
 }
-
-.range .\!grid-cols-6 {
-  grid-template-columns: repeat(6, minmax(0, 1fr)) !important;
-}
-
-.range .\!grid-flow-row {
-  grid-auto-flow: row !important;
-}
-
-.range .aspect-square {
-  aspect-ratio: 1 / 1;
-}
-
-.range .justify-end {
-  justify-content: flex-end;
-}
-.range .justify-between {
-  justify-content: space-between;
-}
-
-.range .\!text-\[14px\] {
-  font-size: 14px !important;
-}
-
-.range .flex-row-reverse {
-  flex-direction: row-reverse;
-}
+/* //////////////////////////////////////////////////// media query style /////////////////////////////////////////////////// */
 @media (max-width: 431px) {
   .\!border-b {
     border-bottom-width: 1px !important;
