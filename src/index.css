@@ -86,7 +86,7 @@
 }
 .range .border-gray-300 {
   --tw-border-opacity: 1;
-  border-color: rgb(209 213 219 / var(--tw-border-opacity, 1)) !important;
+  border-color: rgb(209 213 219 / var(--tw-border-opacity, 1));
 }
 .range .border-state-error1 {
   border-color: #dc3545;
@@ -103,7 +103,7 @@
 .range .hover\:border-main-black:hover {
   border-color: #0e0e0e;
 }
-.range .border-blue-500 {
+.border-blue-500 {
   border-color: #3b82f6;
 }
 .range .border-b {
@@ -112,7 +112,7 @@
 .range .border-b-2 {
   border-bottom-width: 2px;
 }
-.range .border-r-4 {
+.border-r-4 {
   border-right-width: 4px;
 }
 .range .\!border {
@@ -819,4 +819,26 @@
   .range .xs-gap-3 {
     gap: 0.75rem;
   }
+}
+/* .same-font {
+  font-family: Arial, Helvetica, sans-serif;
+} */
+.-z-10 {
+  z-index: -10;
+}
+.same-font {
+  font-family: monospace;
+  font-size: 1rem;
+  line-height: 1.5;
+  letter-spacing: 0.05em;
+  color: #1a202c;
+  text-align: center;
+  direction: ltr;
+  box-sizing: border-box;
+  border: none;
+  outline: none;
+  padding: 0;
+  margin: 0;
+  background: transparent;
+  font-family: Arial, Helvetica, sans-serif;
 }

@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 import moment from "moment-jalaali";
-
 import type { IDate } from "./type";
 
 type MaskProps = {
@@ -224,6 +223,7 @@ export function DateMask({
                     pointerEvents: "none",
                     width: 0,
                   }}
+                  className={`same-font ${inputClassName}`}
                 >
                   /
                 </span>
@@ -236,7 +236,7 @@ export function DateMask({
                   onClick={handleClick}
                   maxLength={2}
                   minLength={2}
-                  className={inputClassName}
+                  className={`same-font ${inputClassName}`}
                   style={{ width: "2ch" }}
                 />
                 <span
@@ -257,7 +257,7 @@ export function DateMask({
                   onClick={handleClick}
                   maxLength={2}
                   minLength={2}
-                  className={inputClassName}
+                  className={`same-font ${inputClassName}`}
                   style={{ width: "2ch" }}
                 />
               </div>
@@ -282,7 +282,7 @@ export function DateMask({
               style={{ width: "10ch" }}
             />
             <span
-              className="top-10 z-10 absolute inset-0 bg-blue-600 mx-0 w-full h-full text-base text-center same-font selected-text"
+              className={`z-10 absolute inset-0 bg-blue-600 mx-0 w-full h-full text-base text-center same-font selected-text  ${inputClassName}`}
               style={{ userSelect: "none", pointerEvents: "none" }}
             >
               {formatInputValue(fullValue)}
