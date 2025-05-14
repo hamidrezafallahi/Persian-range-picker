@@ -1,8 +1,11 @@
-import { useEffect } from "react";
+import { useEffect } from 'react';
 
-import { period } from "../core/helper";
-import type { IBaseProps, ITimeSections } from "../core/type";
-import { TickIcon } from "../icons/TickIcon";
+import { period } from '../core/helper';
+import type {
+  IBaseProps,
+  ITimeSections,
+} from '../core/type';
+import { TickIcon } from '../icons/TickIcon';
 
 const CompareList = ({ ...props }: IBaseProps) => {
   const {
@@ -23,7 +26,7 @@ const CompareList = ({ ...props }: IBaseProps) => {
     setCompareDate(item.value);
     setActiveCompareStep(item.step);
   };
-  const templatePeriods = period(date, locale);
+  const templatePeriods = period(date, locale, zone);
 
   const filteredPeriod = templatePeriods.filter(
     (item) =>
