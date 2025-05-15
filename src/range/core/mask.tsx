@@ -191,10 +191,11 @@ export function DateMask({
   }, [separatedValue]);
 
   return (
-    <div className="range">
-      <div className="flex mx-auto px-3 py-2 border rounded-lg w-fit">
+    <div className="range flex justify-centre align-center">
+      <div className="flex py-2 px-2 border rounded-lg w-full">
+          <span className="">❤️</span>
         {isEdit !== 2 ? (
-          <div ref={focusRef}>
+          <div ref={focusRef} className="w-full flex dir-rtl">
             {isEdit == 0 ? (
               <div className="flex gap-1px bg-red-100 text-base same-font">
                 <div>{separatedValue[0] || "____"}</div>
@@ -215,13 +216,13 @@ export function DateMask({
                   maxLength={4}
                   minLength={4}
                   className={`same-font ${inputClassName}`}
-                  style={{ width: "4ch" }}
+                  style={{ width: "2.4rem" }}
                 />
                 <span
                   style={{
                     userSelect: "none",
                     pointerEvents: "none",
-                    width: 0,
+                    width: "10px",
                   }}
                   className={`same-font ${inputClassName}`}
                 >
@@ -237,13 +238,13 @@ export function DateMask({
                   maxLength={2}
                   minLength={2}
                   className={`same-font ${inputClassName}`}
-                  style={{ width: "2ch" }}
+                  style={{ width: "1.2rem" }}
                 />
                 <span
                   style={{
                     userSelect: "none",
                     pointerEvents: "none",
-                    width: 0,
+                    width: "10px",
                   }}
                 >
                   /
@@ -258,13 +259,13 @@ export function DateMask({
                   maxLength={2}
                   minLength={2}
                   className={`same-font ${inputClassName}`}
-                  style={{ width: "2ch" }}
+                  style={{ width: "1.2rem" }}
                 />
               </div>
             )}
           </div>
         ) : (
-          <div ref={fullRef} className="relative text-base">
+          <div ref={fullRef} className="relative text-base dir-rtl w-full">
             <input
               id="full"
               type="text"
@@ -279,11 +280,11 @@ export function DateMask({
               maxLength={8}
               minLength={8}
               className={`opacity-0 ${inputClassName}`}
-              style={{ width: "10ch" }}
+              style={{ width: "5.5rem",textAlign:"end" }}
             />
             <span
-              className={`z-10 absolute inset-0 bg-blue-600 mx-0 w-full h-full text-base text-center same-font selected-text  ${inputClassName}`}
-              style={{ userSelect: "none", pointerEvents: "none" }}
+              className={`z-10 absolute inset-0 bg-blue-600 mx-0 h-full text-base text-center same-font selected-text  ${inputClassName}`}
+              style={{ userSelect: "none", pointerEvents: "none", width:"5.5rem" }}
             >
               {formatInputValue(fullValue)}
             </span>
