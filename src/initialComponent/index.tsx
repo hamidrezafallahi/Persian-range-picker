@@ -1,5 +1,8 @@
-import { DateMask, Range } from "../range";
-import type { IDate } from "../range/core/type";
+import {
+  DateMask,
+  Range,
+} from '../range';
+import type { IDate } from '../range/core/type';
 
 export function InitialComponent() {
   const handleDateChange = (w: IDate) => {
