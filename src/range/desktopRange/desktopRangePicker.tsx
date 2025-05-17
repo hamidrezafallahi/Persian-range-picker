@@ -36,13 +36,25 @@ export function DesktopRange(props: IDesktopProps) {
     tertiaryColor = "#939393", //رنگ سوم، معمولاً برای جزئیات یا عناصر کم‌اهمیت‌تر   -  رنگ متن
     // tabClassName = "",
     dateClassName,
-    locale,
+    locale = "fa",
     onError,
     // className,
     buttonClassName,
-    showLabel = false,
-    label,
+    label = {
+      isShowLabel: true,
+      label: (
+        <label
+          className="text-xs"
+          style={{
+            color: tertiaryColor,
+          }}
+        >
+          {props.label?.label ?? (props.locale === "fa" ? "تاریخ" : "Date")}
+        </label>
+      ),
+    },
   } = props;
+
   const isFirstRun = useRef(true);
   const initSubmittedData: ISubmittedData = useMemo(() => {
     return {
@@ -96,8 +108,6 @@ export function DesktopRange(props: IDesktopProps) {
     }
   };
   useEffect(() => {
-    console.log(zone);
-
     if (isFirstRun.current) {
       isFirstRun.current = false;
       return;
@@ -139,23 +149,14 @@ export function DesktopRange(props: IDesktopProps) {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [open]);
+
   return (
     <>
       <div
         className={`relative flex flex-col justify-between w-fit h-14 ${buttonClassName}`}
         ref={dropdownRef}
       >
-        {showLabel && (
-          <label
-            className="text-xs"
-            style={{
-              color: tertiaryColor,
-            }}
-          >
-            {label?.label ?? (locale === "fa" ? "تاریخ" : "Date")}
-          </label>
-        )}
-
+        {label.isShowLabel && label.label}
         <div className="flex gap-2">
           <div
             className={`flex justify-center items-center gap-2 px-2 border border-gray-300 rounded-lg w-72 h-8 cursor-pointer ${dateClassName}`}
@@ -200,7 +201,7 @@ export function DesktopRange(props: IDesktopProps) {
             <DownTriangle />
           </div>
           {zone !== "manual" && isShowNavigationButton && (
-            <NavigateButton {...props} />
+            <NavigateButton {...props} locale={locale} />
           )}
         </div>
         {open && (
@@ -211,7 +212,7 @@ export function DesktopRange(props: IDesktopProps) {
             }`}
           >
             <div className="relative w-full h-full">
-              <MainContent {...props} />
+              <MainContent {...props} model="range" locale={locale} />
               <div
                 className={`w-full flex ${
                   locale == "fa" ? "justify-end" : "justify-start"

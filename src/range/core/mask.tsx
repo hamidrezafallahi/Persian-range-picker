@@ -1,13 +1,9 @@
-import {
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import { useEffect, useRef, useState } from "react";
 
-import moment from 'moment-jalaali';
+import moment from "moment-jalaali";
 
-import { CalenderIcon } from '../icons/CalenderIcon';
-import type { IDate } from './type';
+import { CalenderIcon } from "../icons/CalenderIcon";
+import type { IDate } from "./type";
 
 type MaskProps = {
   defaultValue?: IDate["from"];
@@ -31,15 +27,21 @@ export function DateMask({
   maskClassName,
   onChange,
 }: MaskProps) {
-  const [separatedValue, setSeparatedValue] = useState(["2024", "02", "06"]);
+  const temp = timestampToDateNumbers(locale, defaultValue);
+  const [separatedValue, setSeparatedValue] = useState(temp);
   const [baseValue, setBaseValue] = useState<IDate["from"]>(
-    moment(defaultValue).locale(locale).valueOf()
+    moment(defaultValue).locale(locale).startOf("day").valueOf()
   );
-  const [fullValue, setFullValue] = useState<string>("20240202");
-  const fullValueRef = useRef<string>("20240202");
+  const [fullValue, setFullValue] = useState<string>(
+    `${temp[0]}${temp[1]}${temp[2]}`
+  );
+  const fullValueRef = useRef<string>(`${temp[0]}${temp[1]}${temp[2]}`);
   const [isEdit, setIsEdit] = useState<0 | 1 | 2>(0);
   const focusRef = useRef<HTMLDivElement | null>(null);
   const fullRef = useRef<HTMLInputElement | null>(null);
+  const yearInputRef = useRef<HTMLInputElement | null>(null);
+  const monthInputRef = useRef<HTMLInputElement | null>(null);
+  const dayInputRef = useRef<HTMLInputElement | null>(null);
   const fullInputRef = useRef<HTMLInputElement>(null);
   const clickCount = useRef(0);
   const clickTimer = useRef<number>(0);
@@ -62,7 +64,7 @@ export function DateMask({
         return newState;
       });
       if (newValue.length == 4) {
-        moveToNextTabindex(1);
+        moveToNextTabindex();
       }
       // }
     } else if (e.target.name == "month") {
@@ -72,7 +74,7 @@ export function DateMask({
         return newState;
       });
       if (newValue.length == 2) {
-        moveToNextTabindex(2);
+        moveToNextTabindex();
       }
     } else if (e.target.name == "day") {
       setSeparatedValue((prev) => {
@@ -117,13 +119,25 @@ export function DateMask({
     setBaseValue(changeToTimestamp(fullValueRef.current, locale));
   };
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    const activeElement = document.activeElement;
     if (event.key === "Enter") {
       setBaseValue(changeToTimestamp(fullValue, locale));
       setIsEdit(0);
     }
+    if (event.key === "Backspace") {
+      if (activeElement instanceof HTMLInputElement) {
+        if (activeElement.value.length == 0) {
+          if (activeElement.tabIndex > 0) {
+            moveToPreviousTabindex();
+          }
+        } else if (activeElement.value.length == 1) {
+          activeElement.select();
+        }
+      }
+    }
   };
 
-  function moveToNextTabindex(target: number) {
+  function moveToNextTabindex() {
     const focusable = [...document.querySelectorAll("input")].sort(
       (a, b) => a.tabIndex - b.tabIndex
     );
@@ -136,13 +150,31 @@ export function DateMask({
     if ((index + 1) % focusable.length !== 0) {
       const next = focusable[(index + 1) % focusable.length];
       next.focus();
+      next.select();
     }
-    setSeparatedValue((prev) => {
-      const newState = [...prev];
-      newState[target] = "";
-      return newState;
-    });
+    // setSeparatedValue((prev) => {
+    //   const newState = [...prev];
+    //   newState[target] = "";
+    //   return newState;
+    // });
   }
+  function moveToPreviousTabindex() {
+    const focusable = [...document.querySelectorAll("input")].sort(
+      (a, b) => a.tabIndex - b.tabIndex
+    );
+
+    const active =
+      document.activeElement instanceof HTMLInputElement
+        ? document.activeElement
+        : null;
+    const index = focusable.indexOf(active as HTMLInputElement);
+
+    if (index > 0) {
+      const prev = focusable[index - 1];
+      prev.focus();
+    }
+  }
+
   const handleClick = (e: React.MouseEvent<HTMLElement>) => {
     const target = e.target as HTMLInputElement;
     if (target.name !== "full") {
@@ -173,18 +205,46 @@ export function DateMask({
         if (isEdit == 2) {
           handleBlurFullValue();
         }
+        setBaseValue(changeToTimestamp(fullValueRef.current, locale));
+        if (
+          yearInputRef.current &&
+          monthInputRef.current &&
+          dayInputRef.current
+        ) {
+          const temp =
+            yearInputRef.current.value.toString() +
+            monthInputRef.current.value.toString() +
+            dayInputRef.current.value.toString();
+          setBaseValue(changeToTimestamp(temp, locale));
+        }
+
         setIsEdit(0);
       }
     };
+    const handleClickOnInput = (event: MouseEvent) => {
+      if (yearInputRef.current?.contains(event.target as Node) === true) {
+        yearInputRef.current.focus();
+      } else if (
+        monthInputRef.current?.contains(event.target as Node) === true
+      ) {
+        monthInputRef.current.focus();
+      } else {
+        dayInputRef.current?.focus();
+      }
+    };
+    document.addEventListener("mouseup", handleClickOnInput);
     document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.addEventListener("mouseup", handleClickOnInput);
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
   }, [isEdit]);
   useEffect(() => {
     if (isInitialMount.current) {
       isInitialMount.current = false;
       return;
     }
-    const dateValues = timestampToDateNumbers(baseValue, locale);
+    const dateValues = timestampToDateNumbers(locale, baseValue);
     const [year, month, day] = dateValues;
     const temp = `${year}${month}${day}`.substring(0, 8);
     setFullValue(temp);
@@ -198,7 +258,6 @@ export function DateMask({
     setFullValue(temp);
     fullValueRef.current = temp;
   }, [separatedValue]);
-
   return (
     <div
       className={`flex justify-centre bg-gray-5 rounded w-91 range align-center ${maskClassName}`}
@@ -223,13 +282,16 @@ export function DateMask({
                   type="text"
                   name="year"
                   tabIndex={0}
+                  ref={yearInputRef}
                   value={separatedValue[0]}
                   onChange={handleChange}
                   onClick={handleClick}
+                  onKeyDown={handleKeyDown}
                   maxLength={4}
                   minLength={4}
                   className={`same-font ${inputClassName}`}
                   style={{ width: "2.4rem" }}
+                  placeholder="____"
                 />
                 <span
                   style={{
@@ -245,13 +307,16 @@ export function DateMask({
                   type="text"
                   name="month"
                   tabIndex={1}
+                  ref={monthInputRef}
                   value={separatedValue[1]}
                   onChange={handleChange}
                   onClick={handleClick}
+                  onKeyDown={handleKeyDown}
                   maxLength={2}
                   minLength={2}
                   className={`same-font ${inputClassName}`}
                   style={{ width: "1.2rem" }}
+                  placeholder="__"
                 />
                 <span
                   style={{
@@ -266,13 +331,16 @@ export function DateMask({
                   type="text"
                   name="day"
                   tabIndex={2}
+                  ref={dayInputRef}
                   value={separatedValue[2]}
                   onChange={handleChange}
                   onClick={handleClick}
+                  onKeyDown={handleKeyDown}
                   maxLength={2}
                   minLength={2}
                   className={`same-font ${inputClassName}`}
                   style={{ width: "1.2rem" }}
+                  placeholder="__"
                 />
               </div>
             )}
@@ -312,7 +380,7 @@ export function DateMask({
   );
 }
 
-function timestampToDateNumbers(timestamp: number, locale: "fa" | "en") {
+function timestampToDateNumbers(locale: "fa" | "en", timestamp?: number) {
   const year =
     locale == "fa"
       ? moment(timestamp).format("jYYYY")
