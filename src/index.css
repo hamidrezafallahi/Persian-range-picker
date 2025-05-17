@@ -845,12 +845,15 @@
 .min-h-8 {
   min-height: 2rem;
 }
-.align-center {
-  align-items: center;
+.align-base {
+  align-items: baseline;
 }
 
-.justify-between {
+.justify-end {
   justify-content: flex-end;
+}
+.justify-between {
+  justify-content: space-between;
 }
 .dir-rtl {
   direction: rtl;
@@ -859,8 +862,14 @@
   background-color: rgba(146, 146, 146, 0.226);
 }
 .w-91 {
-  width: 270px;
+  width: 140px;
 }
 .rounded {
   border-radius: 10px;
+}
+.flex-shrink-0 {
+  flex-shrink: 0px;
+}
+.flex-grow {
+  flex-grow: 1px;
 }

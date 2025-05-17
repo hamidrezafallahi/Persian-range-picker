@@ -1,16 +1,18 @@
 // import type { ChangeEvent } from "react";
 
-import moment from "moment-jalaali";
+import moment from 'moment-jalaali';
 
-import Comparison from "../comparison";
-import { DatePicker } from "../persianDatePicker";
-import MonthPicker from "./monthPicker";
-import type { IBaseProps, IDate } from "./type";
-import { ESteps } from "./type";
+import Comparison from '../comparison';
+import { DatePicker } from '../persianDatePicker';
+import MaskRange from './maskRange';
+import MonthPicker from './monthPicker';
+import type {
+  IBaseProps,
+  IDate,
+} from './type';
+import { ESteps } from './type';
 
 const Manual = (props: IBaseProps) => {
-  // const currentDate = moment().locale("fa");
-
   const {
     date,
     locale = "fa",
@@ -21,6 +23,10 @@ const Manual = (props: IBaseProps) => {
     isShowComparison = true,
     monthPickerClassName,
     model,
+    // secondaryColor,
+    // tertiaryColor,
+    // dangerColor,
+    // InputHandleChange,
   } = props;
 
   return (
@@ -35,6 +41,15 @@ const Manual = (props: IBaseProps) => {
           setStep(ESteps.manual);
         }}
         locale={locale}
+      />
+      <MaskRange
+        // locale={locale}
+        // secondaryColor={secondaryColor}
+        // tertiaryColor={tertiaryColor}
+        // dangerColor={dangerColor}
+        // InputHandleChange={InputHandleChangeFrom}
+        // dateFromOutside={date}
+        date={date}
       />
       {/* <div className="flex gap-1 py-2">
         <Mask
