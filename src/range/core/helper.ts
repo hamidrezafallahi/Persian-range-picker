@@ -1,11 +1,7 @@
-import moment from 'moment-jalaali';
+import moment from "moment-jalaali";
 
-import type {
-  IDate,
-  ITimeSections,
-  ITimeZone,
-} from './type';
-import { ESteps } from './type';
+import type { IDate, ITimeSections, ITimeZone } from "./type";
+import { ESteps } from "./type";
 
 export const getTimestampsForPeriod = (period: ITimeZone, locale: string) => {
   let from, to;
@@ -375,7 +371,6 @@ export function getLabel(
   timeZone: ITimeZone,
   locale: "fa" | "en" = "en"
 ): string {
-  console.log(zone, timeZone, locale);
   switch (timeZone) {
     case "yesterday":
       if (zone == "today") {
@@ -504,31 +499,31 @@ export function getLabel(
             : "compare yesterday with same day in last year";
         case "thisWeek":
           return locale == "fa"
-            ? "مقایسه این هفته با همین بازه در  سال گذشته"
+            ? "مقایسه این هفته با این هفته در  سال گذشته"
             : "compare this week with same same time frame in last year";
         case "lastWeek":
           return locale == "fa"
-            ? "مقایسه هفته پیش  با همین بازه در سال گذشته"
+            ? "مقایسه هفته پیش  با هفته پیش در سال گذشته"
             : "compare last week with same time frame in last year";
         case "last7Days":
           return locale == "fa"
-            ? "مقایسه هفت روز گذشته با همین بازه در  سال گذشته"
+            ? "مقایسه هفت روز گذشته با روز گذشته در  سال گذشته"
             : "compare last 7 days with  same time frame in  last year";
         case "thisMonth":
           return locale == "fa"
-            ? "مقایسه این ماه با همین بازه در سال گذشته"
+            ? "مقایسه این ماه با این ماه در سال گذشته"
             : "compare this month with  same time frame in last year";
         case "lastMonth":
           return locale == "fa"
-            ? "مقایسه ماه پیش با همین بازه در سال گذشته"
+            ? "مقایسه ماه پیش با ماه پیش در سال گذشته"
             : "compare last month with same time frame in last year";
         case "last30Days":
           return locale == "fa"
-            ? "مقایسه سی روز گذشته با همین بازه در سال گذشته"
+            ? "مقایسه سی روز گذشته با سی روز گذشته در سال گذشته"
             : "compare last 30 Days with same time frame in last year";
         case "lastThreeMonth":
           return locale == "fa"
-            ? "مقایسه سه ماه گذشته با همین بازه در سال گذشته"
+            ? "مقایسه سه ماه گذشته با سه ماه گذشته در سال گذشته"
             : "compare last three month with same time frame in last year";
         case "thisYear":
           return locale == "fa"

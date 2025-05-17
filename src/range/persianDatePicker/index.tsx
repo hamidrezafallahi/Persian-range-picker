@@ -8,7 +8,7 @@ import type { IProps } from "./type";
 
 export const DatePicker = ({
   datePickerBodyClassName,
-  locale,
+  locale = "fa",
   dateFromOutside,
   onDateChange,
   model = "range",

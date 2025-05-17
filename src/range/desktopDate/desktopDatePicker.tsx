@@ -8,7 +8,7 @@ import { DatePicker } from "../persianDatePicker";
 
 export function DesktopDate({ ...props }: IDateProps) {
   const {
-    locale,
+    locale = "fa",
     defaultValue,
     onChange,
     tertiaryColor = "#939393",
@@ -124,6 +124,8 @@ export function DesktopDate({ ...props }: IDateProps) {
           <DatePicker
             name="DesktopDate"
             {...props}
+            model="date"
+            locale={locale}
             onDateChange={handleDateChange}
             dateFromOutside={{
               from: showDate.from,

@@ -9,7 +9,20 @@ import { MobileDate } from "./mobileDate/mobileDatePicker";
 import { MobileRange } from "./mobileRange/mobileRangePicker";
 
 export function Range({ ...props }: RangeProps) {
-  const { device, model, additionalElement, defaultValue, locale } = props;
+  const userAgent = navigator.userAgent;
+  const deviceType =
+    /Mobile|Android|iPhone|iPad|iPod|Opera Mini|BlackBerry|IEMobile/i.test(
+      userAgent
+    )
+      ? "mobile"
+      : "desktop";
+  const {
+    device = deviceType,
+    model = "range",
+    additionalElement,
+    defaultValue,
+    locale = "fa",
+  } = props;
   const initialDate: IDate = useMemo(() => {
     return {
       from:
@@ -41,7 +54,7 @@ export function Range({ ...props }: RangeProps) {
     <div className="range" dir="rtl">
       {device == "desktop" ? (
         model == "date" ? (
-          <DesktopDate {...props} />
+          <DesktopDate {...props} model={model} locale={locale} />
         ) : (
           <DesktopRange
             {...props}
@@ -67,7 +80,7 @@ export function Range({ ...props }: RangeProps) {
       ) : (
         <>
           {model == "date" ? (
-            <MobileDate {...props} />
+            <MobileDate {...props} model={model} locale={locale} />
           ) : (
             <MobileRange
               {...props}

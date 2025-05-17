@@ -32,9 +32,9 @@ export function MobileRange(props: IBaseProps) {
     isShowComparison = true,
     popoverClassName = "",
     additionalElement,
-    locale,
+    locale = "fa",
     className,
-    model,
+    model = "range",
   } = props;
   const initialDate: IDate = useMemo(() => {
     return {

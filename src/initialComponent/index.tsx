@@ -1,8 +1,5 @@
-import {
-  DateMask,
-  Range,
-} from '../range';
-import type { IDate } from '../range/core/type';
+import { DateMask, Range } from "../range";
+import type { IDate } from "../range/core/type";
 
 export function InitialComponent() {
   const handleDateChange = (w: IDate) => {
@@ -95,13 +92,14 @@ export function InitialComponent() {
   const handleChange = (e: number) => {
     console.log(e);
   };
+
   return (
     <>
       <div className="range">
         <Range
-          device="desktop"
-          locale="fa"
-          model="range"
+          // device="desktop"
+          // locale="fa"
+          // model="range"
           onCompareDateChange={handleCompareDateChange}
           onChange={handleDateChange}
           onNavigateChange={handleNavigateChange}

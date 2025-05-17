@@ -24,7 +24,7 @@ export interface IDateProps {
 // type lable={type=="range" & device == "desktop"} & {isShowLable?:boolean,lable?:ReactNode}
 
 export interface RangeProps extends IRangeOptions {
-  device: TDeviceType;
+  device?: TDeviceType;
   handleReject?: () => void;
   handleSubmit?: (date: IDate, compareDate: IDate | null) => void;
   onCompareDateChange?: (date: IDate, compareDate: IDate) => void;
@@ -33,8 +33,8 @@ export interface RangeProps extends IRangeOptions {
   navigation?: boolean;
 }
 export interface IRangeOptions {
-  model: "date" | "range";
-  locale: "fa" | "en";
+  model?: "date" | "range";
+  locale?: "fa" | "en";
   isShowNavigationButton?: boolean;
   isShowComparison?: boolean;
   primaryColor?: string;

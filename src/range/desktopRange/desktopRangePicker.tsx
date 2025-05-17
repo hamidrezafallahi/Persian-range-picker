@@ -27,7 +27,7 @@ export function DesktopRange(props: IDesktopProps) {
     tertiaryColor = "#939393", //رنگ سوم، معمولاً برای جزئیات یا عناصر کم‌اهمیت‌تر   -  رنگ متن
     // tabClassName = "",
     dateClassName,
-    locale,
+    locale = "fa",
     onError,
     // className,
     buttonClassName,
@@ -188,7 +188,7 @@ export function DesktopRange(props: IDesktopProps) {
             <DownTriangle />
           </div>
           {zone !== "manual" && isShowNavigationButton && (
-            <NavigateButton {...props} />
+            <NavigateButton {...props} locale={locale} />
           )}
         </div>
         {open && (
@@ -199,7 +199,7 @@ export function DesktopRange(props: IDesktopProps) {
             }`}
           >
             <div className="relative w-full h-full">
-              <MainContent {...props} />
+              <MainContent {...props} model="range" locale={locale} />
               <div
                 className={`w-full flex ${
                   locale == "fa" ? "justify-end" : "justify-start"

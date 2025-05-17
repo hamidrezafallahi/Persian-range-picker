@@ -10,7 +10,7 @@ export function MobileDate({ ...props }: IDateProps) {
   const {
     onChange,
     defaultValue,
-    locale,
+    locale = "fa",
     tertiaryColor = "#939393", //رنگ سوم، معمولاً برای جزئیات یا عناصر کم‌اهمیت‌تر   -  رنگ متن
     highlightColor = "#f4f4f4", //رنگ برجسته‌کننده برای هاور، نوتیف یا نقاط توجه
   } = props;
@@ -48,8 +48,10 @@ export function MobileDate({ ...props }: IDateProps) {
         className="w-full h-full"
       >
         <DatePicker
-          name="DesktopDate"
           {...props}
+          locale={locale}
+          model="date"
+          name="DesktopDate"
           onDateChange={handleDateChange}
           dateFromOutside={{
             from: showDate ? showDate.from : new Date().valueOf(),
