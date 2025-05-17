@@ -842,3 +842,6 @@
   background: transparent;
   font-family: Arial, Helvetica, sans-serif;
 }
+.min-h-8 {
+  min-height: 2rem;
+}

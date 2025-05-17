@@ -1,11 +1,8 @@
-import { useEffect } from 'react';
+import { useEffect } from "react";
 
-import { period } from '../core/helper';
-import type {
-  IBaseProps,
-  ITimeSections,
-} from '../core/type';
-import { TickIcon } from '../icons/TickIcon';
+import { period } from "../core/helper";
+import type { IBaseProps, ITimeSections } from "../core/type";
+import { TickIcon } from "../icons/TickIcon";
 
 const CompareList = ({ ...props }: IBaseProps) => {
   const {
@@ -21,6 +18,7 @@ const CompareList = ({ ...props }: IBaseProps) => {
     tertiaryColor = "#939393", //رنگ سوم، معمولاً برای جزئیات یا عناصر کم‌اهمیت‌تر   -  رنگ متن
     neutralColor = "#9cc5f1", //رنگ خنثی، اغلب برای پس‌زمینه یا متن - آبی کمرنگ
   } = props;
+  console.log(activeCompareStep);
 
   const timeHandler = (item: ITimeSections) => {
     setCompareDate(item.value);

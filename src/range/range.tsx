@@ -26,11 +26,12 @@ export function Range({ ...props }: RangeProps) {
           : moment().locale(locale).endOf("day").valueOf(),
     };
   }, [defaultValue]);
-
   const [date, setDate] = useState<IDate>(initialDate);
-  const [compareDate, setCompareDate] = useState<IDate>({ from: 0, to: 0 });
+  const [compareDate, setCompareDate] = useState<IDate | null>(null);
   const [counter, setCounter] = useState(0);
-  const [activeCompareStep, setActiveCompareStep] = useState<ESteps>(366);
+  const [activeCompareStep, setActiveCompareStep] = useState<ESteps | null>(
+    null
+  );
   const [step, setStep] = useState<ESteps>(7);
   const [zone, setZone] = useState<ITimeZone>("manual");
   const [tabKey, setTabKey] = useState<ITime | string>("manual");
@@ -40,7 +41,7 @@ export function Range({ ...props }: RangeProps) {
     <div className="range" dir="rtl">
       {device == "desktop" ? (
         model == "date" ? (
-          <DesktopDate model={model} {...props} />
+          <DesktopDate {...props} />
         ) : (
           <DesktopRange
             {...props}
@@ -66,7 +67,7 @@ export function Range({ ...props }: RangeProps) {
       ) : (
         <>
           {model == "date" ? (
-            <MobileDate model={model} {...props} />
+            <MobileDate {...props} />
           ) : (
             <MobileRange
               {...props}

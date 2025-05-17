@@ -53,7 +53,7 @@ const Calendar: FC<Props> = ({
   startDate,
   endDate,
   locale = "en",
-  disablePreviousDays = true,
+  disablePreviousDays = false,
   renderDayFn,
   containerClassName,
   primaryColor = "#000",

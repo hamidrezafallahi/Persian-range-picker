@@ -93,7 +93,7 @@ function PeriodList({ ...props }: IBaseProps) {
     setStep(item.step);
     setDate(item.value);
     setZone(item.timeZone);
-    setActiveCompareStep(item.step);
+    setActiveCompareStep(null);
     setCounter(0);
   };
   const filteredPeriod = period.filter(

@@ -1,13 +1,13 @@
 import "./index.css";
 
-import { StrictMode } from "react";
+// import { StrictMode } from "react";
 
 import { createRoot } from "react-dom/client";
 
 import { InitialComponent } from "./initialComponent";
 
 createRoot(document.getElementById("root")!).render(
-  <StrictMode>
+  <>
     <InitialComponent />
-  </StrictMode>
+  </>
 );

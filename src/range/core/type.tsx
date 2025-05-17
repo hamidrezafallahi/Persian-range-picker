@@ -1,4 +1,4 @@
-import type { Dispatch } from "react";
+import type { Dispatch, ReactNode } from "react";
 import React from "react";
 
 type TDeviceType = "desktop" | "mobile";
@@ -21,18 +21,19 @@ export interface IDateProps {
   onChange?: (date: IDate, compareDate?: IDate) => void;
   className?: string;
 }
+// type lable={type=="range" & device == "desktop"} & {isShowLable?:boolean,lable?:ReactNode}
 
 export interface RangeProps extends IRangeOptions {
   device: TDeviceType;
   handleReject?: () => void;
-  handleSubmit?: (date: IDate, compareDate: IDate) => void;
+  handleSubmit?: (date: IDate, compareDate: IDate | null) => void;
   onCompareDateChange?: (date: IDate, compareDate: IDate) => void;
-  onNavigateChange?: (date: IDate, compareDate: IDate) => void;
-  onChange?: (date: IDate, compareDate?: IDate) => void;
+  onNavigateChange?: (date: IDate, compareDate: IDate | null) => void;
+  onChange?: (date: IDate, compareDate?: IDate | undefined | null) => void;
   navigation?: boolean;
 }
 export interface IRangeOptions {
-  model?: "date" | "range";
+  model: "date" | "range";
   locale: "fa" | "en";
   isShowNavigationButton?: boolean;
   isShowComparison?: boolean;
@@ -72,17 +73,17 @@ export interface IBaseProps extends IRangeOptions {
   zone: ITimeZone;
   date: IDate;
   tabKey: ITime | string;
-  compareDate: IDate;
-  activeCompareStep: ESteps;
+  compareDate: IDate | null;
+  activeCompareStep: ESteps | null;
   setStep: Dispatch<React.SetStateAction<ESteps>>;
   setCounter: Dispatch<React.SetStateAction<number>>;
-  setCompareDate: Dispatch<React.SetStateAction<IDate>>;
+  setCompareDate: Dispatch<React.SetStateAction<IDate | null>>;
   setDate: Dispatch<React.SetStateAction<IDate>>;
-  setActiveCompareStep: Dispatch<React.SetStateAction<ESteps>>;
+  setActiveCompareStep: Dispatch<React.SetStateAction<ESteps | null>>;
   setTabKey: Dispatch<React.SetStateAction<ITime | string>>;
   setZone: Dispatch<React.SetStateAction<ITimeZone>>;
   onCompareDateChange?: (date: IDate, compareDate: IDate) => void;
-  onNavigateChange?: (date: IDate, compareDate: IDate) => void;
+  onNavigateChange?: (date: IDate, compareDate: IDate | null) => void;
   onChange?: RangeProps["onChange"];
   componentStep?: ESteps;
   open?: boolean;
@@ -138,5 +139,5 @@ export interface IDesktopProps extends IBaseProps {
 }
 export interface ISubmittedData {
   date: IDate;
-  compareDate: IDate;
+  compareDate: IDate | null;
 }

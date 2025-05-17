@@ -11,7 +11,7 @@ export function DesktopRange(props: IDesktopProps) {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const {
     setDate,
-    date = { from: 0, to: 0 },
+    date,
     zone,
     compareDate = { from: 0, to: 0 },
     setOpen,
@@ -47,12 +47,13 @@ export function DesktopRange(props: IDesktopProps) {
     };
   }, [date, compareDate]);
   const [showDate, setShowDate] = useState<ISubmittedData>(initSubmittedData);
-  const handleAccept = (date: IDate, compareDate: IDate) => {
+  const handleAccept = (date: IDate, compareDate: IDate | null) => {
     if (date) {
       if (date.from && date.to && date.from < date.to) {
         if (handleSubmit) {
           handleSubmit(date, compareDate);
         }
+
         setShowDate({ date, compareDate });
         setOpen(false);
       } else {
@@ -84,6 +85,8 @@ export function DesktopRange(props: IDesktopProps) {
     }
   };
   useEffect(() => {
+    console.log(zone);
+
     if (isFirstRun.current) {
       isFirstRun.current = false;
       return;
@@ -95,8 +98,8 @@ export function DesktopRange(props: IDesktopProps) {
 
       if (!(isEmpty || isInvalid)) {
         onChange(date, compareDate);
-        if (date) {
-          setShowDate({ date, compareDate });
+        if (date && zone !== "manual") {
+          // setShowDate({ date, compareDate });
         }
       }
     }
@@ -131,14 +134,16 @@ export function DesktopRange(props: IDesktopProps) {
         className={`relative flex flex-col justify-between w-fit h-14 ${buttonClassName}`}
         ref={dropdownRef}
       >
-        <label
-          className="text-xs"
-          style={{
-            color: tertiaryColor,
-          }}
-        >
-          {locale == "fa" ? "تاریخ" : "Date"}
-        </label>
+        {true && (
+          <label
+            className="text-xs"
+            style={{
+              color: tertiaryColor,
+            }}
+          >
+            {locale == "fa" ? "تاریخ" : "Date"}
+          </label>
+        )}
         <div className="flex gap-2">
           <div
             className={`flex justify-center items-center gap-2 px-2 border border-gray-300 rounded-lg w-72 h-8 cursor-pointer ${dateClassName}`}
@@ -186,7 +191,6 @@ export function DesktopRange(props: IDesktopProps) {
             <NavigateButton {...props} />
           )}
         </div>
-
         {open && (
           <div
             style={{ backgroundColor: backgroundColor }}
@@ -195,7 +199,7 @@ export function DesktopRange(props: IDesktopProps) {
             }`}
           >
             <div className="relative w-full h-full">
-              <MainContent {...props} date={showDate.date} />
+              <MainContent {...props} />
               <div
                 className={`w-full flex ${
                   locale == "fa" ? "justify-end" : "justify-start"

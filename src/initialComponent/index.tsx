@@ -50,7 +50,7 @@ export function InitialComponent() {
     );
   };
 
-  const handleNavigateChange = (date: IDate, compareDate: IDate) => {
+  const handleNavigateChange = (date: IDate, compareDate: IDate | null) => {
     console.log(
       "date : ",
       new Date(date?.from).toLocaleDateString("fa-IR", {
@@ -66,22 +66,24 @@ export function InitialComponent() {
         hour: "numeric",
       }),
       "compare date : ",
-      new Date(compareDate?.from).toLocaleDateString("fa-IR", {
-        weekday: "long",
-        month: "long",
-        day: "numeric",
-        hour: "numeric",
-      }),
-      new Date(compareDate?.to).toLocaleDateString("fa-IR", {
-        weekday: "long",
-        month: "long",
-        day: "numeric",
-        hour: "numeric",
-      })
+      compareDate &&
+        new Date(compareDate.from).toLocaleDateString("fa-IR", {
+          weekday: "long",
+          month: "long",
+          day: "numeric",
+          hour: "numeric",
+        }),
+      compareDate &&
+        new Date(compareDate.to).toLocaleDateString("fa-IR", {
+          weekday: "long",
+          month: "long",
+          day: "numeric",
+          hour: "numeric",
+        })
     );
   };
 
-  const HandleSubmitDate = (w: IDate, e: IDate) => {
+  const HandleSubmitDate = (w: IDate, e: IDate | null) => {
     console.log(w, e);
   };
   const resetDate = () => {

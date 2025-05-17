@@ -16,10 +16,7 @@ export function DesktopDate({ ...props }: IDateProps) {
   } = props;
   const initialDate: IDate = useMemo(() => {
     return {
-      from:
-        defaultValue && defaultValue.from > 0
-          ? defaultValue.from
-          : new Date().valueOf(),
+      from: defaultValue && defaultValue.from > 0 ? defaultValue.from : 0,
       to: 0,
     };
   }, [defaultValue]);
@@ -71,16 +68,19 @@ export function DesktopDate({ ...props }: IDateProps) {
   const handleDateChange = (date: IDate) => {
     setShowDate(date);
     onChange?.(date);
+    setShowDate(date);
     setIsOpen(false);
   };
 
-  const persian = showDate
-    ? moment(showDate.from).format("jYYYY/jMM/jDD")
-    : "انتخاب تاریخ";
+  const persian =
+    showDate.from > 0
+      ? moment(showDate.from).format("jYYYY/jMM/jDD")
+      : "انتخاب تاریخ";
 
-  const gregorian = showDate
-    ? moment(showDate.from).format("YYYY/MM/DD")
-    : "Choose date";
+  const gregorian =
+    showDate.from > 0
+      ? moment(showDate.from).format("YYYY/MM/DD")
+      : "Choose date";
 
   const title = locale === "fa" ? persian : gregorian;
 
@@ -129,7 +129,6 @@ export function DesktopDate({ ...props }: IDateProps) {
               from: showDate.from,
               to: 0,
             }}
-            disablePreviousDays={false}
           />
         </div>
       )}

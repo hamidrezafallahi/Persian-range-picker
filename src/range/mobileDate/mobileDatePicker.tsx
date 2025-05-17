@@ -1,16 +1,10 @@
-import {
-  useRef,
-  useState,
-} from 'react';
+import { useRef, useState } from "react";
 
-import moment from 'moment-jalaali';
+import moment from "moment-jalaali";
 
-import type {
-  IDate,
-  IDateProps,
-} from '../core/type';
-import { CalenderIcon } from '../icons/CalenderIcon';
-import { DatePicker } from '../persianDatePicker';
+import type { IDate, IDateProps } from "../core/type";
+import { CalenderIcon } from "../icons/CalenderIcon";
+import { DatePicker } from "../persianDatePicker";
 
 export function MobileDate({ ...props }: IDateProps) {
   const {
@@ -42,7 +36,7 @@ export function MobileDate({ ...props }: IDateProps) {
       <button
         style={{ backgroundColor: highlightColor, color: tertiaryColor }}
         popoverTarget="mobileDateModal"
-        className="flex justify-center items-center gap-2 rounded-md w-full h-full" //need className
+        className="flex justify-center items-center gap-2 rounded-md w-full h-full min-h-8" //need className
       >
         <CalenderIcon />
         <div>{title}</div>
