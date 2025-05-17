@@ -6,7 +6,7 @@ import {
   Range,
 } from "../range";
 import type { IDate } from "../range/core/type";
-import { DesktopRangePicker } from "../range/exportComponents/desktopRange";
+import { DesktopRange } from "../range/exportComponents/desktopRange";
 
 export function InitialComponent() {
   const handleDateChange = (w: IDate) => {
@@ -113,13 +113,11 @@ export function InitialComponent() {
           handleSubmit={HandleSubmitDate}
           handleReject={resetDate}
         />
-        <div dir="rtl">
-          <DesktopDate />
-          <DesktopRangePicker />
-          <MobileDate />
-          <MobileRange />
-          <DateMask onChange={handleChange} />
-        </div>
+        <DesktopDate />
+        <DesktopRange />
+        <MobileDate />
+        <MobileRange />
+        <DateMask onChange={handleChange} locale="fa" />
       </div>
     </>
   );

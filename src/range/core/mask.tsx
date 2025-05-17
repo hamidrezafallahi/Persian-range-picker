@@ -47,6 +47,10 @@ export function DateMask({
   const monthInputRef = useRef<HTMLInputElement | null>(null);
   const dayInputRef = useRef<HTMLInputElement | null>(null);
   const fullInputRef = useRef<HTMLInputElement>(null);
+  const span0 = useRef<HTMLSpanElement | null>(null);
+  const span1 = useRef<HTMLSpanElement | null>(null);
+  const span2 = useRef<HTMLSpanElement | null>(null);
+  const spanRefs = [span0, span1, span2];
   const clickCount = useRef(0);
   const clickTimer = useRef<number>(0);
   const isInitialMount = useRef(true);
@@ -60,6 +64,8 @@ export function DateMask({
     return changeToTimestamp;
   };
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log(e.target.value);
+
     const newValue = e.target.value.replace(/\D/g, "");
     if (e.target.name == "year") {
       setSeparatedValue((prev) => {
@@ -86,21 +92,21 @@ export function DateMask({
         newState[2] = newValue;
         return newState;
       });
-      if (newValue.length == 2) {
-        const temp =
-          separatedValue[0].toString() +
-          separatedValue[1].toString() +
-          newValue;
-        setBaseValue(changeToTimestamp(temp, locale));
-        setIsEdit(0);
-      }
+      // if (newValue.length == 2) {
+      //   const temp =
+      //     separatedValue[0].toString() +
+      //     separatedValue[1].toString() +
+      //     newValue;
+      //   setBaseValue(changeToTimestamp(temp, locale));
+      //   setIsEdit(0);
+      // }
     } else if (e.target.name == "full") {
       setFullValue(newValue);
       fullValueRef.current = newValue;
       if (newValue.length == 8) {
         if (checkDateByRegex(formatToTimeStamp(newValue), locale)) {
-          setBaseValue(formatToTimeStamp(newValue));
-          setIsEdit(0);
+          // setBaseValue(formatToTimeStamp(newValue));
+          // setIsEdit(0);
         } else {
           onError?.(locale == "fa" ? "تاریخ نا معتبر است" : "invalid date");
           alert(locale == "fa" ? "تاریخ نا معتبر است" : "invalid date");
@@ -122,8 +128,70 @@ export function DateMask({
   const handleBlurFullValue = () => {
     setBaseValue(changeToTimestamp(fullValueRef.current, locale));
   };
+  function handleCount(
+    value: string,
+    arrow: React.KeyboardEvent<HTMLInputElement>["key"],
+    index: number
+  ) {
+    const numValue = Number(value);
+    let result: string = value;
+
+    const clamp = (val: number, min: number, max: number) =>
+      Math.min(Math.max(val, min), max).toString();
+
+    const pad = (val: number) => val.toString().padStart(2, "0");
+
+    const isUp = arrow === "ArrowUp";
+    if (index === 0) {
+      // Year
+      if (locale === "fa") {
+        const min = 1300;
+        const max = 1500;
+        const newVal = isUp ? numValue + 1 : numValue - 1;
+        result = clamp(newVal, min, max);
+      } else {
+        const min = 1900;
+        const max = 2100;
+        const newVal = isUp ? numValue + 1 : numValue - 1;
+        result = clamp(newVal, min, max);
+      }
+    } else if (index === 1) {
+      const min = 1;
+      const max = 12;
+      const newVal = isUp ? numValue + 1 : numValue - 1;
+      result = pad(Math.min(Math.max(newVal, min), max));
+    } else if (index === 2) {
+      const min = 1;
+      const max = 31;
+      const newVal = isUp ? numValue + 1 : numValue - 1;
+      result = pad(Math.min(Math.max(newVal, min), max));
+    }
+
+    return result;
+  }
+
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     const activeElement = document.activeElement;
+
+    if (event.key == "ArrowUp" || event.key == "ArrowDown") {
+      event.preventDefault();
+      if (activeElement instanceof HTMLInputElement) {
+        console.log(activeElement.value, activeElement.name);
+        const target =
+          activeElement.name == "year"
+            ? 0
+            : activeElement.name == "month"
+            ? 1
+            : 2;
+        setSeparatedValue((prev) => {
+          const newState = [...prev];
+
+          newState[target] = handleCount(newState[target], event.key, target);
+          return newState;
+        });
+      }
+    }
+
     if (event.key === "Enter") {
       setBaseValue(changeToTimestamp(fullValue, locale));
       setIsEdit(0);
@@ -201,7 +269,19 @@ export function DateMask({
       fullInputRef.current?.select();
     }
     const handleClickOutside = (event: MouseEvent) => {
+      console.log(span0?.current?.contains(event.target as Node) === true);
+      if (span0?.current?.contains(event.target as Node) === true) {
+        console.log(span0.current);
+      }
+      // if (span1?.current?.contains(event.target as Node) === true) {
+      //   console.log(span1.current);
+      // }
+      // if (span2?.current?.contains(event.target as Node) === true) {
+      //   console.log(span2.current);
+      // }
       if (fullRef?.current?.contains(event.target as Node) === true) {
+        console.log(span0.current?.children);
+
         return;
       } else if (focusRef?.current?.contains(event.target as Node) === true) {
         setIsEdit(1);
@@ -222,7 +302,7 @@ export function DateMask({
           setBaseValue(changeToTimestamp(temp, locale));
         }
 
-        setIsEdit(0);
+        // setIsEdit(0);
       }
     };
     const handleClickOnInput = (event: MouseEvent) => {
@@ -242,7 +322,7 @@ export function DateMask({
       document.addEventListener("mouseup", handleClickOnInput);
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [isEdit]);
+  }, [isEdit, span0]);
   useEffect(() => {
     if (isInitialMount.current) {
       isInitialMount.current = false;
@@ -367,16 +447,45 @@ export function DateMask({
               className={`opacity-0 ${inputClassName}`}
               style={{ width: "5.5rem", textAlign: "end" }}
             />
-            <span
-              className={`z-10 absolute inset-0 bg-blue-600 mx-0 h-full text-base text-center same-font selected-text  ${inputClassName}`}
+            <div
+              className={`z-10 absolute inset-0 bg-blue-600 mx-0 h-full text-base text-center same-font selected-text  ${
+                inputClassName && inputClassName
+              }`}
+              onKeyDown={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                console.log("here");
+              }}
               style={{
+                display: "flex",
+                width: "5.5rem",
                 userSelect: "none",
                 pointerEvents: "none",
-                width: "5.5rem",
               }}
             >
-              {formatInputValue(fullValue)}
-            </span>
+              {formatInputValue(fullValue)
+                .split("/")
+                .map((item, index) => {
+                  return (
+                    <span
+                      key={index}
+                      ref={spanRefs[index]}
+                      onMouseDown={(e) => {
+                        console.log(e);
+                      }}
+                      className={`text-base text-center same-font selected-text  ${inputClassName}`}
+                      style={{
+                        // userSelect: "none",
+                        // pointerEvents: "none",
+                        width: "100px",
+                      }}
+                    >
+                      {item}
+                      {index !== 2 && "/"}
+                    </span>
+                  );
+                })}
+            </div>
           </div>
         )}
       </div>

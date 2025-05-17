@@ -3,7 +3,7 @@ import { type ReactNode, useMemo, useState } from "react";
 import moment from "moment-jalaali";
 
 import type { ESteps, IDate, ITime, ITimeZone } from "../../core/type";
-import { DesktopRange } from "../../desktopRange/desktopRangePicker";
+import { DesktopRangePicker } from "../../desktopRange/desktopRangePicker";
 
 interface IDesktopProps {
   handleSubmit?: (date: IDate, compareDate?: IDate | null) => void;
@@ -23,7 +23,7 @@ interface IDesktopProps {
     label: ReactNode;
   };
 }
-export function DesktopRangePicker(props: IDesktopProps) {
+export function DesktopRange(props: IDesktopProps) {
   const {
     handleSubmit,
     handleReject,
@@ -80,7 +80,7 @@ export function DesktopRangePicker(props: IDesktopProps) {
   const [tabKey, setTabKey] = useState<ITime | string>("manual");
   const [open, setOpen] = useState(false);
   return (
-    <DesktopRange
+    <DesktopRangePicker
       activeCompareStep={activeCompareStep}
       setActiveCompareStep={setActiveCompareStep}
       compareDate={compareDate}

@@ -4,6 +4,7 @@ import moment from "moment-jalaali";
 
 import type { ESteps, IDate, ITime, ITimeZone, RangeProps } from "./core/type";
 import { DesktopDatePicker } from "./desktopDate/desktopDatePicker";
+import { DesktopRangePicker } from "./desktopRange/desktopRangePicker";
 // import { DesktopRange } from "./desktopRange/desktopRangePicker";
 import MobileDatePicker from "./mobileDate/mobileDatePicker";
 import MobileRangePicker from "./mobileRange/mobileRangePicker";
@@ -48,7 +49,7 @@ export function Range({ ...props }: RangeProps) {
   const [step, setStep] = useState<ESteps>(7);
   const [zone, setZone] = useState<ITimeZone>("manual");
   const [tabKey, setTabKey] = useState<ITime | string>("manual");
-  // const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(false);
 
   return (
     <div className="range" dir="rtl">
@@ -56,27 +57,27 @@ export function Range({ ...props }: RangeProps) {
         model == "date" ? (
           <DesktopDatePicker {...props} model={model} locale={locale} />
         ) : (
-          <>fdsd</>
-          // <DesktopRange
-          //   {...props}
-          //   step={step}
-          //   counter={counter}
-          //   zone={zone}
-          //   date={date}
-          //   tabKey={tabKey}
-          //   compareDate={compareDate}
-          //   setCompareDate={setCompareDate}
-          //   activeCompareStep={activeCompareStep}
-          //   setStep={setStep}
-          //   setCounter={setCounter}
-          //   setDate={setDate}
-          //   setActiveCompareStep={setActiveCompareStep}
-          //   setTabKey={setTabKey}
-          //   setZone={setZone}
-          //   setOpen={setOpen}
-          //   open={open}
-          //   additionalElement={additionalElement}
-          // />
+          <DesktopRangePicker
+            {...props}
+            device={device}
+            step={step}
+            counter={counter}
+            zone={zone}
+            date={date}
+            tabKey={tabKey}
+            compareDate={compareDate}
+            setCompareDate={setCompareDate}
+            activeCompareStep={activeCompareStep}
+            setStep={setStep}
+            setCounter={setCounter}
+            setDate={setDate}
+            setActiveCompareStep={setActiveCompareStep}
+            setTabKey={setTabKey}
+            setZone={setZone}
+            setOpen={setOpen}
+            open={open}
+            additionalElement={additionalElement}
+          />
         )
       ) : (
         <>
