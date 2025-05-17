@@ -34,6 +34,7 @@ export function MobileRange(props: IBaseProps) {
     additionalElement,
     locale,
     className,
+    model,
   } = props;
   const initialDate: IDate = useMemo(() => {
     return {
@@ -145,6 +146,7 @@ export function MobileRange(props: IBaseProps) {
           {/* <NavigateButton {...props} /> */}
         </div>
         <MainContent
+          model={model}
           locale={locale}
           compareDate={compareDate}
           setDate={setDate}
