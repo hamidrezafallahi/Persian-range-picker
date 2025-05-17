@@ -266,12 +266,12 @@ export function DateMask({
     <div
       className={`flex justify-end bg-gray-5 rounded w-91 range align-base ${maskClassName}`}
     >
-      <div className="flex justify-between px-2 py-2 border rounded-lg w-full align-base">
-        <span className="">
+      <div className="flex justify-between gap-2 px-2 py-2 border rounded-lg w-full align-base">
+        <span className="flex-shrink-0">
           <CalenderIcon />
         </span>
         {isEdit !== 2 ? (
-          <div ref={focusRef} className="flex w-full dir-rtl">
+          <div ref={focusRef} className="flex flex-grow w-full dir-rtl">
             {isEdit == 0 ? (
               <div className="flex gap-1px text-base same-font">
                 <div>{separatedValue[0] || "____"}</div>
