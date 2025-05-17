@@ -3,10 +3,10 @@ import { useMemo, useState } from "react";
 import moment from "moment-jalaali";
 
 import type { ESteps, IDate, ITime, ITimeZone, RangeProps } from "./core/type";
-import { DesktopRange } from "./desktopRange/desktopRangePicker";
-import { MobileDate } from "./mobileDate/mobileDatePicker";
-import { MobileRange } from "./mobileRange/mobileRangePicker";
 import { DesktopDatePicker } from "./desktopDate/desktopDatePicker";
+// import { DesktopRange } from "./desktopRange/desktopRangePicker";
+import MobileDatePicker from "./mobileDate/mobileDatePicker";
+import MobileRangePicker from "./mobileRange/mobileRangePicker";
 
 export function Range({ ...props }: RangeProps) {
   const userAgent = navigator.userAgent;
@@ -48,7 +48,7 @@ export function Range({ ...props }: RangeProps) {
   const [step, setStep] = useState<ESteps>(7);
   const [zone, setZone] = useState<ITimeZone>("manual");
   const [tabKey, setTabKey] = useState<ITime | string>("manual");
-  const [open, setOpen] = useState(false);
+  // const [open, setOpen] = useState(false);
 
   return (
     <div className="range" dir="rtl">
@@ -56,33 +56,34 @@ export function Range({ ...props }: RangeProps) {
         model == "date" ? (
           <DesktopDatePicker {...props} model={model} locale={locale} />
         ) : (
-          <DesktopRange
-            {...props}
-            step={step}
-            counter={counter}
-            zone={zone}
-            date={date}
-            tabKey={tabKey}
-            compareDate={compareDate}
-            setCompareDate={setCompareDate}
-            activeCompareStep={activeCompareStep}
-            setStep={setStep}
-            setCounter={setCounter}
-            setDate={setDate}
-            setActiveCompareStep={setActiveCompareStep}
-            setTabKey={setTabKey}
-            setZone={setZone}
-            setOpen={setOpen}
-            open={open}
-            additionalElement={additionalElement}
-          />
+          <>fdsd</>
+          // <DesktopRange
+          //   {...props}
+          //   step={step}
+          //   counter={counter}
+          //   zone={zone}
+          //   date={date}
+          //   tabKey={tabKey}
+          //   compareDate={compareDate}
+          //   setCompareDate={setCompareDate}
+          //   activeCompareStep={activeCompareStep}
+          //   setStep={setStep}
+          //   setCounter={setCounter}
+          //   setDate={setDate}
+          //   setActiveCompareStep={setActiveCompareStep}
+          //   setTabKey={setTabKey}
+          //   setZone={setZone}
+          //   setOpen={setOpen}
+          //   open={open}
+          //   additionalElement={additionalElement}
+          // />
         )
       ) : (
         <>
           {model == "date" ? (
-            <MobileDate {...props} model={model} locale={locale} />
+            <MobileDatePicker {...props} model={model} locale={locale} />
           ) : (
-            <MobileRange
+            <MobileRangePicker
               {...props}
               step={step}
               counter={counter}

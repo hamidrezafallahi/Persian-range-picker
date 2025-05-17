@@ -2,11 +2,11 @@
 
 import {
   DateMask,
-  Range,
   DesktopDate,
   DesktopRange,
   MobileDate,
   MobileRange,
+  Range,
 } from "../range";
 import type { IDate } from "../range/core/type";
 
