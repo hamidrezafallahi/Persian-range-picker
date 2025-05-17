@@ -842,13 +842,22 @@
   background: transparent;
   font-family: Arial, Helvetica, sans-serif;
 }
-.align-center{
+.align-center {
   align-items: center;
 }
 
-.justify-between{
+.justify-between {
   justify-content: flex-end;
 }
-.dir-rtl{
+.dir-rtl {
   direction: rtl;
+}
+.bg-gray-5 {
+  background-color: rgba(146, 146, 146, 0.226);
+}
+.w-91 {
+  width: 270px;
+}
+.rounded {
+  border-radius: 10px;
 }

@@ -1,6 +1,13 @@
-import { useEffect, useRef, useState } from "react";
-import moment from "moment-jalaali";
-import type { IDate } from "./type";
+import {
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
+
+import moment from 'moment-jalaali';
+
+import { CalenderIcon } from '../icons/CalenderIcon';
+import type { IDate } from './type';
 
 type MaskProps = {
   defaultValue?: IDate["from"];
@@ -13,6 +20,7 @@ type MaskProps = {
   // className?: string;
   locale?: "fa" | "en";
   inputClassName?: string;
+  maskClassName?: string;
 };
 
 export function DateMask({
@@ -20,6 +28,7 @@ export function DateMask({
   locale = "fa",
   onError,
   inputClassName,
+  maskClassName,
   onChange,
 }: MaskProps) {
   const [separatedValue, setSeparatedValue] = useState(["2024", "02", "06"]);
@@ -191,13 +200,17 @@ export function DateMask({
   }, [separatedValue]);
 
   return (
-    <div className="range flex justify-centre align-center">
-      <div className="flex py-2 px-2 border rounded-lg w-full">
-          <span className="">❤️</span>
+    <div
+      className={`flex justify-centre bg-gray-5 rounded w-91 range align-center ${maskClassName}`}
+    >
+      <div className="flex px-2 py-2 border rounded-lg w-full">
+        <span className="">
+          <CalenderIcon />
+        </span>
         {isEdit !== 2 ? (
-          <div ref={focusRef} className="w-full flex dir-rtl">
+          <div ref={focusRef} className="flex w-full dir-rtl">
             {isEdit == 0 ? (
-              <div className="flex gap-1px bg-red-100 text-base same-font">
+              <div className="flex gap-1px text-base same-font">
                 <div>{separatedValue[0] || "____"}</div>
                 <div className="same-font">{"/"}</div>
                 <div>{separatedValue[1] || "__"}</div>
@@ -205,7 +218,7 @@ export function DateMask({
                 <div>{separatedValue[2] || "__"}</div>
               </div>
             ) : (
-              <div className="bg-green-100 text-base same-font">
+              <div className="text-base same-font">
                 <input
                   type="text"
                   name="year"
@@ -265,7 +278,7 @@ export function DateMask({
             )}
           </div>
         ) : (
-          <div ref={fullRef} className="relative text-base dir-rtl w-full">
+          <div ref={fullRef} className="relative w-full text-base dir-rtl">
             <input
               id="full"
               type="text"
@@ -280,11 +293,15 @@ export function DateMask({
               maxLength={8}
               minLength={8}
               className={`opacity-0 ${inputClassName}`}
-              style={{ width: "5.5rem",textAlign:"end" }}
+              style={{ width: "5.5rem", textAlign: "end" }}
             />
             <span
               className={`z-10 absolute inset-0 bg-blue-600 mx-0 h-full text-base text-center same-font selected-text  ${inputClassName}`}
-              style={{ userSelect: "none", pointerEvents: "none", width:"5.5rem" }}
+              style={{
+                userSelect: "none",
+                pointerEvents: "none",
+                width: "5.5rem",
+              }}
             >
               {formatInputValue(fullValue)}
             </span>
