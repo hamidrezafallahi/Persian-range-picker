@@ -85,8 +85,6 @@ export function DesktopRange(props: IDesktopProps) {
     }
   };
   useEffect(() => {
-    console.log(zone);
-
     if (isFirstRun.current) {
       isFirstRun.current = false;
       return;

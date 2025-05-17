@@ -1,3 +1,4 @@
+import moment from "moment-jalaali";
 import { DateMask, Range } from "../range";
 import type { IDate } from "../range/core/type";
 
@@ -106,7 +107,7 @@ export function InitialComponent() {
           handleSubmit={HandleSubmitDate}
           handleReject={resetDate}
         />
-        <DateMask onChange={handleChange} />
+        <DateMask onChange={handleChange} defaultValue={1755462600000} />
       </div>
     </>
   );
