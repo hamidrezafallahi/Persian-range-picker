@@ -137,7 +137,7 @@ export function InitialComponent() {
         <DesktopRange />
         <MobileDate />
         <MobileRange />
-        <DateMask onChange={handleChange} />
+        <DateMask onChange={handleChange} locale="fa" />
       </div>
     </>
   );

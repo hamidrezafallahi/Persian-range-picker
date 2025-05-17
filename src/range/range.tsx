@@ -58,6 +58,7 @@ export function Range({ ...props }: RangeProps) {
         ) : (
           <DesktopRange
             {...props}
+            device={device}
             step={step}
             counter={counter}
             zone={zone}
