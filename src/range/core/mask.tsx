@@ -1,9 +1,13 @@
-import { useEffect, useRef, useState } from "react";
+import {
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 
-import moment from "moment-jalaali";
+import moment from 'moment-jalaali';
 
-import { CalenderIcon } from "../icons/CalenderIcon";
-import type { IDate } from "./type";
+import { CalenderIcon } from '../icons/CalenderIcon';
+import type { IDate } from './type';
 
 type MaskProps = {
   defaultValue?: IDate["from"];
@@ -340,14 +344,14 @@ export function DateMask({
   }, [separatedValue]);
   return (
     <div
-      className={`flex justify-centre bg-gray-5 rounded w-91 range align-center ${maskClassName}`}
+      className={`flex justify-end bg-gray-5 rounded w-91 range align-base ${maskClassName}`}
     >
-      <div className="flex px-2 py-2 border rounded-lg w-full">
-        <span className="">
+      <div className="flex justify-between gap-2 px-2 py-2 border rounded-lg w-full align-base">
+        <span className="flex-shrink-0">
           <CalenderIcon />
         </span>
         {isEdit !== 2 ? (
-          <div ref={focusRef} className="flex w-full dir-rtl">
+          <div ref={focusRef} className="flex flex-grow w-full dir-rtl">
             {isEdit == 0 ? (
               <div className="flex gap-1px text-base same-font">
                 <div>{separatedValue[0] || "____"}</div>

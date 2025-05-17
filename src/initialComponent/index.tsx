@@ -1,14 +1,12 @@
-// import { useState } from 'react';
-
 import {
   DateMask,
-  Range,
   DesktopDate,
-  DesktopRange,
   MobileDate,
   MobileRange,
+  Range,
 } from "../range";
 import type { IDate } from "../range/core/type";
+import { DesktopRange } from "../range/exportComponents/desktopRange";
 
 export function InitialComponent() {
   const handleDateChange = (w: IDate) => {
@@ -102,27 +100,9 @@ export function InitialComponent() {
     console.log(e);
   };
 
-  // const device = "desktop";
-  // const model = "range";
-  // const locale = "fa";
-
-  // const [activeCompareStep, setActiveCompareStep] = useState<ESteps | null>(
-  //   null
-  // );
-  // const [open, setOpen] = useState(false);
-  // const [date, setDate] = useState<IDate>({ from: 0, to: 0 });
-  // const [compareDate, setCompareDate] = useState<IDate | null>({
-  //   from: 0,
-  //   to: 0,
-  // });
-  // const [counter, setCounter] = useState(0);
-  // const [step, setStep] = useState<ESteps>(7);
-  // const [tabKey, setTabKey] = useState<ITime | string>("manual");
-  // const [zone, setZone] = useState<ITimeZone>("manual");
-
   return (
     <>
-      <div className="range">
+      <div className="bg-red-100 border range">
         <Range
           // device={device}
           // locale={locale}
