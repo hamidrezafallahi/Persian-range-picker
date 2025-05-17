@@ -13,7 +13,7 @@ const Manual = (props: IBaseProps) => {
 
   const {
     date,
-    // locale,
+    locale = "fa",
     // defaultValue,
     setDate,
     setZone,
@@ -26,6 +26,7 @@ const Manual = (props: IBaseProps) => {
   return (
     <div className="flex flex-col items-center gap-4">
       <MonthPicker
+        {...props}
         monthPickerClassName={monthPickerClassName}
         dateFromOutside={date}
         onDateChange={(e: IDate) => {
@@ -33,7 +34,7 @@ const Manual = (props: IBaseProps) => {
           setZone("manual");
           setStep(ESteps.manual);
         }}
-        {...props}
+        locale={locale}
       />
       {/* <div className="flex gap-1 py-2">
         <Mask
@@ -65,6 +66,7 @@ const Manual = (props: IBaseProps) => {
       </div> */}
 
       <DatePicker
+        {...props}
         chooseTodayClassName="bg-red-500"
         name="custom range"
         dateFromOutside={date}
@@ -77,7 +79,7 @@ const Manual = (props: IBaseProps) => {
           setStep(ESteps.manual);
         }}
         model={model}
-        {...props}
+        locale={locale}
       />
       <div className="w-full">
         {isShowComparison && <Comparison {...props} />}

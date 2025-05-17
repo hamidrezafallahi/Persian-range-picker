@@ -1,4 +1,4 @@
-import type { Dispatch, ReactNode } from "react";
+import type { Dispatch } from "react";
 import React from "react";
 
 type TDeviceType = "desktop" | "mobile";

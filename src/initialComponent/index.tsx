@@ -1,4 +1,3 @@
-import moment from "moment-jalaali";
 import { DateMask, Range } from "../range";
 import type { IDate } from "../range/core/type";
 

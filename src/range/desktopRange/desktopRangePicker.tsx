@@ -126,13 +126,14 @@ export function DesktopRange(props: IDesktopProps) {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [open]);
+  const lable = true;
   return (
     <>
       <div
         className={`relative flex flex-col justify-between w-fit h-14 ${buttonClassName}`}
         ref={dropdownRef}
       >
-        {true && (
+        {lable && (
           <label
             className="text-xs"
             style={{

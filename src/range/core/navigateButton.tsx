@@ -1,14 +1,11 @@
-import { useEffect } from 'react';
+import { useEffect } from "react";
 
-import moment from 'moment-jalaali';
+import moment from "moment-jalaali";
 
-import { LeftChevron } from '../icons/LeftChevron';
-import { RightChevron } from '../icons/RightChevron';
-import type {
-  IBaseProps,
-  ITimeZone,
-} from './type';
-import { ESteps } from './type';
+import { LeftChevron } from "../icons/LeftChevron";
+import { RightChevron } from "../icons/RightChevron";
+import type { IBaseProps, ITimeZone } from "./type";
+import { ESteps } from "./type";
 
 interface INavigationProps {
   step: IBaseProps["step"];
@@ -26,7 +23,7 @@ interface INavigationProps {
   locale: IBaseProps["locale"];
 }
 function NavigateButton({ ...props }: INavigationProps) {
-  const { step, zone, setDate, counter, setCounter, locale } = props;
+  const { step, zone, setDate, counter, setCounter, locale = "fa" } = props;
   const stepChangeHandler = (phase: "increment" | "decrement") => {
     if (phase == "increment") {
       if (counter < 0) {

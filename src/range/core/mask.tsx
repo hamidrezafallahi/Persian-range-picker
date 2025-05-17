@@ -269,7 +269,7 @@ export function DateMask({
         {isEdit !== 2 ? (
           <div ref={focusRef} className="flex w-full dir-rtl">
             {isEdit == 0 ? (
-              <div className="flex gap-1px bg-red-100 text-base same-font">
+              <div className="flex gap-1px text-base same-font">
                 <div>{separatedValue[0] || "____"}</div>
                 <div className="same-font">{"/"}</div>
                 <div>{separatedValue[1] || "__"}</div>

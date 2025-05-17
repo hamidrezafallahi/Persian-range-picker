@@ -5,13 +5,13 @@ import type { IBaseProps, ITimeSections } from "./type";
 import { ESteps } from "./type";
 
 function PeriodList({ ...props }: IBaseProps) {
-  const { locale } = props;
   const {
     setDate,
     setStep,
     setZone,
     componentStep,
     date,
+    locale = "fa",
     setCounter,
     setActiveCompareStep,
     isShowComparison = true,
