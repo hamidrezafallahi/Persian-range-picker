@@ -1,11 +1,20 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import {
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 
-import moment from "moment-jalaali";
+import moment from 'moment-jalaali';
 
-import MainContent from "../core/mainContent";
-import NavigateButton from "../core/navigateButton";
-import type { IDate, IDesktopProps, ISubmittedData } from "../core/type";
-import { DownTriangle } from "../icons/DownTriangle";
+import MainContent from '../core/mainContent';
+import NavigateButton from '../core/navigateButton';
+import type {
+  IDate,
+  IDesktopProps,
+  ISubmittedData,
+} from '../core/type';
+import { DownTriangle } from '../icons/DownTriangle';
 
 export function DesktopRange(props: IDesktopProps) {
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -31,6 +40,8 @@ export function DesktopRange(props: IDesktopProps) {
     onError,
     // className,
     buttonClassName,
+    showLabel = false,
+    label,
   } = props;
   const isFirstRun = useRef(true);
   const initSubmittedData: ISubmittedData = useMemo(() => {
@@ -134,16 +145,17 @@ export function DesktopRange(props: IDesktopProps) {
         className={`relative flex flex-col justify-between w-fit h-14 ${buttonClassName}`}
         ref={dropdownRef}
       >
-        {true && (
+        {showLabel && (
           <label
             className="text-xs"
             style={{
               color: tertiaryColor,
             }}
           >
-            {locale == "fa" ? "تاریخ" : "Date"}
+            {label?.label ?? (locale === "fa" ? "تاریخ" : "Date")}
           </label>
         )}
+
         <div className="flex gap-2">
           <div
             className={`flex justify-center items-center gap-2 px-2 border border-gray-300 rounded-lg w-72 h-8 cursor-pointer ${dateClassName}`}

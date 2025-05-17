@@ -1,12 +1,21 @@
-import { useMemo, useState } from "react";
+import {
+  useMemo,
+  useState,
+} from 'react';
 
-import moment from "moment-jalaali";
+import moment from 'moment-jalaali';
 
-import type { ESteps, IDate, ITime, ITimeZone, RangeProps } from "./core/type";
-import { DesktopDate } from "./desktopDate/desktopDatePicker";
-import { DesktopRange } from "./desktopRange/desktopRangePicker";
-import { MobileDate } from "./mobileDate/mobileDatePicker";
-import { MobileRange } from "./mobileRange/mobileRangePicker";
+import type {
+  ESteps,
+  IDate,
+  ITime,
+  ITimeZone,
+  RangeProps,
+} from './core/type';
+import { DesktopDate } from './desktopDate/desktopDatePicker';
+import { DesktopRange } from './desktopRange/desktopRangePicker';
+import { MobileDate } from './mobileDate/mobileDatePicker';
+import { MobileRange } from './mobileRange/mobileRangePicker';
 
 export function Range({ ...props }: RangeProps) {
   const { device, model, additionalElement, defaultValue, locale } = props;
@@ -62,6 +71,10 @@ export function Range({ ...props }: RangeProps) {
             setOpen={setOpen}
             open={open}
             additionalElement={additionalElement}
+            label={{
+              isShowLabel: true,
+              label: "بازه زمانی",
+            }}
           />
         )
       ) : (

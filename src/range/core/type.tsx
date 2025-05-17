@@ -1,5 +1,8 @@
-import type { Dispatch, ReactNode } from "react";
-import React from "react";
+import type {
+  Dispatch,
+  ReactNode,
+} from 'react';
+import React from 'react';
 
 type TDeviceType = "desktop" | "mobile";
 export interface IAdditionalElementType {
@@ -21,7 +24,6 @@ export interface IDateProps {
   onChange?: (date: IDate, compareDate?: IDate) => void;
   className?: string;
 }
-// type lable={type=="range" & device == "desktop"} & {isShowLable?:boolean,lable?:ReactNode}
 
 export interface RangeProps extends IRangeOptions {
   device: TDeviceType;
@@ -136,6 +138,12 @@ export interface IDesktopProps extends IBaseProps {
   setOpen: Dispatch<React.SetStateAction<boolean>>;
   className?: string;
   buttonClassName?: string;
+  showLabel?: boolean;
+  device: string;
+  label?: {
+    isShowLabel?: boolean;
+    label?: ReactNode;
+  };
 }
 export interface ISubmittedData {
   date: IDate;
