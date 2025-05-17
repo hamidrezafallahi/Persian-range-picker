@@ -3,8 +3,12 @@
 import {
   DateMask,
   Range,
-} from '../range';
-import type { IDate } from '../range/core/type';
+  DesktopDate,
+  DesktopRange,
+  MobileDate,
+  MobileRange,
+} from "../range";
+import type { IDate } from "../range/core/type";
 
 export function InitialComponent() {
   const handleDateChange = (w: IDate) => {
@@ -129,6 +133,10 @@ export function InitialComponent() {
           handleSubmit={HandleSubmitDate}
           handleReject={resetDate}
         />
+        <DesktopDate />
+        <DesktopRange />
+        <MobileDate />
+        <MobileRange />
         <DateMask onChange={handleChange} />
       </div>
     </>

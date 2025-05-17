@@ -1,21 +1,12 @@
-import {
-  useMemo,
-  useState,
-} from 'react';
+import { useMemo, useState } from "react";
 
-import moment from 'moment-jalaali';
+import moment from "moment-jalaali";
 
-import type {
-  ESteps,
-  IDate,
-  ITime,
-  ITimeZone,
-  RangeProps,
-} from './core/type';
-import { DesktopDate } from './desktopDate/desktopDatePicker';
-import { DesktopRange } from './desktopRange/desktopRangePicker';
-import { MobileDate } from './mobileDate/mobileDatePicker';
-import { MobileRange } from './mobileRange/mobileRangePicker';
+import type { ESteps, IDate, ITime, ITimeZone, RangeProps } from "./core/type";
+import { DesktopRange } from "./desktopRange/desktopRangePicker";
+import { MobileDate } from "./mobileDate/mobileDatePicker";
+import { MobileRange } from "./mobileRange/mobileRangePicker";
+import { DesktopDatePicker } from "./desktopDate/desktopDatePicker";
 
 export function Range({ ...props }: RangeProps) {
   const userAgent = navigator.userAgent;
@@ -63,7 +54,7 @@ export function Range({ ...props }: RangeProps) {
     <div className="range" dir="rtl">
       {device == "desktop" ? (
         model == "date" ? (
-          <DesktopDate {...props} model={model} locale={locale} />
+          <DesktopDatePicker {...props} model={model} locale={locale} />
         ) : (
           <DesktopRange
             {...props}
@@ -84,10 +75,6 @@ export function Range({ ...props }: RangeProps) {
             setOpen={setOpen}
             open={open}
             additionalElement={additionalElement}
-            label={{
-              isShowLabel: true,
-              label: "بازه زمانی",
-            }}
           />
         )
       ) : (

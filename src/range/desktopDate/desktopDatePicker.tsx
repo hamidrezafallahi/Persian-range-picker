@@ -6,7 +6,7 @@ import type { IDate, IDateProps } from "../core/type";
 import { CalenderIcon } from "../icons/CalenderIcon";
 import { DatePicker } from "../persianDatePicker";
 
-export function DesktopDate({ ...props }: IDateProps) {
+export function DesktopDatePicker({ ...props }: IDateProps) {
   const {
     locale = "fa",
     defaultValue,
@@ -119,7 +119,7 @@ export function DesktopDate({ ...props }: IDateProps) {
             left: position.left,
             zIndex: 1000,
           }}
-          className="shadow p-3 border rounded-lg w-72 h-80"
+          className="bg-white shadow p-3 border rounded-lg w-72 h-80"
         >
           <DatePicker
             name="DesktopDate"

@@ -1,20 +1,11 @@
-import {
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
+import { useEffect, useMemo, useRef, useState } from "react";
 
-import moment from 'moment-jalaali';
+import moment from "moment-jalaali";
 
-import MainContent from '../core/mainContent';
-import NavigateButton from '../core/navigateButton';
-import type {
-  IDate,
-  IDesktopProps,
-  ISubmittedData,
-} from '../core/type';
-import { DownTriangle } from '../icons/DownTriangle';
+import MainContent from "../core/mainContent";
+import NavigateButton from "../core/navigateButton";
+import type { IDate, IDesktopProps, ISubmittedData } from "../core/type";
+import { DownTriangle } from "../icons/DownTriangle";
 
 export function DesktopRange(props: IDesktopProps) {
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -49,7 +40,7 @@ export function DesktopRange(props: IDesktopProps) {
             color: tertiaryColor,
           }}
         >
-          {props.label?.label ?? (props.locale === "fa" ? "تاریخ" : "Date")}
+          {props.label?.label ?? (props.locale == "en" ? "Date" : "تاریخ")}
         </label>
       ),
     },
