@@ -141,6 +141,82 @@ export function DesktopRangePicker(props: IDesktopProps) {
     // };
   }, [open]);
 
+  const [position, setPosition] = useState({ top: 0, left: 0 });
+
+  const buttonRef = useRef<HTMLButtonElement | null>(null);
+  const popupRef = useRef<HTMLDivElement | null>(null);
+  const handleDropdown = () => {
+    const width = 460;
+    const height = 495;
+    setOpen((prev) => {
+      let dir = "ltr";
+      if (buttonRef.current) {
+        dir = getComputedStyle(buttonRef.current).direction;
+      }
+      const newState = !prev;
+      if (newState && buttonRef.current) {
+        const rect = buttonRef.current.getBoundingClientRect();
+        if (rect.bottom + height / 2 <= window.innerHeight / 2) {
+          //اگر ارتفاع دکمه با کامپوننت جمعش کمتر از نصف صفحه بود ؟
+          if (dir == "ltr") {
+            // اگر دایرکشن ltr بود
+            if (rect.left + rect.width / 2 <= window.innerWidth / 2) {
+              //اگر سمت چپ دکمه به همراه عرض کامپوننت از وسط صفحه رد نشد ؟
+              setPosition({
+                top: rect.height + 4,
+                left: 0,
+              });
+            } else {
+              setPosition({
+                top: rect.height + 4,
+                left: rect.width - width,
+              });
+            }
+          } else {
+            if (rect.left + rect.width / 2 <= window.innerWidth / 2) {
+              setPosition({
+                top: rect.height + 4,
+                // left: rect.right - rect.width - 10,
+                left: 0,
+              });
+            } else {
+              setPosition({
+                top: rect.height + 4,
+                left: rect.width - width,
+              });
+            }
+          }
+        } else {
+          if (dir == "ltr") {
+            if (rect.left + rect.width / 2 <= window.innerWidth / 2) {
+              setPosition({
+                top: -height - 4,
+                left: 0,
+              });
+            } else {
+              setPosition({
+                top: -height - 4,
+                left: rect.width - width,
+              });
+            }
+          } else {
+            if (rect.left + rect.width / 2 <= window.innerWidth / 2) {
+              setPosition({
+                top: -height - 4,
+                left: 0,
+              });
+            } else {
+              setPosition({
+                top: -height - 4,
+                left: rect.width - width,
+              });
+            }
+          }
+        }
+      }
+      return newState;
+    });
+  };
   return (
     <>
       <div
@@ -151,7 +227,7 @@ export function DesktopRangePicker(props: IDesktopProps) {
         <div className="flex gap-2">
           <div
             className={`flex justify-center items-center gap-2 px-2 border border-gray-300 rounded-lg w-72 h-8 cursor-pointer ${dateClassName}`}
-            onClick={() => setOpen((prev) => !prev)}
+            onClick={handleDropdown}
           >
             <div
               className={`px-2 w-fit  text-center `}
@@ -197,8 +273,15 @@ export function DesktopRangePicker(props: IDesktopProps) {
         </div>
         {open && (
           <div
-            style={{ backgroundColor: backgroundColor }}
-            className={`absolute z-50 top-16 p-2  border border-gray-300 rounded-lg shadow-md w-[460px] h-[495px] overflow-hidden  ${
+            ref={popupRef}
+            style={{
+              backgroundColor: backgroundColor,
+              position: "absolute",
+              top: position.top,
+              left: position.left,
+              zIndex: 1000,
+            }}
+            className={`absolute z-50  p-2  border border-gray-300 rounded-lg shadow-md w-[460px] h-[495px] overflow-hidden  ${
               locale === "fa" ? "right-0" : "left-0"
             }`}
           >
