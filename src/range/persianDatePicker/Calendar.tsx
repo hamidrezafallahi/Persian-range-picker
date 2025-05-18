@@ -13,6 +13,7 @@ import {
 } from "./helper";
 import MonthPicker from "./monthPicker";
 import YearPicker from "./yearPicker";
+import type { TLocale } from "../core/type";
 
 const todayTimestamp = new Date().setHours(0, 0, 0, 0);
 const today = jmoment();
@@ -27,7 +28,7 @@ interface Props {
   model?: "range" | "date";
   startDate?: number;
   endDate?: number;
-  locale?: "fa" | "en";
+  locale?: TLocale;
   disablePreviousDays?: boolean;
   renderDayFn?: (
     day: { timestamp: number; currentMonth: boolean },
@@ -418,7 +419,7 @@ const Calendar: FC<Props> = ({
 
   return (
     <div
-      className={`flex flex-col items-center w-full h-fit ${containerClassName}`}
+      className={`flex flex-col items-center w-full h-fit  ${containerClassName}`}
     >
       {view === CalendarViews.DAY ? (
         <div className="flex flex-col items-center w-full">

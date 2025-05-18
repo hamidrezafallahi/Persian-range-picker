@@ -4,12 +4,13 @@ import { RightChevron } from "../icons/RightChevron";
 import { monthMap, PmonthMap } from "./constants";
 import { CalendarViews } from "./enum";
 import { convertToPersianNumbers } from "./helper";
+import type { TLocale } from "../core/type";
 
 interface Props {
   setMonth: (offset: 1 | -1) => void;
   year: number;
   month: number;
-  locale: "en" | "fa";
+  locale: TLocale;
   onViewChange: (viewName: CalendarViews) => void;
   datePickerHeaderClassName?: string;
   highlightColor?: string;

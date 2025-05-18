@@ -4,11 +4,12 @@ import { LeftChevron } from "../icons/LeftChevron";
 import { RightChevron } from "../icons/RightChevron";
 import { months } from "./constants";
 import { convertToPersianNumbers } from "./helper";
+import type { TLocale } from "../core/type";
 
 interface Props {
   currentMonth: number;
   onSelectMonth: (month: number) => void;
-  locale: "fa" | "en";
+  locale: TLocale;
   currentYear: number;
   onChangeYear: (offset: -1 | 1) => void;
   monthPickerClassName?: string;

@@ -1,8 +1,5 @@
-import type {
-  Dispatch,
-  ReactNode,
-} from 'react';
-import React from 'react';
+import type { Dispatch, ReactNode } from "react";
+import React from "react";
 
 type TDeviceType = "desktop" | "mobile";
 export interface IAdditionalElementType {
@@ -10,6 +7,7 @@ export interface IAdditionalElementType {
   label: string;
   content: React.ReactNode;
 }
+export type TLocale = "fa" | "en";
 export interface IDateProps {
   primaryColor?: string;
   dangerColor?: string;
@@ -36,7 +34,7 @@ export interface RangeProps extends IRangeOptions {
 }
 export interface IRangeOptions {
   model?: "date" | "range";
-  locale?: "fa" | "en";
+  locale?: TLocale;
   isShowNavigationButton?: boolean;
   isShowComparison?: boolean;
   primaryColor?: string;

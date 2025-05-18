@@ -4,7 +4,7 @@ import moment from "moment-jalaali";
 
 import { LeftChevron } from "../icons/LeftChevron";
 import { RightChevron } from "../icons/RightChevron";
-import type { IBaseProps, ITimeZone } from "./type";
+import type { IBaseProps, ITimeZone, TLocale } from "./type";
 import { ESteps } from "./type";
 
 interface INavigationProps {
@@ -68,7 +68,7 @@ export const calculateDate = (
   step: ESteps,
   zone: ITimeZone,
   counter: number,
-  locale: "fa" | "en"
+  locale: TLocale
 ) => {
   let from = (
     locale === "fa" ? moment().startOf("jYear") : moment().startOf("year")

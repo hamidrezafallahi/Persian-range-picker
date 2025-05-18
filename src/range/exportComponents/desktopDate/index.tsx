@@ -1,7 +1,7 @@
-import type { IDate } from "../../core/type";
+import type { IDate, TLocale } from "../../core/type";
 import { DesktopDatePicker } from "../../desktopDate/desktopDatePicker";
 interface IProps {
-  locale?: "fa" | "en";
+  locale?: TLocale;
   defaultValue?: IDate;
   onChange?: (e: IDate) => void;
   tertiaryColor?: string;

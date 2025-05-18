@@ -1,8 +1,8 @@
-import type { IDate } from "../../core/type";
+import type { IDate, TLocale } from "../../core/type";
 import MobileDatePicker from "../../mobileDate/mobileDatePicker";
 
 interface IProps {
-  locale?: "fa" | "en";
+  locale?: TLocale;
   defaultValue?: IDate;
   onChange?: (e: IDate) => void;
   tertiaryColor?: string;

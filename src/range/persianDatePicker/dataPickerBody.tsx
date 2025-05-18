@@ -1,13 +1,14 @@
 import type { FC, ReactNode } from "react";
 
 import moment from "moment-jalaali";
+import type { TLocale } from "../core/type";
 
 interface Props {
   datePickerBodyClassName?: string;
   year: number;
   month: number;
   renderMonthBody: (year: number, month: number) => ReactNode;
-  locale: "fa" | "en";
+  locale: TLocale;
   onDateClick: (timestamp: number) => void;
   model: "range" | "date";
   chooseTodayClassName?: string;

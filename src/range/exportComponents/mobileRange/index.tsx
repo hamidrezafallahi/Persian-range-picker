@@ -8,6 +8,7 @@ import type {
   IDate,
   ITime,
   ITimeZone,
+  TLocale,
 } from "../../core/type";
 import MobileRangePicker from "../../mobileRange/mobileRangePicker";
 
@@ -29,7 +30,7 @@ interface IProps {
   // yearPickerClassName?: string;
   // tabClassName?: string;
   // model?: "date" | "range";
-  // locale?: "fa" | "en";
+  // locale?: TLocale;
   // defaultValue?: IDate;
   // onError?: (e: string) => void;
   // primaryColor?: string;
@@ -72,7 +73,7 @@ interface IProps {
   className?: string;
   additionalElement?: IAdditionalElementType[];
   defaultValue?: IDate;
-  locale?: "fa" | "en";
+  locale?: TLocale;
 }
 
 export function MobileRange({ ...props }: IProps) {

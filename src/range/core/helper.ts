@@ -1,6 +1,6 @@
 import moment from "moment-jalaali";
 
-import type { IDate, ITimeSections, ITimeZone } from "./type";
+import type { IDate, ITimeSections, ITimeZone, TLocale } from "./type";
 import { ESteps } from "./type";
 
 export const getTimestampsForPeriod = (period: ITimeZone, locale: string) => {
@@ -216,7 +216,7 @@ export const stepToTimeIndex: { [key in ESteps]: number } = {
 
 export const period = (
   date: IDate,
-  locale: "fa" | "en",
+  locale: TLocale,
   zone: ITimeZone
 ): ITimeSections[] => {
   return [
@@ -369,7 +369,7 @@ export const period = (
 export function getLabel(
   zone: ITimeZone,
   timeZone: ITimeZone,
-  locale: "fa" | "en" = "en"
+  locale: TLocale = "en"
 ): string {
   switch (timeZone) {
     case "yesterday":

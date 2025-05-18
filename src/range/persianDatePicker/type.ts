@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import type { IDate } from "../core/type";
+import type { IDate, TLocale } from "../core/type";
 
 export interface IProps {
   dateFromOutside: IDate;
@@ -20,7 +20,7 @@ export interface IProps {
     index: number
   ) => ReactNode;
   label?: string;
-  locale: "fa" | "en";
+  locale: TLocale;
   onClear?: () => void;
   padding?: string;
   disabled?: boolean;

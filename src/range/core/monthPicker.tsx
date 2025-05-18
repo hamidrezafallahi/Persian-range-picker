@@ -2,13 +2,13 @@ import { useState } from "react";
 
 import moment from "moment-jalaali";
 
-import type { IDate } from "./type";
+import type { IDate, TLocale } from "./type";
 
 interface IMonthPickerType {
   dateFromOutside: IDate;
   onDateChange: (e: IDate) => void;
   monthPickerClassName?: string;
-  locale: "fa" | "en";
+  locale: TLocale;
   primaryColor?: string;
   backgroundColor?: string;
   highlightColor?: string;
@@ -133,7 +133,7 @@ const MonthPicker = ({
   return (
     <div
       dir={locale == "fa" ? "rtl" : "ltr"}
-      className={`justify-between gap-2 grid grid-cols-6  w-full xs:w-64 ${monthPickerClassName}`}
+      className={`justify-between gap-2 grid grid-cols-6  w-full  ${monthPickerClassName}`}
       // onMouseLeave={() => {
       //   setState((prev) => {
       //     return {

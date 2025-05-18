@@ -1,9 +1,9 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 
 import moment from "moment-jalaali";
 
 import { CalenderIcon } from "../icons/CalenderIcon";
-import type { IDate } from "./type";
+import type { IDate, TLocale } from "./type";
 
 type MaskProps = {
   defaultValue?: IDate["from"];
@@ -14,9 +14,11 @@ type MaskProps = {
   // dangerColor: string | undefined;
   // InputHandleChange: (e: ChangeEvent<HTMLInputElement>) => void;
   // className?: string;
-  locale?: "fa" | "en";
+  locale?: TLocale;
   inputClassName?: string;
   maskClassName?: string;
+  Icon?: ReactNode | boolean;
+  maskHeight?: number;
 };
 
 export function DateMask({
@@ -26,12 +28,12 @@ export function DateMask({
   inputClassName,
   maskClassName,
   onChange,
+  maskHeight = 41.6,
+  Icon = <CalenderIcon />,
 }: MaskProps) {
   const temp = timestampToDateNumbers(locale, defaultValue);
   const [separatedValue, setSeparatedValue] = useState(temp);
-  const [baseValue, setBaseValue] = useState<IDate["from"]>(
-    moment(defaultValue).locale(locale).startOf("day").valueOf()
-  );
+  const [baseValue, setBaseValue] = useState<IDate["from"] | null>(null);
   const [fullValue, setFullValue] = useState<string>(
     `${temp[0]}${temp[1]}${temp[2]}`
   );
@@ -60,13 +62,14 @@ export function DateMask({
     return changeToTimestamp;
   };
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(e.target.value);
-
     const newValue = e.target.value.replace(/\D/g, "");
     if (e.target.name == "year") {
       setSeparatedValue((prev) => {
         const newState = [...prev];
-        newState[0] = newValue;
+        newState[0] =
+          newValue.length !== 4
+            ? newValue
+            : validValue(newValue, "year", locale);
         return newState;
       });
       if (newValue.length == 4) {
@@ -76,7 +79,10 @@ export function DateMask({
     } else if (e.target.name == "month") {
       setSeparatedValue((prev) => {
         const newState = [...prev];
-        newState[1] = newValue;
+        newState[1] =
+          newValue.length !== 2
+            ? newValue
+            : validValue(newValue, "month", locale);
         return newState;
       });
       if (newValue.length == 2) {
@@ -85,7 +91,10 @@ export function DateMask({
     } else if (e.target.name == "day") {
       setSeparatedValue((prev) => {
         const newState = [...prev];
-        newState[2] = newValue;
+        newState[2] =
+          newValue.length !== 2
+            ? newValue
+            : validValue(newValue, "day", locale);
         return newState;
       });
       // if (newValue.length == 2) {
@@ -105,14 +114,13 @@ export function DateMask({
           // setIsEdit(0);
         } else {
           onError?.(locale == "fa" ? "تاریخ نا معتبر است" : "invalid date");
-          alert(locale == "fa" ? "تاریخ نا معتبر است" : "invalid date");
         }
       }
     }
   };
   const handleFocusFullInput = () => {
     if (fullInputRef.current) {
-      fullInputRef.current.select();
+      // fullInputRef.current.select();
     }
   };
   const formatInputValue = (value: string) => {
@@ -120,9 +128,6 @@ export function DateMask({
     const month = value.slice(4, 6).padEnd(2, "_");
     const day = value.slice(6, 8).padEnd(2, "_");
     return `${year}/${month}/${day}`;
-  };
-  const handleBlurFullValue = () => {
-    setBaseValue(changeToTimestamp(fullValueRef.current, locale));
   };
   function handleCount(
     value: string,
@@ -168,11 +173,9 @@ export function DateMask({
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     const activeElement = document.activeElement;
-
     if (event.key == "ArrowUp" || event.key == "ArrowDown") {
       event.preventDefault();
       if (activeElement instanceof HTMLInputElement) {
-        console.log(activeElement.value, activeElement.name);
         const target =
           activeElement.name == "year"
             ? 0
@@ -189,6 +192,8 @@ export function DateMask({
     }
 
     if (event.key === "Enter") {
+      console.log("Enter");
+
       setBaseValue(changeToTimestamp(fullValue, locale));
       setIsEdit(0);
     }
@@ -259,33 +264,47 @@ export function DateMask({
       clickCount.current = 0;
     }, 500);
   };
+  const handleFocusOnRelatedInputElement = (
+    e: React.MouseEvent<HTMLSpanElement>
+  ) => {
+    e.preventDefault();
+    e.stopPropagation();
+    console.log(e.currentTarget.dataset.name);
+    setIsEdit(1);
+    if (e.currentTarget.dataset.name == "year") {
+      yearInputRef.current?.focus();
+      yearInputRef.current?.select();
+      setTimeout(() => {
+        yearInputRef.current?.select();
+      }, 0);
+    } else if (e.currentTarget.dataset.name == "month") {
+      monthInputRef.current?.focus();
+      setTimeout(() => {
+        monthInputRef.current?.select();
+      }, 0);
+    } else if (e.currentTarget.dataset.name == "day") {
+      dayInputRef.current?.focus();
+      setTimeout(() => {
+        dayInputRef.current?.select();
+      }, 0);
+    }
+  };
   useEffect(() => {
     if (isEdit == 2) {
       fullInputRef.current?.focus();
       fullInputRef.current?.select();
     }
-    const handleClickOutside = (event: MouseEvent) => {
-      console.log(span0?.current?.contains(event.target as Node) === true);
-      if (span0?.current?.contains(event.target as Node) === true) {
-        console.log(span0.current);
-      }
-      // if (span1?.current?.contains(event.target as Node) === true) {
-      //   console.log(span1.current);
-      // }
-      // if (span2?.current?.contains(event.target as Node) === true) {
-      //   console.log(span2.current);
-      // }
-      if (fullRef?.current?.contains(event.target as Node) === true) {
-        console.log(span0.current?.children);
 
+    const handleClickOutside = (event: MouseEvent) => {
+      if (fullRef?.current?.contains(event.target as Node) === true) {
         return;
       } else if (focusRef?.current?.contains(event.target as Node) === true) {
         setIsEdit(1);
       } else {
         if (isEdit == 2) {
-          handleBlurFullValue();
+          console.log("handleClickOutside");
+          setBaseValue(changeToTimestamp(fullValueRef.current, locale));
         }
-        setBaseValue(changeToTimestamp(fullValueRef.current, locale));
         if (
           yearInputRef.current &&
           monthInputRef.current &&
@@ -295,10 +314,11 @@ export function DateMask({
             yearInputRef.current.value.toString() +
             monthInputRef.current.value.toString() +
             dayInputRef.current.value.toString();
+          console.log("handleClickOutside");
+
           setBaseValue(changeToTimestamp(temp, locale));
         }
-
-        // setIsEdit(0);
+        setIsEdit(0);
       }
     };
     const handleClickOnInput = (event: MouseEvent) => {
@@ -318,8 +338,11 @@ export function DateMask({
       document.addEventListener("mouseup", handleClickOnInput);
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [isEdit, span0]);
+  }, [isEdit]);
   useEffect(() => {
+    if (!baseValue) {
+      return;
+    }
     if (isInitialMount.current) {
       isInitialMount.current = false;
       return;
@@ -346,13 +369,18 @@ export function DateMask({
   return (
     <div
       className={`flex justify-end bg-gray-5 rounded w-91 range align-base ${maskClassName}`}
+      style={{ height: `${maskHeight}px` }}
     >
-      <div className="flex justify-between gap-2 px-2 py-2 border rounded-lg w-full align-base">
-        <span className="flex-shrink-0">
-          <CalenderIcon />
-        </span>
+      <div
+        className="flex justify-center gap-2 border rounded-lg w-full align-base"
+        style={{ height: `${maskHeight}px` }}
+      >
+        <div className="">{Icon && Icon}</div>
         {isEdit !== 2 ? (
-          <div ref={focusRef} className="flex flex-grow w-full dir-rtl">
+          <div
+            ref={focusRef}
+            className="flex justify-center px-2 py-2 w-full dir-rtl"
+          >
             {isEdit == 0 ? (
               <div className="flex gap-1px text-base same-font">
                 <div>{separatedValue[0] || "____"}</div>
@@ -431,7 +459,11 @@ export function DateMask({
             )}
           </div>
         ) : (
-          <div ref={fullRef} className="relative w-full text-base dir-rtl">
+          <div
+            ref={fullRef}
+            className={`relative flex justify-center w-full text-base  dir-rtl`}
+            style={{ height: `${maskHeight}px` }}
+          >
             <input
               id="full"
               type="text"
@@ -449,19 +481,19 @@ export function DateMask({
               style={{ width: "5.5rem", textAlign: "end" }}
             />
             <div
-              className={`z-10 absolute inset-0 bg-blue-600 mx-0 h-full text-base text-center same-font selected-text  ${
+              className={`z-10 absolute inset-0  mx-auto   text-base flex justify-center items-center same-font selected-text${
                 inputClassName && inputClassName
               }`}
               onKeyDown={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
-                console.log("here");
               }}
               style={{
                 display: "flex",
                 width: "5.5rem",
-                userSelect: "none",
-                pointerEvents: "none",
+                // height: `${maskHeight}px`,
+                // userSelect: "none",
+                // pointerEvents: "none",
               }}
             >
               {formatInputValue(fullValue)
@@ -470,19 +502,20 @@ export function DateMask({
                   return (
                     <span
                       key={index}
+                      data-name={
+                        index == 0 ? "year" : index == 1 ? "month" : "day"
+                      }
                       ref={spanRefs[index]}
-                      onMouseDown={(e) => {
-                        console.log(e);
-                      }}
-                      className={`text-base text-center same-font selected-text  ${inputClassName}`}
+                      onMouseDown={handleFocusOnRelatedInputElement}
+                      className={`text-base text-center same-font selected-text h-fit my-auto  ${inputClassName}`}
                       style={{
                         // userSelect: "none",
                         // pointerEvents: "none",
                         width: "100px",
                       }}
                     >
-                      {item}
-                      {index !== 2 && "/"}
+                      <span>{item}</span>
+                      {index !== 2 && <span className="selected-text">/</span>}
                     </span>
                   );
                 })}
@@ -494,7 +527,7 @@ export function DateMask({
   );
 }
 
-function timestampToDateNumbers(locale: "fa" | "en", timestamp?: number) {
+function timestampToDateNumbers(locale: TLocale, timestamp?: number) {
   const year =
     locale == "fa"
       ? moment(timestamp).format("jYYYY")
@@ -509,7 +542,7 @@ function timestampToDateNumbers(locale: "fa" | "en", timestamp?: number) {
       : moment(timestamp).locale(locale).format("DD");
   return [year, month, day];
 }
-function checkDateByRegex(timestamp: number, locale: "fa" | "en") {
+function checkDateByRegex(timestamp: number, locale: TLocale) {
   const gregorianRegex =
     /^(?:19|20)\d{2}\/(0[1-9]|1[0-2])\/(0[1-9]|[12][0-9]|3[01])$/;
   const shamsiRegex =
@@ -525,7 +558,7 @@ function checkDateByRegex(timestamp: number, locale: "fa" | "en") {
     return isGregorianValid;
   }
 }
-function changeToTimestamp(fullvalue: string, locale: "fa" | "en") {
+function changeToTimestamp(fullvalue: string, locale: TLocale) {
   let changeToTimestamp = new Date().valueOf();
   switch (fullvalue.length) {
     case 0:
@@ -557,4 +590,47 @@ function changeToTimestamp(fullvalue: string, locale: "fa" | "en") {
       break;
   }
   return changeToTimestamp;
+}
+function validValue(
+  Value: string,
+  name: "year" | "month" | "day",
+  locale: TLocale
+) {
+  let newValue = Value;
+  if (name == "year") {
+    if (locale == "fa") {
+      if (Number(Value) > 1500) {
+        newValue = "1500";
+      } else if (Number(Value) < 1300) {
+        newValue = "1300";
+      } else {
+        newValue = Value;
+      }
+    } else {
+      if (Number(Value) >= 2100) {
+        newValue = "2100";
+      } else if (Number(Value) <= 1900) {
+        newValue = "1900";
+      } else {
+        newValue = Value;
+      }
+    }
+  } else if (name == "month") {
+    if (Number(Value) >= 12) {
+      newValue = "12";
+    } else if (Number(Value) <= 1) {
+      newValue = "01";
+    } else {
+      newValue = Value;
+    }
+  } else if (name == "day") {
+    if (Number(Value) >= 31) {
+      newValue = "31";
+    } else if (Number(Value) <= 1) {
+      newValue = "01";
+    } else {
+      newValue = Value;
+    }
+  }
+  return newValue;
 }

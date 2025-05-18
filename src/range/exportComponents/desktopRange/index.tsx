@@ -2,7 +2,7 @@ import { type ReactNode, useMemo, useState } from "react";
 
 import moment from "moment-jalaali";
 
-import type { ESteps, IDate, ITime, ITimeZone } from "../../core/type";
+import type { ESteps, IDate, ITime, ITimeZone, TLocale } from "../../core/type";
 import { DesktopRangePicker } from "../../desktopRange/desktopRangePicker";
 
 interface IDesktopProps {
@@ -15,7 +15,7 @@ interface IDesktopProps {
   backgroundColor?: string;
   tertiaryColor?: string;
   dateClassName?: string;
-  locale?: "fa" | "en";
+  locale?: TLocale;
   onError?: (e: string) => void;
   buttonClassName?: string;
   label?: {

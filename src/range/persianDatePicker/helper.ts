@@ -1,4 +1,5 @@
 import jmoment from "moment-jalaali";
+import type { TLocale } from "../core/type";
 
 const todayTimestamp = new Date().setHours(0, 0, 0, 0);
 
@@ -20,7 +21,7 @@ export const isEqualDays = (
 export const getFirstDayIndexInMonth = (
   year: number,
   month: number,
-  locale: "fa" | "en"
+  locale: TLocale
 ): number => {
   const dayName =
     locale === "en"
@@ -37,7 +38,7 @@ export const getFirstDayIndexInMonth = (
 export const getNumberOfDays = (
   year: number,
   month: number,
-  locale: "fa" | "en"
+  locale: TLocale
 ) => {
   if (locale === "en") {
     return 40 - new Date(year, month, 40).getDate();
