@@ -1,7 +1,7 @@
-import React from 'react';
+import React from "react";
 
-import { DateMask } from './mask';
-import type { IDate } from './type';
+import { DateMask } from "./mask";
+import type { IDate } from "./type";
 
 interface IProps {
   date: IDate;
