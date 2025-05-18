@@ -1,12 +1,12 @@
 import {
   DateMask,
   DesktopDate,
+  DesktopRange,
   MobileDate,
   MobileRange,
   Range,
 } from "../range";
 import type { IDate } from "../range/core/type";
-import { DesktopRange } from "../range/exportComponents/desktopRange";
 
 export function InitialComponent() {
   const handleDateChange = (w: IDate) => {
@@ -117,7 +117,11 @@ export function InitialComponent() {
         <DesktopRange />
         <MobileDate />
         <MobileRange />
-        <DateMask onChange={handleChange} locale="fa" />
+        <DateMask
+          onChange={handleChange}
+          locale="fa"
+          defaultValue={1747600199999}
+        />
       </div>
     </>
   );

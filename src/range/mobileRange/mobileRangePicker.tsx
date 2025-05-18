@@ -9,7 +9,7 @@ import type { IBaseProps, IDate } from "../core/type";
 import { CalenderIcon } from "../icons/CalenderIcon";
 import { MenuArrowBack } from "../icons/MenuArrowBack";
 
-export function MobileRange(props: IBaseProps) {
+const MobileRangePicker = (props: IBaseProps) => {
   const {
     onCompareDateChange,
     onNavigateChange,
@@ -174,4 +174,5 @@ export function MobileRange(props: IBaseProps) {
       </div>
     </div>
   );
-}
+};
+export default MobileRangePicker;

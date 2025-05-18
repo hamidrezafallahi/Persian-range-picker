@@ -1,13 +1,9 @@
-import {
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import { useEffect, useRef, useState } from "react";
 
-import moment from 'moment-jalaali';
+import moment from "moment-jalaali";
 
-import { CalenderIcon } from '../icons/CalenderIcon';
-import type { IDate } from './type';
+import { CalenderIcon } from "../icons/CalenderIcon";
+import type { IDate } from "./type";
 
 type MaskProps = {
   defaultValue?: IDate["from"];
@@ -342,6 +338,11 @@ export function DateMask({
     setFullValue(temp);
     fullValueRef.current = temp;
   }, [separatedValue]);
+  useEffect(() => {
+    if (defaultValue) {
+      setBaseValue(defaultValue);
+    }
+  }, [defaultValue]);
   return (
     <div
       className={`flex justify-end bg-gray-5 rounded w-91 range align-base ${maskClassName}`}
