@@ -1,5 +1,3 @@
-import React from "react";
-
 import { DateMask } from "./mask";
 import type { IDate } from "./type";
 
