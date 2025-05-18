@@ -21,6 +21,8 @@ export interface IDateProps {
   defaultValue?: IDate;
   onChange?: (date: IDate, compareDate?: IDate) => void;
   className?: string;
+  dropdownWidth?: number;
+  dropdownHeight?: number;
 }
 
 export interface RangeProps extends IRangeOptions {
