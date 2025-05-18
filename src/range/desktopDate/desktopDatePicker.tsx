@@ -33,14 +33,16 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
       let dir = "ltr";
       if (buttonRef.current) {
         dir = getComputedStyle(buttonRef.current).direction;
-        console.log(dir);
       }
       const newState = !prev;
       if (newState && buttonRef.current) {
         const rect = buttonRef.current.getBoundingClientRect();
         if (rect.bottom + height / 2 <= window.innerHeight / 2) {
+          //اگر ارتفاع دکمه با کامپوننت جمعش کمتر از نصف صفحه بود ؟
           if (dir == "ltr") {
+            // اگر دایرکشن ltr بود
             if (rect.left + rect.width / 2 <= window.innerWidth / 2) {
+              //اگر سمت چپ دکمه به همراه عرض کامپوننت از وسط صفحه رد نشد ؟
               setPosition({
                 top: rect.height + 4,
                 left: 0,
@@ -68,14 +70,11 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
         } else {
           if (dir == "ltr") {
             if (rect.left + rect.width / 2 <= window.innerWidth / 2) {
-              console.log("bottom left");
               setPosition({
                 top: -height - 4,
                 left: 0,
               });
             } else {
-              console.log("bottom right");
-
               setPosition({
                 top: -height - 4,
                 left: rect.width - width,
@@ -83,14 +82,11 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
             }
           } else {
             if (rect.left + rect.width / 2 <= window.innerWidth / 2) {
-              console.log("bottom left");
               setPosition({
                 top: -height - 4,
                 left: 0,
               });
             } else {
-              console.log("bottom right");
-
               setPosition({
                 top: -height - 4,
                 left: rect.width - width,
@@ -99,13 +95,9 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
           }
         }
       }
-      console.log(newState);
-
       return newState;
     });
   };
-  console.log(position, buttonRef.current?.getBoundingClientRect());
-
   const handleDateChange = (date: IDate) => {
     setShowDate(date);
     onChange?.(date);
