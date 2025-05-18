@@ -3,7 +3,7 @@ import { useMemo, useState } from "react";
 import moment from "moment-jalaali";
 
 import type { ESteps, IDate, ITime, ITimeZone, RangeProps } from "./core/type";
-import { DesktopRange } from "./desktopRange/desktopRangePicker";
+import { DesktopRangePicker } from "./desktopRange/desktopRangePicker";
 import { MobileDate } from "./mobileDate/mobileDatePicker";
 import { MobileRange } from "./mobileRange/mobileRangePicker";
 import { DesktopDatePicker } from "./desktopDate/desktopDatePicker";
@@ -49,14 +49,13 @@ export function Range({ ...props }: RangeProps) {
   const [zone, setZone] = useState<ITimeZone>("manual");
   const [tabKey, setTabKey] = useState<ITime | string>("manual");
   const [open, setOpen] = useState(false);
-
   return (
     <div className="range" dir="rtl">
       {device == "desktop" ? (
         model == "date" ? (
           <DesktopDatePicker {...props} model={model} locale={locale} />
         ) : (
-          <DesktopRange
+          <DesktopRangePicker
             {...props}
             device={device}
             step={step}

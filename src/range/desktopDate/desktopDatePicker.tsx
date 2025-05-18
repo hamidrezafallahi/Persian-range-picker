@@ -26,44 +26,85 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
 
   const buttonRef = useRef<HTMLButtonElement | null>(null);
   const popupRef = useRef<HTMLDivElement | null>(null);
-
   const handleDropdown = () => {
     const width = 285;
     const height = 322;
     setIsOpen((prev) => {
+      let dir = "ltr";
+      if (buttonRef.current) {
+        dir = getComputedStyle(buttonRef.current).direction;
+        console.log(dir);
+      }
       const newState = !prev;
       if (newState && buttonRef.current) {
         const rect = buttonRef.current.getBoundingClientRect();
         if (rect.bottom + height / 2 <= window.innerHeight / 2) {
-          if (rect.left + rect.width / 2 <= window.innerWidth / 2) {
-            setPosition({
-              top: rect.bottom + 4,
-              left: rect.left,
-            });
+          if (dir == "ltr") {
+            if (rect.left + rect.width / 2 <= window.innerWidth / 2) {
+              setPosition({
+                top: rect.height + 4,
+                left: 0,
+              });
+            } else {
+              setPosition({
+                top: rect.height + 4,
+                left: rect.width - width,
+              });
+            }
           } else {
-            setPosition({
-              top: rect.bottom + 4,
-              left: rect.right - width,
-            });
+            if (rect.left + rect.width / 2 <= window.innerWidth / 2) {
+              setPosition({
+                top: rect.height + 4,
+                // left: rect.right - rect.width - 10,
+                left: 0,
+              });
+            } else {
+              setPosition({
+                top: rect.height + 4,
+                left: rect.width - width,
+              });
+            }
           }
         } else {
-          if (rect.left + rect.width / 2 <= window.innerWidth / 2) {
-            setPosition({
-              top: rect.top - height - 4,
-              left: rect.left,
-            });
+          if (dir == "ltr") {
+            if (rect.left + rect.width / 2 <= window.innerWidth / 2) {
+              console.log("bottom left");
+              setPosition({
+                top: -height - 4,
+                left: 0,
+              });
+            } else {
+              console.log("bottom right");
+
+              setPosition({
+                top: -height - 4,
+                left: rect.width - width,
+              });
+            }
           } else {
-            setPosition({
-              top: rect.top - height - 4,
-              left: rect.right - width,
-            });
+            if (rect.left + rect.width / 2 <= window.innerWidth / 2) {
+              console.log("bottom left");
+              setPosition({
+                top: -height - 4,
+                left: 0,
+              });
+            } else {
+              console.log("bottom right");
+
+              setPosition({
+                top: -height - 4,
+                left: rect.width - width,
+              });
+            }
           }
         }
       }
+      console.log(newState);
 
       return newState;
     });
   };
+  console.log(position, buttonRef.current?.getBoundingClientRect());
 
   const handleDateChange = (date: IDate) => {
     setShowDate(date);
@@ -99,7 +140,7 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
   return (
-    <div className="relative w-full h-full">
+    <div className="relative bg-red-100 w-fit h-full">
       <button
         ref={buttonRef}
         onClick={handleDropdown}
@@ -109,7 +150,6 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
         <CalenderIcon />
         <div>{title}</div>
       </button>
-
       {isOpen && (
         <div
           ref={popupRef}

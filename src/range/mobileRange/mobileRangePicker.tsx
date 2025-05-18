@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useRef } from "react";
 
 import moment from "moment-jalaali";
 
@@ -35,56 +35,61 @@ export function MobileRange(props: IBaseProps) {
     locale = "fa",
     className,
     model = "range",
+    defaultValue,
   } = props;
   const initialDate: IDate = useMemo(() => {
     return {
       from:
-        date && date.from > 0
-          ? date.from
-          : locale === "fa"
-          ? moment().locale("fa").startOf("jYear").valueOf()
-          : moment().locale("en").startOf("year").valueOf(),
+        defaultValue && defaultValue.from > 0
+          ? defaultValue.from
+          : locale == "fa"
+          ? moment().locale(locale).startOf("jYear").valueOf()
+          : moment().locale(locale).startOf("year").valueOf(),
       to:
-        date && date.to > 0
-          ? date.to
-          : moment().locale(locale).startOf("day").valueOf(),
+        defaultValue && defaultValue.to > 0
+          ? defaultValue.to
+          : moment().locale(locale).endOf("day").valueOf(),
     };
-  }, [date]);
-
+  }, [defaultValue]);
+  const compareDateDidMountRef = useRef(false);
+  const counterDidMountRef = useRef(false);
   const templatePeriods = period(initialDate, locale, zone);
   useEffect(() => {
-    if (onChange && (date || compareDate)) {
-      onChange(date, compareDate);
-    }
-  }, [initialDate]);
-  useEffect(() => {
-    if (onCompareDateChange && compareDate) {
-      onCompareDateChange(date, compareDate);
-    }
-    if (onChange && (date || compareDate)) {
-      onChange(date, compareDate);
+    if (compareDateDidMountRef.current) {
+      if (onCompareDateChange && compareDate) {
+        onCompareDateChange(date, compareDate);
+      }
+      if (onChange && (date || compareDate)) {
+        onChange(date, compareDate);
+      }
+    } else {
+      compareDateDidMountRef.current = true;
     }
   }, [compareDate]);
 
   useEffect(() => {
-    if (onNavigateChange && (date || compareDate)) {
-      const temp = templatePeriods.find(
-        (item) => item.step == activeCompareStep
-      )?.value;
-      if (temp) {
-        setCompareDate({ from: temp.from, to: temp.to });
+    if (counterDidMountRef.current) {
+      if (onNavigateChange && (date || compareDate)) {
+        const temp = templatePeriods.find(
+          (item) => item.step == activeCompareStep
+        )?.value;
+        if (temp) {
+          setCompareDate({ from: temp.from, to: temp.to });
+        }
+        if (activeCompareStep) {
+          onNavigateChange(date, {
+            from: temp ? temp.from : 0,
+            to: temp ? temp.to : 0,
+          });
+        } else {
+          onNavigateChange(date, compareDate);
+        }
       }
-      if (activeCompareStep) {
-        onNavigateChange(date, {
-          from: temp ? temp.from : 0,
-          to: temp ? temp.to : 0,
-        });
-      } else {
-        onNavigateChange(date, compareDate);
+      if (onChange && (date || compareDate)) {
+        onChange(date, compareDate);
       }
-    }
-    if (onChange && (date || compareDate)) {
-      onChange(date, compareDate);
+    } else {
+      counterDidMountRef.current = true;
     }
   }, [counter]);
 
