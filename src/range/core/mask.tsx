@@ -3,7 +3,7 @@ import { useEffect, useRef, useState, type ReactNode } from "react";
 import moment from "moment-jalaali";
 import { CalenderIcon } from "../icons/CalenderIcon";
 import type { IDate, TLocale } from "./type";
-
+type TimeZone = "year" | "month" | "day";
 type MaskProps = {
   defaultValue?: IDate["from"];
   onError?: (e: string) => void;
@@ -18,8 +18,10 @@ type MaskProps = {
   maskClassName?: string;
   Icon?: ReactNode | boolean;
   maskHeight?: number;
+  maskFontSize?: number;
+  ErrorClass?: string;
 };
-
+const defaultErrorClass = "bg-red-100 ";
 export function DateMask({
   defaultValue,
   locale = "fa",
@@ -29,6 +31,8 @@ export function DateMask({
   onChange,
   maskHeight = 41.6,
   Icon = <CalenderIcon />,
+  maskFontSize = 16,
+  ErrorClass = defaultErrorClass,
 }: MaskProps) {
   const temp = timestampToDateNumbers(locale, defaultValue);
   const [separatedValue, setSeparatedValue] = useState(temp);
@@ -38,6 +42,7 @@ export function DateMask({
   );
   const fullValueRef = useRef<string>(`${temp[0]}${temp[1]}${temp[2]}`);
   const [isEdit, setIsEdit] = useState<0 | 1 | 2>(0);
+  const [errorTarget, setErrorTarget] = useState<number[]>([]);
   const focusRef = useRef<HTMLDivElement | null>(null);
   const fullRef = useRef<HTMLInputElement | null>(null);
   const yearInputRef = useRef<HTMLInputElement | null>(null);
@@ -51,6 +56,7 @@ export function DateMask({
   const clickCount = useRef(0);
   const clickTimer = useRef<number>(0);
   const isInitialMount = useRef(true);
+
   const formatToTimeStamp = (FullValue: string) => {
     let changeToTimestamp = null;
     if (locale == "en") {
@@ -65,37 +71,66 @@ export function DateMask({
     if (e.target.name == "year") {
       setSeparatedValue((prev) => {
         const newState = [...prev];
-        newState[0] =
-          newValue.length !== 4
-            ? newValue
-            : validValue(newValue, "year", locale);
+        newState[0] = newValue;
         return newState;
       });
+      if (errorTarget.includes(0)) {
+        setErrorTarget((prev) => {
+          return [...prev.filter((item) => item !== 0)];
+        });
+      }
       if (newValue.length == 4) {
-        moveToNextTabindex();
+        validValue(
+          newValue,
+          locale,
+          yearInputRef as React.RefObject<HTMLInputElement>,
+          onError as () => void
+        );
       }
       // }
     } else if (e.target.name == "month") {
       setSeparatedValue((prev) => {
         const newState = [...prev];
-        newState[1] =
-          newValue.length !== 2
-            ? newValue
-            : validValue(newValue, "month", locale);
+        newState[1] = newValue;
         return newState;
       });
+      if (errorTarget.includes(1)) {
+        setErrorTarget((prev) => {
+          return [...prev.filter((item) => item !== 1)];
+        });
+      }
       if (newValue.length == 2) {
-        moveToNextTabindex();
+        validValue(
+          newValue,
+          locale,
+          monthInputRef as React.RefObject<HTMLInputElement>,
+          onError as () => void
+        );
       }
     } else if (e.target.name == "day") {
       setSeparatedValue((prev) => {
         const newState = [...prev];
-        newState[2] =
-          newValue.length !== 2
-            ? newValue
-            : validValue(newValue, "day", locale);
+        newState[2] = newValue;
         return newState;
       });
+      if (errorTarget.includes(2)) {
+        setErrorTarget((prev) => {
+          return [...prev.filter((item) => item !== 2)];
+        });
+      }
+      if (newValue.length == 2) {
+        if (
+          !validValue(
+            newValue,
+            locale,
+            dayInputRef as React.RefObject<HTMLInputElement>,
+            onError as () => void
+          )
+        ) {
+          setErrorTarget((prev) => [...prev, 2]);
+        }
+      }
+
       // if (newValue.length == 2) {
       //   const temp =
       //     separatedValue[0].toString() +
@@ -107,12 +142,15 @@ export function DateMask({
     } else if (e.target.name == "full") {
       setFullValue(newValue);
       fullValueRef.current = newValue;
+      if (errorTarget.includes(3)) {
+        setErrorTarget((prev) => {
+          return [...prev.filter((item) => item !== 3)];
+        });
+      }
       if (newValue.length == 8) {
-        if (checkDateByRegex(formatToTimeStamp(newValue), locale)) {
-          // setBaseValue(formatToTimeStamp(newValue));
-          // setIsEdit(0);
-        } else {
+        if (!checkDateByRegex(formatToTimeStamp(newValue), locale)) {
           onError?.(locale == "fa" ? "تاریخ نا معتبر است" : "invalid date");
+          setErrorTarget((prev) => [...prev, 3]);
         }
       }
     }
@@ -176,10 +214,14 @@ export function DateMask({
   }
   function validValue(
     value: string,
-    name: "year" | "month" | "day",
-    locale: TLocale
-  ): string {
+    locale: TLocale,
+    ref: React.RefObject<HTMLInputElement>,
+    onError: (e: string) => void
+  ): boolean {
     const num = Number(value);
+    const name: TimeZone = ref.current.name as TimeZone;
+    const target =
+      name == "year" ? 0 : name == "month" ? 1 : name == "day" ? 2 : 3;
     const ranges = {
       year:
         locale === "fa" ? { min: 1300, max: 1500 } : { min: 1900, max: 2100 },
@@ -195,11 +237,32 @@ export function DateMask({
       },
     };
     const { min, max } = ranges[name];
-    const clamped = Math.min(Math.max(num, min), max);
-    if (name !== "year") {
-      return clamped.toString().padStart(2, "0");
+
+    if (num < min || num > max) {
+      ref.current.select();
+      setErrorTarget((prev) => [...prev, target]);
+      onError?.("تاریخ اشتباه است ");
+      return false;
+    } else {
+      if (name !== "day") {
+        const focusable = [...document.querySelectorAll("input")].sort(
+          (a, b) => a.tabIndex - b.tabIndex
+        );
+
+        const active =
+          document.activeElement instanceof HTMLInputElement
+            ? document.activeElement
+            : null;
+        const index = focusable.indexOf(active as HTMLInputElement);
+        if ((index + 1) % focusable.length !== 0) {
+          const next = focusable[(index + 1) % focusable.length];
+
+          next.focus();
+          next.select();
+        }
+      }
+      return true;
     }
-    return clamped.toString();
   }
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -212,13 +275,16 @@ export function DateMask({
             yearInputRef.current?.selectionEnd == 4
           ) {
             monthInputRef.current?.focus();
-            monthInputRef.current?.setSelectionRange(0, 0);
+            monthInputRef.current?.select();
+            event.preventDefault();
           } else if (
             activeElement.name == "month" &&
             monthInputRef.current?.selectionEnd == 2
           ) {
             dayInputRef.current?.focus();
-            dayInputRef.current?.setSelectionRange(0, 0);
+            dayInputRef.current?.select();
+
+            event.preventDefault();
           }
         } else if (event.key == "ArrowLeft") {
           if (
@@ -226,13 +292,15 @@ export function DateMask({
             dayInputRef.current?.selectionEnd == 0
           ) {
             monthInputRef.current?.focus();
-            monthInputRef.current?.setSelectionRange(2, 2);
+            monthInputRef.current?.select();
+            event.preventDefault();
           } else if (
             activeElement.name == "month" &&
             monthInputRef.current?.selectionEnd == 0
           ) {
             yearInputRef.current?.focus();
-            yearInputRef.current?.setSelectionRange(4, 4);
+            yearInputRef.current?.select();
+            event.preventDefault();
           }
         }
       }
@@ -273,27 +341,6 @@ export function DateMask({
     }
   };
 
-  function moveToNextTabindex() {
-    const focusable = [...document.querySelectorAll("input")].sort(
-      (a, b) => a.tabIndex - b.tabIndex
-    );
-
-    const active =
-      document.activeElement instanceof HTMLInputElement
-        ? document.activeElement
-        : null;
-    const index = focusable.indexOf(active as HTMLInputElement);
-    if ((index + 1) % focusable.length !== 0) {
-      const next = focusable[(index + 1) % focusable.length];
-      next.focus();
-      next.select();
-    }
-    // setSeparatedValue((prev) => {
-    //   const newState = [...prev];
-    //   newState[target] = "";
-    //   return newState;
-    // });
-  }
   function moveToPreviousTabindex() {
     const focusable = [...document.querySelectorAll("input")].sort(
       (a, b) => a.tabIndex - b.tabIndex
@@ -365,8 +412,16 @@ export function DateMask({
         setIsEdit(1);
       } else {
         if (isEdit == 2) {
-          console.log("handleClickOutside");
-          setBaseValue(changeToTimestamp(fullValueRef.current, locale));
+          console.log("handleClickOutside full");
+          //check valid
+
+          if (
+            !checkDateByRegex(formatToTimeStamp(fullValueRef.current), locale)
+          ) {
+            setErrorTarget((prev) => [...prev, 3]);
+          } else {
+            setBaseValue(changeToTimestamp(fullValueRef.current, locale));
+          }
         }
         if (
           yearInputRef.current &&
@@ -377,9 +432,30 @@ export function DateMask({
             yearInputRef.current.value.toString() +
             monthInputRef.current.value.toString() +
             dayInputRef.current.value.toString();
-          console.log("handleClickOutside");
+          console.log("handleClickOutside separated");
+          const active = document.activeElement as HTMLInputElement;
+          console.log(active.name);
+          const targetRef =
+            active.name == "year"
+              ? yearInputRef
+              : active.name == "month"
+              ? monthInputRef
+              : active.name == "day"
+              ? dayInputRef
+              : fullInputRef;
 
-          setBaseValue(changeToTimestamp(temp, locale));
+          if (
+            validValue(
+              active.value,
+              locale,
+              targetRef as React.RefObject<HTMLInputElement>,
+              onError as () => void
+            )
+          ) {
+            setErrorTarget((prev) => [...prev, 3]);
+          } else {
+            setBaseValue(changeToTimestamp(temp, locale));
+          }
         }
         setIsEdit(0);
       }
@@ -431,29 +507,43 @@ export function DateMask({
   }, [defaultValue]);
   return (
     <div
-      className={`flex justify-end bg-gray-5 rounded w-91 range align-base ${maskClassName}`}
+      className={`range flex justify-end bg-gray-5 rounded w-40 range align-base ${maskClassName} 
+ 
+      `} // ${ errorTarget && ErrorClass}
       style={{ height: `${maskHeight}px` }}
+      dir="ltr"
     >
       <div
-        className="flex justify-center gap-2 border rounded-lg w-full align-base"
+        className="flex justify-center items-center gap-2 px-2 border rounded-lg w-full align-base"
         style={{ height: `${maskHeight}px` }}
       >
-        <div className="">{Icon && Icon}</div>
         {isEdit !== 2 ? (
           <div
             ref={focusRef}
-            className="flex justify-center px-2 py-2 w-full dir-rtl"
+            className="flex justify-center w-full item-center"
           >
             {isEdit == 0 ? (
-              <div className="flex gap-1px text-base same-font">
-                <div>{separatedValue[0] || "____"}</div>
-                <div className="same-font">{"/"}</div>
-                <div>{separatedValue[1] || "__"}</div>
-                <div className="same-font">{"/"}</div>
-                <div>{separatedValue[2] || "__"}</div>
+              <div
+                style={{ fontSize: maskFontSize }}
+                className="flex justify-center gap-1 w-full text-base item-center same-font"
+              >
+                <div className={`${errorTarget.includes(0) && ErrorClass}`}>
+                  {separatedValue[0] || "____"}
+                </div>
+                <div>{"/"}</div>
+                <div className={`${errorTarget.includes(1) && ErrorClass}`}>
+                  {separatedValue[1] || "__"}
+                </div>
+                <div>{"/"}</div>
+                <div className={`${errorTarget.includes(2) && ErrorClass}`}>
+                  {separatedValue[2] || "__"}
+                </div>
               </div>
             ) : (
-              <div className="text-base same-font">
+              <div
+                className="flex justify-center items-center same-font"
+                style={{ gap: "1px" }}
+              >
                 <input
                   type="text"
                   name="year"
@@ -465,17 +555,25 @@ export function DateMask({
                   onKeyDown={handleKeyDown}
                   maxLength={4}
                   minLength={4}
-                  className={`same-font ${inputClassName}`}
-                  style={{ width: "2.4rem" }}
+                  className={`same-font bg-gray-5 ${inputClassName} ${
+                    errorTarget.includes(0) && ErrorClass
+                  }`}
+                  style={{
+                    width: (4 * maskFontSize) / 2 + 8,
+                    fontSize: maskFontSize,
+                  }}
                   placeholder="____"
                 />
                 <span
                   style={{
                     userSelect: "none",
                     pointerEvents: "none",
-                    width: "10px",
+                    // width: maskFontSize / 2,
+                    fontSize: maskFontSize,
+                    // paddingRight: "2px",
+                    // paddingLeft: "2px",
                   }}
-                  className={`same-font ${inputClassName}`}
+                  className={` ${inputClassName}`}
                 >
                   /
                 </span>
@@ -490,15 +588,25 @@ export function DateMask({
                   onKeyDown={handleKeyDown}
                   maxLength={2}
                   minLength={2}
-                  className={`same-font ${inputClassName}`}
-                  style={{ width: "1.2rem" }}
+                  className={`same-font bg-gray-5 ${inputClassName} ${
+                    errorTarget.includes(1) && ErrorClass
+                  }`}
+                  style={{
+                    width: (2 * maskFontSize) / 2 + 8,
+                    fontSize: maskFontSize,
+                  }}
                   placeholder="__"
                 />
                 <span
+                  className="same-font"
                   style={{
                     userSelect: "none",
                     pointerEvents: "none",
-                    width: "10px",
+                    fontSize: maskFontSize,
+                    // width: maskFontSize / 2,
+                    // width: "1ch",
+                    // paddingRight: "1px",
+                    // paddingLeft: "1px",
                   }}
                 >
                   /
@@ -514,8 +622,13 @@ export function DateMask({
                   onKeyDown={handleKeyDown}
                   maxLength={2}
                   minLength={2}
-                  className={`same-font ${inputClassName}`}
-                  style={{ width: "1.2rem" }}
+                  className={`same-font bg-gray-5 ${inputClassName} ${
+                    errorTarget.includes(2) && ErrorClass
+                  }`}
+                  style={{
+                    fontSize: maskFontSize,
+                    width: (2 * maskFontSize) / 2 + 8,
+                  }}
                   placeholder="__"
                 />
               </div>
@@ -524,7 +637,7 @@ export function DateMask({
         ) : (
           <div
             ref={fullRef}
-            className={`relative flex justify-center w-full text-base  dir-rtl`}
+            className={`relative flex justify-center w-full text-base p-2 `}
             style={{ height: `${maskHeight}px` }}
           >
             <input
@@ -540,20 +653,23 @@ export function DateMask({
               onKeyDown={handleKeyDown}
               maxLength={8}
               minLength={8}
-              className={`opacity-0 ${inputClassName}`}
-              style={{ width: "5.5rem", textAlign: "end" }}
+              className={`opacity-0`}
+              style={{ display: "hidden", width: "0px" }}
             />
             <div
-              className={`z-10 absolute inset-0  mx-auto   text-base flex justify-center items-center same-font selected-text${
+              className={`z-10 absolute inset-0  mx-auto    text-base flex justify-center items-center same-font  ${
                 inputClassName && inputClassName
-              }`}
+              }
+              ${errorTarget.includes(3) && ErrorClass}
+              `}
               onKeyDown={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
               }}
               style={{
                 display: "flex",
-                width: "5.5rem",
+                gap: "3px",
+                fontSize: maskFontSize,
                 // height: `${maskHeight}px`,
                 // userSelect: "none",
                 // pointerEvents: "none",
@@ -563,28 +679,40 @@ export function DateMask({
                 .split("/")
                 .map((item, index) => {
                   return (
-                    <span
-                      key={index}
-                      data-name={
-                        index == 0 ? "year" : index == 1 ? "month" : "day"
-                      }
-                      ref={spanRefs[index]}
-                      onMouseDown={handleFocusOnRelatedInputElement}
-                      className={`text-base text-center same-font selected-text h-fit my-auto  ${inputClassName}`}
-                      style={{
-                        // userSelect: "none",
-                        // pointerEvents: "none",
-                        width: "100px",
-                      }}
-                    >
-                      <span>{item}</span>
-                      {index !== 2 && <span className="selected-text">/</span>}
-                    </span>
+                    <>
+                      <span
+                        key={index}
+                        data-name={
+                          index == 0 ? "year" : index == 1 ? "month" : "day"
+                        }
+                        ref={spanRefs[index]}
+                        onMouseDown={handleFocusOnRelatedInputElement}
+                        className={` same-font ${inputClassName} ${
+                          //selected-text
+                          errorTarget.includes(index) && ErrorClass
+                        }`}
+                        style={{
+                          // userSelect: "none",
+                          // pointerEvents: "none",
+                          fontSize: maskFontSize,
+                        }}
+                      >
+                        <span
+                          className={`${
+                            errorTarget.includes(index) && ErrorClass
+                          }`}
+                        >
+                          {item}
+                        </span>
+                      </span>
+                      {index !== 2 && <span className=" ">/</span>}
+                    </>
                   );
                 })}
             </div>
           </div>
         )}
+        <div className="">{Icon && Icon}</div>
       </div>
     </div>
   );

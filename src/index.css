@@ -564,6 +564,12 @@
   padding-left: 0.5rem /* 8px */;
   padding-right: 0.5rem /* 8px */;
 }
+.range .p-2 {
+  padding-left: 0.5rem /* 8px */;
+  padding-right: 0.5rem /* 8px */;
+  padding-top: 0.5rem /* 8px */;
+  padding-bottom: 0.5rem /* 8px */;
+}
 .range .px-1 {
   padding-left: 0.25rem /* 4px */;
   padding-right: 0.25rem /* 4px */;
@@ -686,7 +692,7 @@
   color: #ffffff !important;
 }
 .range .selected-text {
-  background-color: #3390ff;
+  background-color: #0961cc;
   color: #ffffff;
 }
 .range .\!text-white {
@@ -823,27 +829,8 @@
     gap: 0.75rem;
   }
 }
-/* .same-font {
-  font-family: Arial, Helvetica, sans-serif;
-} */
 .-z-10 {
   z-index: -10;
-}
-.same-font {
-  font-family: monospace;
-  font-size: 1rem;
-  line-height: 1.5;
-  letter-spacing: 0.05em;
-  color: #1a202c;
-  text-align: center;
-  direction: ltr;
-  box-sizing: border-box;
-  border: none;
-  outline: none;
-  padding: 0;
-  margin: 0;
-  background: transparent;
-  font-family: Arial, Helvetica, sans-serif;
 }
 .min-h-8 {
   min-height: 2rem;
@@ -858,14 +845,14 @@
 .justify-between {
   justify-content: space-between;
 }
-.dir-rtl {
-  direction: rtl;
-}
 .bg-gray-5 {
   background-color: rgba(146, 146, 146, 0.226);
 }
-.w-91 {
-  width: 140px;
+.w-40 {
+  width: 160px;
+}
+.\!w-40 {
+  width: 160px;
 }
 .rounded {
   border-radius: 10px;
