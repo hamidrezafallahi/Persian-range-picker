@@ -1,0 +1,115 @@
+// تغیر برای اندازه‌های padding
+$padding-sizes: (
+  1: 0.25rem,
+  // 4px
+  2: 0.5rem,
+  // 8px
+  3: 0.75rem,
+  // 12px
+  4: 1rem,
+  // 16px
+  5: 1.25rem // 20px,,,,,,,,,,,,,,
+);
+
+// حلقه برای تولید کلاس‌های padding
+@each $key, $value in $padding-sizes {
+  .p-#{$key} {
+    padding: $value;
+  }
+}
+
+// متغیر برای اندازه‌های margin و padding
+$margin-sizes: (
+  0: 0px,
+  2: 0.5rem,
+  4: 1rem,
+  10: 40px,
+  16: 4rem,
+);
+
+$position-sizes: (
+  "5": 1.25rem,
+  "0": 0px,
+  "50%": 50%,
+);
+
+// کلاس‌های تراز
+.items {
+  &-center {
+    align-items: center;
+  }
+
+  &-start {
+    align-items: flex-start;
+  }
+}
+
+// حلقه برای تولید کلاس‌های margin
+@each $key, $value in $margin-sizes {
+  .mt-#{$key} {
+    margin-top: $value;
+  }
+  .mb-#{$key} {
+    margin-bottom: $value;
+  }
+  .mx-#{$key} {
+    margin-left: $value;
+    margin-right: $value;
+  }
+}
+
+// کلاس‌های خاص
+
+.top {
+  &-16 {
+    top: map-get($margin-sizes, 16);
+  }
+
+  &-\[50\%\] {
+    top: map-get($position-sizes, "50%");
+  }
+}
+
+.mx {
+  &-0 {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  &-auto {
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+.right {
+  &-5 {
+    right: map-get($position-sizes, "5");
+  }
+  &-0 {
+    right: map-get($position-sizes, "0");
+  }
+}
+
+.left {
+  &-0 {
+    left: map-get($position-sizes, "0");
+  }
+  &-5 {
+    left: map-get($position-sizes, "5");
+  }
+}
+
+.bottom {
+  &-0 {
+    bottom: map-get($position-sizes, "0");
+  }
+  &-16 {
+    bottom: map-get($margin-sizes, 16);
+  }
+}
+
+// کلاس margin-bottom منفی
+.-mb-px {
+  margin-bottom: map-get($margin-sizes, "px");
+}

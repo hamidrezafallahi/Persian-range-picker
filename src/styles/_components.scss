@@ -1,0 +1,105 @@
+// switch style ..................................
+
+// Size Variables
+$thumb-size: 22px;
+$switch-width: 50px;
+$switch-height: 28px;
+$padding: 3px;
+$switch-disabled-bg: #e0e0e0;
+$switch-disabled-thumb: #bdbdbd;
+
+// Color Variables
+$switch-bg-off: #ccc;
+$switch-bg-on: #000;
+$thumb-bg: #fff;
+
+// Transition Variables
+$transition-duration: 0.4s;
+$transition-ease: ease-in-out;
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: $switch-width;
+  height: $switch-height;
+  input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  &:disabled + .slider {
+    background-color: $switch-disabled-bg;
+    cursor: not-allowed;
+
+    &::before {
+      background-color: $switch-disabled-thumb;
+    }
+  }
+  input:checked + .slider {
+    background-color: $switch-bg-on;
+
+    &::before {
+      transform: translateX(22px);
+    }
+  }
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: $switch-bg-off;
+  transition: background-color $transition-duration $transition-ease;
+  border-radius: 34px;
+
+  &::before {
+    content: "";
+    position: absolute;
+    height: $thumb-size;
+    width: $thumb-size;
+    left: $padding;
+    bottom: $padding;
+    background-color: $thumb-bg;
+    transition: transform $transition-duration $transition-ease,
+      background-color $transition-duration $transition-ease;
+    border-radius: 50%;
+  }
+}
+
+/* button */
+button,
+[role="button"],
+select {
+  text-transform: none;
+  cursor: pointer;
+}
+
+button,
+input[type="button"],
+input[type="reset"],
+input[type="submit"] {
+  -webkit-appearance: button;
+  background-color: transparent;
+  background-image: none;
+}
+
+button {
+  background: none;
+  border: none;
+}
+
+/* input style */
+input {
+  outline: none;
+  box-shadow: none;
+  border: none;
+
+  &:focus {
+    outline: none;
+    box-shadow: none;
+    border: none;
+  }
+}

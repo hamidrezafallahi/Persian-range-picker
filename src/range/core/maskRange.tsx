@@ -1,6 +1,10 @@
-import type { Dispatch } from "react";
-import { DateMask } from "./mask";
-import type { IDate, TLocale } from "./type";
+import type { Dispatch } from 'react';
+
+import { DateMask } from './mask';
+import type {
+  IDate,
+  TLocale,
+} from './type';
 
 interface IProps {
   date: IDate;
@@ -23,7 +27,7 @@ function MaskRange({ ...props }: IProps) {
         locale={locale}
         onChange={(e) => handleChange(e, "from")}
         defaultValue={date.from}
-        maskClassName="bg-red-100 bg-white rounded-lg !h-8 flex justify-center"
+        maskClassName="bg-red-100 bg-white rounded-lg flex justify-center"
         Icon={false}
       />
       {"_"}
@@ -31,7 +35,7 @@ function MaskRange({ ...props }: IProps) {
         locale={locale}
         onChange={(e) => handleChange(e, "to")}
         defaultValue={date.to}
-        maskClassName="bg-red-100 bg-white rounded-lg !h-8 flex justify-center"
+        maskClassName="bg-red-100 bg-white rounded-lg flex justify-center"
         Icon={false}
       />
     </div>

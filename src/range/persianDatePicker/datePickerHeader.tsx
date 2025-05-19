@@ -1,10 +1,14 @@
-import type { FC } from "react";
-import { LeftChevron } from "../icons/LeftChevron";
-import { RightChevron } from "../icons/RightChevron";
-import { monthMap, PmonthMap } from "./constants";
-import { CalendarViews } from "./enum";
-import { convertToPersianNumbers } from "./helper";
-import type { TLocale } from "../core/type";
+import type { FC } from 'react';
+
+import type { TLocale } from '../core/type';
+import { LeftChevron } from '../icons/LeftChevron';
+import { RightChevron } from '../icons/RightChevron';
+import {
+  monthMap,
+  PmonthMap,
+} from './constants';
+import { CalendarViews } from './enum';
+import { convertToPersianNumbers } from './helper';
 
 interface Props {
   setMonth: (offset: 1 | -1) => void;
@@ -44,7 +48,7 @@ const DatePickerHeader: FC<Props> = ({
         {/* <RightChevron secondaryColor={secondaryColor} /> */}
         <LeftChevron secondaryColor={secondaryColor} />
       </div>
-      <div className="flex gap-4">
+      <div className="flex gap-4 mx-auto">
         <span
           className="font-bold"
           onClick={() => onViewChange(CalendarViews.MONTH)}

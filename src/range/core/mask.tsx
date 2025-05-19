@@ -1,9 +1,17 @@
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import {
+  type ReactNode,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 
-import moment from "moment-jalaali";
+import moment from 'moment-jalaali';
 
-import { CalenderIcon } from "../icons/CalenderIcon";
-import type { IDate, TLocale } from "./type";
+import { CalenderIcon } from '../icons/CalenderIcon';
+import type {
+  IDate,
+  TLocale,
+} from './type';
 
 type MaskProps = {
   defaultValue?: IDate["from"];
