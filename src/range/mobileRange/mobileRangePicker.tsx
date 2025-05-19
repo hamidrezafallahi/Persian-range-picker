@@ -1,11 +1,11 @@
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useRef } from "react";
 
 import moment from "moment-jalaali";
 
 import { period } from "../core/helper";
 import MainContent from "../core/mainContent";
 import NavigateButton from "../core/navigateButton";
-import type { IBaseProps, IDate } from "../core/type";
+import type { IBaseProps } from "../core/type";
 import { CalenderIcon } from "../icons/CalenderIcon";
 import { MenuArrowBack } from "../icons/MenuArrowBack";
 
@@ -35,25 +35,10 @@ const MobileRangePicker = (props: IBaseProps) => {
     locale = "fa",
     className,
     model = "range",
-    defaultValue,
   } = props;
-  const initialDate: IDate = useMemo(() => {
-    return {
-      from:
-        defaultValue && defaultValue.from > 0
-          ? defaultValue.from
-          : locale == "fa"
-          ? moment().locale(locale).startOf("jYear").valueOf()
-          : moment().locale(locale).startOf("year").valueOf(),
-      to:
-        defaultValue && defaultValue.to > 0
-          ? defaultValue.to
-          : moment().locale(locale).endOf("day").valueOf(),
-    };
-  }, [defaultValue]);
   const compareDateDidMountRef = useRef(false);
   const counterDidMountRef = useRef(false);
-  const templatePeriods = period(initialDate, locale, zone);
+  const templatePeriods = period(date, locale, zone);
   useEffect(() => {
     if (compareDateDidMountRef.current) {
       if (onCompareDateChange && compareDate) {
@@ -101,13 +86,11 @@ const MobileRangePicker = (props: IBaseProps) => {
       >
         <CalenderIcon />
         <div className="w-fit text-gray-gray8 text-center">
-          {initialDate &&
-            moment(initialDate.from as number).format("jYYYY/jMM/jDD")}
+          {date && moment(date.from as number).format("jYYYY/jMM/jDD")}
         </div>
         <div className="text-gray-gray8 text-center">{"-"}</div>
         <div className="w-fit text-gray-gray8 text-center">
-          {initialDate &&
-            moment(initialDate.to as number).format("jYYYY/jMM/jDD")}
+          {date && moment(date.to as number).format("jYYYY/jMM/jDD")}
         </div>
       </button>
       {zone !== "manual" && isShowNavigationButton && (
@@ -116,7 +99,7 @@ const MobileRangePicker = (props: IBaseProps) => {
           setCompareDate={setCompareDate}
           step={step}
           zone={zone}
-          date={initialDate}
+          date={date}
           setActiveCompareStep={setActiveCompareStep}
           activeCompareStep={activeCompareStep}
           counter={counter}
@@ -155,7 +138,7 @@ const MobileRangePicker = (props: IBaseProps) => {
           locale={locale}
           compareDate={compareDate}
           setDate={setDate}
-          date={initialDate}
+          date={date}
           setStep={setStep}
           setZone={setZone}
           step={step}
