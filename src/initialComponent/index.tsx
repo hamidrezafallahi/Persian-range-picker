@@ -4,9 +4,8 @@ import {
   DesktopRange,
   MobileDate,
   MobileRange,
-  Range,
-} from "../range";
-import type { IDate } from "../range/core/type";
+} from '../range';
+import type { IDate } from '../range/core/type';
 
 export function InitialComponent() {
   const handleDateChange = (w: IDate) => {
@@ -102,7 +101,7 @@ export function InitialComponent() {
 
   return (
     <>
-      <div className="bg-red-100 border range">
+      <div className="border range">
         {/* <Range
           // device={device}
           // locale={locale}
