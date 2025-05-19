@@ -103,7 +103,7 @@ export function InitialComponent() {
   return (
     <>
       <div className="bg-red-100 border range">
-        {/* <Range
+        <Range
           // device={device}
           // locale={locale}
           // model={model}
@@ -112,7 +112,7 @@ export function InitialComponent() {
           onNavigateChange={handleNavigateChange}
           handleSubmit={HandleSubmitDate}
           handleReject={resetDate}
-        /> */}
+        />
         <div className="flex flex-col" dir="rtl">
           <DesktopDate />
           <DesktopRange />

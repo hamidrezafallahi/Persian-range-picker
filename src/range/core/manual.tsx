@@ -25,6 +25,7 @@ const Manual = (props: IBaseProps) => {
     // dangerColor,
     // InputHandleChange,
   } = props;
+  const switchHandler = () => {};
 
   return (
     <div className="flex flex-col items-center gap-4">
@@ -95,7 +96,9 @@ const Manual = (props: IBaseProps) => {
         locale={locale}
       />
       <div className="w-full">
-        {isShowComparison && <Comparison {...props} />}
+        {isShowComparison && (
+          <Comparison {...props} switchHandler={switchHandler} />
+        )}
       </div>
     </div>
   );
