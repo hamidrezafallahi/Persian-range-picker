@@ -21,6 +21,7 @@ export function DesktopRangePicker(props: IDesktopProps) {
     onChange,
     setCompareDate,
     counter,
+    setStep,
     isShowNavigationButton = true,
     primaryColor = "#000", //رنگ اصلی (برای دکمه‌ها، لینک‌ها یا تأکید اصلی برند)
     backgroundColor = "#fff", //رنگ پس‌زمینه کلی یا نواحی بزرگ
@@ -33,6 +34,7 @@ export function DesktopRangePicker(props: IDesktopProps) {
     buttonClassName,
     dropdownWidth = 460,
     dropdownHeight = 495,
+
     label = {
       isShowLabel: true,
       label: (
@@ -94,7 +96,7 @@ export function DesktopRangePicker(props: IDesktopProps) {
   const handleCancel = () => {
     setOpen(false);
     setDate(showDate.date);
-
+    setStep(366);
     setCompareDate(showDate.compareDate);
     if (handleReject) {
       handleReject();
@@ -144,18 +146,17 @@ export function DesktopRangePicker(props: IDesktopProps) {
   }, [open]);
 
   const [position, setPosition] = useState({ top: 0, left: 0 });
-  const [isOpen, setIsOpen] = useState(false);
   const buttonRef = useRef<HTMLElement | null>(null);
   const popupRef = useRef<HTMLDivElement | null>(null);
 
   const hookPosition = useRenderPosition({
     buttonRef: buttonRef as React.RefObject<HTMLButtonElement>,
-    enabled: isOpen,
+    enabled: open,
     popupSize: { width: dropdownWidth, height: dropdownHeight },
   });
 
   const handleDropdown = () => {
-    setIsOpen((prev) => !prev);
+    setOpen((prev) => !prev);
   };
 
   useEffect(() => {
@@ -170,7 +171,7 @@ export function DesktopRangePicker(props: IDesktopProps) {
         buttonRef.current &&
         !buttonRef.current.contains(event.target as Node)
       ) {
-        setIsOpen(false);
+        setOpen(false);
       }
     };
 
@@ -232,7 +233,7 @@ export function DesktopRangePicker(props: IDesktopProps) {
             <NavigateButton {...props} locale={locale} />
           )}
         </div>
-        {isOpen && (
+        {open && (
           <div
             ref={popupRef}
             style={{

@@ -7,31 +7,37 @@ import { ESteps } from "../core/type";
 import CompareList from "./CompareList";
 import CustomSwitch from "./customSwitch/customSwitch";
 import ManualCompare from "./manualCompare";
-
-function Comparison({ ...props }: IBaseProps) {
+interface IProps extends IBaseProps {
+  switchHandler: () => void;
+}
+function Comparison({ ...props }: IProps) {
   const {
     locale,
     step,
     componentStep = 366,
     setActiveCompareStep,
     primaryColor = "#000",
+    switchHandler,
   } = props;
   const [showCompare, setShowCompare] = useState(false);
-  const [enableCompare, setEnableCompare] = useState(false);
 
   const handleShowCompare = () => {
     setShowCompare(!showCompare);
+
     if (showCompare) {
       setActiveCompareStep(366);
+    } else {
+      switchHandler();
     }
   };
 
   useEffect(() => {
+    console.log(componentStep, step);
+
     const flag =
       time[stepToTimeIndex[componentStep]].toLowerCase() ==
       time[stepToTimeIndex[step]].toLowerCase();
     setShowCompare(flag);
-    setEnableCompare(flag);
   }, [step, componentStep]);
 
   return (
@@ -44,12 +50,7 @@ function Comparison({ ...props }: IBaseProps) {
           {locale == "fa" ? "مقایسه" : "Compare"}
         </div>
 
-        <CustomSwitch
-          checked={showCompare}
-          disabled={!enableCompare}
-          onChange={handleShowCompare}
-          className=""
-        />
+        <CustomSwitch checked={showCompare} onChange={handleShowCompare} />
       </div>
       {showCompare && (
         <>

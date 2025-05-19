@@ -1,8 +1,8 @@
 interface IProps {
   checked: boolean;
-  disabled: boolean;
-  onChange: () => void;
-  className: string;
+  disabled?: boolean;
+  onChange?: () => void;
+  className?: string;
 }
 function CustomSwitch({ ...props }: IProps) {
   const { checked, className, disabled, onChange } = props;

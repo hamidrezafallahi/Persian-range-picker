@@ -103,7 +103,7 @@ export function InitialComponent() {
   return (
     <>
       <div className="bg-red-100 border range">
-        <Range
+        {/* <Range
           // device={device}
           // locale={locale}
           // model={model}
@@ -112,16 +112,18 @@ export function InitialComponent() {
           onNavigateChange={handleNavigateChange}
           handleSubmit={HandleSubmitDate}
           handleReject={resetDate}
-        />
-        <DesktopDate />
-        <DesktopRange />
-        <MobileDate />
-        <MobileRange />
-        <DateMask
-          onChange={handleChange}
-          locale="fa"
-          defaultValue={1747600199999}
-        />
+        /> */}
+        <div className="flex" dir="rtl">
+          <DesktopDate />
+          <DesktopRange />
+          <MobileDate />
+          <MobileRange />
+          <DateMask
+            onChange={handleChange}
+            locale="fa"
+            defaultValue={1747600199999}
+          />
+        </div>
       </div>
     </>
   );

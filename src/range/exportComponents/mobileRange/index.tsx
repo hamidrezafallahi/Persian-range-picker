@@ -60,7 +60,7 @@ export function MobileRange({ ...props }: IProps) {
   const [activeCompareStep, setActiveCompareStep] = useState<ESteps | null>(
     null
   );
-  const [step, setStep] = useState<ESteps>(7);
+  const [step, setStep] = useState<ESteps>(366);
   const [zone, setZone] = useState<ITimeZone>("manual");
   const [tabKey, setTabKey] = useState<ITime | string>("manual");
 

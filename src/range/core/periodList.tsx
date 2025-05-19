@@ -101,6 +101,14 @@ function PeriodList({ ...props }: IBaseProps) {
       item.step == componentStep ||
       (item.step == ESteps.season && componentStep == ESteps.month)
   );
+  const switchHandler = () => {
+    setStep(filteredPeriod[0].step);
+    setDate(filteredPeriod[0].value);
+    setZone(filteredPeriod[0].timeZone);
+    setActiveCompareStep(null);
+    setCounter(0);
+  };
+
   return (
     <>
       {filteredPeriod.map((item, index) => {
@@ -159,7 +167,9 @@ function PeriodList({ ...props }: IBaseProps) {
         );
       })}
 
-      {isShowComparison && <Comparison {...props} />}
+      {isShowComparison && (
+        <Comparison {...props} switchHandler={switchHandler} />
+      )}
     </>
   );
 }
