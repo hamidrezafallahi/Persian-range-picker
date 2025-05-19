@@ -30,7 +30,6 @@ export function DateMask({
   maskHeight = 41.6,
   Icon = <CalenderIcon />,
 }: MaskProps) {
-  moment.loadPersian({ usePersianDigits: false });
   const temp = timestampToDateNumbers(locale, defaultValue);
   const [separatedValue, setSeparatedValue] = useState(temp);
   const [baseValue, setBaseValue] = useState<IDate["from"] | null>(null);
@@ -612,7 +611,6 @@ function checkDateByRegex(timestamp: number, locale: TLocale) {
   const shamsiRegex =
     /^(?:13|14|15)\d{2}\/(0[1-9]|1[0-2])\/(0[1-9]|[12][0-9]|3[01])$/;
   if (locale == "fa") {
-    moment.loadPersian({ usePersianDigits: false });
     const jDate = moment(timestamp).format("jYYYY/jMM/jDD");
     const isShamsiValid = shamsiRegex.test(jDate);
     return isShamsiValid;
