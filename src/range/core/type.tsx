@@ -144,6 +144,8 @@ export interface IDesktopProps extends IBaseProps {
     isShowLabel?: boolean;
     label?: ReactNode;
   };
+  dropdownWidth?: number;
+  dropdownHeight?: number;
 }
 export interface ISubmittedData {
   date: IDate;

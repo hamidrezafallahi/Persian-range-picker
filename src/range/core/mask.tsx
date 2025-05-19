@@ -171,16 +171,82 @@ export function DateMask({
       result = pad(Math.min(Math.max(newVal, min), max));
     } else if (index === 2) {
       const min = 1;
-      const max = 31;
+      const max = getEndOfMonth(
+        Number(separatedValue[0]),
+        Number(separatedValue[1]),
+        locale
+      );
+
       const newVal = isUp ? numValue + 1 : numValue - 1;
       result = pad(Math.min(Math.max(newVal, min), max));
     }
 
     return result;
   }
+  function validValue(
+    value: string,
+    name: "year" | "month" | "day",
+    locale: TLocale
+  ): string {
+    const num = Number(value);
+    const ranges = {
+      year:
+        locale === "fa" ? { min: 1300, max: 1500 } : { min: 1900, max: 2100 },
+      month: { min: 1, max: 12 },
+
+      day: {
+        min: 1,
+        max: getEndOfMonth(
+          Number(separatedValue[0]),
+          Number(separatedValue[1]),
+          locale
+        ),
+      },
+    };
+    const { min, max } = ranges[name];
+    const clamped = Math.min(Math.max(num, min), max);
+    if (name !== "year") {
+      return clamped.toString().padStart(2, "0");
+    }
+    return clamped.toString();
+  }
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     const activeElement = document.activeElement;
+    if (event.key == "ArrowRight" || event.key == "ArrowLeft") {
+      if (activeElement instanceof HTMLInputElement) {
+        if (event.key == "ArrowRight") {
+          if (
+            activeElement.name == "year" &&
+            yearInputRef.current?.selectionEnd == 4
+          ) {
+            monthInputRef.current?.focus();
+            monthInputRef.current?.setSelectionRange(0, 0);
+          } else if (
+            activeElement.name == "month" &&
+            monthInputRef.current?.selectionEnd == 2
+          ) {
+            dayInputRef.current?.focus();
+            dayInputRef.current?.setSelectionRange(0, 0);
+          }
+        } else if (event.key == "ArrowLeft") {
+          if (
+            activeElement.name == "day" &&
+            dayInputRef.current?.selectionEnd == 0
+          ) {
+            monthInputRef.current?.focus();
+            monthInputRef.current?.setSelectionRange(2, 2);
+          } else if (
+            activeElement.name == "month" &&
+            monthInputRef.current?.selectionEnd == 0
+          ) {
+            yearInputRef.current?.focus();
+            yearInputRef.current?.setSelectionRange(4, 4);
+          }
+        }
+      }
+    }
+
     if (event.key == "ArrowUp" || event.key == "ArrowDown") {
       event.preventDefault();
       if (activeElement instanceof HTMLInputElement) {
@@ -200,8 +266,6 @@ export function DateMask({
     }
 
     if (event.key === "Enter") {
-      console.log("Enter");
-
       setBaseValue(changeToTimestamp(fullValue, locale));
       setIsEdit(0);
     }
@@ -556,7 +620,6 @@ function checkDateByRegex(timestamp: number, locale: TLocale) {
   const shamsiRegex =
     /^(?:13|14|15)\d{2}\/(0[1-9]|1[0-2])\/(0[1-9]|[12][0-9]|3[01])$/;
   if (locale == "fa") {
-    moment.loadPersian({ usePersianDigits: false });
     const jDate = moment(timestamp).format("jYYYY/jMM/jDD");
     const isShamsiValid = shamsiRegex.test(jDate);
     return isShamsiValid;
@@ -599,46 +662,15 @@ function changeToTimestamp(fullvalue: string, locale: TLocale) {
   }
   return changeToTimestamp;
 }
-function validValue(
-  Value: string,
-  name: "year" | "month" | "day",
-  locale: TLocale
-) {
-  let newValue = Value;
-  if (name == "year") {
-    if (locale == "fa") {
-      if (Number(Value) > 1500) {
-        newValue = "1500";
-      } else if (Number(Value) < 1300) {
-        newValue = "1300";
-      } else {
-        newValue = Value;
-      }
-    } else {
-      if (Number(Value) >= 2100) {
-        newValue = "2100";
-      } else if (Number(Value) <= 1900) {
-        newValue = "1900";
-      } else {
-        newValue = Value;
-      }
-    }
-  } else if (name == "month") {
-    if (Number(Value) >= 12) {
-      newValue = "12";
-    } else if (Number(Value) <= 1) {
-      newValue = "01";
-    } else {
-      newValue = Value;
-    }
-  } else if (name == "day") {
-    if (Number(Value) >= 31) {
-      newValue = "31";
-    } else if (Number(Value) <= 1) {
-      newValue = "01";
-    } else {
-      newValue = Value;
-    }
+
+function getEndOfMonth(year: number, month: number, locale: TLocale): number {
+  if (locale == "fa") {
+    // ساختن تاریخ شمسی و گرفتن روز آخر ماه
+    const jMoment = moment(`${year}/${month}/01`, "jYYYY/jM/jD");
+    return jMoment.endOf("jMonth").jDate(); // فقط روز آخر را می‌دهد
+  } else {
+    // ساختن تاریخ میلادی و گرفتن روز آخر ماه
+    const gMoment = moment(`${year}-${month}-01`, "YYYY-M-D");
+    return gMoment.endOf("month").date(); // فقط روز آخر را می‌دهد
   }
-  return newValue;
 }

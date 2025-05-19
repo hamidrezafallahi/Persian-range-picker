@@ -11,6 +11,7 @@ interface IDesktopProps {
   onChange?: (date: IDate, compareDate?: IDate | null) => void;
   defaultValue?: IDate;
   isShowNavigationButton?: boolean;
+  isShowComparison?: boolean;
   primaryColor?: string;
   backgroundColor?: string;
   tertiaryColor?: string;
@@ -30,6 +31,7 @@ export function DesktopRange(props: IDesktopProps) {
     onChange,
     defaultValue,
     isShowNavigationButton = true,
+    isShowComparison = true,
     primaryColor = "#000",
     backgroundColor = "#fff",
     tertiaryColor = "#939393",
@@ -75,13 +77,14 @@ export function DesktopRange(props: IDesktopProps) {
   const [activeCompareStep, setActiveCompareStep] = useState<ESteps | null>(
     null
   );
-  const [step, setStep] = useState<ESteps>(7);
+  const [step, setStep] = useState<ESteps>(366);
   const [zone, setZone] = useState<ITimeZone>("manual");
   const [tabKey, setTabKey] = useState<ITime | string>("manual");
   const [open, setOpen] = useState(false);
   return (
     <DesktopRangePicker
       activeCompareStep={activeCompareStep}
+      isShowComparison={isShowComparison}
       setActiveCompareStep={setActiveCompareStep}
       compareDate={compareDate}
       counter={counter}
