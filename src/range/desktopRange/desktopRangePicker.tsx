@@ -5,10 +5,10 @@ import moment from "moment-jalaali";
 import MainContent from "../core/mainContent";
 import NavigateButton from "../core/navigateButton";
 import type { IDate, IDesktopProps, ISubmittedData } from "../core/type";
+import { useRenderPosition } from "../exportComponents/useRenderPosition";
 import { DownTriangle } from "../icons/DownTriangle";
 
 export function DesktopRangePicker(props: IDesktopProps) {
-  const dropdownRef = useRef<HTMLDivElement>(null);
   const {
     setDate,
     date,
@@ -31,6 +31,8 @@ export function DesktopRangePicker(props: IDesktopProps) {
     onError,
     // className,
     buttonClassName,
+    dropdownWidth = 460,
+    dropdownHeight = 495,
     label = {
       isShowLabel: true,
       label: (
@@ -142,86 +144,45 @@ export function DesktopRangePicker(props: IDesktopProps) {
   }, [open]);
 
   const [position, setPosition] = useState({ top: 0, left: 0 });
-
-  const buttonRef = useRef<HTMLButtonElement | null>(null);
+  const [isOpen, setIsOpen] = useState(false);
+  const buttonRef = useRef<HTMLElement | null>(null);
   const popupRef = useRef<HTMLDivElement | null>(null);
+
+  const hookPosition = useRenderPosition({
+    buttonRef: buttonRef as React.RefObject<HTMLButtonElement>,
+    enabled: isOpen,
+    popupSize: { width: dropdownWidth, height: dropdownHeight },
+  });
+
   const handleDropdown = () => {
-    const width = 460;
-    const height = 495;
-    setOpen((prev) => {
-      let dir = "ltr";
-      if (buttonRef.current) {
-        dir = getComputedStyle(buttonRef.current).direction;
-      }
-      const newState = !prev;
-      if (newState && buttonRef.current) {
-        const rect = buttonRef.current.getBoundingClientRect();
-        if (rect.bottom + height / 2 <= window.innerHeight / 2) {
-          //اگر ارتفاع دکمه با کامپوننت جمعش کمتر از نصف صفحه بود ؟
-          if (dir == "ltr") {
-            // اگر دایرکشن ltr بود
-            if (rect.left + rect.width / 2 <= window.innerWidth / 2) {
-              //اگر سمت چپ دکمه به همراه عرض کامپوننت از وسط صفحه رد نشد ؟
-              setPosition({
-                top: rect.height + 4,
-                left: 0,
-              });
-            } else {
-              setPosition({
-                top: rect.height + 4,
-                left: rect.width - width,
-              });
-            }
-          } else {
-            if (rect.left + rect.width / 2 <= window.innerWidth / 2) {
-              setPosition({
-                top: rect.height + 4,
-                // left: rect.right - rect.width - 10,
-                left: 0,
-              });
-            } else {
-              setPosition({
-                top: rect.height + 4,
-                left: rect.width - width,
-              });
-            }
-          }
-        } else {
-          if (dir == "ltr") {
-            if (rect.left + rect.width / 2 <= window.innerWidth / 2) {
-              setPosition({
-                top: -height - 4,
-                left: 0,
-              });
-            } else {
-              setPosition({
-                top: -height - 4,
-                left: rect.width - width,
-              });
-            }
-          } else {
-            if (rect.left + rect.width / 2 <= window.innerWidth / 2) {
-              setPosition({
-                top: -height - 4,
-                left: 0,
-              });
-            } else {
-              setPosition({
-                top: -height - 4,
-                left: rect.width - width,
-              });
-            }
-          }
-        }
-      }
-      return newState;
-    });
+    setIsOpen((prev) => !prev);
   };
+
+  useEffect(() => {
+    setPosition(hookPosition);
+  }, [hookPosition]);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        popupRef.current &&
+        !popupRef.current.contains(event.target as Node) &&
+        buttonRef.current &&
+        !buttonRef.current.contains(event.target as Node)
+      ) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
   return (
     <>
       <div
         className={`relative flex flex-col justify-between w-fit h-14 ${buttonClassName}`}
-        ref={dropdownRef}
+        ref={buttonRef as React.RefObject<HTMLDivElement>}
       >
         {label.isShowLabel && label.label}
         <div className="flex gap-2">
@@ -271,7 +232,7 @@ export function DesktopRangePicker(props: IDesktopProps) {
             <NavigateButton {...props} locale={locale} />
           )}
         </div>
-        {open && (
+        {isOpen && (
           <div
             ref={popupRef}
             style={{
