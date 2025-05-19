@@ -32,8 +32,6 @@ function Comparison({ ...props }: IProps) {
   };
 
   useEffect(() => {
-    console.log(componentStep, step);
-
     const flag =
       time[stepToTimeIndex[componentStep]].toLowerCase() ==
       time[stepToTimeIndex[step]].toLowerCase();

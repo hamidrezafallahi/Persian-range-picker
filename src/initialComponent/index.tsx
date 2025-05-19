@@ -113,7 +113,7 @@ export function InitialComponent() {
           handleSubmit={HandleSubmitDate}
           handleReject={resetDate}
         /> */}
-        <div className="flex" dir="rtl">
+        <div className="flex flex-col" dir="rtl">
           <DesktopDate />
           <DesktopRange />
           <MobileDate />
@@ -122,6 +122,9 @@ export function InitialComponent() {
             onChange={handleChange}
             locale="fa"
             defaultValue={1747600199999}
+            onError={(e) => {
+              console.log(e);
+            }}
           />
         </div>
       </div>

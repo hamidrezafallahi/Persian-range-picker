@@ -18,7 +18,6 @@ const CompareList = ({ ...props }: IBaseProps) => {
     tertiaryColor = "#939393", //رنگ سوم، معمولاً برای جزئیات یا عناصر کم‌اهمیت‌تر   -  رنگ متن
     neutralColor = "#9cc5f1", //رنگ خنثی، اغلب برای پس‌زمینه یا متن - آبی کمرنگ
   } = props;
-  console.log(activeCompareStep);
 
   const timeHandler = (item: ITimeSections) => {
     setCompareDate(item.value);
