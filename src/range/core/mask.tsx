@@ -7,7 +7,7 @@ type TimeZone = "year" | "month" | "day";
 type MaskProps = {
   defaultValue?: IDate["from"];
   onError?: (e: string) => void;
-  onChange?: (e: IDate["from"]) => void;
+  onChange?: (e: IDate["from"] | null) => void;
   // tertiaryColor: string | undefined;
   // secondaryColor: string | undefined;
   // dangerColor: string | undefined;
@@ -16,24 +16,29 @@ type MaskProps = {
   locale?: TLocale;
   inputClassName?: string;
   maskClassName?: string;
-  Icon?: ReactNode | boolean;
+  suffix?: ReactNode | boolean;
+  prefix?: ReactNode | boolean;
   maskHeight?: number;
   maskFontSize?: number;
   ErrorClass?: string;
+  dir?: "ltr" | "rtl";
 };
 const defaultErrorClass = "bg-red-100 ";
-export function DateMask({
-  defaultValue,
-  locale = "fa",
-  onError,
-  inputClassName,
-  maskClassName,
-  onChange,
-  maskHeight = 41.6,
-  Icon = <CalenderIcon />,
-  maskFontSize = 16,
-  ErrorClass = defaultErrorClass,
-}: MaskProps) {
+export function DateMask({ ...props }: MaskProps) {
+  const {
+    defaultValue,
+    locale = "fa",
+    onError,
+    inputClassName,
+    maskClassName,
+    onChange,
+    maskHeight = 41.6,
+    suffix,
+    prefix = <CalenderIcon />,
+    maskFontSize = 16,
+    ErrorClass = defaultErrorClass,
+    dir = "ltr",
+  } = props;
   const temp = timestampToDateNumbers(locale, defaultValue);
   const [separatedValue, setSeparatedValue] = useState(temp);
   const [baseValue, setBaseValue] = useState<IDate["from"] | null>(null);
@@ -43,6 +48,7 @@ export function DateMask({
   const fullValueRef = useRef<string>(`${temp[0]}${temp[1]}${temp[2]}`);
   const [isEdit, setIsEdit] = useState<0 | 1 | 2>(0);
   const [errorTarget, setErrorTarget] = useState<number[]>([]);
+  const errors = useRef<number[]>([]);
   const focusRef = useRef<HTMLDivElement | null>(null);
   const fullRef = useRef<HTMLInputElement | null>(null);
   const yearInputRef = useRef<HTMLInputElement | null>(null);
@@ -56,7 +62,7 @@ export function DateMask({
   const clickCount = useRef(0);
   const clickTimer = useRef<number>(0);
   const isInitialMount = useRef(true);
-
+  errors.current = errorTarget;
   const formatToTimeStamp = (FullValue: string) => {
     let changeToTimestamp = null;
     if (locale == "en") {
@@ -119,26 +125,13 @@ export function DateMask({
         });
       }
       if (newValue.length == 2) {
-        if (
-          !validValue(
-            newValue,
-            locale,
-            dayInputRef as React.RefObject<HTMLInputElement>,
-            onError as () => void
-          )
-        ) {
-          setErrorTarget((prev) => [...prev, 2]);
-        }
+        validValue(
+          newValue,
+          locale,
+          dayInputRef as React.RefObject<HTMLInputElement>,
+          onError as () => void
+        );
       }
-
-      // if (newValue.length == 2) {
-      //   const temp =
-      //     separatedValue[0].toString() +
-      //     separatedValue[1].toString() +
-      //     newValue;
-      //   setBaseValue(changeToTimestamp(temp, locale));
-      //   setIsEdit(0);
-      // }
     } else if (e.target.name == "full") {
       setFullValue(newValue);
       fullValueRef.current = newValue;
@@ -220,6 +213,7 @@ export function DateMask({
   ): boolean {
     const num = Number(value);
     const name: TimeZone = ref.current.name as TimeZone;
+
     const target =
       name == "year" ? 0 : name == "month" ? 1 : name == "day" ? 2 : 3;
     const ranges = {
@@ -236,9 +230,16 @@ export function DateMask({
         ),
       },
     };
-    const { min, max } = ranges[name];
+    console.log(
+      getEndOfMonth(
+        Number(separatedValue[0]),
+        Number(separatedValue[1]),
+        locale
+      )
+    );
 
-    if (num < min || num > max) {
+    const { min, max } = ranges[name];
+    if (num < min || num > max || Number.isNaN(max)) {
       ref.current.select();
       setErrorTarget((prev) => [...prev, target]);
       onError?.("تاریخ اشتباه است ");
@@ -264,7 +265,6 @@ export function DateMask({
       return true;
     }
   }
-
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     const activeElement = document.activeElement;
     if (event.key == "ArrowRight" || event.key == "ArrowLeft") {
@@ -325,8 +325,13 @@ export function DateMask({
     }
 
     if (event.key === "Enter") {
-      setBaseValue(changeToTimestamp(fullValue, locale));
-      setIsEdit(0);
+      if (errorTarget.length > 0) {
+        onError?.("تاریخ اشتباه است ");
+        onChange?.(null);
+      } else {
+        setBaseValue(changeToTimestamp(fullValue, locale));
+        setIsEdit(0);
+      }
     }
     if (event.key === "Backspace") {
       if (activeElement instanceof HTMLInputElement) {
@@ -379,7 +384,6 @@ export function DateMask({
   ) => {
     e.preventDefault();
     e.stopPropagation();
-    console.log(e.currentTarget.dataset.name);
     setIsEdit(1);
     if (e.currentTarget.dataset.name == "year") {
       yearInputRef.current?.focus();
@@ -412,7 +416,6 @@ export function DateMask({
         setIsEdit(1);
       } else {
         if (isEdit == 2) {
-          console.log("handleClickOutside full");
           //check valid
 
           if (
@@ -432,9 +435,7 @@ export function DateMask({
             yearInputRef.current.value.toString() +
             monthInputRef.current.value.toString() +
             dayInputRef.current.value.toString();
-          console.log("handleClickOutside separated");
           const active = document.activeElement as HTMLInputElement;
-          console.log(active.name);
           const targetRef =
             active.name == "year"
               ? yearInputRef
@@ -454,7 +455,12 @@ export function DateMask({
           ) {
             setErrorTarget((prev) => [...prev, 3]);
           } else {
-            setBaseValue(changeToTimestamp(temp, locale));
+            if (errors.current.length == 0) {
+              setBaseValue(changeToTimestamp(temp, locale));
+            } else {
+              onChange?.(null);
+              onError?.("تاریخ اشتباه است ");
+            }
           }
         }
         setIsEdit(0);
@@ -507,213 +513,217 @@ export function DateMask({
   }, [defaultValue]);
   return (
     <div
-      className={`range flex justify-end bg-gray-5 rounded w-40 range align-base ${maskClassName} 
+      className={`range flex justify-center items-center bg-gray-5 gap-2 px-2 border rounded  w-40  align-base ${maskClassName} 
  
       `} // ${ errorTarget && ErrorClass}
       style={{ height: `${maskHeight}px` }}
-      dir="ltr"
+      dir={dir}
     >
-      <div
-        className="flex justify-center items-center gap-2 px-2 border rounded-lg w-full align-base"
-        style={{ height: `${maskHeight}px` }}
-      >
-        {isEdit !== 2 ? (
-          <div
-            ref={focusRef}
-            className="flex justify-center w-full item-center"
-          >
-            {isEdit == 0 ? (
-              <div
-                style={{ fontSize: maskFontSize }}
-                className="flex justify-center gap-1 w-full text-base item-center same-font"
-              >
-                <div className={`${errorTarget.includes(0) && ErrorClass}`}>
-                  {separatedValue[0] || "____"}
-                </div>
-                <div>{"/"}</div>
-                <div className={`${errorTarget.includes(1) && ErrorClass}`}>
-                  {separatedValue[1] || "__"}
-                </div>
-                <div>{"/"}</div>
-                <div className={`${errorTarget.includes(2) && ErrorClass}`}>
-                  {separatedValue[2] || "__"}
-                </div>
-              </div>
-            ) : (
-              <div
-                className="flex justify-center items-center same-font"
-                style={{ gap: "1px" }}
-              >
-                <input
-                  type="text"
-                  name="year"
-                  tabIndex={0}
-                  ref={yearInputRef}
-                  value={separatedValue[0]}
-                  onChange={handleChange}
-                  onClick={handleClick}
-                  onKeyDown={handleKeyDown}
-                  maxLength={4}
-                  minLength={4}
-                  className={`same-font bg-gray-5 ${inputClassName} ${
-                    errorTarget.includes(0) && ErrorClass
-                  }`}
-                  style={{
-                    width: (4 * maskFontSize) / 2 + 8,
-                    fontSize: maskFontSize,
-                  }}
-                  placeholder="____"
-                />
-                <span
-                  style={{
-                    userSelect: "none",
-                    pointerEvents: "none",
-                    // width: maskFontSize / 2,
-                    fontSize: maskFontSize,
-                    // paddingRight: "2px",
-                    // paddingLeft: "2px",
-                  }}
-                  className={` ${inputClassName}`}
-                >
-                  /
-                </span>
-                <input
-                  type="text"
-                  name="month"
-                  tabIndex={1}
-                  ref={monthInputRef}
-                  value={separatedValue[1]}
-                  onChange={handleChange}
-                  onClick={handleClick}
-                  onKeyDown={handleKeyDown}
-                  maxLength={2}
-                  minLength={2}
-                  className={`same-font bg-gray-5 ${inputClassName} ${
-                    errorTarget.includes(1) && ErrorClass
-                  }`}
-                  style={{
-                    width: (2 * maskFontSize) / 2 + 8,
-                    fontSize: maskFontSize,
-                  }}
-                  placeholder="__"
-                />
-                <span
-                  className="same-font"
-                  style={{
-                    userSelect: "none",
-                    pointerEvents: "none",
-                    fontSize: maskFontSize,
-                    // width: maskFontSize / 2,
-                    // width: "1ch",
-                    // paddingRight: "1px",
-                    // paddingLeft: "1px",
-                  }}
-                >
-                  /
-                </span>
-                <input
-                  type="text"
-                  name="day"
-                  tabIndex={2}
-                  ref={dayInputRef}
-                  value={separatedValue[2]}
-                  onChange={handleChange}
-                  onClick={handleClick}
-                  onKeyDown={handleKeyDown}
-                  maxLength={2}
-                  minLength={2}
-                  className={`same-font bg-gray-5 ${inputClassName} ${
-                    errorTarget.includes(2) && ErrorClass
-                  }`}
-                  style={{
-                    fontSize: maskFontSize,
-                    width: (2 * maskFontSize) / 2 + 8,
-                  }}
-                  placeholder="__"
-                />
-              </div>
-            )}
-          </div>
-        ) : (
-          <div
-            ref={fullRef}
-            className={`relative flex justify-center w-full text-base p-2 `}
-            style={{ height: `${maskHeight}px` }}
-          >
-            <input
-              id="full"
-              type="text"
-              name="full"
-              ref={fullInputRef}
-              onFocus={() => {
-                handleFocusFullInput();
-              }}
-              value={fullValue}
-              onChange={handleChange}
-              onKeyDown={handleKeyDown}
-              maxLength={8}
-              minLength={8}
-              className={`opacity-0`}
-              style={{ display: "hidden", width: "0px" }}
-            />
+      <div className="">{suffix && suffix}</div>
+      {isEdit !== 2 ? (
+        <div
+          ref={focusRef}
+          className="flex justify-center w-full item-center"
+          dir="ltr"
+        >
+          {isEdit == 0 ? (
             <div
-              className={`z-10 absolute inset-0  mx-auto    text-base flex justify-center items-center same-font  ${
-                inputClassName && inputClassName
-              }
+              style={{ fontSize: maskFontSize }}
+              className="flex justify-center gap-1 w-full text-base item-center same-font"
+            >
+              <div className={`${errorTarget.includes(0) && ErrorClass}`}>
+                {separatedValue[0] || "____"}
+              </div>
+              <div>{"/"}</div>
+              <div className={`${errorTarget.includes(1) && ErrorClass}`}>
+                {separatedValue[1] || "__"}
+              </div>
+              <div>{"/"}</div>
+              <div className={`${errorTarget.includes(2) && ErrorClass}`}>
+                {separatedValue[2] || "__"}
+              </div>
+            </div>
+          ) : (
+            <div
+              className="flex justify-center items-center same-font"
+              style={{ gap: "1px" }}
+            >
+              <input
+                type="text"
+                name="year"
+                tabIndex={0}
+                ref={yearInputRef}
+                value={separatedValue[0]}
+                onChange={handleChange}
+                onClick={handleClick}
+                onKeyDown={handleKeyDown}
+                maxLength={4}
+                minLength={4}
+                className={`same-font bg-gray-5 ${inputClassName} ${
+                  errorTarget.includes(0) && ErrorClass
+                }`}
+                style={{
+                  width: (4 * maskFontSize) / 2 + 8,
+                  fontSize: maskFontSize,
+                }}
+                placeholder="____"
+              />
+              <span
+                style={{
+                  userSelect: "none",
+                  pointerEvents: "none",
+                  // width: maskFontSize / 2,
+                  fontSize: maskFontSize,
+                  // paddingRight: "2px",
+                  // paddingLeft: "2px",
+                }}
+                className={` ${inputClassName}`}
+              >
+                /
+              </span>
+              <input
+                type="text"
+                name="month"
+                tabIndex={1}
+                ref={monthInputRef}
+                value={separatedValue[1]}
+                onChange={handleChange}
+                onClick={handleClick}
+                onKeyDown={handleKeyDown}
+                maxLength={2}
+                minLength={2}
+                className={`same-font bg-gray-5 ${inputClassName} ${
+                  errorTarget.includes(1) && ErrorClass
+                }`}
+                style={{
+                  width: (2 * maskFontSize) / 2 + 8,
+                  fontSize: maskFontSize,
+                }}
+                placeholder="__"
+              />
+              <span
+                className="same-font"
+                style={{
+                  userSelect: "none",
+                  pointerEvents: "none",
+                  fontSize: maskFontSize,
+                  // width: maskFontSize / 2,
+                  // width: "1ch",
+                  // paddingRight: "1px",
+                  // paddingLeft: "1px",
+                }}
+              >
+                /
+              </span>
+              <input
+                type="text"
+                name="day"
+                tabIndex={2}
+                ref={dayInputRef}
+                value={separatedValue[2]}
+                onChange={handleChange}
+                onClick={handleClick}
+                onKeyDown={handleKeyDown}
+                maxLength={2}
+                minLength={2}
+                className={`same-font bg-gray-5 ${inputClassName} ${
+                  errorTarget.includes(2) && ErrorClass
+                }`}
+                style={{
+                  fontSize: maskFontSize,
+                  width: (2 * maskFontSize) / 2 + 8,
+                }}
+                placeholder="__"
+              />
+            </div>
+          )}
+        </div>
+      ) : (
+        <div
+          ref={fullRef}
+          className={`relative flex justify-center w-full text-base p-2 `}
+          style={{ height: `${maskHeight}px` }}
+          dir="ltr"
+        >
+          <input
+            id="full"
+            type="text"
+            name="full"
+            ref={fullInputRef}
+            onFocus={() => {
+              handleFocusFullInput();
+            }}
+            value={fullValue}
+            onChange={handleChange}
+            onKeyDown={handleKeyDown}
+            maxLength={8}
+            minLength={8}
+            className={`opacity-0`}
+            style={{ display: "hidden", width: "0px" }}
+          />
+          <div
+            className={`z-10 absolute inset-0  mx-auto    text-base flex justify-center items-center same-font  ${
+              inputClassName && inputClassName
+            }
               ${errorTarget.includes(3) && ErrorClass}
               `}
-              onKeyDown={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-              }}
-              style={{
-                display: "flex",
-                gap: "3px",
-                fontSize: maskFontSize,
-                // height: `${maskHeight}px`,
-                // userSelect: "none",
-                // pointerEvents: "none",
-              }}
-            >
-              {formatInputValue(fullValue)
-                .split("/")
-                .map((item, index) => {
-                  return (
-                    <>
+            onKeyDown={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+            }}
+            style={{
+              display: "flex",
+              // gap: "3px",
+              fontSize: maskFontSize,
+              // height: `${maskHeight}px`,
+              // userSelect: "none",
+              // pointerEvents: "none",
+            }}
+          >
+            {formatInputValue(fullValue)
+              .split("/")
+              .map((item, index) => {
+                return (
+                  <>
+                    <span
+                      key={index}
+                      data-name={
+                        index == 0 ? "year" : index == 1 ? "month" : "day"
+                      }
+                      ref={spanRefs[index]}
+                      onMouseDown={handleFocusOnRelatedInputElement}
+                      className={` same-font selected-text ${inputClassName} ${
+                        errorTarget.includes(index) && ErrorClass
+                      }`}
+                      style={{
+                        // userSelect: "none",
+                        // pointerEvents: "none",
+                        fontSize: maskFontSize,
+                      }}
+                    >
                       <span
-                        key={index}
-                        data-name={
-                          index == 0 ? "year" : index == 1 ? "month" : "day"
-                        }
-                        ref={spanRefs[index]}
-                        onMouseDown={handleFocusOnRelatedInputElement}
-                        className={` same-font ${inputClassName} ${
-                          //selected-text
+                        className={`${
                           errorTarget.includes(index) && ErrorClass
                         }`}
-                        style={{
-                          // userSelect: "none",
-                          // pointerEvents: "none",
-                          fontSize: maskFontSize,
-                        }}
                       >
-                        <span
-                          className={`${
-                            errorTarget.includes(index) && ErrorClass
-                          }`}
-                        >
-                          {item}
-                        </span>
+                        {item}
                       </span>
-                      {index !== 2 && <span className=" ">/</span>}
-                    </>
-                  );
-                })}
-            </div>
+                    </span>
+                    {index !== 2 && (
+                      <span
+                        style={{ width: maskFontSize / 2 + 6 }}
+                        className="flex justify-center items-center selected-text"
+                      >
+                        /
+                      </span>
+                    )}
+                  </>
+                );
+              })}
           </div>
-        )}
-        <div className="">{Icon && Icon}</div>
-      </div>
+        </div>
+      )}
+      <div className="">{prefix && prefix}</div>
     </div>
   );
 }
