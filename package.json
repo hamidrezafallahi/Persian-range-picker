@@ -6,8 +6,7 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview",
-    "sass": "sass --watch main.scss:styles.css"
+    "preview": "vite preview"
   },
   "dependencies": {
     "react": "^19.1.0",
