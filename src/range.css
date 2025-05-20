@@ -829,6 +829,14 @@
     gap: 0.75rem;
   }
 }
+
+@-moz-document url-prefix() {
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: #d9d9d9 #ecedf2;
+  }
+}
+
 .-z-10 {
   z-index: -10;
 }
