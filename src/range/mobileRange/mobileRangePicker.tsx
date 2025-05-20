@@ -1,13 +1,16 @@
-import { useEffect, useRef } from "react";
+import {
+  useEffect,
+  useRef,
+} from 'react';
 
-import moment from "moment-jalaali";
+import moment from 'moment-jalaali';
 
-import { period } from "../core/helper";
-import MainContent from "../core/mainContent";
-import NavigateButton from "../core/navigateButton";
-import type { IBaseProps } from "../core/type";
-import { CalenderIcon } from "../icons/CalenderIcon";
-import { MenuArrowBack } from "../icons/MenuArrowBack";
+import { period } from '../core/helper';
+import MainContent from '../core/mainContent';
+import NavigateButton from '../core/navigateButton';
+import type { IBaseProps } from '../core/type';
+import { CalenderIcon } from '../icons/CalenderIcon';
+import { MenuArrowBack } from '../icons/MenuArrowBack';
 
 const MobileRangePicker = (props: IBaseProps) => {
   const {
@@ -114,7 +117,7 @@ const MobileRangePicker = (props: IBaseProps) => {
       <div
         popover="auto"
         id="mobileRangeModal"
-        className={`w-full h-full ${popoverClassName} `}
+        className={`w-full h-full ${popoverClassName} border-none`}
       >
         <div className="flex gap-1">
           <button

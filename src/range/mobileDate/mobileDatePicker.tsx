@@ -1,10 +1,16 @@
-import { useRef, useState } from "react";
+import {
+  useRef,
+  useState,
+} from 'react';
 
-import moment from "moment-jalaali";
+import moment from 'moment-jalaali';
 
-import type { IDate, IDateProps } from "../core/type";
-import { CalenderIcon } from "../icons/CalenderIcon";
-import { DatePicker } from "../persianDatePicker";
+import type {
+  IDate,
+  IDateProps,
+} from '../core/type';
+import { CalenderIcon } from '../icons/CalenderIcon';
+import { DatePicker } from '../persianDatePicker';
 
 const MobileDatePicker = ({ ...props }: IDateProps) => {
   const {
@@ -50,7 +56,7 @@ const MobileDatePicker = ({ ...props }: IDateProps) => {
         popover="auto"
         id="mobileDateModal"
         ref={popoverRef}
-        className="w-full h-full"
+        className="border-none w-full h-full"
       >
         <DatePicker
           {...props}

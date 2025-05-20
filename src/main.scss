@@ -2,6 +2,21 @@
 @use "./styles/variables";
 @use "./styles/mixins";
 
+#{"*"} {
+  &::-webkit-scrollbar {
+    width: 5px !important;
+    height: 5px !important;
+  }
+  &::-webkit-scrollbar-track {
+    background-color: #ecedf2 !important;
+    border-radius: 10px !important;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: #d9d9d9 !important;
+    border-radius: 10px !important;
+  }
+}
+
 .range {
   // رفع مشکل selector های شامل *
   #{"*"},
@@ -9,7 +24,9 @@
   #{"*"}::after {
     box-sizing: border-box;
   }
-
+  .border-none {
+    border: none;
+  }
   .same-font {
     font-family: Arial, Helvetica, sans-serif;
   }
@@ -292,7 +309,7 @@
   /* media query */
   @media (max-width: 431px) {
     .\!border-b {
-      border-bottom-width: 1px !important;
+      border-bottom: 1px solid #eee !important;
     }
     .max-w-430px {
       max-width: 430px;

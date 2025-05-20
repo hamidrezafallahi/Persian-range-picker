@@ -524,7 +524,7 @@ export function DateMask({
       dir="ltr"
     >
       <div
-        className="flex justify-center items-center gap-2 px-2 border rounded-lg w-full align-base"
+        className="flex justify-center items-center gap-2 px-2 border rounded-lg w-full align-center"
         style={{ height: `${maskHeight}px` }}
       >
         {isEdit !== 2 ? (

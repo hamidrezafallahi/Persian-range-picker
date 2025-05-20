@@ -101,7 +101,7 @@ export function InitialComponent() {
 
   return (
     <>
-      <div className="border range">
+      <div className="range">
         {/* <Range
           // device={device}
           // locale={locale}
