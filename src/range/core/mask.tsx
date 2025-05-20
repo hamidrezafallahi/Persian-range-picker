@@ -523,7 +523,7 @@ export function DateMask({ ...props }: MaskProps) {
   }, [defaultValue]);
   return (
     <div
-      className={`range flex justify-center items-center bg-gray-5 gap-2 px-2 border rounded  w-40  align-base ${maskClassName} 
+      className={`range flex justify-center items-center bg-gray-5 gap-2 px-2 border rounded  w-40  align-center ${maskClassName} 
  
       `} // ${ errorTarget && ErrorClass}
       style={{ height: `${maskHeight}px` }}
