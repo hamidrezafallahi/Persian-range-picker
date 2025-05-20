@@ -1,14 +1,31 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import {
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 
-import moment from "moment-jalaali";
+import moment from 'moment-jalaali';
 
-import MainContent from "../core/mainContent";
-import NavigateButton from "../core/navigateButton";
-import type { IDate, IDesktopProps, ISubmittedData } from "../core/type";
-import { useRenderPosition } from "../exportComponents/useRenderPosition";
-import { DownTriangle } from "../icons/DownTriangle";
+import MainContent from '../core/mainContent';
+import NavigateButton from '../core/navigateButton';
+import type {
+  IDate,
+  IDesktopProps,
+  ISubmittedData,
+} from '../core/type';
+import { useRenderPosition } from '../exportComponents/useRenderPosition';
+import { DownTriangle } from '../icons/DownTriangle';
 
 export function DesktopRangePicker(props: IDesktopProps) {
+  const userAgent = navigator.userAgent;
+  const deviceType =
+    /Mobile|Android|iPhone|iPad|iPod|Opera Mini|BlackBerry|IEMobile/i.test(
+      userAgent
+    )
+      ? "mobile"
+      : "desktop";
+
   const {
     setDate,
     date,
@@ -34,7 +51,7 @@ export function DesktopRangePicker(props: IDesktopProps) {
     buttonClassName,
     dropdownWidth = 460,
     dropdownHeight = 495,
-
+    device = deviceType,
     label = {
       isShowLabel: true,
       label: (
@@ -65,6 +82,7 @@ export function DesktopRangePicker(props: IDesktopProps) {
     };
   }, [date, compareDate]);
   const [showDate, setShowDate] = useState<ISubmittedData>(initSubmittedData);
+
   const handleAccept = (date: IDate, compareDate: IDate | null) => {
     if (date) {
       if (date.from && date.to && date.from < date.to) {
@@ -248,7 +266,12 @@ export function DesktopRangePicker(props: IDesktopProps) {
             }`}
           >
             <div className="relative w-full h-full">
-              <MainContent {...props} model="range" locale={locale} />
+              <MainContent
+                {...props}
+                model="range"
+                locale={locale}
+                device={device}
+              />
               <div
                 className={`w-full flex ${
                   locale == "fa" ? "justify-end" : "justify-start"

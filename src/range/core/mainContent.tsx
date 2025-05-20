@@ -1,9 +1,15 @@
-import { type ReactNode, useState } from "react";
+import {
+  type ReactNode,
+  useState,
+} from 'react';
 
-import Manual from "./manual";
-import PeriodList from "./periodList";
-import type { IBaseProps, ITime } from "./type";
-import { ESteps } from "./type";
+import Manual from './manual';
+import PeriodList from './periodList';
+import type {
+  IBaseProps,
+  ITime,
+} from './type';
+import { ESteps } from './type';
 
 interface ITab {
   key: ITime | string;
@@ -18,6 +24,7 @@ const MainContent = ({ ...props }: Omit<IBaseProps, "componentStep">) => {
     tabClassName,
     accentColor = "#2563eb",
     locale,
+    device,
   } = props;
   const [activeTab, setActiveTab] = useState<ITime | string>("manual");
   const handleTabChange = (key: ITime | string) => {
@@ -53,16 +60,22 @@ const MainContent = ({ ...props }: Omit<IBaseProps, "componentStep">) => {
     },
     ...additionalElement,
   ];
-
+  console.log(device);
   return (
     <div
       dir={locale == "fa" ? "rtl" : "ltr"}
-      className={`flex flex-col xs:!flex-row xs:h-full `}
+      className={device == "desktop" ? " flex h-full" : " flex flex-col"}
     >
       <div
-        className={`flex justify-around  xs:flex-col gap-9 p-2 !border-b xs:!border-b-0 ${
-          locale == "fa" ? "xs:!border-l" : "xs:!border-r"
-        } max-w-[430px] xs:w-28  h-10 xs:!h-[calc(100%-52px)] xs:overflow-y-auto overflow-x-auto ${tabClassName} `}
+        className={`
+    ${
+      device === "desktop"
+        ? "flex flex-col justify-between !border-b-0  w-28 !h-[calc(100%-52px)] overflow-y-auto"
+        : " flex justify-around gap-9 p-2 !border-b  max-w-[430px] h-10 overflow-x-auto"
+    }
+    ${locale === "fa" && device === "desktop" ? "!border-l !border-r" : ""}
+    ${tabClassName}
+  `.trim()}
       >
         {tabs.map((tab) => (
           <button
@@ -75,11 +88,16 @@ const MainContent = ({ ...props }: Omit<IBaseProps, "componentStep">) => {
             className={`${periodListClassName} font-medium text-right text-nowrap text-sm  *:
             ${
               activeTab === tab.key
-                ? "border-b-2 xs:border-none"
+                ? device === "desktop"
+                  ? "border-none"
+                  : "border-b-2 "
                 : "  text-gray-500 hover:text-gray-700"
             }
-            flex justify-center xs:!justify-start xs:gap-3 items-center
-            
+            ${
+              device === "desktop"
+                ? "flex justify-center items-center"
+                : "!justify-start gap-3  "
+            }
             `}
           >
             <div
@@ -87,7 +105,7 @@ const MainContent = ({ ...props }: Omit<IBaseProps, "componentStep">) => {
                 color: activeTab === tab.key ? accentColor : "text-gray-500",
                 borderColor: activeTab === tab.key ? accentColor : "",
               }}
-              className={`h-8  hidden xs:block
+              className={` ${device === "desktop" ? " block" : " hidden h-8 "}
                 ${
                   activeTab === tab.key
                     ? "border-r-4"

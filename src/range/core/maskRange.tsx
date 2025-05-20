@@ -25,18 +25,20 @@ function MaskRange({ ...props }: IProps) {
     <div className="flex items-center gap-2">
       <DateMask
         locale={locale}
-        onChange={(e) => handleChange(e, "from")}
+        onChange={(e) => handleChange(e as number, "from")}
         defaultValue={date.from}
         maskClassName="bg-red-100 bg-white rounded-lg flex justify-center"
-        Icon={false}
+        prefix={false}
+        suffix={false}
       />
       {"_"}
       <DateMask
         locale={locale}
-        onChange={(e) => handleChange(e, "to")}
+        onChange={(e) => handleChange(e as number, "to")}
         defaultValue={date.to}
         maskClassName="bg-red-100 bg-white rounded-lg flex justify-center"
-        Icon={false}
+        suffix={false}
+        prefix={false}
       />
     </div>
   );

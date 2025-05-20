@@ -1,5 +1,8 @@
-import type { Dispatch, ReactNode } from "react";
-import React from "react";
+import type {
+  Dispatch,
+  ReactNode,
+} from 'react';
+import React from 'react';
 
 type TDeviceType = "desktop" | "mobile";
 export interface IAdditionalElementType {
@@ -64,6 +67,7 @@ export interface IRangeOptions {
   onError?: (e: string) => void;
   className?: string;
   buttonClassName?: string;
+  device?: "desktop" | "mobile";
 }
 export interface IBaseProps extends IRangeOptions {
   neutralColor?: string;
@@ -139,7 +143,7 @@ export interface IDesktopProps extends IBaseProps {
   className?: string;
   buttonClassName?: string;
   showLabel?: boolean;
-  device: string;
+  device?: "desktop" | "mobile";
   label?: {
     isShowLabel?: boolean;
     label?: ReactNode;

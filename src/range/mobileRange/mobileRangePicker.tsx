@@ -38,6 +38,7 @@ const MobileRangePicker = (props: IBaseProps) => {
     locale = "fa",
     className,
     model = "range",
+    device,
   } = props;
   const compareDateDidMountRef = useRef(false);
   const counterDidMountRef = useRef(false);
@@ -156,6 +157,7 @@ const MobileRangePicker = (props: IBaseProps) => {
           isShowComparison={isShowComparison}
           additionalElement={additionalElement}
           calenderClassName=""
+          device={device}
         />
       </div>
     </div>
