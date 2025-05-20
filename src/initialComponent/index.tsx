@@ -95,7 +95,7 @@ export function InitialComponent() {
   const resetDate = () => {
     console.log("Reject");
   };
-  const handleChange = (e: number) => {
+  const handleChange = (e: number | null) => {
     console.log(e);
   };
 
@@ -120,7 +120,7 @@ export function InitialComponent() {
           <DateMask
             onChange={handleChange}
             locale="fa"
-            defaultValue={1747600199999}
+            // defaultValue={1747600199999}
             onError={(e) => {
               console.log(e);
             }}
