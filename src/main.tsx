@@ -8,6 +8,9 @@ import { InitialComponent } from './initialComponent';
 createRoot(document.getElementById("root")!).render(
   <>
     <InitialComponent />
-    <div>test</div>
+    <div>test2</div>
+    99999
+
+    <p>fsdfsdf</p>
   </>
 );
