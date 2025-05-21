@@ -8,5 +8,6 @@ import { InitialComponent } from './initialComponent';
 createRoot(document.getElementById("root")!).render(
   <>
     <InitialComponent />
+    <div>test</div>
   </>
 );
