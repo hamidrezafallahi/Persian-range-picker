@@ -1144,5 +1144,7 @@ input:focus {
 .range .-z-10 {
   z-index: -10;
 }
-
+.bg-green-10 {
+  background-color: #fff;
+}
 /*# sourceMappingURL=main.css.map */
