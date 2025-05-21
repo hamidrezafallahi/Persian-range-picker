@@ -4,8 +4,9 @@ import {
   DesktopRange,
   MobileDate,
   MobileRange,
-} from '../range';
-import type { IDate } from '../range/core/type';
+  Range,
+} from "../range";
+import type { IDate } from "../range/core/type";
 
 export function InitialComponent() {
   const handleDateChange = (w: IDate) => {
@@ -102,7 +103,7 @@ export function InitialComponent() {
   return (
     <>
       <div className="range">
-        {/* <Range
+        <Range
           // device={device}
           // locale={locale}
           // model={model}
@@ -111,7 +112,7 @@ export function InitialComponent() {
           onNavigateChange={handleNavigateChange}
           handleSubmit={HandleSubmitDate}
           handleReject={resetDate}
-        /> */}
+        />
         <div className="flex flex-col" dir="rtl">
           <DesktopDate />
           <DesktopRange />
