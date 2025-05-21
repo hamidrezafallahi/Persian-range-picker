@@ -22,6 +22,7 @@ type MaskProps = {
   maskFontSize?: number;
   ErrorClass?: string;
   dir?: "ltr" | "rtl";
+  autoComplete?: "on" | "off";
 };
 const defaultErrorClass = "bg-red-100 ";
 export function DateMask({ ...props }: MaskProps) {
@@ -38,6 +39,7 @@ export function DateMask({ ...props }: MaskProps) {
     maskFontSize = 16,
     ErrorClass = defaultErrorClass,
     dir = "ltr",
+    autoComplete = "off",
   } = props;
   const temp = timestampToDateNumbers(locale, defaultValue);
   const [separatedValue, setSeparatedValue] = useState(temp);
@@ -47,6 +49,8 @@ export function DateMask({ ...props }: MaskProps) {
   );
   const fullValueRef = useRef<string>(`${temp[0]}${temp[1]}${temp[2]}`);
   const [isEdit, setIsEdit] = useState<0 | 1 | 2>(0);
+  const editModeRef = useRef<0 | 1 | 2>(null);
+  const separatedValueRef = useRef(temp);
   const [errorTarget, setErrorTarget] = useState<number[]>([]);
   const errors = useRef<number[]>([]);
   const focusRef = useRef<HTMLDivElement | null>(null);
@@ -61,9 +65,11 @@ export function DateMask({ ...props }: MaskProps) {
   const spanRefs = [span0, span1, span2];
   const clickCount = useRef(0);
   const clickTimer = useRef<number>(0);
-  const isInitialMount = useRef(true);
+  const message = locale == "fa" ? "تاریخ نا معتبر است " : "Date is invalid";
   errors.current = errorTarget;
-  const formatToTimeStamp = (FullValue: string) => {
+  separatedValueRef.current = separatedValue;
+  editModeRef.current = isEdit;
+  const formatFullValueToTimeStamp = (FullValue: string) => {
     let changeToTimestamp = null;
     if (locale == "en") {
       changeToTimestamp = moment(FullValue, "YYYYMMDD").valueOf();
@@ -86,7 +92,7 @@ export function DateMask({ ...props }: MaskProps) {
         });
       }
       if (newValue.length == 4) {
-        validValue(
+        validSeparatedValue(
           newValue,
           locale,
           yearInputRef as React.RefObject<HTMLInputElement>,
@@ -106,7 +112,7 @@ export function DateMask({ ...props }: MaskProps) {
         });
       }
       if (newValue.length == 2) {
-        validValue(
+        validSeparatedValue(
           newValue,
           locale,
           monthInputRef as React.RefObject<HTMLInputElement>,
@@ -125,7 +131,7 @@ export function DateMask({ ...props }: MaskProps) {
         });
       }
       if (newValue.length == 2) {
-        validValue(
+        validSeparatedValue(
           newValue,
           locale,
           dayInputRef as React.RefObject<HTMLInputElement>,
@@ -141,8 +147,8 @@ export function DateMask({ ...props }: MaskProps) {
         });
       }
       if (newValue.length == 8) {
-        if (!checkDateByRegex(formatToTimeStamp(newValue), locale)) {
-          onError?.(locale == "fa" ? "تاریخ نا معتبر است" : "invalid date");
+        if (!checkDateByRegex(formatFullValueToTimeStamp(newValue), locale)) {
+          onError?.(message);
           setErrorTarget((prev) => [...prev, 3]);
         }
       }
@@ -196,7 +202,9 @@ export function DateMask({ ...props }: MaskProps) {
       const max = getEndOfMonth(
         Number(separatedValue[0]),
         Number(separatedValue[1]),
-        locale
+        locale,
+        onError,
+        index
       );
 
       const newVal = isUp ? numValue + 1 : numValue - 1;
@@ -205,7 +213,7 @@ export function DateMask({ ...props }: MaskProps) {
 
     return result;
   }
-  function validValue(
+  function validSeparatedValue(
     value: string,
     locale: TLocale,
     ref: React.RefObject<HTMLInputElement>,
@@ -213,7 +221,6 @@ export function DateMask({ ...props }: MaskProps) {
   ): boolean {
     const num = Number(value);
     const name: TimeZone = ref.current.name as TimeZone;
-
     const target =
       name == "year" ? 0 : name == "month" ? 1 : name == "day" ? 2 : 3;
     const ranges = {
@@ -224,27 +231,30 @@ export function DateMask({ ...props }: MaskProps) {
       day: {
         min: 1,
         max: getEndOfMonth(
-          Number(separatedValue[0]),
-          Number(separatedValue[1]),
-          locale
+          Number(separatedValueRef.current[0]),
+          Number(separatedValueRef.current[1]),
+          locale,
+          onError,
+          target
         ),
       },
     };
-    console.log(
-      getEndOfMonth(
-        Number(separatedValue[0]),
-        Number(separatedValue[1]),
-        locale
-      )
-    );
 
     const { min, max } = ranges[name];
-    if (num < min || num > max || Number.isNaN(max)) {
+    if (num < min || num > max) {
       ref.current.select();
-      setErrorTarget((prev) => [...prev, target]);
-      onError?.("تاریخ اشتباه است ");
+      setErrorTarget((prev) => [
+        ...prev.filter((item) => item !== target),
+        target,
+      ]);
+      if (target !== 2) {
+        onError?.(message);
+      }
       return false;
     } else {
+      setErrorTarget((prev) => {
+        return [...prev.filter((item) => item !== target)];
+      });
       if (name !== "day") {
         const focusable = [...document.querySelectorAll("input")].sort(
           (a, b) => a.tabIndex - b.tabIndex
@@ -257,7 +267,6 @@ export function DateMask({ ...props }: MaskProps) {
         const index = focusable.indexOf(active as HTMLInputElement);
         if ((index + 1) % focusable.length !== 0) {
           const next = focusable[(index + 1) % focusable.length];
-
           next.focus();
           next.select();
         }
@@ -265,8 +274,59 @@ export function DateMask({ ...props }: MaskProps) {
       return true;
     }
   }
+  function validFullValue(
+    fullValue: string, // e.g. "14040231"
+    locale: TLocale,
+    onError: (e: string) => void
+  ): boolean {
+    if (fullValue.length !== 8 || isNaN(Number(fullValue))) {
+      onError("Invalid input format");
+      return false;
+    }
+
+    const year = Number(fullValue.slice(0, 4));
+    const month = Number(fullValue.slice(4, 6));
+    const day = Number(fullValue.slice(6, 8));
+
+    const ranges = {
+      year:
+        locale === "fa" ? { min: 1300, max: 1500 } : { min: 1900, max: 2100 },
+      month: { min: 1, max: 12 },
+      day: {
+        min: 1,
+        max: getEndOfMonth(year, month, locale, onError, 3),
+      },
+    };
+
+    const fields = [
+      { label: "year", value: year },
+      { label: "month", value: month },
+      { label: "day", value: day },
+    ];
+
+    for (const field of fields) {
+      const { min, max } = ranges[field.label as keyof typeof ranges];
+      if (field.value < min || field.value > max) {
+        onError(`${field.label} is out of range`);
+        fullInputRef.current?.select?.();
+        const target =
+          field.label == "year" ? 0 : field.label == "month" ? 1 : 2;
+        setErrorTarget((prev) => [
+          ...prev.filter((item) => item !== 3),
+          3,
+          target,
+        ]);
+        return false;
+      }
+    }
+
+    // All fields are valid
+    setErrorTarget([]);
+    return true;
+  }
+
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    const activeElement = document.activeElement;
+    const activeElement = document.activeElement as HTMLInputElement;
     if (event.key == "ArrowRight" || event.key == "ArrowLeft") {
       if (activeElement instanceof HTMLInputElement) {
         if (event.key == "ArrowRight") {
@@ -317,22 +377,60 @@ export function DateMask({ ...props }: MaskProps) {
             : 2;
         setSeparatedValue((prev) => {
           const newState = [...prev];
-
           newState[target] = handleCount(newState[target], event.key, target);
           return newState;
+        });
+        setErrorTarget((prev) => {
+          return [...prev.filter((item) => item !== target)];
         });
       }
     }
 
     if (event.key === "Enter") {
-      if (errorTarget.length > 0) {
-        onError?.("تاریخ اشتباه است ");
-        onChange?.(null);
+      if (activeElement?.name == "full") {
+        if (
+          validFullValue(fullValue, locale, onError ?? (() => {})) &&
+          checkDateByRegex(formatFullValueToTimeStamp(fullValue), locale)
+        ) {
+          setBaseValue(changeToTimestamp(fullValue, locale));
+          setIsEdit(0);
+        } else {
+          onChange?.(null);
+        }
       } else {
-        setBaseValue(changeToTimestamp(fullValue, locale));
-        setIsEdit(0);
+        if (
+          validSeparatedValue(
+            yearInputRef.current!.value,
+            locale,
+            yearInputRef as React.RefObject<HTMLInputElement>,
+            onError ?? (() => {})
+          ) &&
+          validSeparatedValue(
+            monthInputRef.current!.value,
+            locale,
+            monthInputRef as React.RefObject<HTMLInputElement>,
+            onError ?? (() => {})
+          ) &&
+          validSeparatedValue(
+            dayInputRef.current!.value,
+            locale,
+            dayInputRef as React.RefObject<HTMLInputElement>,
+            onError ?? (() => {})
+          )
+        ) {
+          const temp =
+            yearInputRef.current!.value.toString() +
+            monthInputRef.current!.value.toString() +
+            dayInputRef.current!.value.toString();
+          setBaseValue(changeToTimestamp(temp, locale));
+          setIsEdit(0);
+        } else {
+          onChange?.(null);
+          onError?.(message);
+        }
       }
     }
+
     if (event.key === "Backspace") {
       if (activeElement instanceof HTMLInputElement) {
         if (activeElement.value.length == 0) {
@@ -369,6 +467,7 @@ export function DateMask({ ...props }: MaskProps) {
       clickCount.current += 1;
       if (clickCount.current === 3) {
         setIsEdit(2);
+
         clearTimeout(clickTimer.current);
         clickCount.current = 0;
         return;
@@ -416,14 +515,20 @@ export function DateMask({ ...props }: MaskProps) {
         setIsEdit(1);
       } else {
         if (isEdit == 2) {
-          //check valid
-
           if (
-            !checkDateByRegex(formatToTimeStamp(fullValueRef.current), locale)
+            validFullValue(fullValueRef.current, locale, onError ?? (() => {}))
           ) {
-            setErrorTarget((prev) => [...prev, 3]);
-          } else {
+            const year = fullValueRef.current.slice(0, 4);
+            const month = fullValueRef.current.slice(4, 6);
+            const day = fullValueRef.current.slice(6, 8);
+            setSeparatedValue([year, month, day]);
             setBaseValue(changeToTimestamp(fullValueRef.current, locale));
+          } else {
+            setErrorTarget((prev) => [...prev.filter((item) => item !== 3), 3]);
+            const year = fullValueRef.current.slice(0, 4);
+            const month = fullValueRef.current.slice(4, 6);
+            const day = fullValueRef.current.slice(6, 8);
+            setSeparatedValue([year, month, day]);
           }
         }
         if (
@@ -435,32 +540,30 @@ export function DateMask({ ...props }: MaskProps) {
             yearInputRef.current.value.toString() +
             monthInputRef.current.value.toString() +
             dayInputRef.current.value.toString();
-          const active = document.activeElement as HTMLInputElement;
-          const targetRef =
-            active.name == "year"
-              ? yearInputRef
-              : active.name == "month"
-              ? monthInputRef
-              : active.name == "day"
-              ? dayInputRef
-              : fullInputRef;
-
           if (
-            validValue(
-              active.value,
+            validSeparatedValue(
+              yearInputRef.current.value,
               locale,
-              targetRef as React.RefObject<HTMLInputElement>,
+              yearInputRef as React.RefObject<HTMLInputElement>,
+              onError as () => void
+            ) &&
+            validSeparatedValue(
+              monthInputRef.current.value,
+              locale,
+              monthInputRef as React.RefObject<HTMLInputElement>,
+              onError as () => void
+            ) &&
+            validSeparatedValue(
+              dayInputRef.current.value,
+              locale,
+              dayInputRef as React.RefObject<HTMLInputElement>,
               onError as () => void
             )
           ) {
-            setErrorTarget((prev) => [...prev, 3]);
+            setBaseValue(changeToTimestamp(temp, locale));
           } else {
-            if (errors.current.length == 0) {
-              setBaseValue(changeToTimestamp(temp, locale));
-            } else {
-              onChange?.(null);
-              onError?.("تاریخ اشتباه است ");
-            }
+            onChange?.(null);
+            onError?.(message);
           }
         }
         setIsEdit(0);
@@ -488,15 +591,17 @@ export function DateMask({ ...props }: MaskProps) {
     if (!baseValue) {
       return;
     }
-    if (isInitialMount.current) {
-      isInitialMount.current = false;
-      return;
-    }
+    // if (isInitialMount.current && isEdit !== 2) {
+    //   isInitialMount.current = false;
+    //   return;
+    // }
+
     const dateValues = timestampToDateNumbers(locale, baseValue);
     const [year, month, day] = dateValues;
     const temp = `${year}${month}${day}`.substring(0, 8);
     setFullValue(temp);
     fullValueRef.current = temp;
+
     setSeparatedValue([year.toString(), month.toString(), day.toString()]);
     onChange?.(baseValue);
   }, [baseValue]);
@@ -552,6 +657,7 @@ export function DateMask({ ...props }: MaskProps) {
                 type="text"
                 name="year"
                 tabIndex={0}
+                autoComplete={autoComplete}
                 ref={yearInputRef}
                 value={separatedValue[0]}
                 onChange={handleChange}
@@ -585,6 +691,7 @@ export function DateMask({ ...props }: MaskProps) {
                 type="text"
                 name="month"
                 tabIndex={1}
+                autoComplete={autoComplete}
                 ref={monthInputRef}
                 value={separatedValue[1]}
                 onChange={handleChange}
@@ -621,6 +728,7 @@ export function DateMask({ ...props }: MaskProps) {
                 tabIndex={2}
                 ref={dayInputRef}
                 value={separatedValue[2]}
+                autoComplete={autoComplete}
                 onChange={handleChange}
                 onClick={handleClick}
                 onKeyDown={handleKeyDown}
@@ -653,6 +761,7 @@ export function DateMask({ ...props }: MaskProps) {
             onFocus={() => {
               handleFocusFullInput();
             }}
+            autoComplete={autoComplete}
             value={fullValue}
             onChange={handleChange}
             onKeyDown={handleKeyDown}
@@ -792,14 +901,36 @@ function changeToTimestamp(fullvalue: string, locale: TLocale) {
   return changeToTimestamp;
 }
 
-function getEndOfMonth(year: number, month: number, locale: TLocale): number {
+function getEndOfMonth(
+  year: number,
+  month: number,
+  locale: TLocale,
+  onError: ((e: string) => void) | undefined,
+  index: 0 | 1 | 2 | 3
+): number {
   if (locale == "fa") {
     // ساختن تاریخ شمسی و گرفتن روز آخر ماه
     const jMoment = moment(`${year}/${month}/01`, "jYYYY/jM/jD");
-    return jMoment.endOf("jMonth").jDate(); // فقط روز آخر را می‌دهد
+    if (Number.isNaN(jMoment.endOf("jMonth").jDate())) {
+      if (index == 2) {
+        onError?.("سال و ماه را اصلاح کنید");
+      }
+      return 1; // فقط روز آخر را می‌دهد
+    } else {
+      return jMoment.endOf("jMonth").jDate(); // فقط روز آخر را می‌دهد
+    }
   } else {
-    // ساختن تاریخ میلادی و گرفتن روز آخر ماه
     const gMoment = moment(`${year}-${month}-01`, "YYYY-M-D");
-    return gMoment.endOf("month").date(); // فقط روز آخر را می‌دهد
+
+    if (Number.isNaN(gMoment.endOf("month").date())) {
+      if (index == 2) {
+        onError?.("Please check year and month");
+      }
+
+      return 1; // فقط روز آخر را می‌دهد
+    } else {
+      return gMoment.endOf("month").date(); // فقط روز آخر را می‌دهد
+    }
+    // ساختن تاریخ میلادی و گرفتن روز آخر ماه
   }
 }
