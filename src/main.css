@@ -176,7 +176,9 @@ input:focus {
 .border-b-2 {
   border-bottom-width: 2px;
 }
-
+.border-red-700{
+  border-color: #D32F2F !important;
+}
 .\!border-red-400 {
   border-color: #f87171 !important;
 }

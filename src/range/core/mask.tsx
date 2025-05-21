@@ -34,7 +34,7 @@ type MaskProps = {
   dir?: "ltr" | "rtl";
   autoComplete?: "on" | "off";
 };
-const defaultErrorClass = "bg-red-100 ";
+const defaultErrorClass = "border-red-700 ";
 export function DateMask({ ...props }: MaskProps) {
   const {
     defaultValue,
@@ -629,8 +629,8 @@ export function DateMask({ ...props }: MaskProps) {
   return (
     <div
       className={`range flex justify-center items-center bg-gray-5 gap-2 px-2 border rounded  w-40  align-center ${maskClassName} 
- 
-      `} // ${ errorTarget && ErrorClass}
+ ${ errorTarget.length >0  && ErrorClass}
+      `}
       style={{ height: `${maskHeight}px` }}
       dir={dir}
     >
@@ -646,15 +646,15 @@ export function DateMask({ ...props }: MaskProps) {
               style={{ fontSize: maskFontSize }}
               className="flex justify-center gap-1 w-full text-base item-center same-font"
             >
-              <div className={`${errorTarget.includes(0) && ErrorClass}`}>
+              <div>
                 {separatedValue[0] || "____"}
               </div>
               <div>{"/"}</div>
-              <div className={`${errorTarget.includes(1) && ErrorClass}`}>
+              <div>
                 {separatedValue[1] || "__"}
               </div>
               <div>{"/"}</div>
-              <div className={`${errorTarget.includes(2) && ErrorClass}`}>
+              <div>
                 {separatedValue[2] || "__"}
               </div>
             </div>
@@ -675,9 +675,7 @@ export function DateMask({ ...props }: MaskProps) {
                 onKeyDown={handleKeyDown}
                 maxLength={4}
                 minLength={4}
-                className={`same-font bg-gray-5 ${inputClassName} ${
-                  errorTarget.includes(0) && ErrorClass
-                }`}
+                className={`same-font bg-gray-5 ${inputClassName} `}
                 style={{
                   width: (4 * maskFontSize) / 2 + 8,
                   fontSize: maskFontSize,
@@ -709,9 +707,7 @@ export function DateMask({ ...props }: MaskProps) {
                 onKeyDown={handleKeyDown}
                 maxLength={2}
                 minLength={2}
-                className={`same-font bg-gray-5 ${inputClassName} ${
-                  errorTarget.includes(1) && ErrorClass
-                }`}
+                className={`same-font bg-gray-5 ${inputClassName}`}
                 style={{
                   width: (2 * maskFontSize) / 2 + 8,
                   fontSize: maskFontSize,
@@ -744,9 +740,7 @@ export function DateMask({ ...props }: MaskProps) {
                 onKeyDown={handleKeyDown}
                 maxLength={2}
                 minLength={2}
-                className={`same-font bg-gray-5 ${inputClassName} ${
-                  errorTarget.includes(2) && ErrorClass
-                }`}
+                className={`same-font bg-gray-5 ${inputClassName}`}
                 style={{
                   fontSize: maskFontSize,
                   width: (2 * maskFontSize) / 2 + 8,
@@ -783,9 +777,7 @@ export function DateMask({ ...props }: MaskProps) {
           <div
             className={`z-10 absolute inset-0  mx-auto    text-base flex justify-center items-center same-font  ${
               inputClassName && inputClassName
-            }
-              ${errorTarget.includes(3) && ErrorClass}
-              `}
+            }`}
             onKeyDown={(e) => {
               e.preventDefault();
               e.stopPropagation();
@@ -811,9 +803,7 @@ export function DateMask({ ...props }: MaskProps) {
                       }
                       ref={spanRefs[index]}
                       onMouseDown={handleFocusOnRelatedInputElement}
-                      className={` same-font selected-text ${inputClassName} ${
-                        errorTarget.includes(index) && ErrorClass
-                      }`}
+                      className={` same-font selected-text ${inputClassName} `}
                       style={{
                         // userSelect: "none",
                         // pointerEvents: "none",
@@ -821,7 +811,7 @@ export function DateMask({ ...props }: MaskProps) {
                       }}
                     >
                       <span
-                        className={`${
+                        className={`selected-text ${ 
                           errorTarget.includes(index) && ErrorClass
                         }`}
                       >
