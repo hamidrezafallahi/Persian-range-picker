@@ -1,0 +1,40 @@
+{
+  "hash": "01f904d1",
+  "configHash": "5740a7fc",
+  "lockfileHash": "8ed037e1",
+  "browserHash": "a292974a",
+  "optimized": {
+    "react": {
+      "src": "../../node_modules/react/index.js",
+      "file": "react.js",
+      "fileHash": "0b5c08a5",
+      "needsInterop": true
+    },
+    "moment-jalaali": {
+      "src": "../../node_modules/moment-jalaali/index.js",
+      "file": "moment-jalaali.js",
+      "fileHash": "7c7617f1",
+      "needsInterop": true
+    },
+    "react/jsx-dev-runtime": {
+      "src": "../../node_modules/react/jsx-dev-runtime.js",
+      "file": "react_jsx-dev-runtime.js",
+      "fileHash": "ee871d9c",
+      "needsInterop": true
+    },
+    "react-dom/client": {
+      "src": "../../node_modules/react-dom/client.js",
+      "file": "react-dom_client.js",
+      "fileHash": "aff216d2",
+      "needsInterop": true
+    }
+  },
+  "chunks": {
+    "chunk-JQVZXNHX": {
+      "file": "chunk-JQVZXNHX.js"
+    },
+    "chunk-VUNV25KB": {
+      "file": "chunk-VUNV25KB.js"
+    }
+  }
+}
