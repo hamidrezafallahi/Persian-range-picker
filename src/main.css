@@ -1147,5 +1147,8 @@ input:focus {
   padding-left: 0.5rem;
   padding-right: 0.5rem;
 }
+.range .border-red-100 {
+  border: 1px solid red;
+}
 
 /*# sourceMappingURL=main.css.map */
