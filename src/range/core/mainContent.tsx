@@ -1,15 +1,9 @@
-import {
-  type ReactNode,
-  useState,
-} from 'react';
+import { type ReactNode, useState } from "react";
 
-import Manual from './manual';
-import PeriodList from './periodList';
-import type {
-  IBaseProps,
-  ITime,
-} from './type';
-import { ESteps } from './type';
+import Manual from "./manual";
+import PeriodList from "./periodList";
+import type { IBaseProps, ITime } from "./type";
+import { ESteps } from "./type";
 
 interface ITab {
   key: ITime | string;
@@ -60,7 +54,6 @@ const MainContent = ({ ...props }: Omit<IBaseProps, "componentStep">) => {
     },
     ...additionalElement,
   ];
-  console.log(device);
   return (
     <div
       dir={locale == "fa" ? "rtl" : "ltr"}
