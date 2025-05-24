@@ -26,7 +26,7 @@ type MaskProps = {
   dir?: "ltr" | "rtl";
   autoComplete?: "on" | "off";
 };
-const defaultErrorClass = "bg-red-100 ";
+const defaultErrorClass = "border-red-700 ";
 export function DateMask({ ...props }: MaskProps) {
   const {
     defaultValue,
@@ -83,6 +83,12 @@ export function DateMask({ ...props }: MaskProps) {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     //persian number support
     const newValue = e.target.value.replace(/\D/g, "");
+    console.log(errorTarget)
+    if(errorTarget.includes(3)){
+      setErrorTarget((prev) => {
+        return [...prev.filter((item) => item !== 3 )];
+      });
+    }
     if (e.target.name == "year") {
       setSeparatedValue((prev) => {
         const newState = [...prev];
@@ -91,7 +97,7 @@ export function DateMask({ ...props }: MaskProps) {
       });
       if (errorTarget.includes(0)) {
         setErrorTarget((prev) => {
-          return [...prev.filter((item) => item !== 0)];
+          return [...prev.filter((item) => item !== 0 )];
         });
       }
       if (newValue.length == 4) {
@@ -152,14 +158,14 @@ export function DateMask({ ...props }: MaskProps) {
       if (newValue.length == 8) {
         if (!checkDateByRegex(formatFullValueToTimeStamp(newValue), locale)) {
           onError?.(message);
-          setErrorTarget((prev) => [...prev, 3]);
+          setErrorTarget((prev) => [...prev.filter((item) => item !== 3), 3]);
         }
       }
     }
   };
   const handleFocusFullInput = () => {
     if (fullInputRef.current) {
-      // fullInputRef.current.select();
+      fullInputRef.current.select();
     }
   };
   const formatInputValue = (value: string) => {
@@ -317,8 +323,6 @@ export function DateMask({ ...props }: MaskProps) {
         return false;
       }
     }
-
-    // All fields are valid
     setErrorTarget([]);
     return true;
   }
@@ -617,8 +621,8 @@ export function DateMask({ ...props }: MaskProps) {
   return (
     <div
       className={`range flex justify-center items-center bg-gray-5 gap-2 px-2 border rounded  w-40  align-center ${maskClassName} 
- 
-      `} // ${ errorTarget && ErrorClass}
+ ${errorTarget.length > 0 && ErrorClass}
+      `}
       style={{ height: `${maskHeight}px` }}
       dir={dir}
     >
@@ -634,17 +638,11 @@ export function DateMask({ ...props }: MaskProps) {
               style={{ fontSize: maskFontSize }}
               className="flex justify-center gap-1 w-full text-base item-center same-font"
             >
-              <div className={`${errorTarget.includes(0) && ErrorClass}`}>
-                {separatedValue[0] || "____"}
-              </div>
+              <div>{separatedValue[0] || "____"}</div>
               <div>{"/"}</div>
-              <div className={`${errorTarget.includes(1) && ErrorClass}`}>
-                {separatedValue[1] || "__"}
-              </div>
+              <div>{separatedValue[1] || "__"}</div>
               <div>{"/"}</div>
-              <div className={`${errorTarget.includes(2) && ErrorClass}`}>
-                {separatedValue[2] || "__"}
-              </div>
+              <div>{separatedValue[2] || "__"}</div>
             </div>
           ) : (
             <div
@@ -663,9 +661,7 @@ export function DateMask({ ...props }: MaskProps) {
                 onKeyDown={handleKeyDown}
                 maxLength={4}
                 minLength={4}
-                className={`same-font bg-gray-5 ${inputClassName} ${
-                  errorTarget.includes(0) && ErrorClass
-                }`}
+                className={`same-font bg-gray-5 ${inputClassName} `}
                 style={{
                   width: (4 * maskFontSize) / 2 + 8,
                   fontSize: maskFontSize,
@@ -697,9 +693,7 @@ export function DateMask({ ...props }: MaskProps) {
                 onKeyDown={handleKeyDown}
                 maxLength={2}
                 minLength={2}
-                className={`same-font bg-gray-5 ${inputClassName} ${
-                  errorTarget.includes(1) && ErrorClass
-                }`}
+                className={`same-font bg-gray-5 ${inputClassName}`}
                 style={{
                   width: (2 * maskFontSize) / 2 + 8,
                   fontSize: maskFontSize,
@@ -732,9 +726,7 @@ export function DateMask({ ...props }: MaskProps) {
                 onKeyDown={handleKeyDown}
                 maxLength={2}
                 minLength={2}
-                className={`same-font bg-gray-5 ${inputClassName} ${
-                  errorTarget.includes(2) && ErrorClass
-                }`}
+                className={`same-font bg-gray-5 ${inputClassName}`}
                 style={{
                   fontSize: maskFontSize,
                   width: (2 * maskFontSize) / 2 + 8,
@@ -766,14 +758,12 @@ export function DateMask({ ...props }: MaskProps) {
             maxLength={8}
             minLength={8}
             className={`opacity-0`}
-            style={{ display: "hidden", width: "0px" }}
+            // style={{ display: "hidden", width: "0px" }}
           />
           <div
             className={`z-10 absolute inset-0  mx-auto    text-base flex justify-center items-center same-font  ${
               inputClassName && inputClassName
-            }
-              ${errorTarget.includes(3) && ErrorClass}
-              `}
+            }`}
             onKeyDown={(e) => {
               e.preventDefault();
               e.stopPropagation();
@@ -781,6 +771,7 @@ export function DateMask({ ...props }: MaskProps) {
             style={{
               display: "flex",
               // gap: "3px",
+
               fontSize: maskFontSize,
               // height: `${maskHeight}px`,
               // userSelect: "none",
@@ -798,9 +789,7 @@ export function DateMask({ ...props }: MaskProps) {
                       }
                       ref={spanRefs[index]}
                       onMouseDown={handleFocusOnRelatedInputElement}
-                      className={` same-font selected-text ${inputClassName} ${
-                        errorTarget.includes(index) && ErrorClass
-                      }`}
+                      className={` same-font selected-text ${inputClassName} `}
                       style={{
                         // userSelect: "none",
                         // pointerEvents: "none",
@@ -808,7 +797,7 @@ export function DateMask({ ...props }: MaskProps) {
                       }}
                     >
                       <span
-                        className={`${
+                        className={`selected-text ${
                           errorTarget.includes(index) && ErrorClass
                         }`}
                       >
@@ -817,7 +806,7 @@ export function DateMask({ ...props }: MaskProps) {
                     </span>
                     {index !== 2 && (
                       <span
-                        style={{ width: maskFontSize / 2 + 6 }}
+                        style={{ width: maskFontSize / 2 + 6 ,height:maskFontSize+1}}
                         className="flex justify-center items-center selected-text"
                       >
                         /

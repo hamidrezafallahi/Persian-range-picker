@@ -1,5 +1,4 @@
-import "./range.min.css";
-// import "./main.css";
+import "./main.css";
 
 // import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
