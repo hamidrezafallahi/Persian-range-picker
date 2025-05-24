@@ -1,10 +1,7 @@
-import type { Dispatch } from 'react';
+import type { Dispatch } from "react";
 
-import { DateMask } from './mask';
-import type {
-  IDate,
-  TLocale,
-} from './type';
+import { DateMask } from "./mask";
+import type { IDate, TLocale } from "./type";
 
 interface IProps {
   date: IDate;

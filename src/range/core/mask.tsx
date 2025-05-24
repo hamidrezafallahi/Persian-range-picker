@@ -1,17 +1,9 @@
-import {
-  type ReactNode,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import React, { type ReactNode, useEffect, useRef, useState } from "react";
 
-import moment from 'moment-jalaali';
+import moment from "moment-jalaali";
 
-import { CalenderIcon } from '../icons/CalenderIcon';
-import type {
-  IDate,
-  TLocale,
-} from './type';
+import { CalenderIcon } from "../icons/CalenderIcon";
+import type { IDate, TLocale } from "./type";
 
 type TimeZone = "year" | "month" | "day";
 type MaskProps = {
@@ -89,6 +81,7 @@ export function DateMask({ ...props }: MaskProps) {
     return changeToTimestamp;
   };
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    //persian number support
     const newValue = e.target.value.replace(/\D/g, "");
     if (e.target.name == "year") {
       setSeparatedValue((prev) => {
@@ -181,48 +174,45 @@ export function DateMask({ ...props }: MaskProps) {
     index: number
   ) {
     const numValue = Number(value);
-    let result: string = value;
+    const isUp = arrow === "ArrowUp";
+    const change = isUp ? 1 : -1;
+    const newVal = numValue + change;
 
     const clamp = (val: number, min: number, max: number) =>
-      Math.min(Math.max(val, min), max).toString();
+      Math.min(Math.max(val, min), max);
 
     const pad = (val: number) => val.toString().padStart(2, "0");
 
-    const isUp = arrow === "ArrowUp";
-    if (index === 0) {
-      // Year
-      if (locale === "fa") {
-        const min = 1300;
-        const max = 1500;
-        const newVal = isUp ? numValue + 1 : numValue - 1;
-        result = clamp(newVal, min, max);
-      } else {
-        const min = 1900;
-        const max = 2100;
-        const newVal = isUp ? numValue + 1 : numValue - 1;
-        result = clamp(newVal, min, max);
+    switch (index) {
+      case 0: {
+        // Year
+        const min = 0;
+        const max = 9999;
+        return clamp(newVal, min, max).toString();
       }
-    } else if (index === 1) {
-      const min = 1;
-      const max = 12;
-      const newVal = isUp ? numValue + 1 : numValue - 1;
-      result = pad(Math.min(Math.max(newVal, min), max));
-    } else if (index === 2) {
-      const min = 1;
-      const max = getEndOfMonth(
-        Number(separatedValue[0]),
-        Number(separatedValue[1]),
-        locale,
-        onError,
-        index
-      );
-
-      const newVal = isUp ? numValue + 1 : numValue - 1;
-      result = pad(Math.min(Math.max(newVal, min), max));
+      case 1: {
+        // Month
+        const min = 1;
+        const max = 12;
+        return pad(clamp(newVal, min, max));
+      }
+      case 2: {
+        // Day
+        const min = 1;
+        const max = getEndOfMonth(
+          Number(separatedValue[0]),
+          Number(separatedValue[1]),
+          locale,
+          onError,
+          index
+        );
+        return pad(clamp(newVal, min, max));
+      }
+      default:
+        return value;
     }
-
-    return result;
   }
+
   function validSeparatedValue(
     value: string,
     locale: TLocale,
@@ -234,8 +224,7 @@ export function DateMask({ ...props }: MaskProps) {
     const target =
       name == "year" ? 0 : name == "month" ? 1 : name == "day" ? 2 : 3;
     const ranges = {
-      year:
-        locale === "fa" ? { min: 1300, max: 1500 } : { min: 1900, max: 2100 },
+      year: { min: 0, max: 9999 },
       month: { min: 1, max: 12 },
 
       day: {
@@ -299,8 +288,7 @@ export function DateMask({ ...props }: MaskProps) {
     const day = Number(fullValue.slice(6, 8));
 
     const ranges = {
-      year:
-        locale === "fa" ? { min: 1300, max: 1500 } : { min: 1900, max: 2100 },
+      year: { min: 0, max: 9999 },
       month: { min: 1, max: 12 },
       day: {
         min: 1,
@@ -803,9 +791,8 @@ export function DateMask({ ...props }: MaskProps) {
               .split("/")
               .map((item, index) => {
                 return (
-                  <>
+                  <React.Fragment key={index}>
                     <span
-                      key={index}
                       data-name={
                         index == 0 ? "year" : index == 1 ? "month" : "day"
                       }
@@ -836,7 +823,7 @@ export function DateMask({ ...props }: MaskProps) {
                         /
                       </span>
                     )}
-                  </>
+                  </React.Fragment>
                 );
               })}
           </div>
@@ -863,10 +850,9 @@ function timestampToDateNumbers(locale: TLocale, timestamp?: number) {
   return [year, month, day];
 }
 function checkDateByRegex(timestamp: number, locale: TLocale) {
-  const gregorianRegex =
-    /^(?:19|20)\d{2}\/(0[1-9]|1[0-2])\/(0[1-9]|[12][0-9]|3[01])$/;
-  const shamsiRegex =
-    /^(?:13|14|15)\d{2}\/(0[1-9]|1[0-2])\/(0[1-9]|[12][0-9]|3[01])$/;
+  const gregorianRegex = /^\d{4}\/(0[1-9]|1[0-2])\/(0[1-9]|[12][0-9]|3[01])$/;
+  const shamsiRegex = /^\d{4}\/(0[1-9]|1[0-2])\/(0[1-9]|[12][0-9]|3[01])$/;
+
   if (locale == "fa") {
     const jDate = moment(timestamp).format("jYYYY/jMM/jDD");
     const isShamsiValid = shamsiRegex.test(jDate);
