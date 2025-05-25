@@ -1,9 +1,17 @@
-import React, { type ReactNode, useEffect, useRef, useState } from "react";
+import React, {
+  type ReactNode,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 
-import moment from "moment-jalaali";
+import moment from 'moment-jalaali';
 
-import { CalenderIcon } from "../icons/CalenderIcon";
-import type { IDate, TLocale } from "./type";
+import { CalenderIcon } from '../icons/CalenderIcon';
+import type {
+  IDate,
+  TLocale,
+} from './type';
 
 type TimeZone = "year" | "month" | "day";
 type MaskProps = {
@@ -80,13 +88,23 @@ export function DateMask({ ...props }: MaskProps) {
     }
     return changeToTimestamp;
   };
+
+  const convertPersianToEnglishNumbers = (input: string): string => {
+    const persianNumbers = ["۰", "۱", "۲", "۳", "۴", "۵", "۶", "۷", "۸", "۹"];
+    return input.replace(/[۰-۹]/g, (w) => persianNumbers.indexOf(w).toString());
+  };
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    //persian number support
-    const newValue = e.target.value.replace(/\D/g, "");
-    console.log(errorTarget)
-    if(errorTarget.includes(3)){
+    const rawValue = e.target.value;
+    const newValue = convertPersianToEnglishNumbers(rawValue).replace(
+      /\D/g,
+      ""
+    );
+
+    console.log(errorTarget);
+    if (errorTarget.includes(3)) {
       setErrorTarget((prev) => {
-        return [...prev.filter((item) => item !== 3 )];
+        return [...prev.filter((item) => item !== 3)];
       });
     }
     if (e.target.name == "year") {
@@ -97,7 +115,7 @@ export function DateMask({ ...props }: MaskProps) {
       });
       if (errorTarget.includes(0)) {
         setErrorTarget((prev) => {
-          return [...prev.filter((item) => item !== 0 )];
+          return [...prev.filter((item) => item !== 0)];
         });
       }
       if (newValue.length == 4) {
@@ -806,7 +824,10 @@ export function DateMask({ ...props }: MaskProps) {
                     </span>
                     {index !== 2 && (
                       <span
-                        style={{ width: maskFontSize / 2 + 6 ,height:maskFontSize+1}}
+                        style={{
+                          width: maskFontSize / 2 + 6,
+                          height: maskFontSize + 1,
+                        }}
                         className="flex justify-center items-center selected-text"
                       >
                         /
