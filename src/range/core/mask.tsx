@@ -90,8 +90,9 @@ export function DateMask({ ...props }: MaskProps) {
   };
 
   const convertPersianToEnglishNumbers = (input: string): string => {
-    const persianNumbers = ["۰", "۱", "۲", "۳", "۴", "۵", "۶", "۷", "۸", "۹"];
-    return input.replace(/[۰-۹]/g, (w) => persianNumbers.indexOf(w).toString());
+    const persian = "۰۱۲۳۴۵۶۷۸۹";
+    const english = "0123456789";
+    return input.replace(/[۰-۹]/g, (d) => english[persian.indexOf(d)] || d);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
