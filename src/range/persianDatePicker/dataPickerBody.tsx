@@ -34,7 +34,7 @@ const DataPickerBody: FC<Props> = ({
       : new Date().setHours(0, 0, 0, 0).valueOf();
   return (
     <div
-      className={`flex justify-center  w-full  ${datePickerBodyClassName} `}
+      className={`flex justify-center  w-full ${datePickerBodyClassName} `}
       style={{
         display: "flex",
         flexDirection: locale === "fa" ? "row" : "row-reverse",

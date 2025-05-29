@@ -776,7 +776,8 @@ export function DateMask({ ...props }: MaskProps) {
             onKeyDown={handleKeyDown}
             maxLength={8}
             minLength={8}
-            className={`opacity-0`}
+
+            className={`opacity-0 w-full`}
             // style={{ display: "hidden", width: "0px" }}
           />
           <div
@@ -808,7 +809,7 @@ export function DateMask({ ...props }: MaskProps) {
                       }
                       ref={spanRefs[index]}
                       onMouseDown={handleFocusOnRelatedInputElement}
-                      className={` same-font selected-text ${inputClassName} `}
+                      className={` same-font selected-text  ${inputClassName} `}
                       style={{
                         // userSelect: "none",
                         // pointerEvents: "none",

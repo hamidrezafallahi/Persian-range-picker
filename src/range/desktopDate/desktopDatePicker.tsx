@@ -83,7 +83,7 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
   return (
-    <div className="relative bg-red-100 w-fit h-full">
+    <div className="relative w-fit h-full">
       <button
         ref={buttonRef as React.RefObject<HTMLButtonElement>}
         onClick={handleDropdown}
@@ -102,7 +102,7 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
             left: position.left,
             zIndex: 1000,
           }}
-          className="bg-white shadow p-3 border rounded-lg w-72 h-80"
+          className="bg-white shadow p-3 border rounded-lg w-72 h-81 bg-red-100"
         >
           <DatePicker
             name="DesktopDate"
