@@ -102,7 +102,7 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
             left: position.left,
             zIndex: 1000,
           }}
-          className="bg-white shadow p-3 border rounded-lg w-72 h-81 bg-red-100"
+          className="bg-white shadow p-3 border rounded-lg w-72 h-81"
         >
           <DatePicker
             name="DesktopDate"
