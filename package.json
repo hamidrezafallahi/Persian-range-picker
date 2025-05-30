@@ -3,6 +3,7 @@
   "version": "0.1.0",
    "license": "MIT",
   "type": "module",
+   "build": "vite build",
   "repository": {
   "type": "git",
   "url": "https://github.com/hamidrezafallahi/Persian-range-picker.git"
@@ -10,6 +11,7 @@
 "bugs": {
   "url": "https://github.com/hamidrezafallahi/Persian-range-picker/issues"
 },
+  
 "homepage": "https://github.com/hamidrezafallahi/persian-range-picker#readme",
 
   "scripts": {
