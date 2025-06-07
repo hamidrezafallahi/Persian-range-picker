@@ -7,6 +7,7 @@ import {
   Range,
 } from "../range";
 import type { IDate } from "../range/core/type";
+import TimePicker from "../timePicker";
 
 export function InitialComponent() {
   const handleDateChange = (w: IDate) => {
@@ -127,6 +128,7 @@ export function InitialComponent() {
             }}
           />
         </div>
+        <TimePicker />
       </div>
     </>
   );
