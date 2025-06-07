@@ -128,7 +128,11 @@ export function InitialComponent() {
             }}
           />
         </div>
-        <TimePicker />
+        <TimePicker
+          onChange={(e) => {
+            console.log(new Date(e).toISOString());
+          }}
+        />
       </div>
     </>
   );
