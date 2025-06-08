@@ -10,6 +10,7 @@ import moment from "moment-jalaali";
 
 import { useRenderPosition } from "../../";
 import { CalenderIcon } from "../../icons/CalenderIcon";
+import { TimeColumns } from "./exportComponents";
 
 type TUnit = "hour" | "minute" | "second";
 interface Props {
@@ -132,7 +133,9 @@ export const TimePicker: React.FC<Props> = ({ ...props }: Props) => {
     setPosition(hookPosition);
   }, [hookPosition]);
   const renderHeight = `${
-    displayButtonCount * (buttonRefs.current[0]?.offsetHeight ?? 17) + 20
+    displayButtonCount * (buttonRefs.current[0]?.offsetHeight ?? 17) +
+    20 +
+    (displayButtonCount - 1) * 16
   }px`;
   return (
     <div className="relative w-fit" ref={ref}>
@@ -163,36 +166,15 @@ export const TimePicker: React.FC<Props> = ({ ...props }: Props) => {
           className={`flex flex-col gap-2 bg-white shadow-lg p-3 border border-gray-300 rounded-lg w-fit ${containerClassName}`}
           // style={{ width: width, height: height, minHeight: minHeight }}
         >
-          <div className="flex gap-4">
-            <div
-              className="flex flex-col gap-2 px-0 px-2 overflow-y-auto"
-              style={{ height: renderHeight }}
-            >
-              {renderOptions(24, "hour")}
-            </div>
-            <div
-              className="flex flex-col gap-2 px-2 overflow-y-auto"
-              style={{ height: renderHeight }}
-            >
-              {renderOptions(60, "minute")}
-            </div>
-            <div
-              className="flex flex-col gap-2 px-2 overflow-y-auto"
-              style={{ height: renderHeight }}
-            >
-              {renderOptions(60, "second")}
-            </div>
-          </div>
+          <TimeColumns
+            renderHeight={renderHeight}
+            renderOptions={renderOptions}
+          />
 
           <div className="flex justify-between gap-4 mt-2 max-h-20">
             <button
               onClick={handleNow}
               className={`p-2 px-3 border  rounded-md ${nowButtonClassName}`}
-              style={{
-                background: "rgb(0, 0, 0)",
-                borderColor: "rgb(0, 0, 0)",
-                color: "rgb(255, 255, 255)",
-              }}
             >
               Now
             </button>
