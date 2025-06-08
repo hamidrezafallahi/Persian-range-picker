@@ -165,19 +165,19 @@ export const TimePicker: React.FC<Props> = ({ ...props }: Props) => {
         >
           <div className="flex gap-4">
             <div
-              className="flex flex-col px-0 overflow-y-auto"
+              className="flex flex-col gap-2 px-0 px-2 overflow-y-auto"
               style={{ height: renderHeight }}
             >
               {renderOptions(24, "hour")}
             </div>
             <div
-              className="flex flex-col overflow-y-auto"
+              className="flex flex-col gap-2 px-2 overflow-y-auto"
               style={{ height: renderHeight }}
             >
               {renderOptions(60, "minute")}
             </div>
             <div
-              className="flex flex-col overflow-y-auto"
+              className="flex flex-col gap-2 px-2 overflow-y-auto"
               style={{ height: renderHeight }}
             >
               {renderOptions(60, "second")}
@@ -187,13 +187,23 @@ export const TimePicker: React.FC<Props> = ({ ...props }: Props) => {
           <div className="flex justify-between gap-4 mt-2 max-h-20">
             <button
               onClick={handleNow}
-              className={`bg-gray-100 hover:bg-gray-200 px-4 py-1 border border-gray-300 rounded transition ${nowButtonClassName}`}
+              className={`p-2 px-3 border  rounded-md ${nowButtonClassName}`}
+              style={{
+                background: "rgb(0, 0, 0)",
+                borderColor: "rgb(0, 0, 0)",
+                color: "rgb(255, 255, 255)",
+              }}
             >
               Now
             </button>
             <button
               onClick={handleOk}
-              className={`bg-gray-100 hover:bg-gray-200 px-4 py-1 border border-gray-300 rounded transition ${okButtonClassName}`}
+              className={`p-2 px-3 border rounded-md ${okButtonClassName}`}
+              style={{
+                background: "rgb(0, 0, 0)",
+                borderColor: "rgb(0, 0, 0)",
+                color: "rgb(255, 255, 255)",
+              }}
             >
               OK
             </button>
