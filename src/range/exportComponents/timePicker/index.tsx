@@ -8,7 +8,8 @@ import React, {
 
 import moment from "moment-jalaali";
 
-import { CalenderIcon } from "../range/icons/CalenderIcon";
+import { useRenderPosition } from "../../";
+import { CalenderIcon } from "../../icons/CalenderIcon";
 
 type TUnit = "hour" | "minute" | "second";
 interface Props {
@@ -19,13 +20,15 @@ interface Props {
   okButtonClassName?: string;
   nowButtonClassName?: string;
   timeButtonClassName?: string;
-  width?: string | number;
-  height?: string | number;
+  width?: number;
+  height?: number;
   displayButtonCount?: number;
   icon?: ReactNode | null;
+  tertiaryColor?: string;
+  highlightColor?: string;
 }
 
-const TimePicker: React.FC<Props> = ({ ...props }: Props) => {
+export const TimePicker: React.FC<Props> = ({ ...props }: Props) => {
   const {
     defaultValue,
     onChange,
@@ -34,15 +37,17 @@ const TimePicker: React.FC<Props> = ({ ...props }: Props) => {
     okButtonClassName,
     nowButtonClassName,
     timeButtonClassName,
-    width,
+    width = 100,
     height = 100,
     displayButtonCount = 10,
     icon = <CalenderIcon />,
+    tertiaryColor = "#939393",
+    highlightColor = "#f4f4f4",
   } = props;
   const initValue = useMemo(() => {
     let temp = null;
     if (defaultValue) {
-      temp = moment().locale(locale).valueOf();
+      temp = moment(defaultValue).locale(locale).valueOf();
     } else {
       temp = moment().locale(locale).valueOf();
     }
@@ -52,10 +57,16 @@ const TimePicker: React.FC<Props> = ({ ...props }: Props) => {
   const [open, setOpen] = useState(false);
   const [time, setTime] = useState<number>(initValue);
   const [tempTime, setTempTime] = useState<number>(time);
+  const [position, setPosition] = useState({ top: 0, left: 0 });
+
   const ref = useRef<HTMLDivElement>(null);
   const buttonRefs = useRef<(HTMLButtonElement | null)[]>([]);
-
   const firstRender = useRef<boolean>(true);
+  const hookPosition = useRenderPosition({
+    buttonRef: ref as React.RefObject<HTMLDivElement>,
+    enabled: open,
+    popupSize: { width: width, height: height },
+  });
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
@@ -117,19 +128,20 @@ const TimePicker: React.FC<Props> = ({ ...props }: Props) => {
     }
     onChange?.(time);
   }, [time]);
+  useEffect(() => {
+    setPosition(hookPosition);
+  }, [hookPosition]);
   const renderHeight = `${
-    displayButtonCount * (buttonRefs.current[0]?.offsetHeight ?? 17) + 17
-  }px`;
-  const minHeight = `${
-    displayButtonCount * (buttonRefs.current[0]?.offsetHeight ?? 17) + 100
+    displayButtonCount * (buttonRefs.current[0]?.offsetHeight ?? 17) + 20
   }px`;
   return (
-    <div className="w-fit" ref={ref}>
+    <div className="relative w-fit" ref={ref}>
       <button
         onClick={() => {
           setOpen((prev) => !prev);
         }}
-        className={`relative flex items-center gap-2 py-2 border border-gray-300 rounded font-mono cursor-pointer select-none ${timeButtonClassName}`}
+        className={`relative flex justify-center items-center gap-2 p-1 px-2   rounded-md w-40 h-10  ${timeButtonClassName}`}
+        style={{ color: tertiaryColor, backgroundColor: highlightColor }}
       >
         {open
           ? moment(new Date(tempTime)).locale(locale).format("HH:mm:ss")
@@ -141,8 +153,15 @@ const TimePicker: React.FC<Props> = ({ ...props }: Props) => {
 
       {open && (
         <div
-          className={`z-10 absolute flex flex-col gap-2 bg-white shadow-lg mt-2 p-3 border border-gray-300 rounded-lg w-fit ${containerClassName}`}
-          style={{ width: width, height: height, minHeight: minHeight }}
+          style={{
+            position: "absolute",
+            top: position.top,
+            left: position.left,
+            maxHeight: "fit-content",
+            zIndex: 1000,
+          }}
+          className={`flex flex-col gap-2 bg-white shadow-lg p-3 border border-gray-300 rounded-lg w-fit ${containerClassName}`}
+          // style={{ width: width, height: height, minHeight: minHeight }}
         >
           <div className="flex gap-4">
             <div
@@ -165,7 +184,7 @@ const TimePicker: React.FC<Props> = ({ ...props }: Props) => {
             </div>
           </div>
 
-          <div className="flex justify-between gap-4 mt-2">
+          <div className="flex justify-between gap-4 mt-2 max-h-20">
             <button
               onClick={handleNow}
               className={`bg-gray-100 hover:bg-gray-200 px-4 py-1 border border-gray-300 rounded transition ${nowButtonClassName}`}
@@ -184,5 +203,3 @@ const TimePicker: React.FC<Props> = ({ ...props }: Props) => {
     </div>
   );
 };
-
-export default TimePicker;
