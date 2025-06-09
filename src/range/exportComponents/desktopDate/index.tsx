@@ -1,5 +1,6 @@
 import type { IDate, TLocale } from "../../core/type";
 import { DesktopDatePicker } from "../../desktopDate/desktopDatePicker";
+
 interface IProps {
   locale?: TLocale;
   defaultValue?: IDate;

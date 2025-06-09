@@ -98,7 +98,7 @@ function PeriodList({ ...props }: IBaseProps) {
     setActiveCompareStep(null);
     setCompareDate(null);
     setCounter(0);
-    onChange?.(item.value);
+    onChange?.({ type: "date", Data: item.value });
   };
   const filteredPeriod = period.filter(
     (item) =>
