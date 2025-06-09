@@ -128,12 +128,14 @@ export function InitialComponent() {
             }}
           />
         </div>
-        <TimePicker
-          defaultValue={new Date(new Date().setHours(14, 26, 37, 42))}
-          onChange={(e) => {
-            console.log(new Date(e).toISOString());
-          }}
-        />
+        <div style={{ height: "300px" }}>
+          <TimePicker
+            defaultValue={new Date(new Date().setHours(14, 26, 37, 42))}
+            onChange={(e) => {
+              console.log(new Date(e).toISOString());
+            }}
+          />
+        </div>
       </div>
     </>
   );
