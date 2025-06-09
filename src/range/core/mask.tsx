@@ -1,17 +1,9 @@
-import React, {
-  type ReactNode,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import React, { type ReactNode, useEffect, useRef, useState } from "react";
 
-import moment from 'moment-jalaali';
+import moment from "moment-jalaali";
 
-import { CalenderIcon } from '../icons/CalenderIcon';
-import type {
-  IDate,
-  TLocale,
-} from './type';
+import { CalenderIcon } from "../icons/CalenderIcon";
+import type { IDate, TLocale } from "./type";
 
 type TimeZone = "year" | "month" | "day";
 type MaskProps = {
@@ -33,6 +25,8 @@ type MaskProps = {
   ErrorClass?: string;
   dir?: "ltr" | "rtl";
   autoComplete?: "on" | "off";
+  tertiaryColor?: string;
+  highlightColor?: string;
 };
 const defaultErrorClass = "border-red-700 ";
 export function DateMask({ ...props }: MaskProps) {
@@ -50,6 +44,8 @@ export function DateMask({ ...props }: MaskProps) {
     ErrorClass = defaultErrorClass,
     dir = "ltr",
     autoComplete = "off",
+    tertiaryColor = "#939393",
+    highlightColor = "#f4f4f4",
   } = props;
   const temp = timestampToDateNumbers(locale, defaultValue);
   const [separatedValue, setSeparatedValue] = useState(temp);
@@ -639,10 +635,15 @@ export function DateMask({ ...props }: MaskProps) {
   }, [defaultValue]);
   return (
     <div
-      className={`range flex justify-center items-center bg-gray-5 gap-2 px-2 border rounded  w-40  align-center ${maskClassName} 
+      className={`range flex justify-center items-center bg-gray-3 gap-2 px-2  rounded  w-40  align-center ${maskClassName} 
+
  ${errorTarget.length > 0 && ErrorClass}
       `}
-      style={{ height: `${maskHeight}px` }}
+      style={{
+        height: `${maskHeight}px`,
+        color: tertiaryColor,
+        backgroundColor: highlightColor,
+      }}
       dir={dir}
     >
       <div className="">{suffix && suffix}</div>
@@ -776,7 +777,6 @@ export function DateMask({ ...props }: MaskProps) {
             onKeyDown={handleKeyDown}
             maxLength={8}
             minLength={8}
-
             className={`opacity-0 w-full`}
             // style={{ display: "hidden", width: "0px" }}
           />

@@ -5,6 +5,7 @@ import {
   MobileDate,
   MobileRange,
   Range,
+  TimePicker,
 } from "../range";
 import type { IDate } from "../range/core/type";
 
@@ -124,6 +125,14 @@ export function InitialComponent() {
             // defaultValue={1753648200000}
             onError={(e) => {
               console.log(e);
+            }}
+          />
+        </div>
+        <div style={{ height: "300px" }}>
+          <TimePicker
+            defaultValue={new Date(new Date().setHours(14, 26, 37, 42))}
+            onChange={(e) => {
+              console.log(new Date(e).toISOString());
             }}
           />
         </div>
