@@ -26,7 +26,6 @@ type MaskProps = {
   dir?: "ltr" | "rtl";
   autoComplete?: "on" | "off";
   tertiaryColor?: string;
-  highlightColor?: string;
 };
 const defaultErrorClass = "border-red-700 ";
 export function DateMask({ ...props }: MaskProps) {
@@ -45,7 +44,6 @@ export function DateMask({ ...props }: MaskProps) {
     dir = "ltr",
     autoComplete = "off",
     tertiaryColor = "#939393",
-    highlightColor = "#f4f4f4",
   } = props;
   const temp = timestampToDateNumbers(locale, defaultValue);
   const [separatedValue, setSeparatedValue] = useState(temp);
@@ -70,7 +68,9 @@ export function DateMask({ ...props }: MaskProps) {
   const span2 = useRef<HTMLSpanElement | null>(null);
   const spanRefs = [span0, span1, span2];
   const clickCount = useRef(0);
-  const clickTimer = useRef<number>(0);
+  const clickTimer = useRef<ReturnType<typeof setTimeout> | undefined>(
+    undefined
+  );
   const message = locale == "fa" ? "تاریخ نا معتبر است " : "Date is invalid";
   errors.current = errorTarget;
   separatedValueRef.current = separatedValue;
@@ -97,8 +97,6 @@ export function DateMask({ ...props }: MaskProps) {
       /\D/g,
       ""
     );
-
-    console.log(errorTarget);
     if (errorTarget.includes(3)) {
       setErrorTarget((prev) => {
         return [...prev.filter((item) => item !== 3)];
@@ -635,15 +633,10 @@ export function DateMask({ ...props }: MaskProps) {
   }, [defaultValue]);
   return (
     <div
-      className={`range flex justify-center items-center bg-gray-3 gap-2 px-2  rounded  w-40  align-center ${maskClassName} 
-
+      className={`range flex justify-center items-center bg-gray-5 gap-2 px-auto border rounded  !w-28 !h-9    align-center ${maskClassName} 
  ${errorTarget.length > 0 && ErrorClass}
       `}
-      style={{
-        height: `${maskHeight}px`,
-        color: tertiaryColor,
-        backgroundColor: highlightColor,
-      }}
+      style={{ height: `${maskHeight}px`, color: tertiaryColor }}
       dir={dir}
     >
       <div className="">{suffix && suffix}</div>
@@ -667,7 +660,7 @@ export function DateMask({ ...props }: MaskProps) {
           ) : (
             <div
               className="flex justify-center items-center same-font"
-              style={{ gap: "1px" }}
+              style={{ gap: "2px" }}
             >
               <input
                 type="text"
@@ -683,8 +676,10 @@ export function DateMask({ ...props }: MaskProps) {
                 minLength={4}
                 className={`same-font bg-gray-5 ${inputClassName} `}
                 style={{
-                  width: (4 * maskFontSize) / 2 + 8,
+                  width: (4 * maskFontSize) / 2,
                   fontSize: maskFontSize,
+                  border: "none",
+                  outline: "none",
                 }}
                 placeholder="____"
               />
@@ -694,7 +689,7 @@ export function DateMask({ ...props }: MaskProps) {
                   pointerEvents: "none",
                   // width: maskFontSize / 2,
                   fontSize: maskFontSize,
-                  // paddingRight: "2px",
+                  // paddingRight: "1px",
                   // paddingLeft: "2px",
                 }}
                 className={` ${inputClassName}`}
@@ -715,8 +710,10 @@ export function DateMask({ ...props }: MaskProps) {
                 minLength={2}
                 className={`same-font bg-gray-5 ${inputClassName}`}
                 style={{
-                  width: (2 * maskFontSize) / 2 + 8,
+                  width: (2 * maskFontSize) / 2,
                   fontSize: maskFontSize,
+                  border: "none",
+                  outline: "none",
                 }}
                 placeholder="__"
               />
@@ -749,7 +746,9 @@ export function DateMask({ ...props }: MaskProps) {
                 className={`same-font bg-gray-5 ${inputClassName}`}
                 style={{
                   fontSize: maskFontSize,
-                  width: (2 * maskFontSize) / 2 + 8,
+                  width: (2 * maskFontSize) / 2,
+                  border: "none",
+                  outline: "none",
                 }}
                 placeholder="__"
               />
@@ -778,7 +777,7 @@ export function DateMask({ ...props }: MaskProps) {
             maxLength={8}
             minLength={8}
             className={`opacity-0 w-full`}
-            // style={{ display: "hidden", width: "0px" }}
+            style={{ width: (8 * maskFontSize) / 2 }}
           />
           <div
             className={`z-10 absolute inset-0  mx-auto    text-base flex justify-center items-center same-font  ${

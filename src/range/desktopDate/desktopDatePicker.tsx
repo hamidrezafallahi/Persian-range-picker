@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 
 import moment from "moment-jalaali";
 
@@ -40,7 +40,7 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
   };
   const handleDateChange = (date: IDate) => {
     setShowDate(date);
-    onChange?.(date);
+    onChange?.({ type: "date", date });
     setShowDate(date);
     setIsOpen(false);
   };

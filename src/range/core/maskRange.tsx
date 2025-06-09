@@ -1,4 +1,4 @@
-import { type Dispatch, useState } from "react";
+import React, { type Dispatch, useState } from "react";
 
 import { DateMask } from "./mask";
 import type { IDate, TLocale } from "./type";
@@ -36,7 +36,7 @@ function MaskRange({ ...props }: IProps) {
         locale={locale}
         onChange={(e) => handleChange(e as number, "from")}
         defaultValue={date.from}
-        maskClassName={`bg-white rounded-lg flex justify-center ${
+        maskClassName={` rounded-lg ${
           error === "from" ? " border-red-100 " : ""
         }`}
         prefix={false}
@@ -47,8 +47,8 @@ function MaskRange({ ...props }: IProps) {
         locale={locale}
         onChange={(e) => handleChange(e as number, "to")}
         defaultValue={date.to}
-        maskClassName={`bg-white rounded-lg flex justify-center ${
-          error === "to" ? "border-red-100" : ""
+        maskClassName={`rounded-lg ${
+          error === "from" ? " border-red-100 " : ""
         }`}
         prefix={false}
         suffix={false}

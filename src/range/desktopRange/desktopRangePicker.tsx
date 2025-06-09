@@ -1,23 +1,14 @@
-import {
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
+import React, { useEffect, useMemo, useRef, useState } from "react";
 
-import moment from 'moment-jalaali';
+import moment from "moment-jalaali";
 
-import MainContent from '../core/mainContent';
-import NavigateButton from '../core/navigateButton';
-import type {
-  IDate,
-  IDesktopProps,
-  ISubmittedData,
-} from '../core/type';
-import { useRenderPosition } from '../exportComponents/useRenderPosition';
-import { DownTriangle } from '../icons/DownTriangle';
+import MainContent from "../core/mainContent";
+import NavigateButton from "../core/navigateButton";
+import type { IDesktopRangeProps, ISubmittedData } from "../core/type";
+import { useRenderPosition } from "../exportComponents/useRenderPosition";
+import { DownTriangle } from "../icons/DownTriangle";
 
-export function DesktopRangePicker(props: IDesktopProps) {
+export function DesktopRangePicker(props: IDesktopRangeProps) {
   const userAgent = navigator.userAgent;
   const deviceType =
     /Mobile|Android|iPhone|iPad|iPod|Opera Mini|BlackBerry|IEMobile/i.test(
@@ -36,6 +27,7 @@ export function DesktopRangePicker(props: IDesktopProps) {
     handleSubmit,
     handleReject,
     onChange,
+    onCompareDateChange,
     setCompareDate,
     counter,
     setStep,
@@ -50,8 +42,9 @@ export function DesktopRangePicker(props: IDesktopProps) {
     // className,
     buttonClassName,
     dropdownWidth = 460,
-    dropdownHeight = 495,
+    dropdownHeight = 460,
     device = deviceType,
+
     label = {
       isShowLabel: true,
       label: (
@@ -66,8 +59,9 @@ export function DesktopRangePicker(props: IDesktopProps) {
       ),
     },
   } = props;
-
-  const isFirstRun = useRef(true);
+  const isInitialRender = useRef(true);
+  const prevDate = useRef(date);
+  const prevCompareDate = useRef(compareDate);
   const initSubmittedData: ISubmittedData = useMemo(() => {
     return {
       date: {
@@ -79,18 +73,28 @@ export function DesktopRangePicker(props: IDesktopProps) {
         to: date ? date.to : moment().locale(locale).startOf("day").valueOf(),
       },
       compareDate,
+      Data: null,
     };
   }, [date, compareDate]);
   const [showDate, setShowDate] = useState<ISubmittedData>(initSubmittedData);
-
-  const handleAccept = (date: IDate, compareDate: IDate | null) => {
+  const [type, setType] = useState<string>("date");
+  const [customData, setCustomData] = useState<unknown>(null);
+  const handleAccept = () => {
     if (date) {
       if (date.from && date.to && date.from < date.to) {
         if (handleSubmit) {
-          handleSubmit(date, compareDate);
+          if (type == "date") {
+            handleSubmit({ type, Data: { date, compareDate } });
+          } else {
+            handleSubmit({ type, Data: { ...(customData ?? {}) } });
+          }
         }
 
-        setShowDate({ date, compareDate });
+        setShowDate({
+          date,
+          compareDate,
+          Data: customData,
+        });
         setOpen(false);
       } else {
         if (onError) {
@@ -105,9 +109,13 @@ export function DesktopRangePicker(props: IDesktopProps) {
       }
     } else {
       if (handleSubmit) {
-        handleSubmit(date, compareDate);
+        if (type == "date") {
+          handleSubmit({ type, Data: { date, compareDate } });
+        } else {
+          handleSubmit({ type, Data: { ...(customData ?? {}) } });
+        }
       }
-      setShowDate({ date, compareDate });
+      setShowDate({ date, compareDate, Data: customData });
       setOpen(false);
     }
   };
@@ -120,48 +128,6 @@ export function DesktopRangePicker(props: IDesktopProps) {
       handleReject();
     }
   };
-  useEffect(() => {
-    if (isFirstRun.current) {
-      isFirstRun.current = false;
-      return;
-    }
-    if (onChange) {
-      const isEmpty = !date && !compareDate;
-      const isInvalidDateTo = date?.to == null || Number.isNaN(date?.to);
-      const isInvalid = date?.from && isInvalidDateTo;
-
-      if (!(isEmpty || isInvalid)) {
-        onChange(date, compareDate);
-        if (date && zone !== "manual") {
-          // setShowDate({ date, compareDate });
-        }
-      }
-    }
-  }, [date, compareDate, onChange]);
-  useEffect(() => {
-    if (date) {
-      setShowDate({ date, compareDate });
-    }
-  }, [counter]);
-
-  useEffect(() => {
-    // const handleClickOutside = (event: MouseEvent) => {
-    //   if (
-    //     dropdownRef.current &&
-    //     !dropdownRef.current.contains(event.target as Node)
-    //   ) {
-    //     setOpen(false);
-    //   }
-    // };
-    // if (open) {
-    //   document.addEventListener("mousedown", handleClickOutside);
-    // } else {
-    //   document.removeEventListener("mousedown", handleClickOutside);
-    // }
-    // return () => {
-    //   document.removeEventListener("mousedown", handleClickOutside);
-    // };
-  }, [open]);
 
   const [position, setPosition] = useState({ top: 0, left: 0 });
   const buttonRef = useRef<HTMLElement | null>(null);
@@ -176,27 +142,54 @@ export function DesktopRangePicker(props: IDesktopProps) {
   const handleDropdown = () => {
     setOpen((prev) => !prev);
   };
+  useEffect(() => {
+    if (date) {
+      setShowDate((prev) => ({
+        ...prev,
+        Data: null,
+      }));
+    }
+  }, [counter]);
+  useEffect(() => {
+    const hasCompareDateChanged =
+      compareDate?.from !== prevCompareDate.current?.from ||
+      compareDate?.to !== prevCompareDate.current?.to;
+    if (onCompareDateChange && compareDate && hasCompareDateChanged) {
+      onCompareDateChange({ type: "date", Data: { date, compareDate } });
+      setShowDate((prev) => ({
+        ...prev,
+        compareDate,
+      }));
+    }
+    prevCompareDate.current = compareDate;
+
+    const hasDateChanged =
+      date?.from !== prevDate.current?.from ||
+      date?.to !== prevDate.current?.to;
+
+    if (isInitialRender.current) {
+      isInitialRender.current = false;
+    } else if (hasDateChanged && onChange) {
+      const isEmpty = !date && !compareDate;
+      const isInvalidDateTo = date?.to == null || Number.isNaN(date?.to);
+      const isInvalid = date?.from && isInvalidDateTo;
+
+      if (!(isEmpty || isInvalid)) {
+        onChange({ type, Data: { date, compareDate } });
+      }
+    }
+
+    prevDate.current = date;
+  }, [date, compareDate]);
+  useEffect(() => {
+    if (customData) {
+      onChange?.({ type, Data: { ...(customData ?? {}) } });
+    }
+  }, [customData]);
 
   useEffect(() => {
     setPosition(hookPosition);
   }, [hookPosition]);
-
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        popupRef.current &&
-        !popupRef.current.contains(event.target as Node) &&
-        buttonRef.current &&
-        !buttonRef.current.contains(event.target as Node)
-      ) {
-        setOpen(false);
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
-
   return (
     <>
       <div
@@ -260,8 +253,10 @@ export function DesktopRangePicker(props: IDesktopProps) {
               top: position.top,
               left: position.left,
               zIndex: 1000,
+              width: dropdownWidth,
+              height: dropdownHeight,
             }}
-            className={`absolute z-50  p-2  border border-gray-300 rounded-lg shadow-md w-[460px] h-[495px] overflow-hidden  ${
+            className={`absolute z-50  p-2  border border-gray-300 rounded-lg shadow-md  overflow-hidden  ${
               locale === "fa" ? "right-0" : "left-0"
             }`}
           >
@@ -271,6 +266,8 @@ export function DesktopRangePicker(props: IDesktopProps) {
                 model="range"
                 locale={locale}
                 device={device}
+                setCustomData={setCustomData}
+                setType={setType}
               />
               <div
                 className={`w-full flex ${
@@ -286,7 +283,7 @@ export function DesktopRangePicker(props: IDesktopProps) {
                   {locale == "fa" ? "لغو" : "Cancel"}
                 </button>
                 <button
-                  onClick={() => handleAccept(date, compareDate)}
+                  onClick={() => handleAccept()}
                   style={{
                     background: primaryColor,
                     borderColor: primaryColor,

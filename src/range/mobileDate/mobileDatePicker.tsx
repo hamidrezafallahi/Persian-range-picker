@@ -1,16 +1,10 @@
-import {
-  useRef,
-  useState,
-} from 'react';
+import { useRef, useState } from "react";
 
-import moment from 'moment-jalaali';
+import moment from "moment-jalaali";
 
-import type {
-  IDate,
-  IDateProps,
-} from '../core/type';
-import { CalenderIcon } from '../icons/CalenderIcon';
-import { DatePicker } from '../persianDatePicker';
+import type { IDate, IDateProps } from "../core/type";
+import { CalenderIcon } from "../icons/CalenderIcon";
+import { DatePicker } from "../persianDatePicker";
 
 const MobileDatePicker = ({ ...props }: IDateProps) => {
   const {
@@ -38,7 +32,7 @@ const MobileDatePicker = ({ ...props }: IDateProps) => {
 
   const handleDateChange = (date: IDate) => {
     setShowDate(date);
-    onChange?.(date);
+    onChange?.({ type: "date", date });
     popoverRef.current?.hidePopover();
   };
 

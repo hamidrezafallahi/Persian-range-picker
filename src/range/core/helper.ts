@@ -200,11 +200,18 @@ export const backwardStep: { [key in ESteps]: number } = {
   [ESteps.month]: 86400000 * 30,
   [ESteps.season]: 6400000 * 30 * 3,
   [ESteps.year]: 86400000 * 365,
-  [ESteps.manual]: 86400000,
+  [ESteps.manual]: 86400000, //Number(date.to) - Number(date.from),
+  [ESteps.custom]: 6,
 };
-
-export const time = ["Day", "Week", "Month", "ThreeMonth", "Year", "manual"];
-
+export const time = [
+  "Day",
+  "Week",
+  "Month",
+  "ThreeMonth",
+  "Year",
+  "manual",
+  "custom",
+];
 export const stepToTimeIndex: { [key in ESteps]: number } = {
   [ESteps.day]: 0,
   [ESteps.week]: 1,
@@ -212,6 +219,7 @@ export const stepToTimeIndex: { [key in ESteps]: number } = {
   [ESteps.season]: 2,
   [ESteps.year]: 4,
   [ESteps.manual]: 5,
+  [ESteps.custom]: 6,
 };
 
 export const period = (
@@ -540,26 +548,4 @@ export function getLabel(
     default:
       return locale == "fa" ? "بازه نامعتبر" : "invalid date";
   }
-  // switch (zone) {
-  //   case "today":
-  //   case "yesterday":
-  //     return locale === "fa" ? "امروز" : "today";
-  //   case "thisWeek":
-  //   case "lastWeek":
-  //   case "last7Days":
-  //     return locale === "fa" ? "هفت روز اخیر" : "last 7 days";
-  //   case "thisMonth":
-  //   case "lastMonth":
-  //   case "last30Days":
-  //     return locale === "fa" ? "۳۰ روز اخیر" : "last 30 days";
-  //   case "lastThreeMonth":
-  //     return locale === "fa" ? "سه ماه اخیر" : "last 3 months";
-  //   case "thisYear":
-  //   case "lastYear":
-  //     return locale === "fa" ? "سال گذشته" : "last year";
-  //   case "manual":
-  //     return locale === "fa" ? "بازه دستی" : "manual range";
-  //   default:
-  //     return locale === "fa" ? "انتخاب نشده" : "invalid date";
-  // }
 }

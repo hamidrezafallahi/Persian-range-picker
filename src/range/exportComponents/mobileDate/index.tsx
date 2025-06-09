@@ -4,7 +4,7 @@ import MobileDatePicker from "../../mobileDate/mobileDatePicker";
 interface IProps {
   locale?: TLocale;
   defaultValue?: IDate;
-  onChange?: (e: IDate) => void;
+  onChange?: (e: { type: "date"; date: IDate }) => void;
   tertiaryColor?: string;
   highlightColor?: string;
   accentColor?: string;

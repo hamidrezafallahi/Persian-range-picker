@@ -1,16 +1,24 @@
-import { type ReactNode, useState } from "react";
+import React, {
+  cloneElement,
+  type Dispatch,
+  type ReactNode,
+  type SetStateAction,
+  useState,
+} from "react";
 
 import Manual from "./manual";
 import PeriodList from "./periodList";
-import type { IBaseProps, ITime } from "./type";
-import { ESteps } from "./type";
-
+import { type IBaseProps, ESteps, type ITime } from "./type";
+interface IProps extends IBaseProps {
+  setCustomData: Dispatch<SetStateAction<unknown>>;
+}
 interface ITab {
-  key: ITime | string;
+  key: ITime;
   label: string;
   content: ReactNode;
 }
-const MainContent = ({ ...props }: Omit<IBaseProps, "componentStep">) => {
+
+const MainContent = ({ ...props }: IProps) => {
   const {
     setTabKey,
     additionalElement = [],
@@ -18,14 +26,32 @@ const MainContent = ({ ...props }: Omit<IBaseProps, "componentStep">) => {
     tabClassName,
     accentColor = "#2563eb",
     locale,
-    device,
+    setStep,
+    setZone,
+    setActiveCompareStep,
+    setCompareDate,
+    setCounter,
+    setCustomData,
+    setType,
   } = props;
-  const [activeTab, setActiveTab] = useState<ITime | string>("manual");
-  const handleTabChange = (key: ITime | string) => {
+  const [activeTab, setActiveTab] = useState<string>("manual");
+  const handleTabChange = (key: ITab["key"]) => {
     setActiveTab(key);
     setTabKey(key);
   };
-
+  const handleChange = (key: ITab["key"], value: unknown) => {
+    const defaultKeys = ["day", "week", "month", "season", "year", "manual"];
+    if (!defaultKeys.includes(key)) {
+      setActiveCompareStep(null);
+      setCompareDate(null);
+      setCounter(0);
+      setStep(ESteps[key as keyof typeof ESteps]);
+      setZone(key);
+      setStep(ESteps.custom);
+      setCustomData(value);
+      setType?.(key);
+    }
+  };
   const tabs: ITab[] = [
     {
       key: "Day",
@@ -54,21 +80,16 @@ const MainContent = ({ ...props }: Omit<IBaseProps, "componentStep">) => {
     },
     ...additionalElement,
   ];
+  const currentTab = tabs.find((tab) => tab.key === activeTab);
   return (
     <div
       dir={locale == "fa" ? "rtl" : "ltr"}
-      className={device == "desktop" ? " flex h-full" : " flex flex-col"}
+      className={`flex flex-col xs:!flex-row xs:h-full `}
     >
       <div
-        className={`
-    ${
-      device === "desktop"
-        ? "flex flex-col justify-between !border-b-0  w-28 !h-[calc(100%-52px)] overflow-y-auto"
-        : " flex justify-around gap-9 p-2 !border-b  max-w-[430px] h-10 overflow-x-auto"
-    }
-    ${locale === "fa" && device === "desktop" ? "!border-l !border-r" : ""}
-    ${tabClassName}
-  `.trim()}
+        className={`flex justify-around  xs:flex-col  xs:gap-9 p-2  border-gray-300 !border-b xs:!border-b-0 ${
+          locale == "fa" ? "xs:!border-l" : "xs:!border-r"
+        } xs:w-28  h-10 xs:!h-[calc(100%-52px)] xs:overflow-y-auto overflow-x-auto ${tabClassName} `}
       >
         {tabs.map((tab) => (
           <button
@@ -81,16 +102,11 @@ const MainContent = ({ ...props }: Omit<IBaseProps, "componentStep">) => {
             className={`${periodListClassName} font-medium text-right text-nowrap text-sm  *:
             ${
               activeTab === tab.key
-                ? device === "desktop"
-                  ? "border-none"
-                  : "border-b-2 "
+                ? "border-b-2 xs:border-none"
                 : "  text-gray-500 hover:text-gray-700"
             }
-            ${
-              device === "desktop"
-                ? "flex justify-center items-center"
-                : "!justify-start gap-3  "
-            }
+            flex justify-center xs:!justify-start xs:gap-3 items-center
+            
             `}
           >
             <div
@@ -98,7 +114,7 @@ const MainContent = ({ ...props }: Omit<IBaseProps, "componentStep">) => {
                 color: activeTab === tab.key ? accentColor : "text-gray-500",
                 borderColor: activeTab === tab.key ? accentColor : "",
               }}
-              className={` ${device === "desktop" ? " block" : " hidden h-8 "}
+              className={`h-8  hidden xs:block
                 ${
                   activeTab === tab.key
                     ? "border-r-4"
@@ -113,7 +129,18 @@ const MainContent = ({ ...props }: Omit<IBaseProps, "componentStep">) => {
       </div>
 
       <div className="flex flex-col gap-4 p-2 w-full !h-[calc(100%-52px)] overflow-y-auto">
-        {tabs.find((tab) => tab.key === activeTab)?.content}
+        {currentTab &&
+          (() => {
+            return cloneElement(
+              currentTab.content as React.ReactElement<{
+                onChange: (value: unknown) => void;
+              }>,
+              {
+                onChange: (value: unknown) =>
+                  handleChange(currentTab.key, value),
+              }
+            );
+          })()}
       </div>
     </div>
   );

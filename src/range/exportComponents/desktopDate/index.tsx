@@ -3,7 +3,7 @@ import { DesktopDatePicker } from "../../desktopDate/desktopDatePicker";
 interface IProps {
   locale?: TLocale;
   defaultValue?: IDate;
-  onChange?: (e: IDate) => void;
+  onChange?: (e: { type: "date"; date: IDate }) => void;
   tertiaryColor?: string;
   highlightColor?: string;
 }

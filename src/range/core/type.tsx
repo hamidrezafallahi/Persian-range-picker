@@ -1,14 +1,18 @@
-import type {
-  Dispatch,
-  ReactNode,
-} from 'react';
-import React from 'react';
+import type { Dispatch, ReactNode, SetStateAction } from "react";
+import React from "react";
+// type ContentWithOnChange = {
+//   onChange: (e: React.ChangeEvent<any>) => void;
+// };
 
+// type MyComponentProps = {
+//   content: React.ComponentType<ContentWithOnChange>;
+// };
 type TDeviceType = "desktop" | "mobile";
 export interface IAdditionalElementType {
   key: string;
   label: string;
-  content: React.ReactNode;
+  content: ReactNode;
+  // content: MyComponentProps;
 }
 export type TLocale = "fa" | "en";
 export interface IDateProps {
@@ -22,26 +26,28 @@ export interface IDateProps {
   model: "date" | "range";
   locale: IRangeOptions["locale"];
   defaultValue?: IDate;
-  onChange?: (date: IDate, compareDate?: IDate) => void;
+  onChange?: (e: { type: "date"; date: IDate }) => void;
   className?: string;
   dropdownWidth?: number;
   dropdownHeight?: number;
 }
 
+export type HandleParams = {
+  type: string;
+  Data?: { date: IDate; compareDate: IDate } | Record<string, unknown>;
+};
 export interface RangeProps extends IRangeOptions {
   device?: TDeviceType;
   handleReject?: () => void;
-  handleSubmit?: (date: IDate, compareDate: IDate | null) => void;
-  onCompareDateChange?: (date: IDate, compareDate: IDate) => void;
+  handleSubmit?: (params: HandleParams) => void;
   onNavigateChange?: (date: IDate, compareDate: IDate | null) => void;
-  onChange?: (date: IDate, compareDate?: IDate | undefined | null) => void;
   navigation?: boolean;
 }
 export interface IRangeOptions {
   model?: "date" | "range";
   locale?: TLocale;
   isShowNavigationButton?: boolean;
-  isShowComparison?: boolean;
+  showComparison?: boolean;
   primaryColor?: string;
   dangerColor?: string;
   backgroundColor?: string;
@@ -68,6 +74,8 @@ export interface IRangeOptions {
   className?: string;
   buttonClassName?: string;
   device?: "desktop" | "mobile";
+  onChange?: (e: HandleParams) => void;
+  onCompareDateChange?: (e: HandleParams) => void;
 }
 export interface IBaseProps extends IRangeOptions {
   neutralColor?: string;
@@ -88,13 +96,13 @@ export interface IBaseProps extends IRangeOptions {
   setActiveCompareStep: Dispatch<React.SetStateAction<ESteps | null>>;
   setTabKey: Dispatch<React.SetStateAction<ITime | string>>;
   setZone: Dispatch<React.SetStateAction<ITimeZone>>;
-  onCompareDateChange?: (date: IDate, compareDate: IDate) => void;
   onNavigateChange?: (date: IDate, compareDate: IDate | null) => void;
-  onChange?: RangeProps["onChange"];
   componentStep?: ESteps;
   open?: boolean;
   setOpen?: Dispatch<React.SetStateAction<boolean>>;
   className?: string;
+  type?: "date" | string;
+  setType?: Dispatch<SetStateAction<string>>;
 }
 export enum ESteps {
   "day" = 1,
@@ -103,6 +111,7 @@ export enum ESteps {
   "season" = 90,
   "year" = 365,
   "manual",
+  "custom",
 }
 export interface IDate {
   from: number;
@@ -124,9 +133,17 @@ export type ITimeZone =
   | "thisYear"
   | "lastYear"
   | "oneYearAgo"
-  | "manual";
+  | "manual"
+  | string;
 
-export type ITime = "Day" | "Week" | "Month" | "ThreeMonth" | "Year" | "manual";
+export type ITime =
+  | "Day"
+  | "Week"
+  | "Month"
+  | "ThreeMonth"
+  | "Year"
+  | "manual"
+  | string;
 
 export interface ITimeSections {
   title?: string;
@@ -134,10 +151,9 @@ export interface ITimeSections {
   timeZone: ITimeZone;
   step: ESteps;
 }
-export interface IDesktopProps extends IBaseProps {
+export interface IDesktopRangeProps extends IBaseProps {
   handleSubmit?: RangeProps["handleSubmit"];
   handleReject?: RangeProps["handleReject"];
-  onChange?: RangeProps["onChange"];
   open: boolean;
   setOpen: Dispatch<React.SetStateAction<boolean>>;
   className?: string;
@@ -154,4 +170,5 @@ export interface IDesktopProps extends IBaseProps {
 export interface ISubmittedData {
   date: IDate;
   compareDate: IDate | null;
+  Data: unknown;
 }

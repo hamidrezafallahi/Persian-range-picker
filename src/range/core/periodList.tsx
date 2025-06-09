@@ -6,6 +6,7 @@ import { ESteps } from "./type";
 
 function PeriodList({ ...props }: IBaseProps) {
   const {
+    onChange,
     setDate,
     setStep,
     setZone,
@@ -14,7 +15,8 @@ function PeriodList({ ...props }: IBaseProps) {
     locale = "fa",
     setCounter,
     setActiveCompareStep,
-    isShowComparison = true,
+    setCompareDate,
+    showComparison = false,
     periodClassName,
     highlightColor = "#f4f4f4", //رنگ برجسته‌کننده برای هاور، نوتیف یا نقاط توجه
     accentColor = "#2563eb", // تأکیدی (برای جلب توجه، مثلاً نوتیفیکیشن‌ها یا CTAها)- آبی
@@ -94,7 +96,9 @@ function PeriodList({ ...props }: IBaseProps) {
     setDate(item.value);
     setZone(item.timeZone);
     setActiveCompareStep(null);
+    setCompareDate(null);
     setCounter(0);
+    onChange?.(item.value);
   };
   const filteredPeriod = period.filter(
     (item) =>
@@ -167,7 +171,7 @@ function PeriodList({ ...props }: IBaseProps) {
         );
       })}
 
-      {isShowComparison && (
+      {showComparison && (
         <Comparison {...props} switchHandler={switchHandler} />
       )}
     </>

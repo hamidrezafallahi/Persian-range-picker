@@ -6,6 +6,7 @@ import { LeftChevron } from "../icons/LeftChevron";
 import { RightChevron } from "../icons/RightChevron";
 import type { IBaseProps, ITimeZone, TLocale } from "./type";
 import { ESteps } from "./type";
+import { period } from "./helper";
 
 interface INavigationProps {
   step: IBaseProps["step"];
@@ -15,6 +16,7 @@ interface INavigationProps {
   setCounter: IBaseProps["setCounter"];
   setCompareDate: IBaseProps["setCompareDate"];
   date: IBaseProps["date"];
+  compareDate: IBaseProps["compareDate"];
   setActiveCompareStep: IBaseProps["setActiveCompareStep"];
   activeCompareStep: IBaseProps["activeCompareStep"];
   setTabKey: IBaseProps["setTabKey"];
@@ -23,16 +25,61 @@ interface INavigationProps {
   locale: IBaseProps["locale"];
 }
 function NavigateButton({ ...props }: INavigationProps) {
-  const { step, zone, setDate, counter, setCounter, locale = "fa" } = props;
+  const {
+    step,
+    zone,
+    setDate,
+    counter,
+    setCounter,
+    activeCompareStep,
+    compareDate,
+    setCompareDate,
+    locale = "fa",
+  } = props;
+
   const stepChangeHandler = (phase: "increment" | "decrement") => {
     if (phase == "increment") {
       if (counter < 0) {
         const { from, to } = calculateDate(step, zone, counter + 1, locale);
         setDate({ from, to });
         setCounter((prev) => (prev += 1));
+        const templatePeriods = period(
+          calculateDate(step, zone, counter + 1, locale),
+          locale,
+          zone
+        );
+        templatePeriods.map((item) => {
+          const active = item.step == activeCompareStep;
+          if (
+            active &&
+            compareDate &&
+            compareDate.from !== item.value.from &&
+            compareDate.to !== item.value.to
+          ) {
+            setCompareDate(item.value);
+          }
+        });
       }
     } else if (phase == "decrement") {
       setDate(calculateDate(step, zone, counter - 1, locale));
+
+      const templatePeriods = period(
+        calculateDate(step, zone, counter - 1, locale),
+        locale,
+        zone
+      );
+      templatePeriods.map((item) => {
+        const active = item.step == activeCompareStep;
+        if (
+          active &&
+          compareDate &&
+          compareDate.from !== item.value.from &&
+          compareDate.to !== item.value.to
+        ) {
+          setCompareDate(item.value);
+        }
+      });
+
       setCounter((prev) => (prev -= 1));
     }
   };

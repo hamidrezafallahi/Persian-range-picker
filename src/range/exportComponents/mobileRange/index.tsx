@@ -4,8 +4,10 @@ import moment from "moment-jalaali";
 
 import type {
   ESteps,
+  HandleParams,
   IAdditionalElementType,
   IDate,
+  IRangeOptions,
   ITime,
   ITimeZone,
   TLocale,
@@ -15,11 +17,11 @@ import MobileRangePicker from "../../mobileRange/mobileRangePicker";
 interface IProps {
   handleReject?: () => void;
   handleSubmit?: (date: IDate, compareDate: IDate | null) => void;
-  onCompareDateChange?: (date: IDate, compareDate: IDate) => void;
+  onCompareDateChange?: IRangeOptions["onCompareDateChange"];
   onNavigateChange?: (date: IDate, compareDate: IDate | null) => void;
-  onChange?: (date: IDate, compareDate?: IDate | undefined | null) => void;
+  onChange?: (e: HandleParams) => void;
   isShowNavigationButton?: boolean;
-  isShowComparison?: boolean;
+  showComparison?: boolean;
   popoverClassName?: string;
   className?: string;
   additionalElement?: IAdditionalElementType[];
@@ -36,7 +38,7 @@ export function MobileRange({ ...props }: IProps) {
     onNavigateChange,
     onChange,
     isShowNavigationButton,
-    isShowComparison,
+    showComparison,
     popoverClassName,
     className,
   } = props;
@@ -87,7 +89,7 @@ export function MobileRange({ ...props }: IProps) {
       onNavigateChange={onNavigateChange}
       onChange={onChange}
       isShowNavigationButton={isShowNavigationButton}
-      isShowComparison={isShowComparison}
+      showComparison={showComparison}
       popoverClassName={popoverClassName}
       className={className}
     />

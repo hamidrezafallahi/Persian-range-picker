@@ -5,8 +5,8 @@ interface Position {
   left: number;
 }
 
-interface UseRenderPositionOptions<HTMLElement> {
-  buttonRef: React.RefObject<HTMLElement | null>;
+interface UseRenderPositionOptions<T extends HTMLElement = HTMLElement> {
+  buttonRef: React.RefObject<T>;
   popupSize: { width: number; height: number };
   enabled: boolean;
   offset?: number;

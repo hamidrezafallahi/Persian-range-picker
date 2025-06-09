@@ -1,5 +1,3 @@
-import { useEffect } from "react";
-
 import { period } from "../core/helper";
 import type { IBaseProps, ITimeSections } from "../core/type";
 import { TickIcon } from "../icons/TickIcon";
@@ -12,7 +10,7 @@ const CompareList = ({ ...props }: IBaseProps) => {
     activeCompareStep,
     setCompareDate,
     componentStep,
-    counter,
+
     locale = "fa",
     accentColor = "#2563eb", // تأکیدی (برای جلب توجه، مثلاً نوتیفیکیشن‌ها یا CTAها)- آبی
     tertiaryColor = "#939393", //رنگ سوم، معمولاً برای جزئیات یا عناصر کم‌اهمیت‌تر   -  رنگ متن
@@ -32,19 +30,26 @@ const CompareList = ({ ...props }: IBaseProps) => {
       !(item.timeZone === "lastMonth" && zone === "lastThreeMonth")
   );
 
-  useEffect(() => {
-    const temp = templatePeriods.find(
-      (item) => item.step == activeCompareStep
-    )?.value;
-    if (temp) {
-      setCompareDate({ from: temp.from, to: temp.to });
-    }
-  }, [counter]);
+  // useEffect(() => {
+  //   const temp = templatePeriods.find(
+  //     (item) => item.step == activeCompareStep
+  //   )?.value;
+  //   if (temp) {
+  //     setCompareDate({ from: temp.from, to: temp.to });
+  //   }
+  // }, [counter]);
 
   return (
     <>
       {filteredPeriod.map((item, index) => {
         const active = item.step == activeCompareStep;
+        // if (
+        //   active &&
+        //   compareDate.from !== item.value.from &&
+        //   compareDate.to !== item.value.to
+        // ) {
+        //   setCompareDate(item.value);
+        // }
         const stringDateFrom = new Date(item.value.from).toLocaleDateString(
           `${locale == "fa" ? "fa-IR" : "en-UK"}`,
           {

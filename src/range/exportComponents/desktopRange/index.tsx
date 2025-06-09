@@ -2,16 +2,27 @@ import { type ReactNode, useMemo, useState } from "react";
 
 import moment from "moment-jalaali";
 
-import type { ESteps, IDate, ITime, ITimeZone, TLocale } from "../../core/type";
+import type {
+  ESteps,
+  HandleParams,
+  IAdditionalElementType,
+  IDate,
+  ITime,
+  ITimeZone,
+  RangeProps,
+  TLocale,
+} from "../../core/type";
 import { DesktopRangePicker } from "../../desktopRange/desktopRangePicker";
 
-interface IDesktopProps {
-  handleSubmit?: (date: IDate, compareDate?: IDate | null) => void;
+interface IDesktopRangeProps {
+  handleSubmit?: RangeProps["handleSubmit"];
   handleReject?: () => void;
-  onChange?: (date: IDate, compareDate?: IDate | null) => void;
+  onChange?: (e: HandleParams) => void;
+  onCompareDateChange?: (e: HandleParams) => void;
   defaultValue?: IDate;
   isShowNavigationButton?: boolean;
-  isShowComparison?: boolean;
+  additionalElement?: IAdditionalElementType[]; //=====================================================================
+  showComparison?: boolean;
   primaryColor?: string;
   backgroundColor?: string;
   tertiaryColor?: string;
@@ -24,14 +35,16 @@ interface IDesktopProps {
     label: ReactNode;
   };
 }
-export function DesktopRange(props: IDesktopProps) {
+export function DesktopRange(props: IDesktopRangeProps) {
   const {
     handleSubmit,
     handleReject,
     onChange,
+    onCompareDateChange,
     defaultValue,
+    additionalElement,
     isShowNavigationButton = true,
-    isShowComparison = true,
+    showComparison = false,
     primaryColor = "#000",
     backgroundColor = "#fff",
     tertiaryColor = "#939393",
@@ -84,7 +97,7 @@ export function DesktopRange(props: IDesktopProps) {
   return (
     <DesktopRangePicker
       activeCompareStep={activeCompareStep}
-      isShowComparison={isShowComparison}
+      showComparison={showComparison}
       setActiveCompareStep={setActiveCompareStep}
       compareDate={compareDate}
       counter={counter}
@@ -111,9 +124,11 @@ export function DesktopRange(props: IDesktopProps) {
       onError={onError}
       buttonClassName={buttonClassName}
       label={label}
+      additionalElement={additionalElement}
       handleSubmit={handleSubmit}
       handleReject={handleReject}
       onChange={onChange}
+      onCompareDateChange={onCompareDateChange}
     />
   );
 }
