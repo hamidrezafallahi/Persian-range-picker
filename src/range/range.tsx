@@ -1,22 +1,12 @@
-import {
-  useMemo,
-  useState,
-} from 'react';
+import { useMemo, useState } from "react";
 
-import moment from 'moment-jalaali';
+import moment from "moment-jalaali";
 
-import type {
-  ESteps,
-  IDate,
-  ITime,
-  ITimeZone,
-  RangeProps,
-} from './core/type';
-import { DesktopDatePicker } from './desktopDate/desktopDatePicker';
-import { DesktopRangePicker } from './desktopRange/desktopRangePicker';
-// import { DesktopRange } from "./desktopRange/desktopRangePicker";
-import MobileDatePicker from './mobileDate/mobileDatePicker';
-import MobileRangePicker from './mobileRange/mobileRangePicker';
+import type { ESteps, IDate, ITime, ITimeZone, RangeProps } from "./core/type";
+import { DesktopDatePicker } from "./desktopDate/desktopDatePicker";
+import { DesktopRangePicker } from "./desktopRange/desktopRangePicker";
+import MobileDatePicker from "./mobileDate/mobileDatePicker";
+import MobileRangePicker from "./mobileRange/mobileRangePicker";
 
 export function Range({ ...props }: RangeProps) {
   const userAgent = navigator.userAgent;

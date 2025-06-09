@@ -881,6 +881,9 @@ input:focus {
 .range .w-40 {
   width: 10rem;
 }
+.range .w-56 {
+  width: 14rem;
+}
 .range .w-6 {
   width: 1.5rem;
 }

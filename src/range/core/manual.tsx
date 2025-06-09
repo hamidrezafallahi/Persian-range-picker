@@ -29,72 +29,45 @@ const Manual = (props: IBaseProps) => {
 
   return (
     <div className="flex flex-col items-center gap-4">
-      <MonthPicker
-        {...props}
-        monthPickerClassName={monthPickerClassName}
-        dateFromOutside={date}
-        onDateChange={(e: IDate) => {
-          setDate(e);
-          setZone("manual");
-          setStep(ESteps.manual);
-        }}
-        locale={locale}
-      />
-      <MaskRange
-        locale={locale}
-        // secondaryColor={secondaryColor}
-        // tertiaryColor={tertiaryColor}
-        // dangerColor={dangerColor}
-        // InputHandleChange={InputHandleChangeFrom}
-        // dateFromOutside={date}
-        date={date}
-        setDate={setDate}
-      />
-      {/* <div className="flex gap-1 py-2">
-        <Mask
-          locale={locale}
-          InputHandleChange={InputHandleChangeFrom}
+      <div className="flex flex-col items-center gap-4 w-56">
+        <MonthPicker
+          {...props}
+          monthPickerClassName={monthPickerClassName}
           dateFromOutside={date}
-          value={date?.from}
-          className={`${maskClassName} text-center text-gray-gray8  w-28 px-2 py-1 rounded-lg font-IRANSans border border-gray-gray6 ${
-            date?.from > date?.to && "border-state-error1"
-          } `}
-          secondaryColor={secondaryColor}
-          tertiaryColor={tertiaryColor}
-          dangerColor={dangerColor}
-        />
-
-        {"  _  "}
-        <Mask
+          onDateChange={(e: IDate) => {
+            setDate(e);
+            setZone("manual");
+            setStep(ESteps.manual);
+          }}
           locale={locale}
-          InputHandleChange={InputHandleChangeTo}
-          value={defaultRange?.to}
-          dateFromOutside={defaultRange}
-          className={`${maskClassName} text-center text-gray-gray8 w-28 px-2 py-1 rounded-lg font-IRANSans border border-gray-gray6 ${
-            date?.from > date?.to && "border-state-error1"
-          }`}
-          secondaryColor={secondaryColor}
-          tertiaryColor={tertiaryColor}
-          dangerColor={dangerColor}
         />
-      </div> */}
-
-      <DatePicker
-        {...props}
-        chooseTodayClassName="bg-red-500"
-        name="custom range"
-        dateFromOutside={date}
-        onDateChange={(e: IDate) => {
-          setDate({
-            from: e.from,
-            to: moment(e.to).locale("fa").clone().endOf("day").valueOf(),
-          });
-          setZone("manual");
-          setStep(ESteps.manual);
-        }}
-        model={model}
-        locale={locale}
-      />
+        <MaskRange
+          locale={locale}
+          // secondaryColor={secondaryColor}
+          // tertiaryColor={tertiaryColor}
+          // dangerColor={dangerColor}
+          // InputHandleChange={InputHandleChangeFrom}
+          // dateFromOutside={date}
+          date={date}
+          setDate={setDate}
+        />
+        <DatePicker
+          {...props}
+          chooseTodayClassName="bg-red-500"
+          name="custom range"
+          dateFromOutside={date}
+          onDateChange={(e: IDate) => {
+            setDate({
+              from: e.from,
+              to: moment(e.to).locale("fa").clone().endOf("day").valueOf(),
+            });
+            setZone("manual");
+            setStep(ESteps.manual);
+          }}
+          model={model}
+          locale={locale}
+        />
+      </div>
       <div className="w-full">
         {isShowComparison && (
           <Comparison {...props} switchHandler={switchHandler} />
