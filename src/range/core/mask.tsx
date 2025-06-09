@@ -633,7 +633,7 @@ export function DateMask({ ...props }: MaskProps) {
   }, [defaultValue]);
   return (
     <div
-      className={`range flex justify-center items-center bg-gray-5 gap-2 px-auto border rounded  !w-28 !h-9    align-center ${maskClassName} 
+      className={`range flex justify-center items-center bg-gray-5 gap-2 px-auto border rounded-md  defaultMaskDimension align-center ${maskClassName} 
  ${errorTarget.length > 0 && ErrorClass}
       `}
       style={{ height: `${maskHeight}px`, color: tertiaryColor }}

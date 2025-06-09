@@ -1075,6 +1075,9 @@
   .range .xs\:w-28 {
     width: 7rem;
   }
+  .range .\!w-28 {
+    width: 7rem;
+  }
   .range .xs\:\!flex-row {
     flex-direction: row !important;
   }
@@ -1222,4 +1225,8 @@
 }
 .bg-red-100 {
   background-color: red;
+}
+.defaultMaskDimension {
+  width: 112px;
+  height: 36px;
 }
