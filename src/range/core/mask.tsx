@@ -36,7 +36,7 @@ export function DateMask({ ...props }: MaskProps) {
     inputClassName,
     maskClassName,
     onChange,
-    maskHeight = 41.6,
+    maskHeight = 36,
     suffix,
     prefix = <CalenderIcon />,
     maskFontSize = 16,
@@ -633,7 +633,7 @@ export function DateMask({ ...props }: MaskProps) {
   }, [defaultValue]);
   return (
     <div
-      className={`range flex justify-center items-center bg-gray-5 gap-2 px-auto border rounded-md  defaultMaskDimension  align-center ${maskClassName} 
+      className={`range flex justify-center items-center bg-gray-5 gap-2  border rounded-md  w-40  align-center px-2 ${maskClassName} 
  ${errorTarget.length > 0 && ErrorClass}
       `}
       style={{ height: `${maskHeight}px`, color: tertiaryColor }}

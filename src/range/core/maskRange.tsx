@@ -36,7 +36,7 @@ function MaskRange({ ...props }: IProps) {
         locale={locale}
         onChange={(e) => handleChange(e as number, "from")}
         defaultValue={date.from}
-        maskClassName={` rounded-lg ${
+        maskClassName={` rounded-lg w-fit ${
           error === "from" ? " border-red-100 " : ""
         }`}
         prefix={false}
@@ -47,7 +47,7 @@ function MaskRange({ ...props }: IProps) {
         locale={locale}
         onChange={(e) => handleChange(e as number, "to")}
         defaultValue={date.to}
-        maskClassName={`rounded-lg ${
+        maskClassName={`rounded-lg w-fit ${
           error === "from" ? " border-red-100 " : ""
         }`}
         prefix={false}
