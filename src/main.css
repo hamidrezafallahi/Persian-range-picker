@@ -894,6 +894,9 @@
     border-right: 2px solid #175ce7;
   }
 
+  .range .w-inherit {
+    width: initial;
+  }
   .range .xs\:border-b-2 {
     border-bottom: 2px solid #175ce7;
   }
@@ -921,6 +924,9 @@
   }
   .range .xs\:w-64 {
     width: 16rem;
+  }
+  .range .xs\:w-60 {
+    max-width: 240px;
   }
   .range .xs-gap-3 {
     gap: 0.75rem;

@@ -6,22 +6,9 @@ import type { IDate } from "../core/type";
 import Calendar from "./Calendar";
 import type { IProps } from "./type";
 
-export const DatePicker = ({
-  datePickerBodyClassName,
-  locale = "fa",
-  dateFromOutside,
-  onDateChange,
-  model = "range",
-  disablePreviousDays,
-  renderDayFn,
-  calenderClassName,
-  primaryColor = "#000",
-  backgroundColor = "#fff",
-  tertiaryColor = "#939393",
-  highlightColor = "#f4f4f4",
-  accentColor = "#2563eb",
-  secondaryColor = "#585858",
-}: IProps) => {
+export const DatePicker = ({ ...props }: IProps) => {
+  const { locale = "fa", dateFromOutside, onDateChange } = props;
+
   const initDate: IDate = useMemo(() => {
     return {
       from: dateFromOutside.from,
@@ -39,6 +26,7 @@ export const DatePicker = ({
   }, [dateFromOutside]);
   return (
     <Calendar
+      {...props}
       onChange={(from, to) => {
         onChange({ from, to } as IDate);
         setDate({ from, to } as IDate);
@@ -49,19 +37,6 @@ export const DatePicker = ({
         .startOf("day")
         .valueOf()}
       endDate={moment(date?.to).locale(locale).clone().startOf("day").valueOf()}
-      containerClassName=""
-      locale={locale}
-      disablePreviousDays={disablePreviousDays}
-      model={model}
-      renderDayFn={renderDayFn}
-      calenderClassName={calenderClassName}
-      datePickerBodyClassName={datePickerBodyClassName}
-      primaryColor={primaryColor}
-      accentColor={accentColor}
-      tertiaryColor={tertiaryColor}
-      backgroundColor={backgroundColor}
-      highlightColor={highlightColor}
-      secondaryColor={secondaryColor}
     />
   );
 };

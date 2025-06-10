@@ -28,7 +28,7 @@ const Manual = (props: IBaseProps) => {
   const switchHandler = () => {};
 
   return (
-    <div className="flex flex-col justify-center items-center gap-2 mx-auto w-60">
+    <div className="flex flex-col justify-center items-center gap-2 mx-auto xs:w-60">
       <MonthPicker
         {...props}
         monthPickerClassName={monthPickerClassName}
