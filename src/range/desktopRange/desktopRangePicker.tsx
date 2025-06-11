@@ -240,6 +240,7 @@ export function DesktopRangePicker(props: IDesktopRangeProps) {
             </div>
             <DownTriangle />
           </div>
+
           {zone !== "manual" && isShowNavigationButton && (
             <NavigateButton {...props} locale={locale} />
           )}
