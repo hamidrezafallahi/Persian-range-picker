@@ -38,6 +38,8 @@ function NavigateButton({ ...props }: INavigationProps) {
   } = props;
 
   const stepChangeHandler = (phase: "increment" | "decrement") => {
+    console.log(step, zone, counter + 1, locale);
+
     if (phase == "increment") {
       if (counter < 0) {
         const { from, to } = calculateDate(step, zone, counter + 1, locale);
