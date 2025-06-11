@@ -41,7 +41,7 @@ const MainContent = ({ ...props }: IProps) => {
   };
   const handleChange = (key: ITab["key"], value: unknown) => {
     const defaultKeys = ["day", "week", "month", "season", "year", "manual"];
-    if (!defaultKeys.includes(key)) {
+    if (!defaultKeys.includes(key.toLowerCase())) {
       setActiveCompareStep(null);
       setCompareDate(null);
       setCounter(0);
