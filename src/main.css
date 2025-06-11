@@ -868,6 +868,9 @@
 .range .w-40 {
   width: 10rem;
 }
+.range .w-53 {
+  width: 212px;
+}
 .range .w-56 {
   width: 14rem;
 }
@@ -951,6 +954,9 @@
 }
 .range .justify-between {
   justify-content: space-between;
+}
+.range .justify-around {
+  justify-content: space-around;
 }
 .range .justify-evenly {
   justify-content: space-evenly;
@@ -1229,4 +1235,11 @@
 .defaultMaskDimension {
   width: 112px;
   height: 36px;
+}
+.range .w-500 {
+  width: 500px;
+}
+
+.range .gap-2 {
+  gap: 8px;
 }

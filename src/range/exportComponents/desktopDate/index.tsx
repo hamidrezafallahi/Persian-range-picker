@@ -7,24 +7,9 @@ interface IProps {
   onChange?: (e: { type: "date"; date: IDate }) => void;
   tertiaryColor?: string;
   highlightColor?: string;
+  showTime?: boolean;
 }
 export function DesktopDate({ ...props }: IProps) {
-  const {
-    locale = "fa",
-    defaultValue,
-    onChange,
-    tertiaryColor = "#939393",
-    highlightColor = "#f4f4f4",
-  } = props;
-  return (
-    <DesktopDatePicker
-      {...props}
-      locale={locale}
-      model="date"
-      defaultValue={defaultValue}
-      onChange={onChange}
-      tertiaryColor={tertiaryColor}
-      highlightColor={highlightColor}
-    />
-  );
+  const { locale } = props;
+  return <DesktopDatePicker {...props} model="date" locale={locale} />;
 }

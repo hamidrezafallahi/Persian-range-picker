@@ -4,26 +4,26 @@ import {
   DesktopRange,
   MobileDate,
   MobileRange,
-  Range,
   TimePicker,
 } from "../range";
 import type { IDate } from "../range/core/type";
 
 export function InitialComponent() {
-  const handleDateChange = (w: IDate) => {
+  const handleDateChange = (w) => {
     console.log(
-      new Date(w?.from).toLocaleDateString("fa-IR", {
-        weekday: "long",
-        month: "long",
-        day: "numeric",
-        hour: "numeric",
-      }),
-      new Date(w?.to).toLocaleDateString("fa-IR", {
-        weekday: "long",
-        month: "long",
-        day: "numeric",
-        hour: "numeric",
-      })
+      w
+      // new Date(w?.from).toLocaleDateString("fa-IR", {
+      //   weekday: "long",
+      //   month: "long",
+      //   day: "numeric",
+      //   hour: "numeric",
+      // }),
+      // new Date(w?.to).toLocaleDateString("fa-IR", {
+      //   weekday: "long",
+      //   month: "long",
+      //   day: "numeric",
+      //   hour: "numeric",
+      // })
     );
   };
 
@@ -104,7 +104,7 @@ export function InitialComponent() {
   return (
     <>
       <div className="range">
-        <Range
+        {/* <Range
           // device={device}
           // locale={locale}
           // model={model}
@@ -113,9 +113,9 @@ export function InitialComponent() {
           onNavigateChange={handleNavigateChange}
           handleSubmit={HandleSubmitDate}
           handleReject={resetDate}
-        />
+        /> */}
         <div className="flex flex-col" dir="rtl">
-          <DesktopDate />
+          <DesktopDate onChange={handleDateChange} />
           <DesktopRange />
           <MobileDate />
           <MobileRange />

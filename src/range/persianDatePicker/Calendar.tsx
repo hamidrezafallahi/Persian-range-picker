@@ -3,6 +3,7 @@ import { memo, useCallback, useState } from "react";
 
 import jmoment from "moment-jalaali";
 
+import type { TLocale } from "../core/type";
 import DataPickerBody from "./dataPickerBody";
 import DatePickerHeader from "./datePickerHeader";
 import { CalendarViews } from "./enum";
@@ -13,7 +14,6 @@ import {
 } from "./helper";
 import MonthPicker from "./monthPicker";
 import YearPicker from "./yearPicker";
-import type { TLocale } from "../core/type";
 
 const todayTimestamp = new Date().setHours(0, 0, 0, 0);
 const today = jmoment();
@@ -64,7 +64,6 @@ const Calendar: FC<Props> = ({
   secondaryColor = "#585858",
   // calenderClassName = "",
   datePickerBodyClassName = "",
-  chooseTodayClassName = "",
   yearPickerClassName = "",
   datePickerHeaderClassName = "",
 }) => {
@@ -419,7 +418,7 @@ const Calendar: FC<Props> = ({
 
   return (
     <div
-      className={`flex flex-col items-center w-full h-fit  ${containerClassName}`}
+      className={`flex flex-col items-center w-full h-fit   ${containerClassName}`}
     >
       {view === CalendarViews.DAY ? (
         <div className="flex flex-col items-center w-full">
@@ -442,10 +441,6 @@ const Calendar: FC<Props> = ({
             locale={locale}
             datePickerBodyClassName={datePickerBodyClassName}
             onDateClick={onDateClick}
-            chooseTodayClassName={chooseTodayClassName}
-            model={model}
-            primaryColor={primaryColor}
-            highlightColor={highlightColor}
           />
         </div>
       ) : view === CalendarViews.MONTH ? (

@@ -1,5 +1,6 @@
 import type { Dispatch, ReactNode, SetStateAction } from "react";
 import React from "react";
+
 // type ContentWithOnChange = {
 //   onChange: (e: React.ChangeEvent<any>) => void;
 // };
@@ -30,6 +31,9 @@ export interface IDateProps {
   className?: string;
   dropdownWidth?: number;
   dropdownHeight?: number;
+  showTime?: boolean;
+  chooseTodayClassName?: string;
+  showTimeFormat?: string;
 }
 
 export type HandleParams = {
