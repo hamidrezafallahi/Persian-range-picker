@@ -28,10 +28,7 @@ const DataPickerBody: FC<Props> = ({
   primaryColor,
   highlightColor,
 }) => {
-  const today =
-    locale == "fa"
-      ? moment().locale("fa").clone().startOf("day").valueOf()
-      : new Date().setHours(0, 0, 0, 0).valueOf();
+  const today = moment().locale(locale).clone().startOf("day").valueOf();
   return (
     <div
       className={`flex justify-center  w-full ${datePickerBodyClassName} `}
