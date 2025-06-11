@@ -120,7 +120,11 @@ export function InitialComponent() {
             }}
           />
           <DesktopRange />
-          <MobileDate />
+          <MobileDate
+            onChange={(e) => {
+              handleDateChange(e);
+            }}
+          />
           <MobileRange />
           <DateMask
             onChange={handleChange}
