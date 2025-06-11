@@ -950,3 +950,14 @@
 .range .gap-2 {
   gap: 8px;
 }
+
+.range .pointer-events-auto {
+  pointer-events: auto;
+}
+.range .opacity-100 {
+  opacity: 1;
+}
+.range .text-gray123 {
+  background-color: #939393;
+  color: #fff !important;
+}
