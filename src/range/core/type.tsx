@@ -29,6 +29,7 @@ export interface IDateProps {
   defaultValue?: IDate;
   onChange?: (e: { type: "date"; date: IDate }) => void;
   className?: string;
+  calendarBaseWidth?: number;
   dropdownWidth?: number;
   dropdownHeight?: number;
   showTime?: boolean;

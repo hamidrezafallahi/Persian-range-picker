@@ -30,6 +30,7 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
     tertiaryColor = "#939393",
     highlightColor = "#f4f4f4",
     dropdownWidth = 256,
+    calendarBaseWidth = 256,
     dropdownHeight = 314,
     showTime = true,
     chooseTodayClassName = "",
@@ -199,6 +200,7 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
               locale={locale}
               onDateChange={handleDateChange}
               dateFromOutside={{ from: showDate.from, to: 0 }}
+              calendarBaseWidth={calendarBaseWidth}
             />
           </div>
 
