@@ -35,6 +35,7 @@ interface Props {
     day: { timestamp: number; currentMonth: boolean },
     index: number
   ) => ReactNode;
+  calendarBaseWidth?: number;
   containerClassName?: string;
   calenderClassName?: string;
   datePickerBodyClassName?: string;
@@ -57,6 +58,7 @@ const Calendar: FC<Props> = ({
   locale = "en",
   disablePreviousDays = false,
   renderDayFn,
+  calendarBaseWidth,
   containerClassName,
   primaryColor = "#000",
   backgroundColor = "#fff ",
@@ -418,7 +420,8 @@ const Calendar: FC<Props> = ({
 
   return (
     <div
-      className={`flex flex-col items-center w-full h-fit   ${containerClassName}`}
+      style={{ width: calendarBaseWidth }}
+      className={`flex flex-col items-center w-full h-fit  ${containerClassName}`}
     >
       {view === CalendarViews.DAY ? (
         <div className="flex flex-col items-center w-full">

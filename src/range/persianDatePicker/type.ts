@@ -34,4 +34,5 @@ export interface IProps {
   accentColor?: string;
   secondaryColor?: string;
   neutralColor?: string;
+  calendarBaseWidth?: number;
 }
