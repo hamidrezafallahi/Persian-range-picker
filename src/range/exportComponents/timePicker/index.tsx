@@ -1,17 +1,22 @@
-import React, { type ReactNode, useEffect, useRef, useState } from "react";
+import React, {
+  type ReactNode,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 
-import moment from "moment-jalaali";
+import moment from 'moment-jalaali';
 
-import { CalenderIcon } from "../../icons/CalenderIcon";
-import { TimeColumns } from "./exportComponents";
-import { toPersianDigits } from "../../core/helper";
+import { toPersianDigits } from '../../core/helper';
+import { CalenderIcon } from '../../icons/CalenderIcon';
+import { TimeColumns } from './exportComponents';
 
 type TUnit = "hour" | "minute" | "second";
 
 interface Props {
   defaultValue?: Date;
   locale?: "fa" | "en";
-  onChange?: (timestamp: number) => void;
+  // onChange?: (timestamp: number) => void;
   containerClassName?: string;
   okButtonClassName?: string;
   nowButtonClassName?: string;
@@ -36,7 +41,7 @@ interface Props {
 
 export const TimePicker: React.FC<Props> = ({
   defaultValue = new Date(),
-  onChange,
+  // onChange,
   locale = "fa",
   containerClassName,
   okButtonClassName,
@@ -89,7 +94,7 @@ export const TimePicker: React.FC<Props> = ({
   };
 
   const handleOk = () => {
-    onChange?.(time);
+    // onChange?.(time);
     setOpen(false);
   };
 
@@ -97,7 +102,7 @@ export const TimePicker: React.FC<Props> = ({
     const now = moment().locale(locale).valueOf();
     setTime(now);
     setOpen(false);
-    onChange?.(now);
+    // onChange?.(now);
   };
 
   const renderOptions = (count: number, unit: TUnit, step = 1) => {
@@ -111,9 +116,11 @@ export const TimePicker: React.FC<Props> = ({
         <button
           key={val}
           onClick={() => handleTimeChange(unit, val)}
-          className={`px-2 py-1 text-center cursor-pointer rounded ${
-            active === val ? "bg-blue-100" : ""
-          }  hover:bg-blue-50 `}
+          className={`flex flex-col justify-evenly items-center !rounded-md w-[clamp(24px,24px,30px)] aspect-square text-center cursor-pointer ${
+            active === val
+              ? "pointer-events-auto opacity-100 text-gray123 text-sm"
+              : ""
+          } `}
           ref={(el) => {
             buttonRefs.current[i] = el;
           }}
