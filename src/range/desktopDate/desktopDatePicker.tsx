@@ -102,7 +102,7 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
     showDate.from > 0
       ? toPersianDigits(
           moment(showDate.from).format(
-            showTime ? `${showTimeFormat}  —  jYYYY/jMM/jDD` : "jYYYY/jMM/jDD"
+            showTime ? `${showTimeFormat}\u2003jYYYY/jMM/jDD` : "jYYYY/jMM/jDD"
           )
         )
       : "انتخاب تاریخ";
@@ -110,7 +110,7 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
   const gregorian =
     showDate.from > 0
       ? moment(showDate.from).format(
-          showTime ? `${showTimeFormat}  —  YYYY/MM/DD` : "YYYY/MM/DD"
+          showTime ? `${showTimeFormat}\u2003YYYY/MM/DD` : "YYYY/MM/DD"
         )
       : "Choose date";
 

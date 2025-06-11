@@ -1,15 +1,10 @@
-import React, {
-  type ReactNode,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import React, { type ReactNode, useEffect, useRef, useState } from "react";
 
-import moment from 'moment-jalaali';
+import moment from "moment-jalaali";
 
-import { toPersianDigits } from '../../core/helper';
-import { CalenderIcon } from '../../icons/CalenderIcon';
-import { TimeColumns } from './exportComponents';
+import { toPersianDigits } from "../../core/helper";
+import { CalenderIcon } from "../../icons/CalenderIcon";
+import { TimeColumns } from "./exportComponents";
 
 type TUnit = "hour" | "minute" | "second";
 
@@ -205,7 +200,7 @@ export const TimePicker: React.FC<Props> = ({
           )}
         </div>
       ) : (
-        <div className="relative" ref={ref}>
+        <div className="relative w-fit" ref={ref}>
           <button
             onClick={() => setOpen((prev) => !prev)}
             className={`relative flex justify-center items-center gap-2 p-1 px-2 rounded-md w-40 h-10 ${timeButtonClassName} `}
