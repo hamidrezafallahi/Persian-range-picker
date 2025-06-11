@@ -1,6 +1,9 @@
-import type { FC, ReactNode } from "react";
+import type {
+  FC,
+  ReactNode,
+} from 'react';
 
-import type { TLocale } from "../core/type";
+import type { TLocale } from '../core/type';
 
 interface Props {
   datePickerBodyClassName?: string;
@@ -18,6 +21,7 @@ const DataPickerBody: FC<Props> = ({
   renderMonthBody,
   locale,
 }) => {
+  // const today = moment().locale(locale).clone().startOf("day").valueOf();
   return (
     <div
       className={`flex justify-center  w-full ${datePickerBodyClassName} `}

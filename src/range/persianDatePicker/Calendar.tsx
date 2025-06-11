@@ -1,4 +1,4 @@
-import type { FC, ReactNode } from "react";
+import type { FC, ReactNode, RefObject } from "react";
 import { memo, useCallback, useState } from "react";
 
 import jmoment from "moment-jalaali";
@@ -18,6 +18,7 @@ import YearPicker from "./yearPicker";
 const todayTimestamp = new Date().setHours(0, 0, 0, 0);
 const today = jmoment();
 interface Props {
+  manualContainerRef?: RefObject<HTMLDivElement | null>;
   primaryColor?: string;
   backgroundColor?: string;
   highlightColor?: string;
@@ -62,7 +63,6 @@ const Calendar: FC<Props> = ({
   tertiaryColor = "#939393",
   highlightColor = "#f4f4f4",
   secondaryColor = "#585858",
-  // calenderClassName = "",
   datePickerBodyClassName = "",
   yearPickerClassName = "",
   datePickerHeaderClassName = "",

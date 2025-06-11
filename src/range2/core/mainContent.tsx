@@ -68,7 +68,7 @@ const MainContent = ({ ...props }: Omit<IBaseProps, "componentStep">) => {
     }
     ${locale === "fa" && device === "desktop" ? "!border-l !border-r" : ""}
     ${tabClassName}
-  `.trim()}
+  `}
       >
         {tabs.map((tab) => (
           <button

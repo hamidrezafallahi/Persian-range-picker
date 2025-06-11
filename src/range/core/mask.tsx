@@ -36,7 +36,7 @@ export function DateMask({ ...props }: MaskProps) {
     inputClassName,
     maskClassName,
     onChange,
-    maskHeight = 41.6,
+    maskHeight = 36,
     suffix,
     prefix = <CalenderIcon />,
     maskFontSize = 16,
@@ -633,7 +633,7 @@ export function DateMask({ ...props }: MaskProps) {
   }, [defaultValue]);
   return (
     <div
-      className={`range flex justify-center items-center bg-gray-5 gap-2 px-auto border rounded-md  defaultMaskDimension align-center ${maskClassName} 
+      className={`range flex justify-center items-center bg-gray-5 gap-2  border rounded-md  w-40  align-center px-2 ${maskClassName} 
  ${errorTarget.length > 0 && ErrorClass}
       `}
       style={{ height: `${maskHeight}px`, color: tertiaryColor }}
@@ -659,7 +659,7 @@ export function DateMask({ ...props }: MaskProps) {
             </div>
           ) : (
             <div
-              className="flex justify-center items-center same-font"
+              className="flex justify-center items-center w-full same-font"
               style={{ gap: "2px" }}
             >
               <input
@@ -674,12 +674,13 @@ export function DateMask({ ...props }: MaskProps) {
                 onKeyDown={handleKeyDown}
                 maxLength={4}
                 minLength={4}
-                className={`same-font bg-gray-5 ${inputClassName} `}
+                className={`same-font  ${inputClassName} `}
                 style={{
-                  width: (4 * maskFontSize) / 2,
+                  width: (4 * maskFontSize) / 2 + 8,
                   fontSize: maskFontSize,
                   border: "none",
                   outline: "none",
+                  background: "transparent",
                 }}
                 placeholder="____"
               />
@@ -708,12 +709,13 @@ export function DateMask({ ...props }: MaskProps) {
                 onKeyDown={handleKeyDown}
                 maxLength={2}
                 minLength={2}
-                className={`same-font bg-gray-5 ${inputClassName}`}
+                className={`same-font ${inputClassName}`}
                 style={{
-                  width: (2 * maskFontSize) / 2,
+                  width: (2 * maskFontSize) / 2 + 6,
                   fontSize: maskFontSize,
                   border: "none",
                   outline: "none",
+                  background: "transparent",
                 }}
                 placeholder="__"
               />
@@ -743,12 +745,13 @@ export function DateMask({ ...props }: MaskProps) {
                 onKeyDown={handleKeyDown}
                 maxLength={2}
                 minLength={2}
-                className={`same-font bg-gray-5 ${inputClassName}`}
+                className={`same-font  ${inputClassName}`}
                 style={{
                   fontSize: maskFontSize,
-                  width: (2 * maskFontSize) / 2,
+                  width: (2 * maskFontSize) / 2 + 6,
                   border: "none",
                   outline: "none",
+                  background: "transparent",
                 }}
                 placeholder="__"
               />
@@ -816,6 +819,7 @@ export function DateMask({ ...props }: MaskProps) {
                       }}
                     >
                       <span
+                        style={{ lineHeight: "10px" }}
                         className={`selected-text ${
                           errorTarget.includes(index) && ErrorClass
                         }`}
