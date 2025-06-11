@@ -79,6 +79,31 @@ export function DesktopRangePicker(props: IDesktopRangeProps) {
   const [showDate, setShowDate] = useState<ISubmittedData>(initSubmittedData);
   const [type, setType] = useState<string>("date");
   const [customData, setCustomData] = useState<unknown>(null);
+
+  const handleClickOutside = (event: MouseEvent) => {
+    const target = event.target as Node;
+    if (
+      popupRef.current &&
+      !popupRef.current.contains(target) &&
+      buttonRef.current &&
+      !buttonRef.current.contains(target)
+    ) {
+      setOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    if (open) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [open]);
+
   const handleAccept = () => {
     if (date) {
       if (date.from && date.to && date.from < date.to) {
