@@ -16,6 +16,7 @@ import { TimePicker } from "../exportComponents/timePicker";
 import { useRenderPosition } from "../exportComponents/useRenderPosition";
 import { CalenderIcon } from "../icons/CalenderIcon";
 import { DatePicker } from "../persianDatePicker";
+import { toPersianDigits } from "../core/helper";
 
 export function DesktopDatePicker({ ...props }: IDateProps) {
   const {
@@ -47,9 +48,6 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
     width: dropdownWidth,
     height: dropdownHeight,
   });
-  const [selectedTimestamp, setSelectedTimestamp] = useState<number>(
-    showDate.from > 0 ? showDate.from : Date.now()
-  );
   const buttonRef = useRef<HTMLElement | null>(null);
   const popupRef = useRef<HTMLDivElement | null>(null);
 
@@ -91,58 +89,26 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
   };
 
   const handleDateChange = (date: IDate) => {
-    const temp = {
-      year:
-        locale == "fa"
-          ? moment(date.from).locale(locale).jYear()
-          : moment(date.from).locale(locale).year(),
-      month:
-        locale == "fa"
-          ? moment(date.from).locale(locale).jMonth()
-          : moment(date.from).locale(locale).month(),
-      day: moment(date.from).locale(locale).day(),
-    };
-    const newDate = moment(selectedTimestamp).set(temp).valueOf();
-    setShowDate({ from: newDate, to: 0 });
-    setSelectedTimestamp(newDate);
+    setShowDate({ from: date.from, to: 0 });
     if (!showTime) {
+      onChange?.({ type: "date", date: { from: date.from, to: 0 } });
       setIsOpen(false);
     }
   };
-
   const persian =
     showDate.from > 0
-      ? moment(showDate.from).format("jYYYY/jMM/jDD")
+      ? toPersianDigits(moment(showDate.from).format("jYYYY/jMM/jDD")) ////////////////////TODO showTime
       : "انتخاب تاریخ";
 
   const gregorian =
     showDate.from > 0
-      ? moment(showDate.from).format("YYYY/MM/DD")
+      ? moment(showDate.from).format("YYYY/MM/DD") ////////////////////TODO showTime
       : "Choose date";
 
   const title = locale === "fa" ? persian : gregorian;
+
   const handleSetTime = (timestamp: number) => {
-    console.log(
-      new Date(timestamp).toLocaleDateString("fa-IR", {
-        weekday: "long",
-        month: "long",
-        day: "numeric",
-        hour: "numeric",
-        minute: "numeric",
-        second: "numeric",
-      })
-    );
-
-    const newDate = moment(selectedTimestamp)
-      .set({
-        year: moment(timestamp).year(),
-        month: moment(timestamp).month(),
-        date: moment(timestamp).date(),
-      })
-      .valueOf();
-
-    setShowDate({ from: newDate, to: 0 });
-    setSelectedTimestamp(newDate);
+    setShowDate({ from: timestamp, to: 0 });
   };
   return (
     <div className="relative w-fit h-full">
@@ -154,7 +120,7 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
           backgroundColor: highlightColor,
           marginRight: 200,
         }}
-        className="flex justify-center items-center gap-2 px-3 border rounded-md w-40 h-10"
+        className="flex justify-center items-center gap-2 px-3 border rounded-md w-40 h-10" ////////////////////TODO showTime
       >
         <CalenderIcon />
         <div className="text-sm">{title}</div>
@@ -177,14 +143,29 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
               <div style={{ width: "212px", minWidth: "212px" }}>
                 <div
                   className="flex justify-center items-center border-b h-9"
-                  style={{ height: "34px" }}
+                  style={{
+                    height: "34px",
+                    fontSize: "14px",
+                    color: tertiaryColor,
+                  }}
                 >
-                  {moment(showDate.from).locale(locale).format(showTimeFormat)}
+                  {locale == "fa"
+                    ? toPersianDigits(
+                        moment(showDate.from)
+                          .locale(locale)
+                          .format(showTimeFormat)
+                      )
+                    : moment(showDate.from)
+                        .locale(locale)
+                        .format(showTimeFormat)}
                 </div>
                 <TimePicker
-                  // defaultValue={new Date(new Date().setHours(14, 26, 37, 42))}
+                  {...props}
+                  displayButtonCount={5}
+                  defaultValue={new Date(showDate.from)}
                   flatRender={true}
-                  onChange={handleSetTime}
+                  onChange={handleSetTime} ////////////////////TODO
+                  onGetValue={handleSetTime}
                 />
               </div>
             )}
@@ -207,6 +188,7 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
             chooseTodayClassName={chooseTodayClassName}
             showTime={showTime}
             onSubmit={handleSubmit}
+            onChange={onChange}
           />
         </div>
       )}
@@ -223,6 +205,7 @@ interface IFooter {
   highlightColor?: string;
   chooseTodayClassName?: string;
   showTime: boolean;
+  onChange?: IDateProps["onChange"];
   onSubmit?: () => void;
 }
 
@@ -236,23 +219,28 @@ const Footer = ({ ...props }: IFooter) => {
     chooseTodayClassName,
     showTime,
     onSubmit,
+    onChange,
   } = props;
-  const today: IDate = {
-    from: moment().locale(locale).startOf("day").valueOf(),
-    to: moment().locale(locale).valueOf(),
-  };
-  const now: IDate = {
-    from: moment().locale(locale).valueOf(),
-    to: moment().locale(locale).valueOf(),
-  };
 
   const handleSelect = (key: "today" | "now" | "submit") => {
+    const today: IDate = {
+      from: moment().locale(locale).startOf("day").valueOf(),
+      to: moment().locale(locale).valueOf(),
+    };
+    const now: IDate = {
+      from: moment().locale(locale).valueOf(),
+      to: moment().locale(locale).valueOf(),
+    };
+
     switch (key) {
       case "today":
-        setShowDate(today);
+        onChange?.({ type: "date", date: today });
         break;
       case "now":
-        setShowDate(now);
+        {
+          setShowDate(now);
+          onChange?.({ type: "date", date: now });
+        }
         break;
       default:
         break;
@@ -270,9 +258,7 @@ const Footer = ({ ...props }: IFooter) => {
         </div>
       ) : (
         <button
-          onClick={() => {
-            handleSelect("today");
-          }}
+          onClick={() => handleSelect("today")}
           style={{ backgroundColor: highlightColor, color: primaryColor }}
           className={` w-full h-10  text-center  ${chooseTodayClassName}`}
         >
@@ -288,9 +274,7 @@ const NowButton = ({ ...props }) => {
   return (
     <button
       className={`p-2 px-3 border rounded-md ${nowButtonClassName}`}
-      onClick={() => {
-        handleSelect("now");
-      }}
+      onClick={() => handleSelect("now")}
     >
       now
     </button>
@@ -300,9 +284,7 @@ const SubmitTimeButton = ({ ...props }) => {
   const { handleSelect, okButtonClassName = "" } = props;
   return (
     <button
-      onClick={() => {
-        handleSelect("submit");
-      }}
+      onClick={() => handleSelect("submit")}
       className={`p-2 px-3 border rounded-md ${okButtonClassName}`}
       style={{
         background: "black",

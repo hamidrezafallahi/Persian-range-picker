@@ -1,15 +1,10 @@
-import React, {
-  type ReactNode,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import React, { type ReactNode, useEffect, useRef, useState } from "react";
 
 import moment from "moment-jalaali";
 
 import { CalenderIcon } from "../../icons/CalenderIcon";
 import { TimeColumns } from "./exportComponents";
+import { toPersianDigits } from "../../core/helper";
 
 type TUnit = "hour" | "minute" | "second";
 
@@ -32,15 +27,15 @@ interface Props {
   needConfirm?: boolean;
   showNow?: boolean;
   renderExtraFooter?: () => ReactNode;
-  changeOnScroll?: boolean;
   hourStep?: number;
   minuteStep?: number;
   secondStep?: number;
   flatRender?: boolean;
+  onGetValue?: (e: number) => void;
 }
 
 export const TimePicker: React.FC<Props> = ({
-  defaultValue,
+  defaultValue = new Date(),
   onChange,
   locale = "fa",
   containerClassName,
@@ -58,23 +53,18 @@ export const TimePicker: React.FC<Props> = ({
   needConfirm = true,
   showNow = true,
   renderExtraFooter,
-  changeOnScroll = false,
   hourStep = 1,
   minuteStep = 1,
   secondStep = 1,
   flatRender = false,
+  onGetValue,
 }: Props) => {
-  const initValue = useMemo(() => {
-    const base = defaultValue ? moment(defaultValue) : moment();
-    return base.locale(locale).valueOf();
-  }, [defaultValue]);
-
   const [open, setOpen] = useState(false);
-  const [time, setTime] = useState<number>(initValue);
+  const [time, setTime] = useState<number>(defaultValue.valueOf());
   // const [position, setPosition] = useState({ top: 0, left: 0 });
 
   const buttonRefs = useRef<(HTMLButtonElement | null)[]>([]);
-  const firstRender = useRef(true);
+  // const firstRender = useRef(true);
 
   const ref = useRef<HTMLDivElement>(null);
   // const hookPosition = useRenderPosition({
@@ -96,17 +86,10 @@ export const TimePicker: React.FC<Props> = ({
   const handleTimeChange = (unit: TUnit, value: number) => {
     const updated = moment(time).locale(locale).set(unit, value);
     setTime(updated.valueOf());
-    if (!needConfirm) onChange?.(updated.valueOf());
-  };
-
-  const handleScrollChange = (unit: TUnit, delta: number) => {
-    const limit = unit === "hour" ? 24 : 60;
-    const active = moment(time).locale(locale).get(unit);
-    const next = (active + delta + limit) % limit;
-    handleTimeChange(unit, next);
   };
 
   const handleOk = () => {
+    onChange?.(time);
     setOpen(false);
   };
 
@@ -134,30 +117,24 @@ export const TimePicker: React.FC<Props> = ({
           ref={(el) => {
             buttonRefs.current[i] = el;
           }}
+          style={{ color: tertiaryColor, fontSize: "14px" }}
         >
-          {pad(val)}
+          {locale == "fa" ? toPersianDigits(pad(val)) : pad(val)}
         </button>
       );
     });
   };
-
-  useEffect(() => {
-    if (firstRender.current) {
-      firstRender.current = false;
-      return;
-    }
-    onChange?.(time);
-  }, [time]);
-
-  // useEffect(() => {
-  //   setPosition(hookPosition);
-  // }, [hookPosition]);
-
   const renderHeight = `${
     displayButtonCount * (buttonRefs.current[0]?.offsetHeight ?? 17) +
     20 +
     (displayButtonCount - 1) * 16
   }px`;
+  useEffect(() => {
+    setTime(defaultValue.valueOf());
+  }, [defaultValue]);
+  useEffect(() => {
+    onGetValue?.(time);
+  }, [time]);
 
   return (
     <>
@@ -174,6 +151,7 @@ export const TimePicker: React.FC<Props> = ({
           }  w-fit p-3  ${containerClassName}`}
         >
           <TimeColumns
+            // tertiaryColor={tertiaryColor}
             renderHeight={renderHeight}
             renderOptions={(count, unit) =>
               renderOptions(
@@ -190,8 +168,6 @@ export const TimePicker: React.FC<Props> = ({
             minuteStep={minuteStep}
             secondStep={secondStep}
             showSecond={showSecond}
-            changeOnScroll={changeOnScroll}
-            onScrollChange={handleScrollChange}
           />
 
           {!flatRender && (
@@ -259,8 +235,6 @@ export const TimePicker: React.FC<Props> = ({
                 minuteStep={minuteStep}
                 secondStep={secondStep}
                 showSecond={showSecond}
-                changeOnScroll={changeOnScroll}
-                onScrollChange={handleScrollChange}
               />
 
               <div className="flex justify-between gap-4 mt-2">

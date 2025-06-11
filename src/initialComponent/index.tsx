@@ -10,21 +10,24 @@ import type { IDate } from "../range/core/type";
 
 export function InitialComponent() {
   const handleDateChange = (w) => {
-    console.log(
-      w
-      // new Date(w?.from).toLocaleDateString("fa-IR", {
-      //   weekday: "long",
-      //   month: "long",
-      //   day: "numeric",
-      //   hour: "numeric",
-      // }),
-      // new Date(w?.to).toLocaleDateString("fa-IR", {
-      //   weekday: "long",
-      //   month: "long",
-      //   day: "numeric",
-      //   hour: "numeric",
-      // })
-    );
+    if (w?.date?.from) {
+      console.log(
+        new Date(w.date.from).toLocaleDateString("fa-IR", {
+          weekday: "long",
+          month: "long",
+          day: "numeric",
+          hour: "numeric",
+          minute: "numeric",
+          second: "numeric",
+        })
+      );
+    }
+    // new Date(w?.to).toLocaleDateString("fa-IR", {
+    //   weekday: "long",
+    //   month: "long",
+    //   day: "numeric",
+    //   hour: "numeric",
+    // })
   };
 
   const handleCompareDateChange = (date: IDate, compareDate: IDate) => {

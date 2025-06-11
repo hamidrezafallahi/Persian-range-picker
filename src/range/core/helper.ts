@@ -2,7 +2,9 @@ import moment from "moment-jalaali";
 
 import type { IDate, ITimeSections, ITimeZone, TLocale } from "./type";
 import { ESteps } from "./type";
-
+export const toPersianDigits = (str: string) => {
+  return str.replace(/\d/g, (d) => "۰۱۲۳۴۵۶۷۸۹"[parseInt(d)]);
+};
 export const getTimestampsForPeriod = (period: ITimeZone, locale: string) => {
   let from, to;
 
