@@ -131,7 +131,7 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
           onClick={handleDropdown}
           style={{
             color: tertiaryColor,
-            // backgroundColor: highlightColor,
+            backgroundColor: highlightColor,
             marginRight: 200,
           }}
           className="flex justify-between items-center gap-2 px-3 border rounded-md w-fit xs:w-full h-10"

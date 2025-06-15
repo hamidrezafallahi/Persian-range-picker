@@ -2,7 +2,6 @@ import React, { type ReactNode, useEffect, useRef, useState } from "react";
 
 import moment from "moment-jalaali";
 
-import { CalenderIcon } from "../icons/CalenderIcon";
 import type { IDate, TLocale } from "./type";
 
 type TimeZone = "year" | "month" | "day";
@@ -39,7 +38,7 @@ export function DateMask({ ...props }: MaskProps) {
     onChange,
     maskHeight = 36,
     suffix,
-    prefix = <CalenderIcon />,
+    prefix,
     maskFontSize = 16,
     ErrorClass = defaultErrorClass,
     dir = "ltr",
@@ -638,7 +637,7 @@ export function DateMask({ ...props }: MaskProps) {
   return (
     <div className="range">
       <div
-        className={` flex justify-center items-center gap-2   rounded-md  sm:w-40  w-full  align-center px-2 ${maskClassName} 
+        className={` flex justify-center items-center gap-2   rounded-md  xs:w-28  w-full  align-center px-2 ${maskClassName} 
  ${errorTarget.length > 0 && ErrorClass}
       `}
         style={{

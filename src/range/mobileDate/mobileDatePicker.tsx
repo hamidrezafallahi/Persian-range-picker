@@ -67,7 +67,7 @@ const MobileDatePicker = ({ ...props }: IDateProps) => {
       <button
         style={{ backgroundColor: highlightColor, color: tertiaryColor }}
         popoverTarget="mobileDateModal"
-        className="flex justify-between items-center gap-2 px-2 rounded-md w-full sm:w-fit h-full min-h-8" // need className
+        className="flex justify-between items-center gap-2 px-2 rounded-md w-full sm:w-28 h-9" // need className
       >
         <CalenderIcon />
         <div>{title}</div>

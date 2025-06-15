@@ -843,8 +843,8 @@
 
 /* ==================== MEDIA QUERIES ==================== */
 @media (min-width: 431px) {
-  .range .sm\:w-40 {
-    width: 10rem;
+  .range .sm\:w-28 {
+    width: 112px;
   }
 
   .range .sm\:w-fit {

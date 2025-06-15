@@ -218,7 +218,7 @@ export function DesktopRangePicker(props: IDesktopRangeProps) {
   return (
     <div className="range">
       <div
-        className={`relative flex flex-col justify-between w-fit h-14 ${buttonClassName}`}
+        className={`relative flex flex-col  justify-center w-fit h-14 ${buttonClassName}`}
         ref={buttonRef as React.RefObject<HTMLDivElement>}
       >
         {label.isShowLabel && label.label}
