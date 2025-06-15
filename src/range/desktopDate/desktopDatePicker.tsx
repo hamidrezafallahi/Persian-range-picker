@@ -21,7 +21,8 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
     dropdownWidth = 256,
     calendarBaseWidth = 256,
     dropdownHeight = 314,
-    showTime = true,
+    showTime = false,
+    className,
     chooseTodayClassName = "",
     showTimeFormat = "HH:mm:ss",
   } = props;
@@ -50,6 +51,10 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
     enabled: isOpen,
     popupSize,
   });
+  const changeHandler = (e) => {
+    setShowDate({ from: e.date?.from, to: 0 });
+    onChange(e);
+  };
 
   useEffect(() => {
     if (isOpen && popupRef.current) {
@@ -113,6 +118,7 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
           showTime ? `${showTimeFormat}\u2003YYYY/MM/DD` : "YYYY/MM/DD"
         )
       : "Choose date";
+  console.log(persian);
 
   const title = locale === "fa" ? persian : gregorian;
 
@@ -125,16 +131,16 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
 
   return (
     <div className="range">
-      <div className="relative w-fit h-full">
+      <div className="relative h-full">
         <button
           ref={buttonRef as React.RefObject<HTMLButtonElement>}
           onClick={handleDropdown}
           style={{
             color: tertiaryColor,
-            // backgroundColor: highlightColor,
-            marginRight: 200,
+            backgroundColor: highlightColor,
+            height: 34,
           }}
-          className="flex justify-between items-center gap-2 px-3 border rounded-md w-fit xs:w-full h-10"
+          className={`flex justify-start items-center gap-2 px-3   rounded-md w-full ${className}`}
         >
           <CalenderIcon />
           <div className="text-sm">{title}</div>
@@ -203,7 +209,7 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
               chooseTodayClassName={chooseTodayClassName}
               showTime={showTime}
               onSubmit={handleSubmit}
-              onChange={onChange}
+              onChange={changeHandler}
             />
           </div>
         )}
