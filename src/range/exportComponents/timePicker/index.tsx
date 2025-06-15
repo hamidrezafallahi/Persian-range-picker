@@ -10,7 +10,7 @@ import { TimeColumns } from "./exportComponents";
 type TUnit = "hour" | "minute" | "second";
 
 interface Props {
-  defaultValue?: Date;
+  defaultValue?: number;
   calendarType?: "shamsi" | "gregorian";
   // onChange?: (timestamp: number) => void;
   containerClassName?: string;
@@ -36,7 +36,7 @@ interface Props {
 }
 
 export const TimePicker: React.FC<Props> = ({
-  defaultValue = new Date(),
+  defaultValue,
   // onChange,
   calendarType = "shamsi",
   containerClassName,
@@ -45,7 +45,7 @@ export const TimePicker: React.FC<Props> = ({
   timeButtonClassName,
   width = 136,
   // height = 100,
-  displayButtonCount = 10,
+  displayButtonCount = 6,
   icon = <CalenderIcon />,
   tertiaryColor = "#939393",
   highlightColor = "#f4f4f4",
@@ -61,7 +61,11 @@ export const TimePicker: React.FC<Props> = ({
   onGetValue,
 }: Props) => {
   const [open, setOpen] = useState(false);
-  const [time, setTime] = useState<number>(defaultValue.valueOf());
+  const [time, setTime] = useState<number | null>(
+    defaultValue ? defaultValue : null
+  );
+  console.log("time", time);
+
   const buttonRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const locale = calendarType == "shamsi" ? "fa" : "en";
 
@@ -134,10 +138,12 @@ export const TimePicker: React.FC<Props> = ({
   };
 
   useEffect(() => {
-    setTime(defaultValue.valueOf());
+    if (defaultValue) {
+      setTime(defaultValue);
+    }
   }, [defaultValue]);
   useEffect(() => {
-    onGetValue?.(time);
+    onGetValue?.(time as number);
   }, [time]);
 
   return (
@@ -199,11 +205,11 @@ export const TimePicker: React.FC<Props> = ({
         <div className="relative" ref={ref}>
           <button
             onClick={() => setOpen((prev) => !prev)}
-            className={`relative flex justify-between items-center gap-2  px-2 rounded-md sm:w-28 w-full h-9 ${timeButtonClassName} `}
+            className={`relative flex justify-between items-center gap-2  px-2 rounded-md w-full xs:w-28 h-9 ${timeButtonClassName} `}
             style={{ color: tertiaryColor, backgroundColor: highlightColor }}
           >
             <span className="text-lg">{icon}</span>
-            {moment(time).locale(locale).format(format)}
+            {time ? moment(time).locale(locale).format(format) : "انتخاب زمان"}
           </button>
 
           {open && (

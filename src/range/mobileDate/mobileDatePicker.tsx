@@ -67,7 +67,7 @@ const MobileDatePicker = ({ ...props }: IDateProps) => {
       <button
         style={{ backgroundColor: highlightColor, color: tertiaryColor }}
         popoverTarget="mobileDateModal"
-        className="flex justify-between items-center gap-2 px-2 rounded-md w-full sm:w-28 h-9" // need className
+        className="flex justify-between items-center gap-2 px-2 rounded-md w-full xs:w-28 h-9" // need className
       >
         <CalenderIcon />
         <div>{title}</div>
@@ -123,7 +123,7 @@ const MobileDatePicker = ({ ...props }: IDateProps) => {
                 {...props}
                 containerClassName="!w-full !h-full bg-red-400 p-2 "
                 displayButtonCount={15}
-                defaultValue={new Date(showDate?.from ?? Date.now())}
+                defaultValue={showDate?.from}
                 flatRender={true}
                 onGetValue={handleSetTime}
               />

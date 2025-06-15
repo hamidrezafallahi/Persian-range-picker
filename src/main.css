@@ -843,11 +843,11 @@
 
 /* ==================== MEDIA QUERIES ==================== */
 @media (min-width: 431px) {
-  .range .sm\:w-28 {
+  .range .xs\:w-28 {
     width: 112px;
   }
 
-  .range .sm\:w-fit {
+  .range .xs\:w-fit {
     width: fit-content;
   }
 
@@ -909,9 +909,6 @@
     border-right: 2px solid #175ce7;
   }
 
-  .range .w-inherit {
-    width: initial;
-  }
   .range .xs\:border-b-2 {
     border-bottom: 2px solid #175ce7;
   }
