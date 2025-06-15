@@ -11,7 +11,7 @@ type TUnit = "hour" | "minute" | "second";
 
 interface Props {
   defaultValue?: Date;
-  locale?: "fa" | "en";
+  calendarType?: "shamsi" | "gregorian";
   // onChange?: (timestamp: number) => void;
   containerClassName?: string;
   okButtonClassName?: string;
@@ -38,7 +38,7 @@ interface Props {
 export const TimePicker: React.FC<Props> = ({
   defaultValue = new Date(),
   // onChange,
-  locale = "fa",
+  calendarType = "shamsi",
   containerClassName,
   okButtonClassName,
   nowButtonClassName,
@@ -63,6 +63,8 @@ export const TimePicker: React.FC<Props> = ({
   const [open, setOpen] = useState(false);
   const [time, setTime] = useState<number>(defaultValue.valueOf());
   const buttonRefs = useRef<(HTMLButtonElement | null)[]>([]);
+  const locale = calendarType == "shamsi" ? "fa" : "en";
+
   const renderHeight =
     displayButtonCount * (buttonRefs.current[0]?.offsetHeight ?? 17) +
     20 +

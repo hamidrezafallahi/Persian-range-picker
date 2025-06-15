@@ -10,7 +10,6 @@ import type {
   IRangeOptions,
   ITime,
   ITimeZone,
-  TLocale,
 } from "../../core/type";
 import MobileRangePicker from "../../mobileRange/mobileRangePicker";
 
@@ -26,14 +25,14 @@ interface IProps {
   className?: string;
   additionalElement?: IAdditionalElementType[];
   defaultValue?: IDate;
-  locale?: TLocale;
+  calendarType?: "shamsi" | "gregorian";
 }
 
 export function MobileRange({ ...props }: IProps) {
   const {
     additionalElement,
     defaultValue,
-    locale = "fa",
+    calendarType = "shamsi",
     onCompareDateChange,
     onNavigateChange,
     onChange,
@@ -42,6 +41,7 @@ export function MobileRange({ ...props }: IProps) {
     popoverClassName,
     className,
   } = props;
+  const locale = calendarType == "shamsi" ? "fa" : "en";
   const initialDate: IDate = useMemo(() => {
     return {
       from:
