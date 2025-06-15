@@ -1,12 +1,12 @@
 import type { Dispatch, ReactNode, SetStateAction } from "react";
-import type { IDate, IDateProps } from "./type";
-import type { IDesktopProps } from "../../range2/core/type";
+import type { IDate, IDateProps, IDesktopRangeProps } from "./type";
+
 import moment from "moment-jalaali";
 
 interface IFooter {
   setShowDate: Dispatch<SetStateAction<IDate>>;
   setIsOpen?: Dispatch<SetStateAction<boolean>>;
-  locale: IDesktopProps["locale"];
+  locale: IDesktopRangeProps["locale"];
   elements?: ReactNode[] | null;
   primaryColor?: string;
   highlightColor?: string;
@@ -36,12 +36,11 @@ export const Footer = ({ ...props }: IFooter) => {
   const handleSelect = (key: "today" | "now" | "submit") => {
     const now = moment().locale(locale).valueOf();
     const todayStart = moment().locale(locale).startOf("day").valueOf();
-
     const date =
       key === "now" ? { from: now, to: now } : { from: todayStart, to: now };
-
     if (key === "today") {
       onTodayButton?.();
+
       onChange?.({ type: "date", date });
     } else if (key === "now") {
       setShowDate(date);
