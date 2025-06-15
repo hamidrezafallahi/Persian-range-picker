@@ -51,6 +51,7 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
     enabled: isOpen,
     popupSize,
   });
+
   const changeHandler = (e: HandleParams["Data"] | undefined) => {
     if (!e) return;
     const date = e.date as IDate;
@@ -144,7 +145,7 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
             backgroundColor: highlightColor,
             height: 34,
           }}
-          className={`flex justify-start items-center gap-2 px-3   rounded-md w-full xs:w-28  ${className}`}
+          className={`flex justify-start items-center gap-2 px-2 h-9 rounded-md xs:w-28 w-full ${className}`}
         >
           <CalenderIcon />
           <div className="text-sm">{title}</div>

@@ -1,7 +1,8 @@
 import type { Dispatch, ReactNode, SetStateAction } from "react";
-import type { IDate, IDateProps, IDesktopRangeProps } from "./type";
 
 import moment from "moment-jalaali";
+
+import type { IDate, IDateProps, IDesktopRangeProps } from "./type";
 
 interface IFooter {
   setShowDate: Dispatch<SetStateAction<IDate>>;
