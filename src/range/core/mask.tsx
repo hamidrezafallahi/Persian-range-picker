@@ -26,6 +26,7 @@ type MaskProps = {
   dir?: "ltr" | "rtl";
   autoComplete?: "on" | "off";
   tertiaryColor?: string;
+  highlightColor?: string;
 };
 const defaultErrorClass = "border-red-700 ";
 export function DateMask({ ...props }: MaskProps) {
@@ -44,6 +45,7 @@ export function DateMask({ ...props }: MaskProps) {
     dir = "ltr",
     autoComplete = "off",
     tertiaryColor = "#939393",
+    highlightColor = "#f4f4f4",
   } = props;
   const locale = calendarType == "shamsi" ? "fa" : "en";
 
@@ -636,10 +638,14 @@ export function DateMask({ ...props }: MaskProps) {
   return (
     <div className="range">
       <div
-        className={` flex justify-center items-center bg-gray-5 gap-2  border rounded-md  w-40  align-center px-2 ${maskClassName} 
+        className={` flex justify-center items-center gap-2   rounded-md  sm:w-40  w-full  align-center px-2 ${maskClassName} 
  ${errorTarget.length > 0 && ErrorClass}
       `}
-        style={{ height: `${maskHeight}px`, color: tertiaryColor }}
+        style={{
+          height: `${maskHeight}px`,
+          color: tertiaryColor,
+          backgroundColor: highlightColor,
+        }}
         dir={dir}
       >
         <div className="">{suffix && suffix}</div>

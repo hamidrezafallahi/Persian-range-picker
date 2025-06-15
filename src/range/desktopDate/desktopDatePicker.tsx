@@ -125,7 +125,7 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
 
   return (
     <div className="range">
-      <div className="relative w-fit h-full">
+      <div className="relative">
         <button
           ref={buttonRef as React.RefObject<HTMLButtonElement>}
           onClick={handleDropdown}

@@ -101,7 +101,7 @@ export function InitialComponent() {
   // };
 
   return (
-    <>
+    <div className="flex flex-col gap-2">
       <Range
       // device={device}
       // locale={locale}
@@ -121,6 +121,6 @@ export function InitialComponent() {
       <TimePicker />
 
       {/* </div> */}
-    </>
+    </div>
   );
 }
