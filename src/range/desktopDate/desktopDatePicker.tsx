@@ -4,7 +4,7 @@ import moment from "moment-jalaali";
 
 import { Footer } from "../core/footer";
 import { toPersianDigits } from "../core/helper";
-import type { IDate, IDateProps } from "../core/type";
+import type { HandleParams, IDate, IDateProps } from "../core/type";
 import { TimePicker } from "../exportComponents/timePicker";
 import { useRenderPosition } from "../exportComponents/useRenderPosition";
 import { CalenderIcon } from "../icons/CalenderIcon";
@@ -51,9 +51,14 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
     enabled: isOpen,
     popupSize,
   });
-  const changeHandler = (e) => {
-    setShowDate({ from: e.date?.from, to: 0 });
-    onChange(e);
+
+  const changeHandler = (e: HandleParams["Data"] | undefined) => {
+    if (!e) return;
+    const date = e.date as IDate;
+    console.log(e);
+    setShowDate({ from: date.from, to: 0 });
+    setShowDate({ from: date.from, to: 0 });
+    onChange?.({ type: "date", date });
   };
 
   useEffect(() => {
@@ -140,7 +145,7 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
             backgroundColor: highlightColor,
             height: 34,
           }}
-          className={`flex justify-start items-center gap-2 px-3   rounded-md w-full ${className}`}
+          className={`flex justify-start items-center gap-2 px-2 h-9 rounded-md xs:w-28 w-full ${className}`}
         >
           <CalenderIcon />
           <div className="text-sm">{title}</div>
