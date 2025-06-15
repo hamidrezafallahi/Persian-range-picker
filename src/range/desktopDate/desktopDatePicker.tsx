@@ -2,13 +2,13 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 
 import moment from "moment-jalaali";
 
+import { Footer } from "../core/footer";
 import { toPersianDigits } from "../core/helper";
 import type { IDate, IDateProps } from "../core/type";
 import { TimePicker } from "../exportComponents/timePicker";
 import { useRenderPosition } from "../exportComponents/useRenderPosition";
 import { CalenderIcon } from "../icons/CalenderIcon";
 import { DatePicker } from "../persianDatePicker";
-import { Footer } from "../core/footer";
 
 export function DesktopDatePicker({ ...props }: IDateProps) {
   const {
@@ -124,88 +124,90 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
   };
 
   return (
-    <div className="relative w-fit h-full">
-      <button
-        ref={buttonRef as React.RefObject<HTMLButtonElement>}
-        onClick={handleDropdown}
-        style={{
-          color: tertiaryColor,
-          backgroundColor: highlightColor,
-          marginRight: 200,
-        }}
-        className="flex justify-between items-center gap-2 px-3 border rounded-md w-fit h-10"
-      >
-        <CalenderIcon />
-        <div className="text-sm">{title}</div>
-      </button>
-
-      {isOpen && (
-        <div
-          ref={popupRef}
+    <div className="range">
+      <div className="relative w-fit h-full">
+        <button
+          ref={buttonRef as React.RefObject<HTMLButtonElement>}
+          onClick={handleDropdown}
           style={{
-            position: "absolute",
-            top: position.top,
-            left: position.left,
-            zIndex: 1000,
-            minWidth: showTime ? dropdownWidth + 238 : dropdownWidth,
+            color: tertiaryColor,
+            // backgroundColor: highlightColor,
+            marginRight: 200,
           }}
-          className="bg-white shadow-lg p-2 border rounded-lg overflow-hidden"
+          className="flex justify-between items-center gap-2 px-3 border rounded-md w-fit xs:w-full h-10"
         >
-          <div className="flex items-end gap-2 border-r w-full">
-            {showTime && (
-              <div style={{ width: "212px", minWidth: "212px" }}>
-                <div
-                  className="flex justify-center items-center border-b h-9"
-                  style={{
-                    height: "34px",
-                    fontSize: "14px",
-                    color: tertiaryColor,
-                  }}
-                >
-                  {locale === "fa"
-                    ? toPersianDigits(
-                        moment(showDate.from)
-                          .locale(locale)
-                          .format(showTimeFormat)
-                      )
-                    : moment(showDate.from)
-                        .locale(locale)
-                        .format(showTimeFormat)}
-                </div>
-                <TimePicker
-                  {...props}
-                  displayButtonCount={5}
-                  defaultValue={new Date(showDate.from)}
-                  flatRender={true}
-                  onGetValue={handleSetTime}
-                />
-              </div>
-            )}
+          <CalenderIcon />
+          <div className="text-sm">{title}</div>
+        </button>
 
-            <DatePicker
-              name="DesktopDate"
-              {...props}
-              model="date"
+        {isOpen && (
+          <div
+            ref={popupRef}
+            style={{
+              position: "absolute",
+              top: position.top,
+              left: position.left,
+              zIndex: 1000,
+              minWidth: showTime ? dropdownWidth + 238 : dropdownWidth,
+            }}
+            className="bg-white shadow-lg p-2 border rounded-lg overflow-hidden"
+          >
+            <div className="flex items-end gap-2 border-r w-full">
+              {showTime && (
+                <div style={{ width: "212px", minWidth: "212px" }}>
+                  <div
+                    className="flex justify-center items-center border-b h-9"
+                    style={{
+                      height: "34px",
+                      fontSize: "14px",
+                      color: tertiaryColor,
+                    }}
+                  >
+                    {locale === "fa"
+                      ? toPersianDigits(
+                          moment(showDate.from)
+                            .locale(locale)
+                            .format(showTimeFormat)
+                        )
+                      : moment(showDate.from)
+                          .locale(locale)
+                          .format(showTimeFormat)}
+                  </div>
+                  <TimePicker
+                    {...props}
+                    displayButtonCount={5}
+                    defaultValue={new Date(showDate.from)}
+                    flatRender={true}
+                    onGetValue={handleSetTime}
+                  />
+                </div>
+              )}
+
+              <DatePicker
+                name="DesktopDate"
+                {...props}
+                model="date"
+                locale={locale}
+                onDateChange={handleDateChange}
+                dateFromOutside={{ from: showDate.from, to: 0 }}
+                calendarBaseWidth={calendarBaseWidth}
+              />
+            </div>
+
+            <Footer
+              setIsOpen={setIsOpen}
+              setShowDate={setShowDate}
               locale={locale}
-              onDateChange={handleDateChange}
-              dateFromOutside={{ from: showDate.from, to: 0 }}
-              calendarBaseWidth={calendarBaseWidth}
+              primaryColor={primaryColor}
+              highlightColor={highlightColor}
+              chooseTodayClassName={chooseTodayClassName}
+              showTime={showTime}
+              onSubmit={handleSubmit}
+              onChange={onChange}
             />
           </div>
-
-          <Footer
-            setIsOpen={setIsOpen}
-            setShowDate={setShowDate}
-            locale={locale}
-            primaryColor={primaryColor}
-            highlightColor={highlightColor}
-            chooseTodayClassName={chooseTodayClassName}
-            showTime={showTime}
-            onSubmit={handleSubmit}
-            onChange={onChange}
-          />
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 }

@@ -1,8 +1,8 @@
-import type { IDate, TLocale } from "../../core/type";
+import type { IDate } from "../../core/type";
 import { DesktopDatePicker } from "../../desktopDate/desktopDatePicker";
 
 interface IProps {
-  locale?: TLocale;
+  calendarType?: "shamsi" | "gregorian";
   defaultValue?: IDate;
   onChange?: (e: { type: "date"; date: IDate }) => void;
   tertiaryColor?: string;
@@ -10,6 +10,7 @@ interface IProps {
   showTime?: boolean;
 }
 export function DesktopDate({ ...props }: IProps) {
-  const { locale } = props;
+  const { calendarType = "shamsi" } = props;
+  const locale = calendarType == "shamsi" ? "fa" : "en";
   return <DesktopDatePicker {...props} model="date" locale={locale} />;
 }

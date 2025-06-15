@@ -139,23 +139,14 @@ export const TimePicker: React.FC<Props> = ({
   }, [time]);
 
   return (
-    <>
+    <div className="range">
       {flatRender ? (
         <div
-          style={{
-            position: "absolute",
-            top: hookPosition.top,
-            left: hookPosition.left,
-            zIndex: 1000,
-            width: width,
-            height: renderHeight,
-          }}
           className={`flex flex-col gap-2 bg-white ${
             flatRender ? "" : "shadow-lg rounded-lg border border-gray-300  "
           }  w-fit p-3  ${containerClassName}`}
         >
           <TimeColumns
-            width={width}
             // tertiaryColor={tertiaryColor}
             renderHeight={`${renderHeight}px`}
             renderOptions={(count, unit) =>
@@ -272,6 +263,6 @@ export const TimePicker: React.FC<Props> = ({
           {renderExtraFooter && <div>{renderExtraFooter()}</div>}
         </div>
       )}
-    </>
+    </div>
   );
 };

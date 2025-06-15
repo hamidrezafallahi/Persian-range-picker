@@ -216,7 +216,7 @@ export function DesktopRangePicker(props: IDesktopRangeProps) {
     setPosition(hookPosition);
   }, [hookPosition]);
   return (
-    <>
+    <div className="range">
       <div
         className={`relative flex flex-col justify-between w-fit h-14 ${buttonClassName}`}
         ref={buttonRef as React.RefObject<HTMLDivElement>}
@@ -324,6 +324,6 @@ export function DesktopRangePicker(props: IDesktopRangeProps) {
           </div>
         )}
       </div>
-    </>
+    </div>
   );
 }

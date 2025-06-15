@@ -10,7 +10,6 @@ import type {
   ITime,
   ITimeZone,
   RangeProps,
-  TLocale,
 } from "../../core/type";
 import { DesktopRangePicker } from "../../desktopRange/desktopRangePicker";
 
@@ -27,7 +26,7 @@ interface IDesktopRangeProps {
   backgroundColor?: string;
   tertiaryColor?: string;
   dateClassName?: string;
-  locale?: TLocale;
+  calendarType?: "shamsi" | "gregorian";
   onError?: (e: string) => void;
   buttonClassName?: string;
   label?: {
@@ -49,7 +48,7 @@ export function DesktopRange(props: IDesktopRangeProps) {
     backgroundColor = "#fff",
     tertiaryColor = "#939393",
     dateClassName,
-    locale = "fa",
+    calendarType = "shamsi",
     onError,
     buttonClassName,
     label = {
@@ -61,12 +60,13 @@ export function DesktopRange(props: IDesktopRangeProps) {
             color: tertiaryColor,
           }}
         >
-          {props.label?.label ?? (locale === "en" ? "Date" : "تاریخ")}
+          {props.label?.label ??
+            (calendarType === "gregorian" ? "Date" : "تاریخ")}
         </label>
       ),
     },
   } = props;
-
+  const locale = calendarType == "shamsi" ? "fa" : "en";
   const device = "desktop";
   const model = "range";
 

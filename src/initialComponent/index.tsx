@@ -101,8 +101,7 @@ export function InitialComponent() {
 
   return (
     <>
-      <div className="range">
-        {/* <Range
+      {/* <Range
           // device={device}
           // locale={locale}
           // model={model}
@@ -112,17 +111,15 @@ export function InitialComponent() {
           handleSubmit={HandleSubmitDate}
           handleReject={resetDate}
         /> */}
-        <div className="flex flex-col" dir="rtl">
-          <DesktopDate />
-          <DesktopRange />
-          <MobileDate />
-          <MobileRange />
-          <DateMask />
-        </div>
-        <div style={{ height: "300px" }}>
-          <TimePicker />
-        </div>
-      </div>
+      {/* <div className="flex flex-col" dir="rtl"> */}
+      <DesktopDate />
+      <DesktopRange />
+      <MobileDate />
+      <MobileRange />
+      <DateMask />
+      <TimePicker />
+
+      {/* </div> */}
     </>
   );
 }

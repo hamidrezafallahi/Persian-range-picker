@@ -632,219 +632,221 @@ export function DateMask({ ...props }: MaskProps) {
     }
   }, [defaultValue]);
   return (
-    <div
-      className={`range flex justify-center items-center bg-gray-5 gap-2  border rounded-md  w-40  align-center px-2 ${maskClassName} 
+    <div className="range">
+      <div
+        className={` flex justify-center items-center bg-gray-5 gap-2  border rounded-md  w-40  align-center px-2 ${maskClassName} 
  ${errorTarget.length > 0 && ErrorClass}
       `}
-      style={{ height: `${maskHeight}px`, color: tertiaryColor }}
-      dir={dir}
-    >
-      <div className="">{suffix && suffix}</div>
-      {isEdit !== 2 ? (
-        <div
-          ref={focusRef}
-          className="flex justify-center w-full item-center"
-          dir="ltr"
-        >
-          {isEdit == 0 ? (
-            <div
-              style={{ fontSize: maskFontSize }}
-              className="flex justify-center gap-1 w-full text-base item-center same-font"
-            >
-              <div>{separatedValue[0] || "____"}</div>
-              <div>{"/"}</div>
-              <div>{separatedValue[1] || "__"}</div>
-              <div>{"/"}</div>
-              <div>{separatedValue[2] || "__"}</div>
-            </div>
-          ) : (
-            <div
-              className="flex justify-center items-center w-full same-font"
-              style={{ gap: "2px" }}
-            >
-              <input
-                type="text"
-                name="year"
-                tabIndex={0}
-                autoComplete={autoComplete}
-                ref={yearInputRef}
-                value={separatedValue[0]}
-                onChange={handleChange}
-                onClick={handleClick}
-                onKeyDown={handleKeyDown}
-                maxLength={4}
-                minLength={4}
-                className={`same-font  ${inputClassName} `}
-                style={{
-                  width: (4 * maskFontSize) / 2 + 8,
-                  fontSize: maskFontSize,
-                  border: "none",
-                  outline: "none",
-                  background: "transparent",
-                }}
-                placeholder="____"
-              />
-              <span
-                style={{
-                  userSelect: "none",
-                  pointerEvents: "none",
-                  // width: maskFontSize / 2,
-                  fontSize: maskFontSize,
-                  // paddingRight: "1px",
-                  // paddingLeft: "2px",
-                }}
-                className={` ${inputClassName}`}
-              >
-                /
-              </span>
-              <input
-                type="text"
-                name="month"
-                tabIndex={1}
-                autoComplete={autoComplete}
-                ref={monthInputRef}
-                value={separatedValue[1]}
-                onChange={handleChange}
-                onClick={handleClick}
-                onKeyDown={handleKeyDown}
-                maxLength={2}
-                minLength={2}
-                className={`same-font ${inputClassName}`}
-                style={{
-                  width: (2 * maskFontSize) / 2 + 6,
-                  fontSize: maskFontSize,
-                  border: "none",
-                  outline: "none",
-                  background: "transparent",
-                }}
-                placeholder="__"
-              />
-              <span
-                className="same-font"
-                style={{
-                  userSelect: "none",
-                  pointerEvents: "none",
-                  fontSize: maskFontSize,
-                  // width: maskFontSize / 2,
-                  // width: "1ch",
-                  // paddingRight: "1px",
-                  // paddingLeft: "1px",
-                }}
-              >
-                /
-              </span>
-              <input
-                type="text"
-                name="day"
-                tabIndex={2}
-                ref={dayInputRef}
-                value={separatedValue[2]}
-                autoComplete={autoComplete}
-                onChange={handleChange}
-                onClick={handleClick}
-                onKeyDown={handleKeyDown}
-                maxLength={2}
-                minLength={2}
-                className={`same-font  ${inputClassName}`}
-                style={{
-                  fontSize: maskFontSize,
-                  width: (2 * maskFontSize) / 2 + 6,
-                  border: "none",
-                  outline: "none",
-                  background: "transparent",
-                }}
-                placeholder="__"
-              />
-            </div>
-          )}
-        </div>
-      ) : (
-        <div
-          ref={fullRef}
-          className={`relative flex justify-center w-full text-base p-2 `}
-          style={{ height: `${maskHeight}px` }}
-          dir="ltr"
-        >
-          <input
-            id="full"
-            type="text"
-            name="full"
-            ref={fullInputRef}
-            onFocus={() => {
-              handleFocusFullInput();
-            }}
-            autoComplete={autoComplete}
-            value={fullValue}
-            onChange={handleChange}
-            onKeyDown={handleKeyDown}
-            maxLength={8}
-            minLength={8}
-            className={`opacity-0 w-full`}
-            style={{ width: (8 * maskFontSize) / 2 }}
-          />
+        style={{ height: `${maskHeight}px`, color: tertiaryColor }}
+        dir={dir}
+      >
+        <div className="">{suffix && suffix}</div>
+        {isEdit !== 2 ? (
           <div
-            className={`z-10 absolute inset-0  mx-auto    text-base flex justify-center items-center same-font  ${
-              inputClassName && inputClassName
-            }`}
-            onKeyDown={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-            }}
-            style={{
-              display: "flex",
-              // gap: "3px",
-
-              fontSize: maskFontSize,
-              // height: `${maskHeight}px`,
-              // userSelect: "none",
-              // pointerEvents: "none",
-            }}
+            ref={focusRef}
+            className="flex justify-center w-full item-center"
+            dir="ltr"
           >
-            {formatInputValue(fullValue)
-              .split("/")
-              .map((item, index) => {
-                return (
-                  <React.Fragment key={index}>
-                    <span
-                      data-name={
-                        index == 0 ? "year" : index == 1 ? "month" : "day"
-                      }
-                      ref={spanRefs[index]}
-                      onMouseDown={handleFocusOnRelatedInputElement}
-                      className={` same-font selected-text  ${inputClassName} `}
-                      style={{
-                        // userSelect: "none",
-                        // pointerEvents: "none",
-                        fontSize: maskFontSize,
-                      }}
-                    >
-                      <span
-                        style={{ lineHeight: "10px" }}
-                        className={`selected-text ${
-                          errorTarget.includes(index) && ErrorClass
-                        }`}
-                      >
-                        {item}
-                      </span>
-                    </span>
-                    {index !== 2 && (
-                      <span
-                        style={{
-                          width: maskFontSize / 2 + 6,
-                          height: maskFontSize + 1,
-                        }}
-                        className="flex justify-center items-center selected-text"
-                      >
-                        /
-                      </span>
-                    )}
-                  </React.Fragment>
-                );
-              })}
+            {isEdit == 0 ? (
+              <div
+                style={{ fontSize: maskFontSize }}
+                className="flex justify-center gap-1 w-full text-base item-center same-font"
+              >
+                <div>{separatedValue[0] || "____"}</div>
+                <div>{"/"}</div>
+                <div>{separatedValue[1] || "__"}</div>
+                <div>{"/"}</div>
+                <div>{separatedValue[2] || "__"}</div>
+              </div>
+            ) : (
+              <div
+                className="flex justify-center items-center w-full same-font"
+                style={{ gap: "2px" }}
+              >
+                <input
+                  type="text"
+                  name="year"
+                  tabIndex={0}
+                  autoComplete={autoComplete}
+                  ref={yearInputRef}
+                  value={separatedValue[0]}
+                  onChange={handleChange}
+                  onClick={handleClick}
+                  onKeyDown={handleKeyDown}
+                  maxLength={4}
+                  minLength={4}
+                  className={`same-font  ${inputClassName} `}
+                  style={{
+                    width: (4 * maskFontSize) / 2 + 8,
+                    fontSize: maskFontSize,
+                    border: "none",
+                    outline: "none",
+                    background: "transparent",
+                  }}
+                  placeholder="____"
+                />
+                <span
+                  style={{
+                    userSelect: "none",
+                    pointerEvents: "none",
+                    // width: maskFontSize / 2,
+                    fontSize: maskFontSize,
+                    // paddingRight: "1px",
+                    // paddingLeft: "2px",
+                  }}
+                  className={` ${inputClassName}`}
+                >
+                  /
+                </span>
+                <input
+                  type="text"
+                  name="month"
+                  tabIndex={1}
+                  autoComplete={autoComplete}
+                  ref={monthInputRef}
+                  value={separatedValue[1]}
+                  onChange={handleChange}
+                  onClick={handleClick}
+                  onKeyDown={handleKeyDown}
+                  maxLength={2}
+                  minLength={2}
+                  className={`same-font ${inputClassName}`}
+                  style={{
+                    width: (2 * maskFontSize) / 2 + 6,
+                    fontSize: maskFontSize,
+                    border: "none",
+                    outline: "none",
+                    background: "transparent",
+                  }}
+                  placeholder="__"
+                />
+                <span
+                  className="same-font"
+                  style={{
+                    userSelect: "none",
+                    pointerEvents: "none",
+                    fontSize: maskFontSize,
+                    // width: maskFontSize / 2,
+                    // width: "1ch",
+                    // paddingRight: "1px",
+                    // paddingLeft: "1px",
+                  }}
+                >
+                  /
+                </span>
+                <input
+                  type="text"
+                  name="day"
+                  tabIndex={2}
+                  ref={dayInputRef}
+                  value={separatedValue[2]}
+                  autoComplete={autoComplete}
+                  onChange={handleChange}
+                  onClick={handleClick}
+                  onKeyDown={handleKeyDown}
+                  maxLength={2}
+                  minLength={2}
+                  className={`same-font  ${inputClassName}`}
+                  style={{
+                    fontSize: maskFontSize,
+                    width: (2 * maskFontSize) / 2 + 6,
+                    border: "none",
+                    outline: "none",
+                    background: "transparent",
+                  }}
+                  placeholder="__"
+                />
+              </div>
+            )}
           </div>
-        </div>
-      )}
-      <div className="">{prefix && prefix}</div>
+        ) : (
+          <div
+            ref={fullRef}
+            className={`relative flex justify-center w-full text-base p-2 `}
+            style={{ height: `${maskHeight}px` }}
+            dir="ltr"
+          >
+            <input
+              id="full"
+              type="text"
+              name="full"
+              ref={fullInputRef}
+              onFocus={() => {
+                handleFocusFullInput();
+              }}
+              autoComplete={autoComplete}
+              value={fullValue}
+              onChange={handleChange}
+              onKeyDown={handleKeyDown}
+              maxLength={8}
+              minLength={8}
+              className={`opacity-0 w-full`}
+              style={{ width: (8 * maskFontSize) / 2 }}
+            />
+            <div
+              className={`z-10 absolute inset-0  mx-auto    text-base flex justify-center items-center same-font  ${
+                inputClassName && inputClassName
+              }`}
+              onKeyDown={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+              }}
+              style={{
+                display: "flex",
+                // gap: "3px",
+
+                fontSize: maskFontSize,
+                // height: `${maskHeight}px`,
+                // userSelect: "none",
+                // pointerEvents: "none",
+              }}
+            >
+              {formatInputValue(fullValue)
+                .split("/")
+                .map((item, index) => {
+                  return (
+                    <React.Fragment key={index}>
+                      <span
+                        data-name={
+                          index == 0 ? "year" : index == 1 ? "month" : "day"
+                        }
+                        ref={spanRefs[index]}
+                        onMouseDown={handleFocusOnRelatedInputElement}
+                        className={` same-font selected-text  ${inputClassName} `}
+                        style={{
+                          // userSelect: "none",
+                          // pointerEvents: "none",
+                          fontSize: maskFontSize,
+                        }}
+                      >
+                        <span
+                          style={{ lineHeight: "10px" }}
+                          className={`selected-text ${
+                            errorTarget.includes(index) && ErrorClass
+                          }`}
+                        >
+                          {item}
+                        </span>
+                      </span>
+                      {index !== 2 && (
+                        <span
+                          style={{
+                            width: maskFontSize / 2 + 6,
+                            height: maskFontSize + 1,
+                          }}
+                          className="flex justify-center items-center selected-text"
+                        >
+                          /
+                        </span>
+                      )}
+                    </React.Fragment>
+                  );
+                })}
+            </div>
+          </div>
+        )}
+        <div className="">{prefix && prefix}</div>
+      </div>
     </div>
   );
 }

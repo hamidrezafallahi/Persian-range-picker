@@ -2,12 +2,12 @@ import { useMemo, useRef, useState } from "react";
 
 import moment from "moment-jalaali";
 
-import type { IDate, IDateProps } from "../core/type";
-import { CalenderIcon } from "../icons/CalenderIcon";
-import { DatePicker } from "../persianDatePicker";
-import { TimePicker } from "../exportComponents/timePicker";
 import { Footer } from "../core/footer";
 import { toPersianDigits } from "../core/helper";
+import type { IDate, IDateProps } from "../core/type";
+import { TimePicker } from "../exportComponents/timePicker";
+import { CalenderIcon } from "../icons/CalenderIcon";
+import { DatePicker } from "../persianDatePicker";
 
 const MobileDatePicker = ({ ...props }: IDateProps) => {
   const {
@@ -63,7 +63,7 @@ const MobileDatePicker = ({ ...props }: IDateProps) => {
   };
 
   return (
-    <>
+    <div className="range">
       <button
         style={{ backgroundColor: highlightColor, color: tertiaryColor }}
         popoverTarget="mobileDateModal"
@@ -145,7 +145,7 @@ const MobileDatePicker = ({ ...props }: IDateProps) => {
           />
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
