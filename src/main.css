@@ -843,6 +843,14 @@
 
 /* ==================== MEDIA QUERIES ==================== */
 @media (min-width: 431px) {
+  .range .sm\:w-40 {
+    width: 10rem;
+  }
+
+  .range .sm\:w-fit {
+    width: fit-content;
+  }
+
   .range .\!border-b {
     border-bottom: 1px solid #eee !important;
   }

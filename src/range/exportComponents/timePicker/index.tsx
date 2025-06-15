@@ -199,7 +199,7 @@ export const TimePicker: React.FC<Props> = ({
         <div className="relative" ref={ref}>
           <button
             onClick={() => setOpen((prev) => !prev)}
-            className={`relative flex justify-center items-center gap-2 p-1 px-2 rounded-md w-40 h-10 ${timeButtonClassName} `}
+            className={`relative flex justify-center items-center gap-2 p-1 px-2 rounded-md sm:w-40 w-full h-10 ${timeButtonClassName} `}
             style={{ color: tertiaryColor, backgroundColor: highlightColor }}
           >
             {moment(time).locale(locale).format(format)}

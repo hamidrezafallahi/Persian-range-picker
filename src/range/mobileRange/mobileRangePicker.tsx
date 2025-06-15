@@ -74,7 +74,7 @@ const MobileRangePicker = (props: IBaseProps) => {
       <div className={`flex ${className}`}>
         <button
           popoverTarget="mobileRangeModal"
-          className="flex justify-center items-center gap-2 w-fit"
+          className="flex justify-center items-center gap-2 w-full sm:w-fit"
         >
           <CalenderIcon />
           <div className="w-fit text-gray-gray8 text-center">
