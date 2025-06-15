@@ -15,7 +15,7 @@ type MaskProps = {
   // dangerColor: string | undefined;
   // InputHandleChange: (e: ChangeEvent<HTMLInputElement>) => void;
   // className?: string;
-  locale?: TLocale;
+  calendarType?: "shamsi" | "gregorian";
   inputClassName?: string;
   maskClassName?: string;
   suffix?: ReactNode | boolean;
@@ -31,7 +31,7 @@ const defaultErrorClass = "border-red-700 ";
 export function DateMask({ ...props }: MaskProps) {
   const {
     defaultValue,
-    locale = "fa",
+    calendarType = "shamsi",
     onError,
     inputClassName,
     maskClassName,
@@ -45,6 +45,8 @@ export function DateMask({ ...props }: MaskProps) {
     autoComplete = "off",
     tertiaryColor = "#939393",
   } = props;
+  const locale = calendarType == "shamsi" ? "fa" : "en";
+
   const temp = timestampToDateNumbers(locale, defaultValue);
   const [separatedValue, setSeparatedValue] = useState(temp);
   const [baseValue, setBaseValue] = useState<IDate["from"] | null>(null);

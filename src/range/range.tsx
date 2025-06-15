@@ -21,8 +21,9 @@ export function Range({ ...props }: RangeProps) {
     model = "range",
     additionalElement,
     defaultValue,
-    locale = "fa",
+    calendarType = "shamsi",
   } = props;
+  const locale = calendarType == "shamsi" ? "fa" : "en";
   const initialDate: IDate = useMemo(() => {
     return {
       from:

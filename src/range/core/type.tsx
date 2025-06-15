@@ -51,6 +51,7 @@ export interface RangeProps extends IRangeOptions {
 export interface IRangeOptions {
   model?: "date" | "range";
   locale?: TLocale;
+  calendarType?: "shamsi" | "gregorian";
   isShowNavigationButton?: boolean;
   showComparison?: boolean;
   primaryColor?: string;

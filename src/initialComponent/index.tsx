@@ -4,6 +4,7 @@ import {
   DesktopRange,
   MobileDate,
   MobileRange,
+  Range,
   TimePicker,
 } from "../range";
 
@@ -101,16 +102,16 @@ export function InitialComponent() {
 
   return (
     <>
-      {/* <Range
-          // device={device}
-          // locale={locale}
-          // model={model}
-          onCompareDateChange={handleCompareDateChange}
-          onChange={handleDateChange}
-          onNavigateChange={handleNavigateChange}
-          handleSubmit={HandleSubmitDate}
-          handleReject={resetDate}
-        /> */}
+      <Range
+      // device={device}
+      // locale={locale}
+      // model={model}
+      // onCompareDateChange={handleCompareDateChange}
+      // onChange={handleDateChange}
+      // onNavigateChange={handleNavigateChange}
+      // handleSubmit={HandleSubmitDate}
+      // handleReject={resetDate}
+      />
       {/* <div className="flex flex-col" dir="rtl"> */}
       <DesktopDate />
       <DesktopRange />
