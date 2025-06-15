@@ -1,8 +1,9 @@
-import React from 'react';
+import React from "react";
 
 type Props = {
   renderHeight?: string;
   // tertiaryColor?: string;
+  width?: number;
   renderOptions: (
     count: number,
     unit: "hour" | "minute" | "second"
@@ -17,9 +18,10 @@ export const TimeColumns: React.FC<Props> = ({
   renderHeight,
   renderOptions,
   showSecond,
+  width,
 }) => {
   return (
-    <div className="flex gap-4">
+    <div className="flex gap-4" style={{ width: width }}>
       {showSecond && (
         <div
           className="flex flex-col gap-4 px-2 overflow-y-auto"

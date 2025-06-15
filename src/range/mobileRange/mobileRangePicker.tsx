@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from "react";
+
 import moment from "moment-jalaali";
+
 import MainContent from "../core/mainContent";
 import NavigateButton from "../core/navigateButton";
 import type { IBaseProps } from "../core/type";
@@ -64,7 +66,7 @@ const MobileRangePicker = (props: IBaseProps) => {
   }, [date, compareDate]);
   useEffect(() => {
     if (customData) {
-      onChange?.({ type, Data: { date, ...customData } });
+      onChange?.({ type, Data: { date, data: customData } });
     }
   }, [customData]);
   return (

@@ -4,6 +4,7 @@ import moment from "moment-jalaali";
 
 import { toPersianDigits } from "../../core/helper";
 import { CalenderIcon } from "../../icons/CalenderIcon";
+import { useRenderPosition } from "../useRenderPosition";
 import { TimeColumns } from "./exportComponents";
 
 type TUnit = "hour" | "minute" | "second";
@@ -42,7 +43,7 @@ export const TimePicker: React.FC<Props> = ({
   okButtonClassName,
   nowButtonClassName,
   timeButtonClassName,
-  // width = 100,
+  width = 136,
   // height = 100,
   displayButtonCount = 10,
   icon = <CalenderIcon />,
@@ -61,17 +62,20 @@ export const TimePicker: React.FC<Props> = ({
 }: Props) => {
   const [open, setOpen] = useState(false);
   const [time, setTime] = useState<number>(defaultValue.valueOf());
-  // const [position, setPosition] = useState({ top: 0, left: 0 });
-
   const buttonRefs = useRef<(HTMLButtonElement | null)[]>([]);
+  const renderHeight =
+    displayButtonCount * (buttonRefs.current[0]?.offsetHeight ?? 17) +
+    20 +
+    (displayButtonCount - 1) * 16;
+
   // const firstRender = useRef(true);
 
   const ref = useRef<HTMLDivElement>(null);
-  // const hookPosition = useRenderPosition({
-  //   buttonRef: ref,
-  //   enabled: open,
-  //   popupSize: { width, height },
-  // });
+  const hookPosition = useRenderPosition({
+    buttonRef: ref,
+    enabled: open,
+    popupSize: { width: width, height: renderHeight },
+  });
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
@@ -126,11 +130,7 @@ export const TimePicker: React.FC<Props> = ({
       );
     });
   };
-  const renderHeight = `${
-    displayButtonCount * (buttonRefs.current[0]?.offsetHeight ?? 17) +
-    20 +
-    (displayButtonCount - 1) * 16
-  }px`;
+
   useEffect(() => {
     setTime(defaultValue.valueOf());
   }, [defaultValue]);
@@ -142,19 +142,22 @@ export const TimePicker: React.FC<Props> = ({
     <>
       {flatRender ? (
         <div
-          // style={{
-          //   position: "absolute",
-          //   top: position.top,
-          //   left: position.left,
-          //   zIndex: 1000,
-          // }}
+          style={{
+            position: "absolute",
+            top: hookPosition.top,
+            left: hookPosition.left,
+            zIndex: 1000,
+            width: width,
+            height: renderHeight,
+          }}
           className={`flex flex-col gap-2 bg-white ${
             flatRender ? "" : "shadow-lg rounded-lg border border-gray-300  "
           }  w-fit p-3  ${containerClassName}`}
         >
           <TimeColumns
+            width={width}
             // tertiaryColor={tertiaryColor}
-            renderHeight={renderHeight}
+            renderHeight={`${renderHeight}px`}
             renderOptions={(count, unit) =>
               renderOptions(
                 count,
@@ -200,7 +203,7 @@ export const TimePicker: React.FC<Props> = ({
           )}
         </div>
       ) : (
-        <div className="relative w-fit" ref={ref}>
+        <div className="relative" ref={ref}>
           <button
             onClick={() => setOpen((prev) => !prev)}
             className={`relative flex justify-center items-center gap-2 p-1 px-2 rounded-md w-40 h-10 ${timeButtonClassName} `}
@@ -212,16 +215,16 @@ export const TimePicker: React.FC<Props> = ({
 
           {open && (
             <div
-              // style={{
-              //   position: "absolute",
-              //   top: position.top,
-              //   left: position.left,
-              //   zIndex: 1000,
-              // }}
+              style={{
+                position: "absolute",
+                top: hookPosition.top,
+                left: hookPosition.left,
+                zIndex: 1000,
+              }}
               className={`flex flex-col gap-2 bg-white shadow-lg p-3 border border-gray-300 rounded-lg w-fit ${containerClassName}`}
             >
               <TimeColumns
-                renderHeight={renderHeight}
+                renderHeight={`${renderHeight}px`}
                 renderOptions={(count, unit) =>
                   renderOptions(
                     count,

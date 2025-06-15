@@ -6,23 +6,24 @@ import {
   MobileRange,
   TimePicker,
 } from "../range";
+
 // import type { IDate } from "../range/core/type";
 
 export function InitialComponent() {
-  const handleDateChange = (w) => {
-    if (w?.date?.from) {
-      console.log(
-        new Date(w.date.from).toLocaleDateString("fa-IR", {
-          weekday: "long",
-          month: "long",
-          day: "numeric",
-          hour: "numeric",
-          minute: "numeric",
-          second: "numeric",
-        })
-      );
-    }
-  };
+  // const handleDateChange = (w) => {
+  //   if (w?.date?.from) {
+  //     console.log(
+  //       new Date(w.date.from).toLocaleDateString("fa-IR", {
+  //         weekday: "long",
+  //         month: "long",
+  //         day: "numeric",
+  //         hour: "numeric",
+  //         minute: "numeric",
+  //         second: "numeric",
+  //       })
+  //     );
+  //   }
+  // };
 
   // const handleCompareDateChange = (date: IDate, compareDate: IDate) => {
   //   console.log(
@@ -94,9 +95,9 @@ export function InitialComponent() {
   // const resetDate = () => {
   //   console.log("Reject");
   // };
-  const handleChange = (e: number | null) => {
-    console.log(e);
-  };
+  // const handleChange = (e: number | null) => {
+  //   console.log(e);
+  // };
 
   return (
     <>
@@ -112,36 +113,14 @@ export function InitialComponent() {
           handleReject={resetDate}
         /> */}
         <div className="flex flex-col" dir="rtl">
-          <DesktopDate
-            onChange={(e) => {
-              console.log(e);
-
-              handleDateChange(e);
-            }}
-          />
+          <DesktopDate />
           <DesktopRange />
-          <MobileDate
-            onChange={(e) => {
-              handleDateChange(e);
-            }}
-          />
+          <MobileDate />
           <MobileRange />
-          <DateMask
-            onChange={handleChange}
-            locale="fa"
-            // defaultValue={1753648200000}
-            onError={(e) => {
-              console.log(e);
-            }}
-          />
+          <DateMask />
         </div>
         <div style={{ height: "300px" }}>
-          <TimePicker
-            defaultValue={new Date(new Date().setHours(14, 26, 37, 42))}
-            onChange={(e) => {
-              console.log(new Date(e).toISOString());
-            }}
-          />
+          <TimePicker />
         </div>
       </div>
     </>

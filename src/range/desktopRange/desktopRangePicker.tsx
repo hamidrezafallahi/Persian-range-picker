@@ -111,7 +111,7 @@ export function DesktopRangePicker(props: IDesktopRangeProps) {
           if (type == "date") {
             handleSubmit({ type, Data: { date, compareDate } });
           } else {
-            handleSubmit({ type, Data: { ...(customData ?? {}) } });
+            handleSubmit({ type, Data: { customData } });
           }
         }
 
@@ -137,7 +137,7 @@ export function DesktopRangePicker(props: IDesktopRangeProps) {
         if (type == "date") {
           handleSubmit({ type, Data: { date, compareDate } });
         } else {
-          handleSubmit({ type, Data: { ...(customData ?? {}) } });
+          handleSubmit({ type, Data: { customData } });
         }
       }
       setShowDate({ date, compareDate, Data: customData });
