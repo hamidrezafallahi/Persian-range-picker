@@ -1,14 +1,9 @@
 import {
-  DateMask,
   DesktopDate,
-  DesktopRange,
-  MobileDate,
-  MobileRange,
-  Range,
   TimePicker,
 } from "../range";
 
-// import type { IDate } from "../range/core/type";
+ 
 
 export function InitialComponent() {
   // const handleDateChange = (w) => {
@@ -121,7 +116,7 @@ export function InitialComponent() {
       style={{display:"flex",justifyContent:"space-between"}}>
       <TimePicker 
       defaultValue={1750242875918}
-      onChange={(e)=>{console.log(e,new Date(e.date.from).toLocaleDateString("fa-IR", {
+      onChange={(e)=>{console.log(e,new Date(e).toLocaleDateString("fa-IR", {
           weekday: "long",
           month: "long",
           day: "numeric",

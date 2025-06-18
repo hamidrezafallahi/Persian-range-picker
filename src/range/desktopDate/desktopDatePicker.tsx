@@ -193,7 +193,6 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
                     displayButtonCount={5}
                     defaultValue={showDate.from}
                     setShowDate={setShowDate}
-
                     onGetValue={handleSetTime}
                   />
                 </div>

@@ -11,7 +11,7 @@ interface IProps {
 function MaskRange({ ...props }: IProps) {
   const [error, setError] = useState<"from" | "to" | null>(null);
 
-  const { date, setDate, locale } = props;
+  const { date, setDate } = props;
   const handleChange = (e: IDate["from"], name: "from" | "to") => {
     if (name === "from") {
       if (date.to && e > date.to) {
@@ -33,7 +33,6 @@ function MaskRange({ ...props }: IProps) {
   return (
     <div className="flex items-center gap-2">
       <DateMask
-        locale={locale}
         onChange={(e) => handleChange(e as number, "from")}
         defaultValue={date.from}
         maskClassName={` rounded-lg w-fit ${
@@ -44,7 +43,6 @@ function MaskRange({ ...props }: IProps) {
       />
       {"_"}
       <DateMask
-        locale={locale}
         onChange={(e) => handleChange(e as number, "to")}
         defaultValue={date.to}
         maskClassName={`rounded-lg w-fit ${

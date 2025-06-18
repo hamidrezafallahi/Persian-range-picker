@@ -25,8 +25,6 @@ export function useRenderPosition<T extends HTMLElement = HTMLElement>({
 
     const button = buttonRef.current;
     const rect = button.getBoundingClientRect();
-    const dir = getComputedStyle(button).direction as "ltr" | "rtl";
-
     const enoughSpaceBelow =
       rect.bottom + popupSize.height <= window.innerHeight;
     const enoughSpaceAbove = rect.top - popupSize.height >= 0;
