@@ -38,7 +38,7 @@ export const Footer = ({ ...props }: IFooter) => {
     const now = moment().locale(locale).valueOf();
     const todayStart = moment().locale(locale).startOf("day").valueOf();
     const date =
-      key === "now" ? { from: now, to: now } : { from: todayStart, to: now };
+      key === "now" ? { from: now, to: 0 } : { from: todayStart, to: 0 };
     if (key === "today") {
       onTodayButton?.();
 
@@ -47,12 +47,10 @@ export const Footer = ({ ...props }: IFooter) => {
       setShowDate(date);
       onChange?.({ type: "date", date });
       onNowButton?.();
-    }
-
-    setIsOpen?.(false);
-    if (key === "submit") {
+    } else if (key === "submit") {
       onSubmit?.();
     }
+    setIsOpen?.(false);
   };
 
   return (

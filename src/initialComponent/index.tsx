@@ -102,23 +102,43 @@ export function InitialComponent() {
 
   return (
     <div className="flex flex-col gap-2">
-      <Range
-      // device={device}
-      // locale={locale}
-      // model={model}
-      // onCompareDateChange={handleCompareDateChange}
-      // onChange={handleDateChange}
-      // onNavigateChange={handleNavigateChange}
-      // handleSubmit={HandleSubmitDate}
-      // handleReject={resetDate}
-      />
-      {/* <div className="flex flex-col" dir="rtl"> */}
-      <DesktopDate />
-      <DesktopRange />
+      {/*<Range
+       device={device}
+       locale={locale}
+       model={model}
+       onCompareDateChange={handleCompareDateChange}
+       onChange={handleDateChange}
+       onNavigateChange={handleNavigateChange}
+       handleSubmit={HandleSubmitDate}
+       handleReject={resetDate}
+       />
+       <div className="flex flex-col" dir="rtl"> */}
+      {/* <DesktopRange />
       <MobileDate />
       <MobileRange />
-      <DateMask />
-      <TimePicker />
+      <DateMask /> */}
+      <div 
+      style={{display:"flex",justifyContent:"space-between"}}>
+      <TimePicker 
+      defaultValue={1750242875918}
+      onChange={(e)=>{console.log(e,new Date(e.date.from).toLocaleDateString("fa-IR", {
+          weekday: "long",
+          month: "long",
+          day: "numeric",
+          hour: "numeric",
+          minute:"numeric",
+          second:"numeric"      }))}} /> 
+      <DesktopDate 
+            // defaultValue={{from:1750242875918,to:0}}
+      showTime onChange={(e)=>{console.log(e,new Date(e.date.from).toLocaleDateString("fa-IR", {
+          weekday: "long",
+          month: "long",
+          day: "numeric",
+          hour: "numeric",
+          minute:"numeric",
+          second:"numeric"
+        }))}} />
+      </div>
 
       {/* </div> */}
     </div>

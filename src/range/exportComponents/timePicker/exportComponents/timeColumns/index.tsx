@@ -2,7 +2,6 @@ import React from "react";
 
 type Props = {
   renderHeight?: string;
-  // tertiaryColor?: string;
   width?: number;
   renderOptions: (
     count: number,
@@ -14,6 +13,20 @@ type Props = {
   showSecond?: boolean;
 };
 
+const TimeColumn: React.FC<{
+  count: number;
+  unit: "hour" | "minute" | "second";
+  renderHeight?: string;
+  renderOptions: Props["renderOptions"];
+}> = ({ count, unit, renderHeight, renderOptions }) => (
+  <div
+    className="flex flex-col gap-4 px-2 overflow-y-auto "
+    style={{ maxHeight: renderHeight }}
+  >
+    {renderOptions(count, unit)}
+  </div>
+);
+
 export const TimeColumns: React.FC<Props> = ({
   renderHeight,
   renderOptions,
@@ -21,27 +34,28 @@ export const TimeColumns: React.FC<Props> = ({
   width,
 }) => {
   return (
-    <div className="flex gap-4" style={{ width: width }}>
+    <div className="flex gap-4" style={{ width }}>
+      <TimeColumn
+        count={24}
+        unit="hour"
+        renderHeight={renderHeight}
+        renderOptions={renderOptions}
+      />
+      <TimeColumn
+        count={60}
+        unit="minute"
+        renderHeight={renderHeight}
+        renderOptions={renderOptions}
+      />
+
       {showSecond && (
-        <div
-          className="flex flex-col gap-4 px-2 overflow-y-auto"
-          style={{ maxHeight: renderHeight }}
-        >
-          {renderOptions(60, "second")}
-        </div>
+        <TimeColumn
+          count={60}
+          unit="second"
+          renderHeight={renderHeight}
+          renderOptions={renderOptions}
+        />
       )}
-      <div
-        className="flex flex-col gap-4 px-2 overflow-y-auto"
-        style={{ maxHeight: renderHeight }}
-      >
-        {renderOptions(60, "minute")}
-      </div>
-      <div
-        className="flex flex-col gap-4 px-2 overflow-y-auto"
-        style={{ maxHeight: renderHeight }}
-      >
-        {renderOptions(24, "hour")}
-      </div>
     </div>
   );
 };

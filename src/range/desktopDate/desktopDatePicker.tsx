@@ -9,6 +9,7 @@ import { TimePicker } from "../exportComponents/timePicker";
 import { useRenderPosition } from "../exportComponents/useRenderPosition";
 import { CalenderIcon } from "../icons/CalenderIcon";
 import { DatePicker } from "../persianDatePicker";
+import { DesktopTimePicker } from "./desktopTimePicker";
 
 export function DesktopDatePicker({ ...props }: IDateProps) {
   const {
@@ -55,7 +56,6 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
   const changeHandler = (e: HandleParams["Data"] | undefined) => {
     if (!e) return;
     const date = e.date as IDate;
-    console.log(e);
     setShowDate({ from: date.from, to: 0 });
     setShowDate({ from: date.from, to: 0 });
     onChange?.({ type: "date", date });
@@ -123,15 +123,11 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
           showTime ? `${showTimeFormat}\u2003YYYY/MM/DD` : "YYYY/MM/DD"
         )
       : "Choose date";
-  console.log(persian);
 
   const title = locale === "fa" ? persian : gregorian;
 
   const handleSetTime = (timestamp: number) => {
     setShowDate({ from: timestamp, to: 0 });
-    if (showTime) {
-      onChange?.({ type: "date", date: { from: timestamp, to: 0 } });
-    }
   };
 
   return (
@@ -145,7 +141,7 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
             backgroundColor: highlightColor,
             height: 34,
           }}
-          className={`flex justify-start items-center gap-2 px-2 h-9 rounded-md xs:w-28 w-full ${className}`}
+          className={`flex justify-start items-center gap-2 px-2 h-9 rounded-md  w-full ${showTime?"xs:w-40":"xs:w-28"} ${className}`}
         >
           <CalenderIcon />
           <div className="text-sm">{title}</div>
@@ -164,6 +160,15 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
             className="bg-white shadow-lg p-2 border rounded-lg overflow-hidden"
           >
             <div className="flex items-end gap-2 border-r w-full">
+              <DatePicker
+                name="DesktopDate"
+                {...props}
+                model="date"
+                locale={locale}
+                onDateChange={handleDateChange}
+                dateFromOutside={{ from: showDate.from, to: 0 }}
+                calendarBaseWidth={calendarBaseWidth}
+              />
               {showTime && (
                 <div style={{ width: "212px", minWidth: "212px" }}>
                   <div
@@ -184,25 +189,16 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
                           .locale(locale)
                           .format(showTimeFormat)}
                   </div>
-                  <TimePicker
+                  <DesktopTimePicker
                     {...props}
                     displayButtonCount={5}
                     defaultValue={showDate.from}
+                    setShowDate={setShowDate}
                     flatRender={true}
                     onGetValue={handleSetTime}
                   />
                 </div>
               )}
-
-              <DatePicker
-                name="DesktopDate"
-                {...props}
-                model="date"
-                locale={locale}
-                onDateChange={handleDateChange}
-                dateFromOutside={{ from: showDate.from, to: 0 }}
-                calendarBaseWidth={calendarBaseWidth}
-              />
             </div>
 
             <Footer

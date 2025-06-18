@@ -6,6 +6,7 @@ import { toPersianDigits } from "../../core/helper";
 import { CalenderIcon } from "../../icons/CalenderIcon";
 import { useRenderPosition } from "../useRenderPosition";
 import { TimeColumns } from "./exportComponents";
+import type { HandleParams, IDate } from "../../core/type";
 
 type TUnit = "hour" | "minute" | "second";
 
@@ -25,19 +26,17 @@ interface Props {
   highlightColor?: string;
   format?: string;
   showSecond?: boolean;
-  needConfirm?: boolean;
   showNow?: boolean;
   renderExtraFooter?: () => ReactNode;
   hourStep?: number;
   minuteStep?: number;
   secondStep?: number;
-  flatRender?: boolean;
-  onGetValue?: (e: number) => void;
+  onChange?: (e: { type: "date"; date: IDate }) => void;
 }
 
 export const TimePicker: React.FC<Props> = ({
   defaultValue,
-  // onChange,
+  onChange,
   calendarType = "shamsi",
   containerClassName,
   okButtonClassName,
@@ -51,21 +50,16 @@ export const TimePicker: React.FC<Props> = ({
   highlightColor = "#f4f4f4",
   format = "HH:mm:ss",
   showSecond = true,
-  needConfirm = true,
   showNow = true,
   renderExtraFooter,
   hourStep = 1,
   minuteStep = 1,
   secondStep = 1,
-  flatRender = false,
-  onGetValue,
 }: Props) => {
   const [open, setOpen] = useState(false);
   const [time, setTime] = useState<number | null>(
     defaultValue ? defaultValue : null
   );
-  console.log("time", time);
-
   const buttonRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const locale = calendarType == "shamsi" ? "fa" : "en";
 
@@ -94,20 +88,25 @@ export const TimePicker: React.FC<Props> = ({
   }, []);
 
   const handleTimeChange = (unit: TUnit, value: number) => {
-    const updated = moment(time).locale(locale).set(unit, value);
+    const updated = time
+      ? moment(time).locale(locale).set(unit, value)
+      : moment().locale(locale).set(unit, value);
     setTime(updated.valueOf());
   };
 
-  const handleOk = () => {
-    // onChange?.(time);
+  const handleSubmit = () => {
+    if (time && time > 0) {
+      onChange?.({ type: "date", date: { from: time, to: 0 } });
+    }
     setOpen(false);
   };
+
 
   const handleNow = () => {
     const now = moment().locale(locale).valueOf();
     setTime(now);
     setOpen(false);
-    // onChange?.(now);
+    onChange?.({ type: "date", date: { from: now, to: 0 } });
   };
 
   const renderOptions = (count: number, unit: TUnit, step = 1) => {
@@ -142,66 +141,9 @@ export const TimePicker: React.FC<Props> = ({
       setTime(defaultValue);
     }
   }, [defaultValue]);
-  useEffect(() => {
-    onGetValue?.(time as number);
-  }, [time]);
 
   return (
     <div className="range">
-      {flatRender ? (
-        <div
-          className={`flex flex-col gap-2 bg-white ${
-            flatRender ? "" : "shadow-lg rounded-lg border border-gray-300  "
-          }  w-fit p-3  ${containerClassName}`}
-        >
-          <TimeColumns
-            // tertiaryColor={tertiaryColor}
-            renderHeight={`${renderHeight}px`}
-            renderOptions={(count, unit) =>
-              renderOptions(
-                count,
-                unit,
-                unit === "hour"
-                  ? hourStep
-                  : unit === "minute"
-                  ? minuteStep
-                  : secondStep
-              )
-            }
-            hourStep={hourStep}
-            minuteStep={minuteStep}
-            secondStep={secondStep}
-            showSecond={showSecond}
-          />
-
-          {!flatRender && (
-            <div className="flex justify-between gap-4 mt-2">
-              {showNow && (
-                <button
-                  onClick={handleNow}
-                  className={`p-2 px-3 border rounded-md ${nowButtonClassName}`}
-                >
-                  Now
-                </button>
-              )}
-
-              {needConfirm && (
-                <button
-                  onClick={handleOk}
-                  className={`p-2 px-3 border rounded-md ${okButtonClassName}`}
-                  style={{
-                    background: "black",
-                    borderColor: "black",
-                    color: "white",
-                  }}
-                >
-                  OK
-                </button>
-              )}
-            </div>
-          )}
-        </div>
-      ) : (
         <div className="relative" ref={ref}>
           <button
             onClick={() => setOpen((prev) => !prev)}
@@ -250,10 +192,8 @@ export const TimePicker: React.FC<Props> = ({
                     Now
                   </button>
                 )}
-
-                {needConfirm && (
                   <button
-                    onClick={handleOk}
+                    onClick={handleSubmit}
                     className={`p-2 px-3 border rounded-md ${okButtonClassName}`}
                     style={{
                       background: "black",
@@ -263,14 +203,13 @@ export const TimePicker: React.FC<Props> = ({
                   >
                     OK
                   </button>
-                )}
               </div>
             </div>
           )}
 
           {renderExtraFooter && <div>{renderExtraFooter()}</div>}
         </div>
-      )}
+
     </div>
   );
 };
