@@ -5,7 +5,6 @@ import moment from "moment-jalaali";
 import { Footer } from "../core/footer";
 import { toPersianDigits } from "../core/helper";
 import type { HandleParams, IDate, IDateProps } from "../core/type";
-import { TimePicker } from "../exportComponents/timePicker";
 import { useRenderPosition } from "../exportComponents/useRenderPosition";
 import { CalenderIcon } from "../icons/CalenderIcon";
 import { DatePicker } from "../persianDatePicker";
@@ -194,7 +193,7 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
                     displayButtonCount={5}
                     defaultValue={showDate.from}
                     setShowDate={setShowDate}
-                    flatRender={true}
+
                     onGetValue={handleSetTime}
                   />
                 </div>

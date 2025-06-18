@@ -23,7 +23,6 @@ interface Props {
   hourStep?: number;
   minuteStep?: number;
   secondStep?: number;
-  flatRender?: boolean;
   onGetValue?: (e: number) => void;
   onChange?: (e: { type: "date"; date: IDate }) => void;
   setShowDate: Dispatch<SetStateAction<IDate>>;

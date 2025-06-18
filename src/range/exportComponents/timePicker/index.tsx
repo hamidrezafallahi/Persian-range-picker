@@ -6,14 +6,13 @@ import { toPersianDigits } from "../../core/helper";
 import { CalenderIcon } from "../../icons/CalenderIcon";
 import { useRenderPosition } from "../useRenderPosition";
 import { TimeColumns } from "./exportComponents";
-import type { HandleParams, IDate } from "../../core/type";
 
 type TUnit = "hour" | "minute" | "second";
 
 interface Props {
   defaultValue?: number;
   calendarType?: "shamsi" | "gregorian";
-  // onChange?: (timestamp: number) => void;
+  onChange?: (timestamp: number) => void;
   containerClassName?: string;
   okButtonClassName?: string;
   nowButtonClassName?: string;
@@ -31,7 +30,7 @@ interface Props {
   hourStep?: number;
   minuteStep?: number;
   secondStep?: number;
-  onChange?: (e: { type: "date"; date: IDate }) => void;
+  // onChange?: (e: { type: "date"; date: IDate }) => void;
 }
 
 export const TimePicker: React.FC<Props> = ({
@@ -96,7 +95,7 @@ export const TimePicker: React.FC<Props> = ({
 
   const handleSubmit = () => {
     if (time && time > 0) {
-      onChange?.({ type: "date", date: { from: time, to: 0 } });
+      onChange?.(time);
     }
     setOpen(false);
   };
@@ -106,7 +105,7 @@ export const TimePicker: React.FC<Props> = ({
     const now = moment().locale(locale).valueOf();
     setTime(now);
     setOpen(false);
-    onChange?.({ type: "date", date: { from: now, to: 0 } });
+    onChange?.(now);
   };
 
   const renderOptions = (count: number, unit: TUnit, step = 1) => {

@@ -124,8 +124,7 @@ const MobileDatePicker = ({ ...props }: IDateProps) => {
                 containerClassName="!w-full !h-full bg-red-400 p-2 "
                 displayButtonCount={15}
                 defaultValue={showDate?.from}
-                flatRender={true}
-                onGetValue={handleSetTime}
+                onChange={handleSetTime}
               />
             </div>
           )}
