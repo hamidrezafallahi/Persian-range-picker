@@ -7,7 +7,7 @@ import React, {
 } from "react";
 import moment from "moment-jalaali";
 import { toPersianDigits } from "../core/helper";
-import type { IDate } from "../core/type";
+import type { HandleParams, IDate } from "../core/type";
 import { TimeColumns } from "../exportComponents/timePicker/exportComponents";
 
 type TUnit = "hour" | "minute" | "second";
@@ -24,7 +24,7 @@ interface Props {
   minuteStep?: number;
   secondStep?: number;
   onGetValue?: (e: number) => void;
-  onChange?: (e: { type: "date"; date: IDate }) => void;
+  onChange?: (e: HandleParams) => void;
   setShowDate: Dispatch<SetStateAction<IDate>>;
 }
 

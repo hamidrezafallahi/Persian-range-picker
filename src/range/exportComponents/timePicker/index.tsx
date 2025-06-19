@@ -6,8 +6,9 @@ import { toPersianDigits } from "../../core/helper";
 import { CalenderIcon } from "../../icons/CalenderIcon";
 import { useRenderPosition } from "../useRenderPosition";
 import { TimeColumns } from "./exportComponents";
+import type { TUnit } from "../../core/type";
 
-type TUnit = "hour" | "minute" | "second";
+
 
 interface Props {
   defaultValue?: number;
@@ -24,13 +25,12 @@ interface Props {
   tertiaryColor?: string;
   highlightColor?: string;
   format?: string;
-  showSecond?: boolean;
   showNow?: boolean;
   renderExtraFooter?: () => ReactNode;
+  showSecond?: boolean;
   hourStep?: number;
   minuteStep?: number;
   secondStep?: number;
-  // onChange?: (e: { type: "date"; date: IDate }) => void;
 }
 
 export const TimePicker: React.FC<Props> = ({

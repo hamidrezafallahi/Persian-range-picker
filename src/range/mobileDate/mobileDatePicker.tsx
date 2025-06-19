@@ -4,10 +4,10 @@ import moment from "moment-jalaali";
 
 import { Footer } from "../core/footer";
 import { toPersianDigits } from "../core/helper";
-import type { IDate, IDateProps } from "../core/type";
-import { TimePicker } from "../exportComponents/timePicker";
+import type { IDate, IDateProps,  TUnit } from "../core/type";
 import { CalenderIcon } from "../icons/CalenderIcon";
 import { DatePicker } from "../persianDatePicker";
+import { TimeColumns } from "../exportComponents/timePicker/exportComponents";
 
 const MobileDatePicker = ({ ...props }: IDateProps) => {
   const {
@@ -18,50 +18,76 @@ const MobileDatePicker = ({ ...props }: IDateProps) => {
     highlightColor = "#f4f4f4", // رنگ برجسته‌کننده برای هاور، نوتیف یا نقاط توجه
     primaryColor = "#000",
     chooseTodayClassName = "",
-    showTime = true,
+    showTime = false,
     showTimeFormat = "HH:mm:ss",
+    hourStep=1,
+    minuteStep=1,
+    secondStep=1,
+    showSecond=true
   } = props;
-  const initialDate: IDate = useMemo(
-    () => ({
-      from: defaultValue?.from && defaultValue.from > 0 ? defaultValue.from : 0,
-      to: 0,
-    }),
+  const initialDate:IDate= useMemo(
+    () => ({from:defaultValue? defaultValue.from:0,to:0}),
     [defaultValue]
   );
 
   const [showDate, setShowDate] = useState<IDate>(initialDate);
-  const [situation, setSituation] = useState<boolean>(true);
-
   const popoverRef = useRef<HTMLDivElement>(null);
 
   const persian = showDate
-    ? moment(showDate.from).format("jYYYY/jMM/jDD")
+    ? moment(showDate.from).format( showTime ? `jYYYY/jMM/jDD\u2003${showTimeFormat}` : "jYYYY/jMM/jDD")
     : locale === "fa"
     ? "انتخاب تاریخ"
     : "Choose date";
 
   const Gregorian = showDate
-    ? moment(showDate.from).format("YYYY/MM/DD")
+    ? moment(showDate.from).format( showTime ? `YYYY/MM/DD\u2003${showTimeFormat}` : "YYYY/MM/DD")
     : "Choose date";
 
-  const title = locale === "fa" ? persian : Gregorian;
+  const title = showDate.from>0 ? locale === "fa" ? persian : Gregorian :locale === "fa" ? "انتخاب تاریخ" : "Choose date";
 
   const handleDateChange = (date: IDate) => {
-    setShowDate(date);
-    setSituation(false);
+    setShowDate({from:date.from,to:0});
   };
-  const handleSetTime = (timestamp: number) => {
-    setShowDate({ from: timestamp, to: 0 });
-  };
-  const handleSubmit = () => {
-    onChange?.({ type: "date", date: showDate });
-    setSituation(true);
+  const handleSubmit = () => { 
+    onChange?.({ type: "date", Data: {from:showDate.from,to:0} });
     popoverRef.current?.hidePopover();
   };
+
+  const handleTimeChange = (unit: TUnit, value: number) => {
+    const updated = showDate
+      ? moment(showDate.from).locale(locale).set(unit, value)
+      : moment().locale(locale).set(unit, value);
+    setShowDate({from:updated.valueOf(),to:0})
+  }
+
+
+  const renderOptions = (count: number, unit: TUnit, step = 1,) => {
+    const pad = (num: number) => num.toString().padStart(2, "0");
+
+    const active = moment(showDate.from).locale(locale).get(unit);
+    return Array.from({ length: Math.ceil(count / step) }, (_, i) => {
+      const val = i * step;
+
+      return (
+        <button
+          key={val}
+          onClick={() => handleTimeChange(unit, val)}
+          className={`flex justify-center items-center !rounded-md w-6 aspect-square ${
+            active === val
+              ? "pointer-events-auto opacity-100 text-gray123 "
+              : ""
+          } `}
+          style={{ color: tertiaryColor, fontSize: "14px"}}
+        >
+          {locale == "fa" ? toPersianDigits(pad(val)) : pad(val)}
+        </button>
+      );
+    });
+  };
+
   const handleClosePopup = () => {
     popoverRef.current?.hidePopover();
   };
-
   return (
     <div className="range">
       <button
@@ -80,14 +106,6 @@ const MobileDatePicker = ({ ...props }: IDateProps) => {
       >
         <div className="p-2">
           {/* ////////////////TODO navigation buttons must change between date and time in situation  */}
-          <button
-            onClick={() => {
-              setSituation(!situation);
-            }}
-          >
-            {situation ? "showTime" : "show date"}
-          </button>
-          {situation && (
             <DatePicker
               {...props}
               locale={locale}
@@ -95,13 +113,12 @@ const MobileDatePicker = ({ ...props }: IDateProps) => {
               name="DesktopDate"
               onDateChange={handleDateChange}
               dateFromOutside={{
-                from: showDate ? showDate.from : new Date().valueOf(),
+                from: showDate ? showDate.from: new Date().valueOf(),
                 to: 0,
               }}
+              
             />
-          )}
-
-          {!situation && (
+          {showTime && (
             <div style={{ zIndex: 1000 }}>
               <div
                 className="flex justify-center items-center border-b h-9"
@@ -119,13 +136,26 @@ const MobileDatePicker = ({ ...props }: IDateProps) => {
                     )
                   : moment(showDate.from).locale(locale).format(showTimeFormat)}
               </div>
-              <TimePicker
-                {...props}
-                containerClassName="!w-full !h-full bg-red-400 p-2 "
-                displayButtonCount={15}
-                defaultValue={showDate?.from}
-                onChange={handleSetTime}
-              />
+               <TimeColumns
+               TimeColumnsClassName="flex justify-center items-center  py-2 h-full "
+
+                            renderHeight={`${280}px`}
+                            renderOptions={(count, unit) =>
+                              renderOptions(
+                                count,
+                                unit,
+                                unit === "hour"
+                                  ? hourStep
+                                  : unit === "minute"
+                                  ? minuteStep
+                                  : secondStep
+                              )
+                            }
+                            hourStep={hourStep}
+                            minuteStep={minuteStep}
+                            secondStep={secondStep}
+                            showSecond={showSecond}
+                          />
             </div>
           )}
         </div>

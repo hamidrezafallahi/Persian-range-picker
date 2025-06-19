@@ -1,45 +1,36 @@
 import {
-  DateMask,
-  DesktopDate,
-  DesktopRange,
   MobileDate,
-  MobileRange,
-  Range,
-  TimePicker,
 } from "../range";
-import type { IDate } from "../range/core/type";
 
 export function InitialComponent() {
-  const handleDateChange = (w) => {
-    console.log(w);
-  };
+  // const handleDateChange = (w) => {
+  //   console.log(w);
+  // };
 
-  const handleCompareDateChange = (w) => {
-    console.log(w);
-  };
+  // const handleCompareDateChange = (w) => {
+  //   console.log(w);
+  // };
 
-  const handleNavigateChange = (w) => {
-    console.log(w);
-  };
+  // const handleNavigateChange = (w) => {
+  //   console.log(w);
+  // };
 
-  const HandleSubmitDate = (w) => {
-    console.log(w);
-  };
-  const resetDate = () => {
-    console.log("Reject");
-  };
-  const handleChange = (e: number | null) => {
-    console.log(e);
-  };
-  const device =
-    /Mobile|Android|iPhone|iPad|iPod|Opera Mini|BlackBerry|IEMobile/i.test(
-      navigator.userAgent
-    )
-      ? "mobile"
-      : "desktop";
+  // const HandleSubmitDate = (w) => {
+  //   console.log(w);
+  // };
+  // const resetDate = () => {
+  //   console.log("Reject");
+  // };
+  // const device =
+  //   /Mobile|Android|iPhone|iPad|iPod|Opera Mini|BlackBerry|IEMobile/i.test(
+  //     navigator.userAgent
+  //   )
+  //     ? "mobile"
+  //     : "desktop";
   return (
     <div className="flex flex-col gap-2">
-      <Range
+      {/* <Range
+      isOpenDropdown
         device={device}
         locale={"fa"}
         model={"range"}
@@ -49,13 +40,17 @@ export function InitialComponent() {
         handleSubmit={HandleSubmitDate}
         handleReject={resetDate}
         showComparison
-      />
-      <div className="flex flex-col" dir="rtl">
-        <DesktopRange onChange={handleDateChange} />
-        <MobileDate onChange={handleDateChange} />
-        <MobileRange onChange={handleDateChange} />
-        <DateMask onChange={handleDateChange} />
-      </div>
+      /> */}
+      {/* <div className="flex flex-col" dir="rtl">
+        <DesktopRange onChange={handleDateChange} /> */}
+        <MobileDate                                            //fix type of properties of this 
+        model="date"
+        locale="fa"
+        showTime
+       />
+        {/* <MobileRange onChange={handleDateChange} />
+        <DateMask onChange={handleDateChange} /> */}
+      {/* </div>
       <div style={{ display: "flex", justifyContent: "space-between" }}>
         <TimePicker
           defaultValue={1750242875918}
@@ -72,8 +67,8 @@ export function InitialComponent() {
               })
             );
           }}
-        />
-        <DesktopDate
+        /> */}
+        {/* <DesktopDate
           // defaultValue={{from:1750242875918,to:0}}
           showTime
           onChange={(e) => {
@@ -90,7 +85,7 @@ export function InitialComponent() {
             );
           }}
         />
-      </div>
+      </div> */}
     </div>
   );
 }

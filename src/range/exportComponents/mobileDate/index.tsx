@@ -1,19 +1,8 @@
-import type { IDate } from "../../core/type";
+import type { IDateProps } from "../../core/type";
 import MobileDatePicker from "../../mobileDate/mobileDatePicker";
 
-interface IProps {
-  calendarType?: "shamsi" | "gregorian";
-  defaultValue?: IDate;
-  onChange?: (e: { type: "date"; date: IDate }) => void;
-  tertiaryColor?: string;
-  highlightColor?: string;
-  accentColor?: string;
-  backgroundColor?: string;
-  dangerColor?: string;
-  primaryColor?: string;
-  secondaryColor?: string;
-}
-export function MobileDate({ ...props }: IProps) {
+
+export function MobileDate({ ...props }: IDateProps) {
   const {
     calendarType = "shamsi",
     defaultValue,
@@ -31,7 +20,6 @@ export function MobileDate({ ...props }: IProps) {
     <MobileDatePicker
       {...props}
       locale={locale}
-      model="date"
       defaultValue={defaultValue}
       onChange={onChange}
       tertiaryColor={tertiaryColor}

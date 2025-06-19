@@ -22,6 +22,7 @@ export function Range({ ...props }: RangeProps) {
     additionalElement,
     defaultValue,
     calendarType = "shamsi",
+    isOpenDropdown=false
   } = props;
   const locale = calendarType == "shamsi" ? "fa" : "en";
   const initialDate: IDate = useMemo(() => {
@@ -49,7 +50,7 @@ export function Range({ ...props }: RangeProps) {
   const [step, setStep] = useState<ESteps>(366);
   const [zone, setZone] = useState<ITimeZone>("manual");
   const [tabKey, setTabKey] = useState<ITime | string>("manual");
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(isOpenDropdown);
   return (
     <div className="range" dir="rtl">
       {device == "desktop" ? (
@@ -81,7 +82,7 @@ export function Range({ ...props }: RangeProps) {
       ) : (
         <>
           {model == "date" ? (
-            <MobileDatePicker {...props} model={model} locale={locale} />
+            <MobileDatePicker model="date" locale="fa"  {...props}    />
           ) : (
             <MobileRangePicker
               {...props}

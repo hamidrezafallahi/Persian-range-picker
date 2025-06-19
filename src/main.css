@@ -755,6 +755,9 @@
 .range .overflow-x-auto {
   overflow-x: auto;
 }
+.range .overflow-x-hidden {
+  overflow-x: hidden;
+}
 
 .range .cursor-pointer {
   cursor: pointer;

@@ -17,6 +17,7 @@ export interface IAdditionalElementType {
 }
 export type TLocale = "fa" | "en";
 export interface IDateProps {
+  calendarType?: "shamsi" | "gregorian";
   primaryColor?: string;
   dangerColor?: string;
   backgroundColor?: string;
@@ -27,7 +28,7 @@ export interface IDateProps {
   model: "date" | "range";
   locale: IRangeOptions["locale"];
   defaultValue?: IDate;
-  onChange?: (e: { type: "date"; date: IDate }) => void;
+  onChange?: (e: HandleParams) => void;
   className?: string;
   calendarBaseWidth?: number;
   dropdownWidth?: number;
@@ -35,6 +36,10 @@ export interface IDateProps {
   showTime?: boolean;
   chooseTodayClassName?: string;
   showTimeFormat?: string;
+  showSecond?: boolean;
+  hourStep?: number;
+  minuteStep?: number;
+  secondStep?: number;
 }
 
 export type HandleParams = {
@@ -47,6 +52,7 @@ export interface RangeProps extends IRangeOptions {
   handleSubmit?: (params: HandleParams) => void;
   onNavigateChange?: (date: IDate, compareDate: IDate | null) => void;
   navigation?: boolean;
+  isOpenDropdown?: boolean;
 }
 export interface IRangeOptions {
   model?: "date" | "range";
@@ -177,4 +183,25 @@ export interface ISubmittedData {
   date: IDate;
   compareDate: IDate | null;
   Data: unknown;
+}
+export type TUnit = "hour" | "minute" | "second";
+export interface IMobileProps {
+  onChange?: (e: HandleParams) => void;
+    defaultValue?: IDate;
+  locale?: TLocale;
+  tertiaryColor?: string;
+  highlightColor?: string;
+  primaryColor?: string;
+  chooseTodayClassName?: string;
+  showTime?: boolean;
+  showTimeFormat?: string;
+  hourStep?: number;
+  minuteStep?: number;
+  secondStep?: number;
+  showSecond?: boolean;
+  dangerColor?: string;
+  backgroundColor?: string;
+  neutralColor?: string;
+  secondaryColor?: string;
+  accentColor?: string;
 }

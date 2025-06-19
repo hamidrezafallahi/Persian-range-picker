@@ -2,7 +2,6 @@ import React from "react";
 
 type Props = {
   renderHeight?: string;
-  width?: number;
   renderOptions: (
     count: number,
     unit: "hour" | "minute" | "second"
@@ -11,6 +10,8 @@ type Props = {
   minuteStep?: number;
   secondStep?: number;
   showSecond?: boolean;
+    TimeColumnsClassName?:string
+
 };
 
 const TimeColumn: React.FC<{
@@ -21,7 +22,7 @@ const TimeColumn: React.FC<{
 }> = ({ count, unit, renderHeight, renderOptions }) => {
   return(
   <div
-    className="flex flex-col gap-4 px-2 overflow-y-auto "
+    className="flex flex-col gap-4 px-2 overflow-y-auto overflow-x-hidden"
     style={{ maxHeight: renderHeight }}
   >
     {renderOptions(count, unit)}
@@ -33,10 +34,10 @@ export const TimeColumns: React.FC<Props> = ({
   renderHeight,
   renderOptions,
   showSecond,
-  width,
+  TimeColumnsClassName
 }) => {
   return (
-    <div className="flex gap-4" style={{ width }}>
+    <div className={`flex gap-4 ${TimeColumnsClassName}`} >
       <TimeColumn
         count={24}
         unit="hour"

@@ -52,7 +52,7 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
     const date = e.date as IDate;
     setShowDate({ from: date.from, to: 0 });
     setShowDate({ from: date.from, to: 0 });
-    onChange?.({ type: "date", date });
+    onChange?.({ type: "date",Data:{date} });
   };
 
 
@@ -66,7 +66,7 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
       ? showDate.from
       : moment(showDate.from).startOf("day").valueOf();
 
-    onChange?.({ type: "date", date: { from: finalDate, to: 0 } });
+    onChange?.({ type: "date", Data: { from: finalDate, to: 0 } });
   };
 
   const handleDateChange = (date: IDate) => {
@@ -75,7 +75,7 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
       : moment(date.from).startOf("day").valueOf();
     setShowDate({ from: finalDate, to: 0 });
     if (!showTime) {
-      onChange?.({ type: "date", date: { from: finalDate, to: 0 } });
+      onChange?.({ type: "date", Data: { from: finalDate, to: 0 } });
       setIsOpen(false);
     }
   };

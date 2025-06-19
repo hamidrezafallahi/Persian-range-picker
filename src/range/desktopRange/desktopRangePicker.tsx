@@ -80,20 +80,6 @@ export function DesktopRangePicker(props: IDesktopRangeProps) {
   const [type, setType] = useState<string>("date");
   const [customData, setCustomData] = useState<unknown>(null);
 
-  const handleClickOutside = (event: MouseEvent) => {
-    const target = event.target as Node;
-    if (
-      popupRef.current &&
-      !popupRef.current.contains(target) &&
-      buttonRef.current &&
-      !buttonRef.current.contains(target)
-    ) {
-      setOpen(false);
-    }
-  };
-
-
-
   const handleAccept = () => {
     if (date) {
       if (date.from && date.to && date.from < date.to) {
