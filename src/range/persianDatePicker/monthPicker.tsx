@@ -35,7 +35,7 @@ const MonthPicker: FC<Props> = ({
     <div className={`!h-full `}>
       <div className={`w-full flex justify-between `}>
         <div onClick={() => onChangeYear(1)}>
-          <RightChevron secondaryColor={secondaryColor} />
+          <LeftChevron secondaryColor={secondaryColor} />
         </div>
         <div>
           <span className="font-bold text-sm" style={{ color: secondaryColor }}>
@@ -43,7 +43,7 @@ const MonthPicker: FC<Props> = ({
           </span>
         </div>
         <div onClick={() => onChangeYear(-1)}>
-          <LeftChevron secondaryColor={secondaryColor} />
+          <RightChevron secondaryColor={secondaryColor} />
         </div>
       </div>
       <div

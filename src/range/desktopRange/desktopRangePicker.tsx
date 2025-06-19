@@ -92,17 +92,7 @@ export function DesktopRangePicker(props: IDesktopRangeProps) {
     }
   };
 
-  useEffect(() => {
-    if (open) {
-      document.addEventListener("mousedown", handleClickOutside);
-    } else {
-      document.removeEventListener("mousedown", handleClickOutside);
-    }
 
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [open]);
 
   const handleAccept = () => {
     if (date) {
@@ -154,15 +144,16 @@ export function DesktopRangePicker(props: IDesktopRangeProps) {
     }
   };
 
-  const [position, setPosition] = useState({ top: 0, left: 0 });
-  const buttonRef = useRef<HTMLElement | null>(null);
-  const popupRef = useRef<HTMLDivElement | null>(null);
-
-  const hookPosition = useRenderPosition({
-    buttonRef: buttonRef as React.RefObject<HTMLButtonElement>,
-    enabled: open,
-    popupSize: { width: dropdownWidth, height: dropdownHeight },
-  });
+   const buttonRef = useRef<HTMLElement>(null);
+   const popupRef = useRef<HTMLDivElement>(null);
+ 
+   const hookPosition = useRenderPosition({
+     buttonRef: buttonRef as React.RefObject<HTMLElement>,
+     popupRef: popupRef,
+     setIsOpen: setOpen,
+     isOpen:open,
+     offset: 4,
+   });
 
   const handleDropdown = () => {
     setOpen((prev) => !prev);
@@ -212,9 +203,7 @@ export function DesktopRangePicker(props: IDesktopRangeProps) {
     }
   }, [customData]);
 
-  useEffect(() => {
-    setPosition(hookPosition);
-  }, [hookPosition]);
+
   return (
     <div className="range">
       <div
@@ -276,9 +265,7 @@ export function DesktopRangePicker(props: IDesktopRangeProps) {
             style={{
               backgroundColor: backgroundColor,
               position: "absolute",
-              top: position.top,
-              left: position.left,
-              zIndex: 1000,
+
               width: dropdownWidth,
               height: dropdownHeight,
             }}

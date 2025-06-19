@@ -51,7 +51,7 @@ const YearPicker: FC<Props> = ({
     >
       <div className={`w-full flex justify-between`}>
         <div onClick={() => changePageHandler(1)}>
-          <RightChevron secondaryColor={secondaryColor} />
+          <LeftChevron secondaryColor={secondaryColor} />
         </div>
         <div>
           <span
@@ -64,7 +64,7 @@ const YearPicker: FC<Props> = ({
           )}`}</span>
         </div>
         <div onClick={() => changePageHandler(-1)}>
-          <LeftChevron secondaryColor={secondaryColor} />
+            <RightChevron secondaryColor={secondaryColor} />
         </div>
       </div>
       <div

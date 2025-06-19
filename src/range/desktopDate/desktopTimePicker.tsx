@@ -44,7 +44,7 @@ export const DesktopTimePicker: React.FC<Props> = ({
   const locale = calendarType == "shamsi" ? "fa" : "en";
 
   const renderHeight =
-    displayButtonCount * (buttonRefs.current[0]?.offsetHeight ?? 17) +
+    displayButtonCount * (buttonRefs.current[0]?.offsetHeight ?? 24) +
     20 +
     (displayButtonCount - 1) * 16;
   const handleTimeChange = (unit: TUnit, value: number) => {

@@ -18,14 +18,16 @@ const TimeColumn: React.FC<{
   unit: "hour" | "minute" | "second";
   renderHeight?: string;
   renderOptions: Props["renderOptions"];
-}> = ({ count, unit, renderHeight, renderOptions }) => (
+}> = ({ count, unit, renderHeight, renderOptions }) => {
+  return(
   <div
     className="flex flex-col gap-4 px-2 overflow-y-auto "
     style={{ maxHeight: renderHeight }}
   >
     {renderOptions(count, unit)}
   </div>
-);
+)
+};
 
 export const TimeColumns: React.FC<Props> = ({
   renderHeight,

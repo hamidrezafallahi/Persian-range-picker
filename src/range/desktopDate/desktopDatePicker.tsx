@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useMemo, useRef, useState } from "react";
 
 import moment from "moment-jalaali";
 
@@ -20,7 +20,6 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
     highlightColor = "#f4f4f4",
     dropdownWidth = 256,
     calendarBaseWidth = 256,
-    dropdownHeight = 314,
     showTime = false,
     className,
     chooseTodayClassName = "",
@@ -37,19 +36,15 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
 
   const [showDate, setShowDate] = useState<IDate>(initialDate);
   const [isOpen, setIsOpen] = useState(false);
-  const [position, setPosition] = useState({ top: 0, left: 0 });
-  const [popupSize, setPopupSize] = useState({
-    width: dropdownWidth,
-    height: dropdownHeight,
-  });
-
-  const buttonRef = useRef<HTMLElement | null>(null);
-  const popupRef = useRef<HTMLDivElement | null>(null);
+  const buttonRef = useRef<HTMLElement>(null);
+  const popupRef = useRef<HTMLDivElement>(null);
 
   const hookPosition = useRenderPosition({
-    buttonRef: buttonRef as React.RefObject<HTMLButtonElement>,
-    enabled: isOpen,
-    popupSize,
+    buttonRef: buttonRef as React.RefObject<HTMLElement>,
+    popupRef: popupRef,
+    setIsOpen: setIsOpen,
+    isOpen:isOpen,
+    offset: 4,
   });
 
   const changeHandler = (e: HandleParams["Data"] | undefined) => {
@@ -60,31 +55,9 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
     onChange?.({ type: "date", date });
   };
 
-  useEffect(() => {
-    if (isOpen && popupRef.current) {
-      const rect = popupRef.current.getBoundingClientRect();
-      setPopupSize({ width: rect.width, height: rect.height });
-    }
-  }, [isOpen]);
 
-  useEffect(() => {
-    setPosition(hookPosition);
-  }, [hookPosition]);
 
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        popupRef.current &&
-        !popupRef.current.contains(event.target as Node) &&
-        buttonRef.current &&
-        !buttonRef.current.contains(event.target as Node)
-      ) {
-        setIsOpen(false);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+
 
   const handleDropdown = () => setIsOpen((prev) => !prev);
 
@@ -131,29 +104,23 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
 
   return (
     <div className="range">
-      <div className="relative">
-        <button
+      <div className="relative ">
+ <button
           ref={buttonRef as React.RefObject<HTMLButtonElement>}
           onClick={handleDropdown}
-          style={{
-            color: tertiaryColor,
-            backgroundColor: highlightColor,
-            height: 34,
-          }}
-          className={`flex justify-start items-center gap-2 px-2 h-9 rounded-md  w-full ${showTime?"xs:w-40":"xs:w-28"} ${className}`}
+           className={`flex justify-start items-center gap-2 px-2 h-9 rounded-md  w-full ${
+            showTime ? "xs:w-40" : "xs:w-28"
+          } ${className}`}
+          style={{ color: tertiaryColor, backgroundColor: highlightColor }}
         >
-          <CalenderIcon />
+           <CalenderIcon />
           <div className="text-sm">{title}</div>
         </button>
-
         {isOpen && (
           <div
             ref={popupRef}
             style={{
-              position: "absolute",
-              top: position.top,
-              left: position.left,
-              zIndex: 1000,
+              position:"absolute",
               minWidth: showTime ? dropdownWidth + 238 : dropdownWidth,
             }}
             className="bg-white shadow-lg p-2 border rounded-lg overflow-hidden"

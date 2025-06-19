@@ -919,9 +919,6 @@
   .range .xs\:overflow-y-auto {
     overflow-y: auto;
   }
-  .range .xs\:w-28 {
-    width: 7rem;
-  }
   .range .xs\:\!flex-row {
     flex-direction: row !important;
   }
