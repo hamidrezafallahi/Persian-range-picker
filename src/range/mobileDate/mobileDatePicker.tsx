@@ -4,7 +4,7 @@ import moment from "moment-jalaali";
 
 import { Footer } from "../core/footer";
 import { toPersianDigits } from "../core/helper";
-import type { IDate, IDateProps,  TUnit } from "../core/type";
+import type { IDate, IDateProps, TUnit } from "../core/type";
 import { CalenderIcon } from "../icons/CalenderIcon";
 import { DatePicker } from "../persianDatePicker";
 import { TimeColumns } from "../exportComponents/timePicker/exportComponents";
@@ -20,36 +20,43 @@ const MobileDatePicker = ({ ...props }: IDateProps) => {
     chooseTodayClassName = "",
     showTime = false,
     showTimeFormat = "HH:mm:ss",
-    hourStep=1,
-    minuteStep=1,
-    secondStep=1,
-    showSecond=true
+    hourStep = 1,
+    minuteStep = 1,
+    secondStep = 1,
+    showSecond = true,
+    className,
   } = props;
-  const initialDate:IDate= useMemo(
-    () => ({from:defaultValue? defaultValue.from:0,to:0}),
+  const initialDate: IDate = useMemo(
+    () => ({ from: defaultValue ? defaultValue.from : 0, to: 0 }),
     [defaultValue]
   );
 
   const [showDate, setShowDate] = useState<IDate>(initialDate);
   const popoverRef = useRef<HTMLDivElement>(null);
 
-  const persian = showDate
-    ? moment(showDate.from).format( showTime ? `jYYYY/jMM/jDD\u2003${showTimeFormat}` : "jYYYY/jMM/jDD")
-    : locale === "fa"
-    ? "انتخاب تاریخ"
-    : "Choose date";
-
-  const Gregorian = showDate
-    ? moment(showDate.from).format( showTime ? `YYYY/MM/DD\u2003${showTimeFormat}` : "YYYY/MM/DD")
-    : "Choose date";
-
-  const title = showDate.from>0 ? locale === "fa" ? persian : Gregorian :locale === "fa" ? "انتخاب تاریخ" : "Choose date";
+ const persian =
+     showDate.from > 0
+       ? toPersianDigits(
+           moment(showDate.from).format(
+             showTime ? `jYYYY/jMM/jDD\u2003${showTimeFormat}` : `jYYYY/jMM/jDD`
+           )
+         )
+       : "انتخاب تاریخ";
+ 
+   const gregorian =
+     showDate.from > 0
+       ? moment(showDate.from).format(
+           showTime ? `YYYY/MM/DD\u2003${showTimeFormat}` : `YYYY/MM/DD`
+         )
+       : "Choose date";
+ 
+   const title = locale === "fa" ? persian : gregorian;
 
   const handleDateChange = (date: IDate) => {
-    setShowDate({from:date.from,to:0});
+    setShowDate({ from: date.from, to: 0 });
   };
-  const handleSubmit = () => { 
-    onChange?.({ type: "date", Data: {from:showDate.from,to:0} });
+  const handleSubmit = () => {
+    onChange?.({ type: "date", Data: { from: showDate.from, to: 0 } });
     popoverRef.current?.hidePopover();
   };
 
@@ -57,11 +64,10 @@ const MobileDatePicker = ({ ...props }: IDateProps) => {
     const updated = showDate
       ? moment(showDate.from).locale(locale).set(unit, value)
       : moment().locale(locale).set(unit, value);
-    setShowDate({from:updated.valueOf(),to:0})
-  }
+    setShowDate({ from: updated.valueOf(), to: 0 });
+  };
 
-
-  const renderOptions = (count: number, unit: TUnit, step = 1,) => {
+  const renderOptions = (count: number, unit: TUnit, step = 1) => {
     const pad = (num: number) => num.toString().padStart(2, "0");
 
     const active = moment(showDate.from).locale(locale).get(unit);
@@ -77,7 +83,7 @@ const MobileDatePicker = ({ ...props }: IDateProps) => {
               ? "pointer-events-auto opacity-100 text-gray123 "
               : ""
           } `}
-          style={{ color: tertiaryColor, fontSize: "14px"}}
+          style={{ color: tertiaryColor, fontSize: "14px" }}
         >
           {locale == "fa" ? toPersianDigits(pad(val)) : pad(val)}
         </button>
@@ -91,12 +97,14 @@ const MobileDatePicker = ({ ...props }: IDateProps) => {
   return (
     <div className="range">
       <button
-        style={{ backgroundColor: highlightColor, color: tertiaryColor }}
         popoverTarget="mobileDateModal"
-        className="flex justify-between items-center gap-2 px-2 rounded-md w-full xs:w-28 h-9" // need className
+        className={`flex justify-between items-center gap-2 px-1 h-9 rounded-md  w-full  ${
+          showTime ? "xs:w-40 " : "xs:w-28"
+        } ${className}`}
+        style={{ color: tertiaryColor, backgroundColor: highlightColor }}
       >
+        <div className=" w-full ">{title}</div>{" "}
         <CalenderIcon />
-        <div>{title}</div>
       </button>
       <div
         popover="auto"
@@ -106,18 +114,17 @@ const MobileDatePicker = ({ ...props }: IDateProps) => {
       >
         <div className="p-2">
           {/* ////////////////TODO navigation buttons must change between date and time in situation  */}
-            <DatePicker
-              {...props}
-              locale={locale}
-              model="date"
-              name="DesktopDate"
-              onDateChange={handleDateChange}
-              dateFromOutside={{
-                from: showDate ? showDate.from: new Date().valueOf(),
-                to: 0,
-              }}
-              
-            />
+          <DatePicker
+            {...props}
+            locale={locale}
+            model="date"
+            name="DesktopDate"
+            onDateChange={handleDateChange}
+            dateFromOutside={{
+              from: showDate ? showDate.from : new Date().valueOf(),
+              to: 0,
+            }}
+          />
           {showTime && (
             <div style={{ zIndex: 1000 }}>
               <div
@@ -136,26 +143,25 @@ const MobileDatePicker = ({ ...props }: IDateProps) => {
                     )
                   : moment(showDate.from).locale(locale).format(showTimeFormat)}
               </div>
-               <TimeColumns
-               TimeColumnsClassName="flex justify-center items-center  py-2 h-full "
-
-                            renderHeight={`${280}px`}
-                            renderOptions={(count, unit) =>
-                              renderOptions(
-                                count,
-                                unit,
-                                unit === "hour"
-                                  ? hourStep
-                                  : unit === "minute"
-                                  ? minuteStep
-                                  : secondStep
-                              )
-                            }
-                            hourStep={hourStep}
-                            minuteStep={minuteStep}
-                            secondStep={secondStep}
-                            showSecond={showSecond}
-                          />
+              <TimeColumns
+                TimeColumnsClassName="flex justify-center items-center  py-2 h-full "
+                renderHeight={`${280}px`}
+                renderOptions={(count, unit) =>
+                  renderOptions(
+                    count,
+                    unit,
+                    unit === "hour"
+                      ? hourStep
+                      : unit === "minute"
+                      ? minuteStep
+                      : secondStep
+                  )
+                }
+                hourStep={hourStep}
+                minuteStep={minuteStep}
+                secondStep={secondStep}
+                showSecond={showSecond}
+              />
             </div>
           )}
         </div>
@@ -170,7 +176,7 @@ const MobileDatePicker = ({ ...props }: IDateProps) => {
             onNowButton={handleClosePopup}
             onTodayButton={handleClosePopup}
             onSubmit={handleSubmit}
-            onChange={onChange}
+            onChange={onChange}    //////type error unknown type fix by net 
           />
         </div>
       </div>

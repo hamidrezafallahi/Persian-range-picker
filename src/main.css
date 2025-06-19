@@ -849,6 +849,9 @@
   .range .xs\:w-28 {
     width: 112px;
   }
+  .range .xs\:w-40 {
+    width: 160px;
+  }
 
   .range .xs\:w-fit {
     width: fit-content;

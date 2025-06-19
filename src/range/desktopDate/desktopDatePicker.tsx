@@ -4,7 +4,7 @@ import moment from "moment-jalaali";
 
 import { Footer } from "../core/footer";
 import { toPersianDigits } from "../core/helper";
-import type { HandleParams, IDate, IDateProps } from "../core/type";
+import type {  HandleParams, IDate, IDateProps } from "../core/type";
 import { useRenderPosition } from "../exportComponents/useRenderPosition";
 import { CalenderIcon } from "../icons/CalenderIcon";
 import { DatePicker } from "../persianDatePicker";
@@ -47,21 +47,18 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
     offset: 4,
   });
 
-  const changeHandler = (e: HandleParams["Data"] | undefined) => {
+  const changeHandler = (e:HandleParams) => {
     if (!e) return;
-    const date = e.date as IDate;
-    setShowDate({ from: date.from, to: 0 });
+    console.log(e.Data)
+    const date = e.Data;
     setShowDate({ from: date.from, to: 0 });
     onChange?.({ type: "date",Data:{date} });
   };
 
-
-
-
-
   const handleDropdown = () => setIsOpen((prev) => !prev);
 
   const handleSubmit = () => {
+
     const finalDate = showTime
       ? showDate.from
       : moment(showDate.from).startOf("day").valueOf();
@@ -84,7 +81,7 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
     showDate.from > 0
       ? toPersianDigits(
           moment(showDate.from).format(
-            showTime ? `${showTimeFormat}\u2003jYYYY/jMM/jDD` : "jYYYY/jMM/jDD"
+            showTime ? `jYYYY/jMM/jDD\u2003${showTimeFormat}` : `jYYYY/jMM/jDD`
           )
         )
       : "انتخاب تاریخ";
@@ -92,7 +89,7 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
   const gregorian =
     showDate.from > 0
       ? moment(showDate.from).format(
-          showTime ? `${showTimeFormat}\u2003YYYY/MM/DD` : "YYYY/MM/DD"
+          showTime ? `YYYY/MM/DD\u2003${showTimeFormat}` : `YYYY/MM/DD`
         )
       : "Choose date";
 
@@ -108,13 +105,13 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
  <button
           ref={buttonRef as React.RefObject<HTMLButtonElement>}
           onClick={handleDropdown}
-           className={`flex justify-start items-center gap-2 px-2 h-9 rounded-md  w-full ${
-            showTime ? "xs:w-40" : "xs:w-28"
+           className={`flex justify-between items-center gap-2 px-1 h-9 rounded-md  w-full ${
+            showTime ? "xs:w-40 " : "xs:w-28"
           } ${className}`}
-          style={{ color: tertiaryColor, backgroundColor: highlightColor }}
+          style={{ color: tertiaryColor, backgroundColor: highlightColor  }}
         >
            <CalenderIcon />
-          <div className="text-sm">{title}</div>
+          <div className=" w-full ">{title}</div>
         </button>
         {isOpen && (
           <div
@@ -123,7 +120,7 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
               position:"absolute",
               minWidth: showTime ? dropdownWidth + 238 : dropdownWidth,
             }}
-            className="bg-white shadow-lg p-2 border rounded-lg overflow-hidden"
+            className="bg-white shadow-lg p-2 border rounded-lg overflow-hidden bg-red-400"
           >
             <div className="flex items-end gap-2 border-r w-full">
               <DatePicker
