@@ -22,7 +22,8 @@ export function Range({ ...props }: RangeProps) {
     additionalElement,
     defaultValue,
     calendarType = "shamsi",
-    isOpenDropdown=false
+    isOpenDropdown=false,
+    onChange
   } = props;
   const locale = calendarType == "shamsi" ? "fa" : "en";
   const initialDate: IDate = useMemo(() => {
@@ -51,11 +52,18 @@ export function Range({ ...props }: RangeProps) {
   const [zone, setZone] = useState<ITimeZone>("manual");
   const [tabKey, setTabKey] = useState<ITime | string>("manual");
   const [open, setOpen] = useState(isOpenDropdown);
+  const handleChangeDateToRange=(e:number)=>{
+onChange?.({type:"date",Data:{from:e}})
+  }
   return (
     <div className="range" dir="rtl">
       {device == "desktop" ? (
         model == "date" ? (
-          <DesktopDatePicker {...props} model={model} locale={locale} />
+          <DesktopDatePicker {...props} model={model} locale={locale}
+          defaultValue={initialDate.from}
+          onChange={handleChangeDateToRange}
+          
+          />
         ) : (
           <DesktopRangePicker
             {...props}
@@ -82,7 +90,11 @@ export function Range({ ...props }: RangeProps) {
       ) : (
         <>
           {model == "date" ? (
-            <MobileDatePicker model="date" locale="fa"  {...props}    />
+            <MobileDatePicker model="date" locale="fa"  {...props} 
+          defaultValue={initialDate.from}
+          onChange={handleChangeDateToRange}
+            
+            />
           ) : (
             <MobileRangePicker
               {...props}

@@ -7,7 +7,6 @@ import React, {
 } from "react";
 import moment from "moment-jalaali";
 import { toPersianDigits } from "../core/helper";
-import type { HandleParams, IDate } from "../core/type";
 import { TimeColumns } from "../exportComponents/timePicker/exportComponents";
 
 type TUnit = "hour" | "minute" | "second";
@@ -24,8 +23,8 @@ interface Props {
   minuteStep?: number;
   secondStep?: number;
   onGetValue?: (e: number) => void;
-  onChange?: (e: HandleParams) => void;
-  setShowDate: Dispatch<SetStateAction<IDate>>;
+  onChange?: (e: number) => void;
+  setShowDate: Dispatch<SetStateAction<number>>;
 }
 
 export const DesktopTimePicker: React.FC<Props> = ({

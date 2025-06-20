@@ -2,10 +2,10 @@ import type { Dispatch, ReactNode, SetStateAction } from "react";
 
 import moment from "moment-jalaali";
 
-import type {  HandleParams, IDate,   IDesktopRangeProps } from "./type";
+import type {   IDesktopRangeProps } from "./type";
 
 interface IFooter {
-  setShowDate: Dispatch<SetStateAction<IDate>>;
+  setShowDate: Dispatch<SetStateAction<number>>;
   setIsOpen?: Dispatch<SetStateAction<boolean>>;
   locale: IDesktopRangeProps["locale"];
   elements?: ReactNode[] | null;
@@ -13,7 +13,7 @@ interface IFooter {
   highlightColor?: string;
   chooseTodayClassName?: string;
   showTime: boolean;
-  onChange?: (e: HandleParams) => void;
+  onChange?: (e: number) => void;
   onSubmit?: () => void;
   onNowButton?: () => void;
   onTodayButton?: () => void;
@@ -42,10 +42,10 @@ export const Footer = ({ ...props }: IFooter) => {
     if (key === "today") {
       onTodayButton?.();
 
-      onChange?.({ type: "date", Data:{date:{from:todayStart,to:0}} });
+      onChange?.(todayStart);
     } else if (key === "now") {
-      setShowDate({from:date,to:0});
-      onChange?.({ type: "date",  Data:{from:now,to:0} });
+      setShowDate(date);
+      onChange?.(now);
       onNowButton?.();
     } else if (key === "submit") {
       onSubmit?.();

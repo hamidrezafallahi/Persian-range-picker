@@ -27,8 +27,8 @@ export interface IDateProps {
   tertiaryColor?: string;
   model: "date" | "range";
   locale: IRangeOptions["locale"];
-  defaultValue?: IDate;
-  onChange?: (e: HandleParams) => void;
+  defaultValue?: Date|number;
+  onChange?: (e: number) => void;
   className?: string;
   calendarBaseWidth?: number;
   dropdownWidth?: number;
@@ -205,3 +205,4 @@ export interface IMobileProps {
   secondaryColor?: string;
   accentColor?: string;
 }
+export type ExportType = "timeStamp"|"date"

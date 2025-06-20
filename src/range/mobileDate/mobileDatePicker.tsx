@@ -38,7 +38,7 @@ const MobileDatePicker = ({ ...props }: IDateProps) => {
      showDate.from > 0
        ? toPersianDigits(
            moment(showDate.from).format(
-             showTime ? `jYYYY/jMM/jDD\u2003${showTimeFormat}` : `jYYYY/jMM/jDD`
+             showTime ? `${showTimeFormat}\u2003jYYYY/jMM/jDD` : `jYYYY/jMM/jDD`
            )
          )
        : "انتخاب تاریخ";
@@ -46,7 +46,7 @@ const MobileDatePicker = ({ ...props }: IDateProps) => {
    const gregorian =
      showDate.from > 0
        ? moment(showDate.from).format(
-           showTime ? `YYYY/MM/DD\u2003${showTimeFormat}` : `YYYY/MM/DD`
+           showTime ? `${showTimeFormat}\u2003YYYY/MM/DD` : `YYYY/MM/DD`
          )
        : "Choose date";
  

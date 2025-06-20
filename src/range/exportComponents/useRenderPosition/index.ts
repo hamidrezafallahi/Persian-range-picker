@@ -85,12 +85,13 @@ useEffect(()=>{
     const enoughSpaceAbove = buttonArea.top - popupArea.height >= 0;
     const placeAbove = !enoughSpaceBelow && enoughSpaceAbove;
     const top = placeAbove ? -popupArea.height - offset : buttonArea.height + offset;
+    
     const centerX = buttonArea.left + buttonArea.width / 2;
     const screenCenter = window.innerWidth / 2;
     const alignLeft = centerX <= screenCenter;
-    const left = alignLeft ? 0 : buttonArea.width - popupArea.width;
+    const left = alignLeft ? 0 : buttonArea.left+buttonArea.width - popupArea.width;
     popupRef.current.style.top = `${top}px`
-    popupRef.current.style.left = `${left}px`
+    popupRef.current.style.left = `${left}px` //TODO use translate by Ai instead of left
   }
 },[isOpen])
 

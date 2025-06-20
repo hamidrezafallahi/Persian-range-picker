@@ -35,7 +35,7 @@ export function InitialComponent() {
       ? "mobile"
       : "desktop";
   return (
-    <div className="flex flex-col gap-2">
+    <div style={{display:"flex"}}>
       <Range
       isOpenDropdown
         device={device}
@@ -48,16 +48,17 @@ export function InitialComponent() {
         handleReject={resetDate}
         showComparison
       />
-      <div className="flex flex-col" dir="rtl">
+      {/* <div className="flex flex-col" dir="rtl">
         <DesktopRange onChange={handleDateChange} />
-        <MobileDate                                            //fix type of properties of this 
+        <MobileDate 
+        onChange={handleDateChange}                                           //fix type of properties of this 
         model="date"
         locale="fa"
         showTime
        />
         <MobileRange onChange={handleDateChange} />
         <DateMask onChange={handleDateChange} />
-      </div>
+      </div> */}
       {/* <div style={{ display: "flex", justifyContent: "space-between" }}> */}
         {/* <TimePicker
           defaultValue={1750242875918}
@@ -75,14 +76,12 @@ export function InitialComponent() {
             );
           }}
         /> */}
-        <DesktopDate
-          // defaultValue={{from:1750242875918,to:0}}
+        {/* <DesktopDate
+          defaultValue={new Date(1750242875918) }
           showTime
           onChange={(e) => {
-            const date:IDate = e.Data?.date
             console.log(
-              e,
-              new Date(date.from).toLocaleDateString("fa-IR", {
+              new Date(e).toLocaleDateString("fa-IR", {
                 weekday: "long",
                 month: "long",
                 day: "numeric",
@@ -92,7 +91,7 @@ export function InitialComponent() {
               })
             );
           }}
-        />
+        /> */}
       {/* </div> */}
     </div>
   );

@@ -4,7 +4,7 @@ import moment from "moment-jalaali";
 
 import { Footer } from "../core/footer";
 import { toPersianDigits } from "../core/helper";
-import type {  HandleParams, IDate, IDateProps } from "../core/type";
+import type { IDate, IDateProps } from "../core/type";
 import { useRenderPosition } from "../exportComponents/useRenderPosition";
 import { CalenderIcon } from "../icons/CalenderIcon";
 import { DatePicker } from "../persianDatePicker";
@@ -24,71 +24,70 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
     className,
     chooseTodayClassName = "",
     showTimeFormat = "HH:mm:ss",
+
   } = props;
+  const initialDate: number = useMemo(() => {
+    let temp: number = 0;
+    if (defaultValue) {
+      if (typeof defaultValue === "object") {
+        temp = defaultValue.valueOf();
+      }else if(typeof defaultValue === "number"){
+        temp = defaultValue;
+      }
+    }
+    return temp;
+  }, [defaultValue]);
 
-  const initialDate: IDate = useMemo(
-    () => ({
-      from: defaultValue?.from && defaultValue.from > 0 ? defaultValue.from : 0,
-      to: 0,
-    }),
-    [defaultValue]
-  );
-
-  const [showDate, setShowDate] = useState<IDate>(initialDate);
+  const [showDate, setShowDate] = useState<number>(initialDate);
   const [isOpen, setIsOpen] = useState(false);
   const buttonRef = useRef<HTMLElement>(null);
   const popupRef = useRef<HTMLDivElement>(null);
 
-  const hookPosition = useRenderPosition({
+  const hookPosition = useRenderPosition({ //TODO findout without using const making hook
     buttonRef: buttonRef as React.RefObject<HTMLElement>,
     popupRef: popupRef,
     setIsOpen: setIsOpen,
-    isOpen:isOpen,
+    isOpen: isOpen,
     offset: 4,
   });
-
-  const changeHandler = (e:HandleParams) => {
+  const changeHandler = (e: number) => {
     if (!e) return;
-    console.log(e.Data)
-    const date = e.Data;
-    setShowDate({ from: date.from, to: 0 });
-    onChange?.({ type: "date",Data:{date} });
+
+    setShowDate(e);
+    onChange?.(e);
   };
 
   const handleDropdown = () => setIsOpen((prev) => !prev);
 
   const handleSubmit = () => {
-
-    const finalDate = showTime
-      ? showDate.from
-      : moment(showDate.from).startOf("day").valueOf();
-
-    onChange?.({ type: "date", Data: { from: finalDate, to: 0 } });
+    const finalDate = showTime ? showDate : moment(showDate).valueOf();
+    onChange?.(finalDate);
   };
 
   const handleDateChange = (date: IDate) => {
+
     const finalDate = showTime
       ? date.from
       : moment(date.from).startOf("day").valueOf();
-    setShowDate({ from: finalDate, to: 0 });
+    setShowDate(finalDate);
     if (!showTime) {
-      onChange?.({ type: "date", Data: { from: finalDate, to: 0 } });
+      onChange?.(finalDate);
       setIsOpen(false);
     }
   };
 
   const persian =
-    showDate.from > 0
+    showDate > 0
       ? toPersianDigits(
-          moment(showDate.from).format(
+          moment(showDate).format(
             showTime ? `jYYYY/jMM/jDD\u2003${showTimeFormat}` : `jYYYY/jMM/jDD`
           )
         )
       : "انتخاب تاریخ";
 
   const gregorian =
-    showDate.from > 0
-      ? moment(showDate.from).format(
+    showDate > 0
+      ? moment(showDate).format(
           showTime ? `YYYY/MM/DD\u2003${showTimeFormat}` : `YYYY/MM/DD`
         )
       : "Choose date";
@@ -96,28 +95,28 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
   const title = locale === "fa" ? persian : gregorian;
 
   const handleSetTime = (timestamp: number) => {
-    setShowDate({ from: timestamp, to: 0 });
+    setShowDate(timestamp);
   };
 
   return (
     <div className="range">
       <div className="relative ">
- <button
+        <button
           ref={buttonRef as React.RefObject<HTMLButtonElement>}
           onClick={handleDropdown}
-           className={`flex justify-between items-center gap-2 px-1 h-9 rounded-md  w-full ${
+          className={`flex justify-between items-center gap-2 px-1 h-9 rounded-md  w-full ${
             showTime ? "xs:w-40 " : "xs:w-28"
           } ${className}`}
-          style={{ color: tertiaryColor, backgroundColor: highlightColor  }}
+          style={{ color: tertiaryColor, backgroundColor: highlightColor }}
         >
-           <CalenderIcon />
+          <CalenderIcon />
           <div className=" w-full ">{title}</div>
         </button>
         {isOpen && (
           <div
             ref={popupRef}
             style={{
-              position:"absolute",
+              position: "absolute",
               minWidth: showTime ? dropdownWidth + 238 : dropdownWidth,
             }}
             className="bg-white shadow-lg p-2 border rounded-lg overflow-hidden bg-red-400"
@@ -129,8 +128,9 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
                 model="date"
                 locale={locale}
                 onDateChange={handleDateChange}
-                dateFromOutside={{ from: showDate.from, to: 0 }}
+                dateFromOutside={{ from: showDate, to: 0 }}
                 calendarBaseWidth={calendarBaseWidth}
+                defaultValue={{from:initialDate,to:0}}
               />
               {showTime && (
                 <div style={{ width: "212px", minWidth: "212px" }}>
@@ -144,18 +144,14 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
                   >
                     {locale === "fa"
                       ? toPersianDigits(
-                          moment(showDate.from)
-                            .locale(locale)
-                            .format(showTimeFormat)
+                          moment(showDate).locale(locale).format(showTimeFormat)
                         )
-                      : moment(showDate.from)
-                          .locale(locale)
-                          .format(showTimeFormat)}
+                      : moment(showDate).locale(locale).format(showTimeFormat)}
                   </div>
                   <DesktopTimePicker
                     {...props}
                     displayButtonCount={5}
-                    defaultValue={showDate.from}
+                    defaultValue={showDate}
                     setShowDate={setShowDate}
                     onGetValue={handleSetTime}
                   />
