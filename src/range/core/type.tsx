@@ -25,9 +25,9 @@ export interface IDateProps {
   secondaryColor?: string;
   accentColor?: string;
   tertiaryColor?: string;
-  model: "date" | "range";
-  locale: IRangeOptions["locale"];
-  defaultValue?: Date|number;
+  model?: "date" | "range";
+  locale?: IRangeOptions["locale"];
+  defaultValue?: Date | number;
   onChange?: (e: number) => void;
   className?: string;
   calendarBaseWidth?: number;
@@ -40,7 +40,7 @@ export interface IDateProps {
   hourStep?: number;
   minuteStep?: number;
   secondStep?: number;
-  exportType?:ExportType
+  exportType?: ExportType;
 }
 
 export type HandleParams = {
@@ -116,7 +116,7 @@ export interface IBaseProps extends IRangeOptions {
   className?: string;
   type?: "date" | string;
   setType?: Dispatch<SetStateAction<string>>;
-  activeTable?:"Day"|"Week"|"Month"|"Year"|"manual"
+  activeTable?: "Day" | "Week" | "Month" | "Year" | "manual";
 }
 export enum ESteps {
   "day" = 1,
@@ -189,7 +189,7 @@ export interface ISubmittedData {
 export type TUnit = "hour" | "minute" | "second";
 export interface IMobileProps {
   onChange?: (e: HandleParams) => void;
-    defaultValue?: IDate;
+  defaultValue?: IDate;
   locale?: TLocale;
   tertiaryColor?: string;
   highlightColor?: string;
@@ -207,4 +207,4 @@ export interface IMobileProps {
   secondaryColor?: string;
   accentColor?: string;
 }
-export type ExportType = "timeStamp"|"date"
+export type ExportType = "timeStamp" | "date";

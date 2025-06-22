@@ -3,12 +3,10 @@ import React, { type ReactNode, useEffect, useRef, useState } from "react";
 import moment from "moment-jalaali";
 
 import { toPersianDigits } from "../../core/helper";
-import { CalenderIcon } from "../../icons/CalenderIcon";
-import { useRenderPosition } from "../useRenderPosition";
-import { TimeColumns } from "./exportComponents";
 import type { TUnit } from "../../core/type";
-
-
+import { CalenderIcon } from "../../icons/CalenderIcon";
+// import { useRenderPosition } from "../useRenderPosition";
+import { TimeColumns } from "./exportComponents";
 
 interface Props {
   defaultValue?: number;
@@ -66,17 +64,16 @@ export const TimePicker: React.FC<Props> = ({
     displayButtonCount * (buttonRefs.current[0]?.offsetHeight ?? 24) +
     20 +
     (displayButtonCount - 1) * 16;
-   
+
   // const firstRender = useRef(true);
 
-
-  const hookPosition = useRenderPosition({
-    buttonRef: buttonRef as React.RefObject<HTMLElement>,
-    popupRef: popupRef,
-    setIsOpen: setOpen,
-    isOpen:open,
-    offset: 4,
-  });
+  // const hookPosition = useRenderPosition({
+  //   buttonRef: buttonRef as React.RefObject<HTMLElement>,
+  //   popupRef: popupRef,
+  //   setIsOpen: setOpen,
+  //   isOpen:open,
+  //   offset: 4,
+  // });
   const handleTimeChange = (unit: TUnit, value: number) => {
     const updated = time
       ? moment(time).locale(locale).set(unit, value)
@@ -117,7 +114,7 @@ export const TimePicker: React.FC<Props> = ({
           ref={(el) => {
             buttonRefs.current[i] = el;
           }}
-          style={{ color: tertiaryColor, fontSize: "14px"}}
+          style={{ color: tertiaryColor, fontSize: "14px" }}
         >
           {locale == "fa" ? toPersianDigits(pad(val)) : pad(val)}
         </button>
@@ -149,7 +146,6 @@ export const TimePicker: React.FC<Props> = ({
             style={{
               position: "absolute",
               width: 193,
-              
             }}
             className={`flex flex-col gap-2 bg-white shadow-lg p-3 border border-gray-300 rounded-lg  ${containerClassName}`}
           >

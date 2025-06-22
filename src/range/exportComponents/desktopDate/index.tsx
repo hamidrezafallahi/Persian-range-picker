@@ -1,14 +1,14 @@
-import type { ExportType  } from "../../core/type";
+import type { ExportType } from "../../core/type";
 import { DesktopDatePicker } from "../../desktopDate/desktopDatePicker";
 
 interface IProps {
   calendarType?: "shamsi" | "gregorian";
-  defaultValue?: Date|number;
-  onChange?: (e:ExportType) => void;/////////////////////////////////
+  defaultValue?: Date | number;
+  onChange?: (e: ExportType) => void; /////////////////////////////////
   tertiaryColor?: string;
   highlightColor?: string;
   showTime?: boolean;
-  exportType?:ExportType
+  exportType?: ExportType;
 }
 export function DesktopDate({ ...props }: IProps) {
   const { calendarType = "shamsi" } = props;

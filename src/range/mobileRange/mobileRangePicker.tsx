@@ -64,11 +64,13 @@ const MobileRangePicker = (props: IBaseProps) => {
 
     prevDate.current = date;
   }, [date, compareDate]);
+
   useEffect(() => {
     if (customData) {
       onChange?.({ type, Data: { date, data: customData } });
     }
   }, [customData]);
+
   return (
     <div className="range">
       <div className={`flex ${className}`}>

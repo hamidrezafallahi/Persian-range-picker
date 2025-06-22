@@ -5,7 +5,7 @@ import moment from "moment-jalaali";
 import { Footer } from "../core/footer";
 import { toPersianDigits } from "../core/helper";
 import type { IDate, IDateProps } from "../core/type";
-import { useRenderPosition } from "../exportComponents/useRenderPosition";
+// import { useRenderPosition } from "../exportComponents/useRenderPosition";
 import { CalenderIcon } from "../icons/CalenderIcon";
 import { DatePicker } from "../persianDatePicker";
 import { DesktopTimePicker } from "./desktopTimePicker";
@@ -24,33 +24,32 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
     className,
     chooseTodayClassName = "",
     showTimeFormat = "HH:mm:ss",
-    exportType="timeStamp" //TODO here you should change type of export date or timestamp /preset is timestamp 
-
+    // exportType="timeStamp" //TODO here you should change type of export date or timestamp /preset is timestamp
   } = props;
   const initialDate: number = useMemo(() => {
     let temp: number = 0;
     if (defaultValue) {
       if (typeof defaultValue === "object") {
         temp = defaultValue.valueOf();
-      }else if(typeof defaultValue === "number"){
+      } else if (typeof defaultValue === "number") {
         temp = defaultValue;
       }
     }
     return temp;
   }, [defaultValue]);
-//TODO add export type everywhere
+  //TODO add export type everywhere
   const [showDate, setShowDate] = useState<number>(initialDate);
   const [isOpen, setIsOpen] = useState(false);
   const buttonRef = useRef<HTMLElement>(null);
   const popupRef = useRef<HTMLDivElement>(null);
 
-  const hookPosition = useRenderPosition({ //TODO findout without using const making hook
-    buttonRef: buttonRef as React.RefObject<HTMLElement>,
-    popupRef: popupRef,
-    setIsOpen: setIsOpen,
-    isOpen: isOpen,
-    offset: 4,
-  });
+  // const hookPosition = useRenderPosition({ //TODO findout without using const making hook
+  //   buttonRef: buttonRef as React.RefObject<HTMLElement>,
+  //   popupRef: popupRef,
+  //   setIsOpen: setIsOpen,
+  //   isOpen: isOpen,
+  //   offset: 4,
+  // });
   const changeHandler = (e: number) => {
     if (!e) return;
 
@@ -66,7 +65,6 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
   };
 
   const handleDateChange = (date: IDate) => {
-
     const finalDate = showTime
       ? date.from
       : moment(date.from).startOf("day").valueOf();
@@ -101,7 +99,7 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
 
   return (
     <div className="range">
-      <div className="relative ">
+      <div className="relative">
         <button
           ref={buttonRef as React.RefObject<HTMLButtonElement>}
           onClick={handleDropdown}
@@ -111,7 +109,7 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
           style={{ color: tertiaryColor, backgroundColor: highlightColor }}
         >
           <CalenderIcon />
-          <div className=" w-full ">{title}</div>
+          <div className="w-full">{title}</div>
         </button>
         {isOpen && (
           <div
@@ -120,7 +118,7 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
               position: "absolute",
               minWidth: showTime ? dropdownWidth + 238 : dropdownWidth,
             }}
-            className="bg-white shadow-lg p-2 border rounded-lg overflow-hidden bg-red-400"
+            className="bg-red-400 bg-white shadow-lg p-2 border rounded-lg overflow-hidden"
           >
             <div className="flex items-end gap-2 border-r w-full">
               <DatePicker
@@ -131,7 +129,7 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
                 onDateChange={handleDateChange}
                 dateFromOutside={{ from: showDate, to: 0 }}
                 calendarBaseWidth={calendarBaseWidth}
-                defaultValue={{from:initialDate,to:0}}
+                defaultValue={{ from: initialDate, to: 0 }}
               />
               {showTime && (
                 <div style={{ width: "212px", minWidth: "212px" }}>

@@ -974,22 +974,101 @@
   color: #fff !important;
 }
 /* /////////// Landing page style ////////// */
-*{
+* {
   margin: 0;
 }
-.persianRangeHeader{
-  
-  
+.boxsRender {
+  margin-top: 14rem;
+  background-color: red;
 }
-.displayCard{
+.lanButton {
   display: flex;
-      flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: #ffffff;
+  background: linear-gradient(135deg, #4a5bbd, #1d1f30);
+  border-radius: 0.25rem;
+  box-shadow: 0 4px 12px rgba(67, 77, 138, 0.3);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 50px;
+  height: 50px;
+}
+.buttonStyle {
+  all: unset;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1.25rem;
+  font-size: 1rem;
+  color: #ffffff;
+  background: #1d1f30;
+  border-radius: 0.25rem;
+  box-shadow: 0 4px 12px rgba(113, 131, 233, 0.3);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.buttonStyle:hover {
+  transform: translateY(-2px);
+}
+
+.buttonStyle:active {
+  transform: translateY(0);
+}
+
+.buttonStyle.active {
+  background: linear-gradient(135deg, #ff7e5f, #feb47b);
+  box-shadow: 0 6px 16px rgba(255, 126, 95, 0.4);
+}
+.persianRangeHeader {
+  /* position: absolute;
+  top: 0;
+  left: 0;
+  right: 0; */
+  background-color: #d3d3d3;
+  display: flex;
+  flex-flow: column;
   justify-content: space-around;
-  border:1px solid red
+}
+.flex {
+  display: flex;
+}
+.justify-around {
+  justify-content: space-around;
+}
+.items-center {
+  align-items: center;
+}
+.sectionContent {
+  padding: 2rem;
+  background-color: white;
+  margin: 1rem auto;
+  border-radius: 1rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  height: 50vh;
+}
+.titleDescStyle {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.displayCard {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  background-color: #1d1f30;
+  font-size: 1.25rem;
+  font-weight: bold;
+  height: 40px;
+  color: #fff;
+  align-items: center;
 }
 @media (min-width: 431px) {
   .displayCard {
-      flex-direction: row;
-
+    flex-direction: row;
   }
 }
