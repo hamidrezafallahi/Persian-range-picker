@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   DateMask,
   DesktopDate,
@@ -10,6 +11,8 @@ import {
 import type { IDate } from "../range/core/type";
 
 export function InitialComponent() {
+  //check export types and elements
+  const [language, setLanguage] = useState<"fa" | "en">("fa");
   const handleDateChange = (w) => {
     console.log(w);
   };
@@ -34,9 +37,49 @@ export function InitialComponent() {
     )
       ? "mobile"
       : "desktop";
+
+  const handleLanguage = () => {
+    // setLanguage(language == "fa" ? "en" : "fa");
+    const container = document.getElementById("container");
+    const langText = document.getElementById("langText");
+    const dir = container?.getAttribute("direction");
+    console.log(container, dir);
+    if (dir == "rtl") {
+      container?.setAttribute("direction", "ltr");
+      langText?.setAttribute("textContent","Language")
+      // langText?.innerText = "Language";
+    } else {
+      container?.setAttribute("direction", "rtl");
+            langText?.setAttribute("children","زبان")
+
+      // langText?.setAttribute("textContent","tesr")   ;
+    }
+    console.log(langText?.innerText)
+  };
   return (
-    <div style={{display:"flex"}}>
-      <Range
+    <div id="container" style={{ background: "#f9f9f9" }} dir="rtl">
+      <div className="persianRangeHeader">
+        <div>
+          <span id="langText">temp</span>
+          <button onClick={handleLanguage}>{language}</button>
+        </div>
+        <div>description</div>
+        <div>
+          <button>dynamic Range</button>
+          <button>desktop range</button>
+          <button>desktop date</button>
+          <button>mobile range</button>
+          <button>mobile date</button>
+          <button>date mask</button>
+          <button>timepicker</button>
+          <button>renderside hook</button>
+        </div>
+      </div>
+      <div className="displayCard">
+        <div>image</div>
+        <div>content</div>
+      </div>
+      {/* <Range
       isOpenDropdown
         device={device}
         locale={"fa"}
@@ -47,7 +90,7 @@ export function InitialComponent() {
         handleSubmit={HandleSubmitDate}
         handleReject={resetDate}
         showComparison
-      />
+      /> */}
       {/* <div className="flex flex-col" dir="rtl">
         <DesktopRange onChange={handleDateChange} />
         <MobileDate 
@@ -60,7 +103,7 @@ export function InitialComponent() {
         <DateMask onChange={handleDateChange} />
       </div> */}
       {/* <div style={{ display: "flex", justifyContent: "space-between" }}> */}
-        {/* <TimePicker
+      {/* <TimePicker
           defaultValue={1750242875918}
           onChange={(e) => {
             console.log(
@@ -76,7 +119,7 @@ export function InitialComponent() {
             );
           }}
         /> */}
-        {/* <DesktopDate
+      {/* <DesktopDate
           defaultValue={new Date(1750242875918) }
           showTime
           onChange={(e) => {

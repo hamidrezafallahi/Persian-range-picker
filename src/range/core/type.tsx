@@ -40,6 +40,7 @@ export interface IDateProps {
   hourStep?: number;
   minuteStep?: number;
   secondStep?: number;
+  exportType?:ExportType
 }
 
 export type HandleParams = {
@@ -115,6 +116,7 @@ export interface IBaseProps extends IRangeOptions {
   className?: string;
   type?: "date" | string;
   setType?: Dispatch<SetStateAction<string>>;
+  activeTable?:"Day"|"Week"|"Month"|"Year"|"manual"
 }
 export enum ESteps {
   "day" = 1,

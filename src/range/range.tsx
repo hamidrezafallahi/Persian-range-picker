@@ -85,6 +85,7 @@ onChange?.({type:"date",Data:{from:e}})
             setOpen={setOpen}
             open={open}
             additionalElement={additionalElement}
+            activeTable="Year"
           />
         )
       ) : (

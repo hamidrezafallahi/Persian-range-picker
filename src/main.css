@@ -1,4 +1,5 @@
 /* ==================== SWITCH CONTROL ==================== */
+
 .range .switch {
   position: relative;
   display: inline-block;
@@ -971,4 +972,24 @@
 .range .text-gray123 {
   background-color: #939393;
   color: #fff !important;
+}
+/* /////////// Landing page style ////////// */
+*{
+  margin: 0;
+}
+.persianRangeHeader{
+  
+  
+}
+.displayCard{
+  display: flex;
+      flex-direction: column;
+  justify-content: space-around;
+  border:1px solid red
+}
+@media (min-width: 431px) {
+  .displayCard {
+      flex-direction: row;
+
+  }
 }

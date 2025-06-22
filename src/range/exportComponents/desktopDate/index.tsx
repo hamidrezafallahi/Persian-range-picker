@@ -4,7 +4,7 @@ import { DesktopDatePicker } from "../../desktopDate/desktopDatePicker";
 interface IProps {
   calendarType?: "shamsi" | "gregorian";
   defaultValue?: Date|number;
-  onChange?: (e: number|ExportType) => void;/////////////////////////////////
+  onChange?: (e:ExportType) => void;/////////////////////////////////
   tertiaryColor?: string;
   highlightColor?: string;
   showTime?: boolean;

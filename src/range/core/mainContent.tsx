@@ -33,8 +33,9 @@ const MainContent = ({ ...props }: IProps) => {
     setCounter,
     setCustomData,
     setType,
+    activeTable = "manual"
   } = props;
-  const [activeTab, setActiveTab] = useState<string>("manual");
+  const [activeTab, setActiveTab] = useState<string>(activeTable);
   const handleTabChange = (key: ITab["key"]) => {
     setActiveTab(key);
     setTabKey(key);

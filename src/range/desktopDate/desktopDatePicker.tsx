@@ -24,6 +24,7 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
     className,
     chooseTodayClassName = "",
     showTimeFormat = "HH:mm:ss",
+    exportType="timeStamp" //TODO here you should change type of export date or timestamp /preset is timestamp 
 
   } = props;
   const initialDate: number = useMemo(() => {
@@ -37,7 +38,7 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
     }
     return temp;
   }, [defaultValue]);
-
+//TODO add export type everywhere
   const [showDate, setShowDate] = useState<number>(initialDate);
   const [isOpen, setIsOpen] = useState(false);
   const buttonRef = useRef<HTMLElement>(null);
