@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 import Capture from "../../public/images/Capture.png";
-import DateMask from "../../public/images/DateMask.png";
+import Mask from "../../public/images/Mask.png";
 import DesktopDatePicker from "../../public/images/DesktopDatePicker.png";
 import DesktopRangePicker from "../../public/images/DesktopRangePicker.png";
 import MobileDatePickerImage from "../../public/images/MobileDatePickerImage.png";
@@ -25,7 +25,7 @@ const TEXT = {
       dateMask: {
         title: "ماسک تاریخ",
         desc: "ماسک تاریخ به شما امکان می‌دهد فرمت ورودی تاریخ را محدود کنید.",
-        image: DateMask,
+        image: Mask,
       },
       timepicker: {
         title: "انتخابگر زمان",
@@ -71,7 +71,7 @@ const TEXT = {
       dateMask: {
         title: "Date Mask",
         desc: "Date mask restricts the input format of dates.",
-        image: DateMask,
+        image: Mask,
       },
       timepicker: {
         title: "Time Picker",
