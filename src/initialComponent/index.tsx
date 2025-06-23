@@ -2,8 +2,8 @@ import { useState } from "react";
 
 import Capture from "../../public/images/Capture.png";
 import DateMask from "../../public/images/DateMask.png";
-import DesctopDatePicker from "../../public/images/DesctopDatePicker.png";
-import DesctopRangePicker from "../../public/images/DesctopRangePicker.png";
+import DesktopDatePicker from "../../public/images/DesktopDatePicker.png";
+import DesktopRangePicker from "../../public/images/DesktopRangePicker.png";
 import MobileDatePickerImage from "../../public/images/MobileDatePickerImage.png";
 import TimePicker from "../../public/images/TimePicker.png";
 
@@ -45,12 +45,12 @@ const TEXT = {
       desktopRange: {
         title: "محدوده دسکتاپ",
         desc: "محدوده تاریخ برای کاربران دسکتاپ.",
-        image: DesctopRangePicker,
+        image: DesktopRangePicker,
       },
       desktopDate: {
         title: "تاریخ دسکتاپ",
         desc: "تاریخ‌نگار ساده برای دسکتاپ.",
-        image: DesctopDatePicker,
+        image: DesktopDatePicker,
       },
     },
   },
@@ -91,12 +91,12 @@ const TEXT = {
       desktopRange: {
         title: "Desktop Range",
         desc: "Date range selection for desktop users.",
-        image: DesctopRangePicker,
+        image: DesktopRangePicker,
       },
       desktopDate: {
         title: "Desktop Date",
         desc: "Simple date picker for desktop.",
-        image: DesctopDatePicker,
+        image: DesktopDatePicker,
       },
     },
   },
