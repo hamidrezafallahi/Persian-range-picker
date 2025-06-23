@@ -10,6 +10,8 @@ import TimePicker from "../../public/images/TimePicker.png";
 const TEXT = {
   fa: {
     sections: {
+      content: "محتوا",
+      image: "تصویر",
       mobileRange: {
         title: "محدوده موبایل",
         desc: "در این بخش، می‌توان محدوده‌ای از تاریخ‌ها را برای نمایش در موبایل انتخاب کرد.",
@@ -54,6 +56,8 @@ const TEXT = {
   },
   en: {
     sections: {
+      image: "image",
+      content: "content",
       mobileRange: {
         title: "Mobile Range",
         desc: "This section allows selecting a range of dates for mobile display.",
@@ -130,17 +134,17 @@ export function InitialComponent() {
     <div
       id="container"
       style={{
-        background: "#f9f9f9",
+        background: "#1d1f30",
         direction: language === "fa" ? "rtl" : "ltr",
         textAlign: language === "fa" ? "right" : "left",
         position: "relative",
       }}
     >
       <div className="persianRangeHeader">
-        <button className="lanButton" onClick={toggleLanguage}>
-          {language}
-        </button>
         <div className="flex justify-around items-center">
+          <button className="lanButton" onClick={toggleLanguage}>
+            {language}
+          </button>
           <div
             style={{
               display: "flex",
@@ -162,18 +166,12 @@ export function InitialComponent() {
         </div>
 
         <div className="displayCard">
-          <div>image</div>
-          <div>content</div>
+          <div> {t.sections.image}</div>
+          <div>{t.sections.content} </div>
         </div>
       </div>
-
-      {/* <MobileRange
-        onChange={(e) => console.log(e)}
-        defaultValue={{ from: 111, to: 555 }}
-      /> */}
-
       {SECTION_KEYS.map((key) => (
-        <div key={key} id={key}>
+        <div className="scopeTitle" key={key} id={key}>
           <h2
             className="titleDescStyle"
             onClick={() => handleSectionClick(key)}

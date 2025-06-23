@@ -988,13 +988,13 @@
   font-size: 1.5rem;
   font-weight: 500;
   color: #ffffff;
-  background: linear-gradient(135deg, #4a5bbd, #1d1f30);
+  background: #000;
   border-radius: 0.25rem;
-  box-shadow: 0 4px 12px rgba(67, 77, 138, 0.3);
   cursor: pointer;
-  transition: all 0.3s ease;
   width: 50px;
   height: 50px;
+  position: absolute;
+  inset: 0;
 }
 .buttonStyle {
   all: unset;
@@ -1024,10 +1024,6 @@
   box-shadow: 0 6px 16px rgba(255, 126, 95, 0.4);
 }
 .persianRangeHeader {
-  /* position: absolute;
-  top: 0;
-  left: 0;
-  right: 0; */
   background-color: #d3d3d3;
   display: flex;
   flex-flow: column;
@@ -1044,16 +1040,14 @@
 }
 .sectionContent {
   padding: 2rem;
-  background-color: white;
+  background: linear-gradient(135deg, #fff8f6, #ffffff);
+  box-shadow: 0 6px 16px rgba(255, 126, 95, 0.4);
   margin: 1rem auto;
-  border-radius: 1rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  height: 50vh;
+  height: 40vh;
+  overflow-y: auto;
 }
 .titleDescStyle {
-  font-size: 1.5rem;
-  font-weight: bold;
-  margin-bottom: 1rem;
+  font-size: 15px;
 }
 
 .displayCard {
@@ -1071,4 +1065,10 @@
   .displayCard {
     flex-direction: row;
   }
+}
+.scopeTitle {
+  padding: 1rem;
+  background: #d3d3d3;
+  margin: 0.5rem 0;
+  color: #000000;
 }
