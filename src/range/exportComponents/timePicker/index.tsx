@@ -44,7 +44,7 @@ export const TimePicker: React.FC<Props> = ({
   tertiaryColor = "#939393",
   highlightColor = "#f4f4f4",
   format = "HH:mm:ss",
-  showSecond = true,
+  showSecond = false,
   showNow = true,
   renderExtraFooter,
   hourStep = 1,
@@ -135,7 +135,7 @@ export const TimePicker: React.FC<Props> = ({
         <button
           ref={buttonRef as React.RefObject<HTMLButtonElement>}
           onClick={() => setOpen((prev) => !prev)}
-          className={`relative flex justify-between items-center gap-2  px-2 rounded-md w-full xs:w-28 h-9 ${timeButtonClassName} `}
+          className={`relative flex justify-between items-center gap-2  px-2 rounded-md w-full xs:w-28 h-9  ${timeButtonClassName} `}
           style={{ color: tertiaryColor, backgroundColor: highlightColor }}
         >
           {time ? moment(time).locale(locale).format(format) : "انتخاب زمان"}
@@ -147,7 +147,7 @@ export const TimePicker: React.FC<Props> = ({
             ref={popupRef}
             style={{
               position: "absolute",
-              width: 193,
+              // width: 190,
               zIndex: 10,
             }}
             className={`flex flex-col gap-2 bg-white shadow-lg p-3 border border-gray-300 rounded-lg  ${containerClassName}`}

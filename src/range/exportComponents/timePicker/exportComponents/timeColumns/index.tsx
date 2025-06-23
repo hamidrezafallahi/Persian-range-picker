@@ -36,7 +36,19 @@ export const TimeColumns: React.FC<Props> = ({
   TimeColumnsClassName,
 }) => {
   return (
-    <div className={`flex gap-4 ${TimeColumnsClassName}`}>
+    <div className={`flex gap-4 ${TimeColumnsClassName}`} dir="ltr">
+      <TimeColumn
+        count={24}
+        unit="hour"
+        renderHeight={renderHeight}
+        renderOptions={renderOptions}
+      />
+      <TimeColumn
+        count={60}
+        unit="minute"
+        renderHeight={renderHeight}
+        renderOptions={renderOptions}
+      />
       {showSecond && (
         <TimeColumn
           count={60}
@@ -45,18 +57,6 @@ export const TimeColumns: React.FC<Props> = ({
           renderOptions={renderOptions}
         />
       )}
-      <TimeColumn
-        count={60}
-        unit="minute"
-        renderHeight={renderHeight}
-        renderOptions={renderOptions}
-      />
-      <TimeColumn
-        count={24}
-        unit="hour"
-        renderHeight={renderHeight}
-        renderOptions={renderOptions}
-      />
     </div>
   );
 };

@@ -11,7 +11,7 @@ import {
 export default function DemoComponent() {
   return (
     <>
-      <div>
+      <div dir="rtl">
         <Range />
         <DesktopDate />
         <DesktopRange />

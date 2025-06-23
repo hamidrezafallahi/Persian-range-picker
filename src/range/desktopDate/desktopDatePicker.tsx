@@ -18,7 +18,6 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
     primaryColor = "#000",
     tertiaryColor = "#939393",
     highlightColor = "#f4f4f4",
-    dropdownWidth = 256,
     calendarBaseWidth = 256,
     showTime = false,
     className,
@@ -106,14 +105,14 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
 
     setShowDate(temp);
   }, [defaultValue]);
-
+  // const dateType = locale == ""
   return (
     <div className="range">
       <div className="relative">
         <button
           ref={buttonRef as React.RefObject<HTMLButtonElement>}
           onClick={handleDropdown}
-          className={`flex justify-between items-center gap-2 px-2 rounded-md h-9 w-full  ${
+          className={`flex justify-between items-center gap-1 px-2 rounded-md h-9 w-full  ${
             showTime ? "xs:w-40 " : "xs:w-28"
           } ${className}`}
           style={{ color: tertiaryColor, backgroundColor: highlightColor }}
@@ -127,9 +126,9 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
             style={{
               position: "absolute",
               zIndex: 10,
-              minWidth: showTime ? dropdownWidth + 238 : dropdownWidth,
             }}
             className="bg-white shadow-lg p-2 border rounded-lg overflow-hidden"
+            dir="ltr"
           >
             <div
               className={`z-50 flex items-end gap-2 ${
