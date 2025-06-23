@@ -28,7 +28,7 @@ type MaskProps = {
   highlightColor?: string;
 };
 const defaultErrorClass = "border-red-700 ";
-export function DateMask({ ...props }: MaskProps) {
+export default function DateMask({ ...props }: MaskProps) {
   const {
     defaultValue,
     calendarType = "shamsi",
