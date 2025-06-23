@@ -14,5 +14,5 @@ interface IProps {
 export function DesktopDate({ ...props }: IProps) {
   const { calendarType = "shamsi" } = props;
   const locale = calendarType == "shamsi" ? "fa" : "en";
-  return <DesktopDatePicker {...props} model="date" locale={locale} />;
+  return <DesktopDatePicker {...props} locale={locale} />;
 }

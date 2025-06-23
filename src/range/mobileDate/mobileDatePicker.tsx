@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import moment from "moment-jalaali";
 
@@ -26,20 +26,20 @@ const MobileDatePicker = ({ ...props }: IDateProps) => {
     showSecond = true,
     className,
   } = props;
-  const initialDate: number = useMemo(() => {
-    let temp: number = 0; // Initialize temp as a number
-    const temp2: any = defaultValue;
-    if (defaultValue) {
-      if (temp2 instanceof Date) {
-        temp = temp2.valueOf();
-      } else if (typeof defaultValue === "number") {
-        temp = temp2; // Use the number directly
-      }
-    }
-    return temp;
-  }, [defaultValue]);
+  // const initialDate: number = useMemo(() => {
+  //   let temp: number = 0; // Initialize temp as a number
+  //   const temp2: any = defaultValue;
+  //   if (defaultValue) {
+  //     if (temp2 instanceof Date) {
+  //       temp = temp2.valueOf();
+  //     } else if (typeof defaultValue === "number") {
+  //       temp = temp2; // Use the number directly
+  //     }
+  //   }
+  //   return temp;
+  // }, [defaultValue]);
 
-  const [showDate, setShowDate] = useState<number>(initialDate);
+  const [showDate, setShowDate] = useState<number>(0);
   const popoverRef = useRef<HTMLDivElement>(null);
 
   const persian =
@@ -81,7 +81,6 @@ const MobileDatePicker = ({ ...props }: IDateProps) => {
     const active = moment(showDate).locale(locale).get(unit);
     return Array.from({ length: Math.ceil(count / step) }, (_, i) => {
       const val = i * step;
-
       return (
         <button
           key={val}
@@ -102,6 +101,26 @@ const MobileDatePicker = ({ ...props }: IDateProps) => {
   const handleClosePopup = () => {
     popoverRef.current?.hidePopover();
   };
+  function isDate(value: Date | number | undefined): value is Date {
+    return value instanceof Date;
+  }
+
+  useEffect(() => {
+    let temp: number = 0; // Initialize temp as a number
+    const temp2: Date | number | undefined = defaultValue; // Specify a union type
+
+    if (temp2 !== undefined) {
+      // Check if temp2 is not undefined
+      if (isDate(temp2)) {
+        temp = temp2.valueOf();
+      } else if (typeof temp2 === "number") {
+        temp = temp2; // Use the number directly
+      }
+    }
+
+    setShowDate(temp);
+  }, [defaultValue]);
+
   return (
     <div className="range">
       <button
@@ -123,7 +142,9 @@ const MobileDatePicker = ({ ...props }: IDateProps) => {
           {/* ////////////////TODO navigation buttons must change between date and time in situation  */}
           <DatePicker
             {...props}
-            defaultValue={{ from: defaultValue, to: null }}
+            defaultValue={
+              defaultValue ? { from: defaultValue, to: 0 } : undefined
+            }
             locale={locale}
             model="date"
             name="DesktopDate"

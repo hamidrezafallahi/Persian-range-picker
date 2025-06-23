@@ -1,11 +1,11 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import moment from "moment-jalaali";
 
 import { Footer } from "../core/footer";
 import { toPersianDigits } from "../core/helper";
 import type { IDate, IDateProps } from "../core/type";
-import { useRenderPosition } from "../exportComponents/useRenderPosition";
+// import { useRenderPosition } from "../exportComponents/useRenderPosition";
 import { CalenderIcon } from "../icons/CalenderIcon";
 import { DatePicker } from "../persianDatePicker";
 import { DesktopTimePicker } from "./desktopTimePicker";
@@ -26,21 +26,9 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
     showTimeFormat = "HH:mm:ss",
     exportType = "timeStamp", //TODO here you should change type of export date or timestamp /preset is timestamp
   } = props;
-  // const initialDate: number = useMemo(() => {
-  //   let temp: number = 0; // Initialize temp as a number
-  //   const temp2: any = defaultValue;
-  //   if (defaultValue) {
-  //     if (temp2 instanceof Date) {
-  //       temp = temp2.valueOf();
-  //     } else if (typeof defaultValue === "number") {
-  //       temp = temp2; // Use the number directly
-  //     }
-  //   }
-  //   return temp;
-  // }, [defaultValue]);
   //TODO add export type everywhere
 
-  const [showDate, setShowDate] = useState<number>();
+  const [showDate, setShowDate] = useState<number>(0);
   const [isOpen, setIsOpen] = useState(false);
   const buttonRef = useRef<HTMLElement>(null);
   const popupRef = useRef<HTMLDivElement>(null);
@@ -62,7 +50,9 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
 
   const handleSubmit = () => {
     const finalDate = showTime ? showDate : moment(showDate).valueOf();
-    onChange?.(exportType == "timeStamp" ? finalDate : new Date(finalDate));
+    // if (finalDate !== undefined) {
+    onChange?.(exportType === "timeStamp" ? finalDate : new Date(finalDate));
+    // }
   };
 
   const handleDateChange = (date: IDate) => {
@@ -97,16 +87,23 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
   const handleSetTime = (timestamp: number) => {
     setShowDate(timestamp);
   };
+  function isDate(value: Date | number | undefined): value is Date {
+    return value instanceof Date;
+  }
+
   useEffect(() => {
     let temp: number = 0; // Initialize temp as a number
-    const temp2: any = defaultValue;
-    if (defaultValue) {
-      if (temp2 instanceof Date) {
+    const temp2: Date | number | undefined = defaultValue; // Specify a union type
+
+    if (temp2 !== undefined) {
+      // Check if temp2 is not undefined
+      if (isDate(temp2)) {
         temp = temp2.valueOf();
-      } else if (typeof defaultValue === "number") {
+      } else if (typeof temp2 === "number") {
         temp = temp2; // Use the number directly
       }
     }
+
     setShowDate(temp);
   }, [defaultValue]);
 
@@ -147,7 +144,9 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
                 onDateChange={handleDateChange}
                 dateFromOutside={{ from: showDate, to: 0 }}
                 calendarBaseWidth={calendarBaseWidth}
-                defaultValue={{ from: defaultValue, to: 0 }}
+                defaultValue={
+                  defaultValue ? { from: defaultValue, to: 0 } : undefined
+                }
               />
               {showTime && (
                 <div style={{ width: "212px", minWidth: "212px" }}>

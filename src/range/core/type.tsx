@@ -25,7 +25,6 @@ export interface IDateProps {
   secondaryColor?: string;
   accentColor?: string;
   tertiaryColor?: string;
-  model: "date" | "range";
   locale: IRangeOptions["locale"];
   defaultValue?: number;
   onChange?: (e: number | object) => void;
