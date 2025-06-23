@@ -22,8 +22,8 @@ export function Range({ ...props }: RangeProps) {
     additionalElement,
     defaultValue,
     calendarType = "shamsi",
-    isOpenDropdown = false,
-    onChange,
+    isOpenDropdown=false,
+    onChange
   } = props;
   const locale = calendarType == "shamsi" ? "fa" : "en";
   const initialDate: IDate = useMemo(() => {
@@ -52,19 +52,17 @@ export function Range({ ...props }: RangeProps) {
   const [zone, setZone] = useState<ITimeZone>("manual");
   const [tabKey, setTabKey] = useState<ITime | string>("manual");
   const [open, setOpen] = useState(isOpenDropdown);
-  const handleChangeDateToRange = (e: number) => {
-    onChange?.({ type: "date", Data: { from: e } });
-  };
+  const handleChangeDateToRange=(e:number)=>{
+onChange?.({type:"date",Data:{from:e}})
+  }
   return (
     <div className="range" dir="rtl">
       {device == "desktop" ? (
         model == "date" ? (
-          <DesktopDatePicker
-            {...props}
-            model={model}
-            locale={locale}
-            defaultValue={initialDate.from}
-            onChange={handleChangeDateToRange}
+          <DesktopDatePicker {...props} model={model} locale={locale}
+          defaultValue={initialDate.from}
+          onChange={handleChangeDateToRange}
+          
           />
         ) : (
           <DesktopRangePicker
@@ -87,19 +85,16 @@ export function Range({ ...props }: RangeProps) {
             setOpen={setOpen}
             open={open}
             additionalElement={additionalElement}
-            locale={locale}
             activeTable="Year"
           />
         )
       ) : (
         <>
           {model == "date" ? (
-            <MobileDatePicker
-              model="date"
-              locale={locale}
-              {...props}
-              defaultValue={initialDate.from}
-              onChange={handleChangeDateToRange}
+            <MobileDatePicker model="date" locale="fa"  {...props} 
+          defaultValue={initialDate.from}
+          onChange={handleChangeDateToRange}
+            
             />
           ) : (
             <MobileRangePicker
@@ -120,7 +115,6 @@ export function Range({ ...props }: RangeProps) {
               setZone={setZone}
               additionalElement={additionalElement}
               device={device}
-              locale={locale}
             />
           )}
         </>

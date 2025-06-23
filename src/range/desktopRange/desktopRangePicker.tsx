@@ -130,16 +130,16 @@ export function DesktopRangePicker(props: IDesktopRangeProps) {
     }
   };
 
-   const buttonRef = useRef<HTMLElement>(null);
-   const popupRef = useRef<HTMLDivElement>(null);
- 
-   const hookPosition = useRenderPosition({
-     buttonRef: buttonRef as React.RefObject<HTMLElement>,
-     popupRef: popupRef,
-     setIsOpen: setOpen,
-     isOpen:open,
-     offset: 4,
-   });
+  const buttonRef = useRef<HTMLElement>(null);
+  const popupRef = useRef<HTMLDivElement>(null);
+
+  //  const hookPosition = useRenderPosition({
+  //    buttonRef: buttonRef as React.RefObject<HTMLElement>,
+  //    popupRef: popupRef,
+  //    setIsOpen: setOpen,
+  //    isOpen:open,
+  //    offset: 4,
+  //  });
 
   const handleDropdown = () => {
     setOpen((prev) => !prev);
@@ -185,10 +185,9 @@ export function DesktopRangePicker(props: IDesktopRangeProps) {
   }, [date, compareDate]);
   useEffect(() => {
     if (customData) {
-      onChange?.({ type, Data: { ...(customData ?? {}) } });
+      onChange?.({ type, Data: { customData } });
     }
   }, [customData]);
-
 
   return (
     <div className="range">

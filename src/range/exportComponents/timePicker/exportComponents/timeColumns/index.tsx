@@ -10,8 +10,7 @@ type Props = {
   minuteStep?: number;
   secondStep?: number;
   showSecond?: boolean;
-    TimeColumnsClassName?:string
-
+  TimeColumnsClassName?: string;
 };
 
 const TimeColumn: React.FC<{
@@ -20,37 +19,24 @@ const TimeColumn: React.FC<{
   renderHeight?: string;
   renderOptions: Props["renderOptions"];
 }> = ({ count, unit, renderHeight, renderOptions }) => {
-  return(
-  <div
-    className="flex flex-col gap-4 px-2 overflow-y-auto overflow-x-hidden"
-    style={{ maxHeight: renderHeight }}
-  >
-    {renderOptions(count, unit)}
-  </div>
-)
+  return (
+    <div
+      className="flex flex-col gap-4 px-2 overflow-x-hidden overflow-y-auto"
+      style={{ maxHeight: renderHeight }}
+    >
+      {renderOptions(count, unit)}
+    </div>
+  );
 };
 
 export const TimeColumns: React.FC<Props> = ({
   renderHeight,
   renderOptions,
   showSecond,
-  TimeColumnsClassName
+  TimeColumnsClassName,
 }) => {
   return (
-    <div className={`flex gap-4 ${TimeColumnsClassName}`} >
-      <TimeColumn
-        count={24}
-        unit="hour"
-        renderHeight={renderHeight}
-        renderOptions={renderOptions}
-      />
-      <TimeColumn
-        count={60}
-        unit="minute"
-        renderHeight={renderHeight}
-        renderOptions={renderOptions}
-      />
-
+    <div className={`flex gap-4 ${TimeColumnsClassName}`}>
       {showSecond && (
         <TimeColumn
           count={60}
@@ -59,6 +45,18 @@ export const TimeColumns: React.FC<Props> = ({
           renderOptions={renderOptions}
         />
       )}
+      <TimeColumn
+        count={60}
+        unit="minute"
+        renderHeight={renderHeight}
+        renderOptions={renderOptions}
+      />
+      <TimeColumn
+        count={24}
+        unit="hour"
+        renderHeight={renderHeight}
+        renderOptions={renderOptions}
+      />
     </div>
   );
 };

@@ -3,10 +3,10 @@ import React, { type ReactNode, useEffect, useRef, useState } from "react";
 import moment from "moment-jalaali";
 
 import { toPersianDigits } from "../../core/helper";
-import type { TUnit } from "../../core/type";
 import { CalenderIcon } from "../../icons/CalenderIcon";
-// import { useRenderPosition } from "../useRenderPosition";
+import { useRenderPosition } from "../useRenderPosition";
 import { TimeColumns } from "./exportComponents";
+import type { TUnit } from "../../core/type";
 
 interface Props {
   defaultValue?: number;
@@ -99,16 +99,18 @@ export const TimePicker: React.FC<Props> = ({
     const pad = (num: number) => num.toString().padStart(2, "0");
 
     const active = moment(time).locale(locale).get(unit);
+
     return Array.from({ length: Math.ceil(count / step) }, (_, i) => {
       const val = i * step;
 
+      console.log(active, val);
       return (
         <button
           key={val}
           onClick={() => handleTimeChange(unit, val)}
           className={`flex justify-center items-center !rounded-md w-6 aspect-square ${
             active === val
-              ? "pointer-events-auto opacity-100 text-gray123 "
+              ? "pointer-events-auto opacity-100 !text-main-white bg-main-black "
               : ""
           } `}
           ref={(el) => {
@@ -136,8 +138,8 @@ export const TimePicker: React.FC<Props> = ({
           className={`relative flex justify-between items-center gap-2  px-2 rounded-md w-full xs:w-28 h-9 ${timeButtonClassName} `}
           style={{ color: tertiaryColor, backgroundColor: highlightColor }}
         >
-          <span className="text-lg">{icon}</span>
           {time ? moment(time).locale(locale).format(format) : "انتخاب زمان"}
+          <span className="text-lg">{icon}</span>
         </button>
 
         {open && (
@@ -146,6 +148,7 @@ export const TimePicker: React.FC<Props> = ({
             style={{
               position: "absolute",
               width: 193,
+              zIndex: 10,
             }}
             className={`flex flex-col gap-2 bg-white shadow-lg p-3 border border-gray-300 rounded-lg  ${containerClassName}`}
           >
