@@ -5,7 +5,7 @@ import moment from "moment-jalaali";
 import MainContent from "../core/mainContent";
 import NavigateButton from "../core/navigateButton";
 import type { IDesktopRangeProps, ISubmittedData } from "../core/type";
-import { useRenderPosition } from "../exportComponents/useRenderPosition";
+// import { useRenderPosition } from "../exportComponents/useRenderPosition";
 import { DownTriangle } from "../icons/DownTriangle";
 
 export function DesktopRangePicker(props: IDesktopRangeProps) {
