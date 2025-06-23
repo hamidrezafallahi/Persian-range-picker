@@ -1043,11 +1043,12 @@
   background: linear-gradient(135deg, #fff8f6, #ffffff);
   box-shadow: 0 6px 16px rgba(255, 126, 95, 0.4);
   margin: 1rem auto;
-  height: 40vh;
+  height: 70vh;
   overflow-y: auto;
 }
 .titleDescStyle {
   font-size: 15px;
+  padding: 1rem 0;
 }
 
 .displayCard {
@@ -1067,8 +1068,11 @@
   }
 }
 .scopeTitle {
-  padding: 1rem;
   background: #d3d3d3;
   margin: 0.5rem 0;
   color: #000000;
+}
+.wfi {
+  width: 300px;
+  height: 300px;
 }

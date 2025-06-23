@@ -1,6 +1,6 @@
 import React, { type Dispatch, useState } from "react";
 
-import { DateMask } from "./mask";
+import DateMask from "./mask";
 import type { IDate, TLocale } from "./type";
 
 interface IProps {
