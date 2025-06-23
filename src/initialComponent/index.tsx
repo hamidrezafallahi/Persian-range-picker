@@ -1,13 +1,13 @@
 import { type ReactNode, useState } from "react";
 
 import Capture from "../../public/images/Capture.png";
-import DateMask from "../../public/images/DateMask.png";
 import desktop2 from "../../public/images/desktop2.png";
 import desktopDate1 from "../../public/images/desktopDate1.png";
 import DesktopDatePicker from "../../public/images/DesktopDatePicker.png";
 import DesktopRange from "../../public/images/DesktopRange.png";
 import DesktopRange2 from "../../public/images/DesktopRange2.png";
 import DesktopRangePicker from "../../public/images/DesktopRangePicker.png";
+import DateMask from "../../public/images/Mask.png";
 import MobileDate from "../../public/images/MobileDate.png";
 import mobileDate2 from "../../public/images/mobileDate2.png";
 import MobileDatePickerImage from "../../public/images/MobileDatePickerImage.png";

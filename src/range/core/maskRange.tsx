@@ -33,6 +33,7 @@ function MaskRange({ ...props }: IProps) {
   return (
     <div className="flex items-center gap-2">
       <DateMask
+        // {...props}
         onChange={(e) => handleChange(e as number, "from")}
         defaultValue={date.from}
         maskClassName={` rounded-lg w-fit ${
@@ -43,6 +44,7 @@ function MaskRange({ ...props }: IProps) {
       />
       {"_"}
       <DateMask
+        // {...props}
         onChange={(e) => handleChange(e as number, "to")}
         defaultValue={date.to}
         maskClassName={`rounded-lg w-fit ${

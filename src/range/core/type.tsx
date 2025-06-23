@@ -25,10 +25,9 @@ export interface IDateProps {
   secondaryColor?: string;
   accentColor?: string;
   tertiaryColor?: string;
-  model?: "date" | "range";
-  locale?: IRangeOptions["locale"];
-  defaultValue?: Date | number;
-  onChange?: (e: number) => void;
+  locale: IRangeOptions["locale"];
+  defaultValue?: number;
+  onChange?: (e: number | object) => void;
   className?: string;
   calendarBaseWidth?: number;
   dropdownWidth?: number;

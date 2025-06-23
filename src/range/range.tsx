@@ -52,7 +52,7 @@ export function Range({ ...props }: RangeProps) {
   const [zone, setZone] = useState<ITimeZone>("manual");
   const [tabKey, setTabKey] = useState<ITime | string>("manual");
   const [open, setOpen] = useState(isOpenDropdown);
-  const handleChangeDateToRange = (e: number) => {
+  const handleChangeDateToRange = (e: number | object) => {
     onChange?.({ type: "date", Data: { from: e } });
   };
   return (
@@ -61,7 +61,6 @@ export function Range({ ...props }: RangeProps) {
         model == "date" ? (
           <DesktopDatePicker
             {...props}
-            model={model}
             locale={locale}
             defaultValue={initialDate.from}
             onChange={handleChangeDateToRange}
@@ -87,7 +86,6 @@ export function Range({ ...props }: RangeProps) {
             setOpen={setOpen}
             open={open}
             additionalElement={additionalElement}
-            locale={locale}
             activeTable="Year"
           />
         )
@@ -96,7 +94,7 @@ export function Range({ ...props }: RangeProps) {
           {model == "date" ? (
             <MobileDatePicker
               model="date"
-              locale={locale}
+              locale="fa"
               {...props}
               defaultValue={initialDate.from}
               onChange={handleChangeDateToRange}
@@ -120,7 +118,6 @@ export function Range({ ...props }: RangeProps) {
               setZone={setZone}
               additionalElement={additionalElement}
               device={device}
-              locale={locale}
             />
           )}
         </>
