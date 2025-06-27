@@ -1,9 +1,7 @@
 export { RangePicker } from "./range";
+export { DatePicker} from "./range/exportComponents/datePicker";
+export { TimePicker } from "./range/exportComponents/timePicker";
 export { Mask } from "./range";
-export {} from "./range/exportComponents/datePicker";
-export { DesktopRange } from "./range/exportComponents/desktopRange";
-export { MobileDate } from "./range/exportComponents/mobileDate";
-export { MobileRange } from "./range/exportComponents/mobileRange";
 export { useRenderPosition } from "./range/exportComponents/useRenderPosition";
 ////////////////////////////////////////////////////////////////////////////////////
 export type {

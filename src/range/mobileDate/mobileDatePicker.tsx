@@ -9,7 +9,7 @@ import { CalenderIcon } from "../icons/CalenderIcon";
 import { DatePicker } from "../persianDatePicker";
 import { TimeColumns } from "../exportComponents/timePicker/exportComponents";
 
-const MobileDatePicker = ({ ...props }: IDateProps) => {
+export function MobileDate  ({ ...props }: IDateProps) {
   const {
     onChange,
     defaultValue,
@@ -211,4 +211,3 @@ const MobileDatePicker = ({ ...props }: IDateProps) => {
   );
 };
 
-export default MobileDatePicker;

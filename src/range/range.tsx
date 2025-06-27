@@ -5,7 +5,7 @@ import moment from "moment-jalaali";
 import type { ESteps, IDate, ITime, ITimeZone, RangeProps } from "./core/type";
 import { DesktopDatePicker } from "./desktopDate/desktopDatePicker";
 import { DesktopRangePicker } from "./desktopRange/desktopRangePicker";
-import MobileDatePicker from "./mobileDate/mobileDatePicker";
+import {MobileDate} from "./mobileDate/mobileDatePicker";
 import MobileRangePicker from "./mobileRange/mobileRangePicker";
 
 export function RangePicker({ ...props }: RangeProps) {
@@ -42,6 +42,7 @@ export function RangePicker({ ...props }: RangeProps) {
           : moment().locale(locale).endOf("day").valueOf(),
     };
   }, [defaultValue]);
+  
   const [date, setDate] = useState<IDate>(initialDate);
   const [compareDate, setCompareDate] = useState<IDate | null>(null);
   const [counter, setCounter] = useState(0);
@@ -55,6 +56,11 @@ export function RangePicker({ ...props }: RangeProps) {
   const handleChangeDateToRange = (e: number | object) => {
     onChange?.({ type: "date", Data: { from: e } });
   };
+
+
+
+
+
   return (
     <div className="range" dir="rtl">
       {device == "desktop" ? (
@@ -92,8 +98,7 @@ export function RangePicker({ ...props }: RangeProps) {
       ) : (
         <>
           {model == "date" ? (
-            <MobileDatePicker
-              model="date"
+            <MobileDate
               locale="fa"
               {...props}
               defaultValue={initialDate.from}

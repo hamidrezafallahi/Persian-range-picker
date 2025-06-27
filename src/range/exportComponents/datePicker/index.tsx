@@ -1,6 +1,6 @@
 import type { ExportType } from "../../core/type";
 import { DesktopDatePicker } from "../../desktopDate/desktopDatePicker";
-import { MobileDate } from "../mobileDate";
+import { MobileDate } from "../../mobileDate/mobileDatePicker";
 
 interface IProps {
   calendarType?: "shamsi" | "gregorian";
