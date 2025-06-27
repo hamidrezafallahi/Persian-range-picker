@@ -1,6 +1,6 @@
 import React, { type Dispatch, useState } from "react";
 
-import DateMask from "./mask";
+import {Mask} from "./mask";
 import type { IDate, TLocale } from "./type";
 
 interface IProps {
@@ -32,7 +32,7 @@ function MaskRange({ ...props }: IProps) {
 
   return (
     <div className="flex items-center gap-2">
-      <DateMask
+      <Mask
         // {...props}
         onChange={(e) => handleChange(e as number, "from")}
         defaultValue={date.from}
@@ -43,7 +43,7 @@ function MaskRange({ ...props }: IProps) {
         suffix={false}
       />
       {"_"}
-      <DateMask
+      <Mask
         // {...props}
         onChange={(e) => handleChange(e as number, "to")}
         defaultValue={date.to}

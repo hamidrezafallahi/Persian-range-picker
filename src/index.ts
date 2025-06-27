@@ -1,5 +1,5 @@
-export { Range } from "./range";
-export { DateMask } from "./range";
+export { RangePicker } from "./range";
+export { Mask } from "./range";
 export {} from "./range/exportComponents/datePicker";
 export { DesktopRange } from "./range/exportComponents/desktopRange";
 export { MobileDate } from "./range/exportComponents/mobileDate";

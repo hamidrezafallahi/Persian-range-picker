@@ -1,24 +1,18 @@
 import {
-  DateMask,
-  DesktopDate,
-  DesktopRange,
-  MobileDate,
-  MobileRange,
-  Range,
+  DatePicker,
+  RangePicker,
   TimePicker,
+  Mask,
 } from "../range";
 
 export default function DemoComponent() {
   return (
     <>
       <div dir="rtl">
-        <Range />
-        <DesktopDate />
-        <DesktopRange />
-        <MobileDate />
-        <MobileRange />
+        <RangePicker />
+        <DatePicker />
         <TimePicker />
-        <DateMask />
+        <Mask />
       </div>
     </>
   );

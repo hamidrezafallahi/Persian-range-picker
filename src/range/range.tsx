@@ -8,7 +8,7 @@ import { DesktopRangePicker } from "./desktopRange/desktopRangePicker";
 import MobileDatePicker from "./mobileDate/mobileDatePicker";
 import MobileRangePicker from "./mobileRange/mobileRangePicker";
 
-export function Range({ ...props }: RangeProps) {
+export function RangePicker({ ...props }: RangeProps) {
   const userAgent = navigator.userAgent;
   const deviceType =
     /Mobile|Android|iPhone|iPad|iPod|Opera Mini|BlackBerry|IEMobile/i.test(

@@ -17,7 +17,7 @@ import MobileRangetaghvim from "../../public/images/MobileRangetaghvim.png";
 import TimePicker from "../../public/images/TimePicker.png";
 import TimePicker2 from "../../public/images/TimePicker2.png";
 import TimePickerRun from "../../public/images/TimePickerRun.png";
-import DateMaskComponent from "../range/core/mask";
+import {Mask} from "../range/core/mask";
 
 const SECTION_KEYS = [
   "mobileRange",
@@ -69,7 +69,7 @@ const TEXT: Record<"fa" | "en", LanguageText> = {
         image2: mobileDate2,
       },
       dateMask: {
-        component: <DateMaskComponent />,
+        component: <Mask />,
         title: "ماسک تاریخ",
         desc: "ماسک تاریخ به شما امکان می‌دهد فرمت ورودی تاریخ را محدود کنید.",
         image: DateMask,
@@ -125,7 +125,7 @@ const TEXT: Record<"fa" | "en", LanguageText> = {
         image2: mobileDate2,
       },
       dateMask: {
-        component: <DateMaskComponent />,
+        component: <Mask />,
         title: "Date Mask",
         desc: "Date mask restricts the input format of dates.",
         image: DateMask,

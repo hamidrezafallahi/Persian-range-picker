@@ -9,11 +9,6 @@ type MaskProps = {
   defaultValue?: IDate["from"];
   onError?: (e: string) => void;
   onChange?: (e: IDate["from"] | null) => void;
-  // tertiaryColor: string | undefined;
-  // secondaryColor: string | undefined;
-  // dangerColor: string | undefined;
-  // InputHandleChange: (e: ChangeEvent<HTMLInputElement>) => void;
-  // className?: string;
   calendarType?: "shamsi" | "gregorian";
   inputClassName?: string;
   maskClassName?: string;
@@ -28,7 +23,7 @@ type MaskProps = {
   highlightColor?: string;
 };
 const defaultErrorClass = "border-red-700 ";
-export default function DateMask({ ...props }: MaskProps) {
+export function Mask({ ...props }: MaskProps) {
   const {
     defaultValue,
     calendarType = "shamsi",

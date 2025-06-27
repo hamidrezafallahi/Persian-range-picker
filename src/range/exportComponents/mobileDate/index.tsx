@@ -1,4 +1,4 @@
-import type { IDateProps } from "../../core/type";
+import type { IDateProps, TLocale } from "../../core/type";
 import MobileDatePicker from "../../mobileDate/mobileDatePicker";
 interface IProps {
   calendarType?: IDateProps["calendarType"];
@@ -11,6 +11,7 @@ interface IProps {
   secondaryColor?: IDateProps["secondaryColor"];
   accentColor?: IDateProps["accentColor"];
   dangerColor?: IDateProps["dangerColor"];
+    locale?: TLocale;
 }
 
 export function MobileDate({ ...props }: IProps) {
