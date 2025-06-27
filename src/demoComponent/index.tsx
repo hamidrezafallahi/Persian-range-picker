@@ -8,9 +8,9 @@ import {
 export default function DemoComponent() {
   return (
     <>
-        <RangePicker />
-        <DatePicker />
-        <TimePicker />
+        <RangePicker  />
+        <DatePicker showTime />
+        <TimePicker  />
         <Mask />
     </>
   );

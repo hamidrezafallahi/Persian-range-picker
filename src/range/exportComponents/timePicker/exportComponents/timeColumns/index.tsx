@@ -19,11 +19,13 @@ const TimeColumn: React.FC<{
   renderHeight?: string;
   renderOptions: Props["renderOptions"];
 }> = ({ count, unit, renderHeight, renderOptions }) => {
+  const title = unit == "hour"?"HH":unit == "minute"?"MM":"SS"
   return (
     <div
-      className="flex flex-col gap-4 px-2 overflow-x-hidden overflow-y-auto"
+      className="flex flex-col gap-4 px-2 overflow-x-hidden overflow-y-auto relative"
       style={{ maxHeight: renderHeight }}
     >
+      <div style={{position:"sticky",top:0,background:"#fff", color:"#939393"}}>{title}</div>
       {renderOptions(count, unit)}
     </div>
   );

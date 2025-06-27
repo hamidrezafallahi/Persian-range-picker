@@ -130,7 +130,7 @@ export function MobileDate  ({ ...props }: IDateProps) {
         } ${className}`}
         style={{ color: tertiaryColor, backgroundColor: highlightColor }}
       >
-        <div className="w-full">{title}</div> <CalenderIcon />
+        <CalenderIcon /><div className="w-full">{title}</div> 
       </button>
       <div
         popover="auto"

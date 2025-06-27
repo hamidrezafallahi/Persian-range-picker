@@ -60,7 +60,7 @@ export const TimePicker: React.FC<Props> = ({
   );
   const buttonRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const locale = calendarType == "shamsi" ? "fa" : "en";
-
+  const dynamicFormat = showSecond ? format : "HH:mm";
   const renderHeight =
     displayButtonCount * (buttonRefs.current[0]?.offsetHeight ?? 24) +
     20 +
@@ -95,7 +95,6 @@ export const TimePicker: React.FC<Props> = ({
 
   const renderOptions = (count: number, unit: TUnit, step = 1) => {
     const pad = (num: number) => num.toString().padStart(2, "0");
-
     const active = moment(time).locale(locale).get(unit);
 
     return Array.from({ length: Math.ceil(count / step) }, (_, i) => {
@@ -134,7 +133,7 @@ export const TimePicker: React.FC<Props> = ({
           className={`relative flex justify-between items-center gap-2  px-2 rounded-md w-full xs:w-28 h-9  ${timeButtonClassName} `}
           style={{ color: tertiaryColor, backgroundColor: highlightColor }}
         >
-          {time ? moment(time).locale(locale).format(format) : "انتخاب زمان"}
+          {time ? moment(time).locale(locale).format(dynamicFormat) : "انتخاب زمان"}
           <span className="text-lg">{icon}</span>
         </button>
 
