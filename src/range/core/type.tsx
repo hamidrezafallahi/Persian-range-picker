@@ -97,14 +97,14 @@ export interface IBaseProps extends IRangeOptions {
   step: ESteps;
   counter: number;
   zone: ITimeZone;
-  date: IDate;
+  date: IDate|undefined;
   tabKey: ITime | string;
   compareDate: IDate | null;
   activeCompareStep: ESteps | null;
   setStep: Dispatch<React.SetStateAction<ESteps>>;
   setCounter: Dispatch<React.SetStateAction<number>>;
   setCompareDate: Dispatch<React.SetStateAction<IDate | null>>;
-  setDate: Dispatch<React.SetStateAction<IDate>>;
+  setDate: Dispatch<React.SetStateAction<IDate|undefined>>;
   setActiveCompareStep: Dispatch<React.SetStateAction<ESteps | null>>;
   setTabKey: Dispatch<React.SetStateAction<ITime | string>>;
   setZone: Dispatch<React.SetStateAction<ITimeZone>>;
@@ -181,7 +181,7 @@ export interface IDesktopRangeProps extends IBaseProps {
   dropdownHeight?: number;
 }
 export interface ISubmittedData {
-  date: IDate;
+  date: IDate|undefined;
   compareDate: IDate | null;
   Data: unknown;
 }
