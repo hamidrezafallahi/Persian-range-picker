@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import moment from "moment-jalaali";
 
@@ -62,21 +62,21 @@ export function DesktopRangePicker(props: IDesktopRangeProps) {
   const isInitialRender = useRef(true);
   const prevDate = useRef(date);
   const prevCompareDate = useRef(compareDate);
-  const initSubmittedData: ISubmittedData = useMemo(() => {
-    return {
-      date: {
-        from: date
-          ? date.from
-          : locale === "fa"
-          ? moment().locale("fa").startOf("jYear").valueOf()
-          : moment().locale("en").startOf("year").valueOf(),
-        to: date ? date.to : moment().locale(locale).startOf("day").valueOf(),
-      },
-      compareDate,
-      Data: null,
-    };
-  }, [date, compareDate]);
-  const [showDate, setShowDate] = useState<ISubmittedData>(initSubmittedData);
+ const [showDate, setShowDate] = useState<ISubmittedData>({
+  date: {
+    from: locale === "fa"
+      ? moment().locale("fa").startOf("jYear").valueOf()
+      : moment().locale("en").startOf("year").valueOf(),
+    to: moment().locale(locale).startOf("day").valueOf(),
+  },
+  compareDate: null,
+  Data: null, // or any default value you want for Data
+});
+
+
+
+
+
   const [type, setType] = useState<string>("date");
   const [customData, setCustomData] = useState<unknown>(null);
 
@@ -122,7 +122,7 @@ export function DesktopRangePicker(props: IDesktopRangeProps) {
   };
   const handleCancel = () => {
     setOpen(false);
-    setDate(showDate.date);
+    setDate(showDate?.date);
     setStep(366);
     setCompareDate(showDate.compareDate);
     if (handleReject) {
@@ -188,7 +188,13 @@ export function DesktopRangePicker(props: IDesktopRangeProps) {
       onChange?.({ type, Data: { customData } });
     }
   }, [customData]);
-
+  useEffect(()=>{
+     setShowDate({
+      date,
+      compareDate,
+      Data: null,
+    })
+  }, [date, compareDate]);
   return (
     <div className="range">
       <div

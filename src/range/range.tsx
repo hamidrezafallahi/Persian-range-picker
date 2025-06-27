@@ -28,7 +28,12 @@ export function RangePicker({ ...props }: RangeProps) {
   const locale = calendarType == "shamsi" ? "fa" : "en";
  
 
-  const [date, setDate] = useState<IDate|undefined>();
+  const [date, setDate] = useState<IDate>({
+      from: locale === "fa"
+        ? moment().locale("fa").startOf("jYear").valueOf()
+        : moment().locale("en").startOf("year").valueOf(),
+      to: moment().locale(locale).startOf("day").valueOf(),
+    });
   const [compareDate, setCompareDate] = useState<IDate | null>(null);
   const [counter, setCounter] = useState(0);
   const [activeCompareStep, setActiveCompareStep] = useState<ESteps | null>(
