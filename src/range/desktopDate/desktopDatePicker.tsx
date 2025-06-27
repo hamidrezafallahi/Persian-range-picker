@@ -9,6 +9,7 @@ import type { IDate, IDateProps } from "../core/type";
 import { CalenderIcon } from "../icons/CalenderIcon";
 import { DatePicker } from "../persianDatePicker";
 import { DesktopTimePicker } from "./desktopTimePicker";
+import { useRenderPosition } from "../exportComponents/useRenderPosition";
 
 export function DesktopDatePicker({ ...props }: IDateProps) {
   const {
@@ -32,13 +33,12 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
   const buttonRef = useRef<HTMLElement>(null);
   const popupRef = useRef<HTMLDivElement>(null);
 
-  // const hookPosition = useRenderPosition({ //TODO findout without using const making hook
-  //   buttonRef: buttonRef as React.RefObject<HTMLElement>,
-  //   popupRef: popupRef,
-  //   setIsOpen: setIsOpen,
-  //   isOpen: isOpen,
-  //   offset: 4,
-  // });
+  useRenderPosition({
+    buttonRef: buttonRef as React.RefObject<HTMLElement>,
+    popupRef: popupRef,
+    setIsOpen: setIsOpen,
+    isOpen: isOpen,
+  });
   const changeHandler = (e: number) => {
     if (!e) return;
     setShowDate(e);
@@ -107,8 +107,7 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
   }, [defaultValue]);
   // const dateType = locale == ""
   return (
-    <div className="range">
-      <div className="relative">
+      <div className="range">
         <button
           ref={buttonRef as React.RefObject<HTMLButtonElement>}
           onClick={handleDropdown}
@@ -188,6 +187,5 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
           </div>
         )}
       </div>
-    </div>
   );
 }

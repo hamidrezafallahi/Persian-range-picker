@@ -5,7 +5,7 @@ import moment from "moment-jalaali";
 import MainContent from "../core/mainContent";
 import NavigateButton from "../core/navigateButton";
 import type { IDesktopRangeProps, ISubmittedData } from "../core/type";
-// import { useRenderPosition } from "../exportComponents/useRenderPosition";
+import { useRenderPosition } from "../exportComponents/useRenderPosition";
 import { DownTriangle } from "../icons/DownTriangle";
 
 export function DesktopRangePicker(props: IDesktopRangeProps) {
@@ -62,20 +62,17 @@ export function DesktopRangePicker(props: IDesktopRangeProps) {
   const isInitialRender = useRef(true);
   const prevDate = useRef(date);
   const prevCompareDate = useRef(compareDate);
- const [showDate, setShowDate] = useState<ISubmittedData>({
-  date: {
-    from: locale === "fa"
-      ? moment().locale("fa").startOf("jYear").valueOf()
-      : moment().locale("en").startOf("year").valueOf(),
-    to: moment().locale(locale).startOf("day").valueOf(),
-  },
-  compareDate: null,
-  Data: null, // or any default value you want for Data
-});
-
-
-
-
+  const [showDate, setShowDate] = useState<ISubmittedData>({
+    date: {
+      from:
+        locale === "fa"
+          ? moment().locale("fa").startOf("jYear").valueOf()
+          : moment().locale("en").startOf("year").valueOf(),
+      to: moment().locale(locale).startOf("day").valueOf(),
+    },
+    compareDate: null,
+    Data: null, // or any default value you want for Data
+  });
 
   const [type, setType] = useState<string>("date");
   const [customData, setCustomData] = useState<unknown>(null);
@@ -133,13 +130,12 @@ export function DesktopRangePicker(props: IDesktopRangeProps) {
   const buttonRef = useRef<HTMLElement>(null);
   const popupRef = useRef<HTMLDivElement>(null);
 
-  //  const hookPosition = useRenderPosition({
-  //    buttonRef: buttonRef as React.RefObject<HTMLElement>,
-  //    popupRef: popupRef,
-  //    setIsOpen: setOpen,
-  //    isOpen:open,
-  //    offset: 4,
-  //  });
+  useRenderPosition({
+    buttonRef: buttonRef as React.RefObject<HTMLElement>,
+    popupRef: popupRef,
+    setIsOpen: setOpen,
+    isOpen: open,
+  });
 
   const handleDropdown = () => {
     setOpen((prev) => !prev);
@@ -188,17 +184,16 @@ export function DesktopRangePicker(props: IDesktopRangeProps) {
       onChange?.({ type, Data: { customData } });
     }
   }, [customData]);
-  useEffect(()=>{
-     setShowDate({
+  useEffect(() => {
+    setShowDate({
       date,
       compareDate,
       Data: null,
-    })
+    });
   }, [date, compareDate]);
   return (
-    <div className="range">
       <div
-        className={`relative flex flex-col  justify-center w-fit h-14 ${buttonClassName}`}
+        className={`flex flex-col  justify-center w-fit h-14  ${buttonClassName}`}
         ref={buttonRef as React.RefObject<HTMLDivElement>}
       >
         {label.isShowLabel && label.label}
@@ -302,6 +297,5 @@ export function DesktopRangePicker(props: IDesktopRangeProps) {
           </div>
         )}
       </div>
-    </div>
   );
 }

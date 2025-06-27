@@ -7,6 +7,7 @@ import { CalenderIcon } from "../../icons/CalenderIcon";
 // import { useRenderPosition } from "../useRenderPosition";
 import { TimeColumns } from "./exportComponents";
 import type { TUnit } from "../../core/type";
+import { useRenderPosition } from "../useRenderPosition";
 
 interface Props {
   defaultValue?: number;
@@ -65,15 +66,12 @@ export const TimePicker: React.FC<Props> = ({
     20 +
     (displayButtonCount - 1) * 16;
 
-  // const firstRender = useRef(true);
-
-  // const hookPosition = useRenderPosition({
-  //   buttonRef: buttonRef as React.RefObject<HTMLElement>,
-  //   popupRef: popupRef,
-  //   setIsOpen: setOpen,
-  //   isOpen:open,
-  //   offset: 4,
-  // });
+  useRenderPosition({
+    buttonRef: buttonRef as React.RefObject<HTMLElement>,
+    popupRef: popupRef,
+    setIsOpen: setOpen,
+    isOpen: open,
+  });
   const handleTimeChange = (unit: TUnit, value: number) => {
     const updated = time
       ? moment(time).locale(locale).set(unit, value)
@@ -102,8 +100,6 @@ export const TimePicker: React.FC<Props> = ({
 
     return Array.from({ length: Math.ceil(count / step) }, (_, i) => {
       const val = i * step;
-
-      console.log(active, val);
       return (
         <button
           key={val}

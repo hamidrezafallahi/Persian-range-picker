@@ -1072,7 +1072,9 @@
   margin: 0.5rem 0;
   color: #000000;
 }
-.wfi {
-  width: 300px;
-  height: 300px;
+.range{
+  direction: ltr;
+  width: fit-content;
+  position: relative;
+  
 }
