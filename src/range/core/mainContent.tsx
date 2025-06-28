@@ -4,11 +4,16 @@ import React, {
   type ReactNode,
   type SetStateAction,
   useState,
-} from "react";
+} from 'react';
 
-import Manual from "./manual";
-import PeriodList from "./periodList";
-import { type IBaseProps, ESteps, type ITime } from "./type";
+import Manual from './manual';
+import PeriodList from './periodList';
+import {
+  ESteps,
+  type IBaseProps,
+  type ITime,
+} from './type';
+
 interface IProps extends IBaseProps {
   setCustomData: Dispatch<SetStateAction<unknown>>;
 }

@@ -1,15 +1,22 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, {
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 
-import moment from "moment-jalaali";
+import moment from 'moment-jalaali';
 
-import { Footer } from "../core/footer";
-import { toPersianDigits } from "../core/helper";
-import type { IDate, IDateProps } from "../core/type";
-import { useRenderPosition } from "../exportComponents/useRenderPosition";
+import { Footer } from '../core/footer';
+import { toPersianDigits } from '../core/helper';
+import type {
+  IDate,
+  IDateProps,
+} from '../core/type';
+import { useRenderPosition } from '../exportComponents/useRenderPosition';
 // import { useRenderPosition } from "../exportComponents/useRenderPosition";
-import { CalenderIcon } from "../icons/CalenderIcon";
-import { DatePicker } from "../persianDatePicker";
-import { DesktopTimePicker } from "./desktopTimePicker";
+import { CalenderIcon } from '../icons/CalenderIcon';
+import { DatePicker } from '../persianDatePicker';
+import { DesktopTimePicker } from './desktopTimePicker';
 
 export function DesktopDatePicker({ ...props }: IDateProps) {
   const {
@@ -24,12 +31,14 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
     className,
     chooseTodayClassName = "",
     showTimeFormat = "HH:mm:ss",
+    isOpenDropdown = false,
     exportType = "timeStamp", //TODO here you should change type of export date or timestamp /preset is timestamp
+    showSecond = false,
   } = props;
   //TODO add export type everywhere
-
+  const dynamicFormat = showSecond ? showTimeFormat : "HH:mm";
   const [showDate, setShowDate] = useState<number>(0);
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(isOpenDropdown);
   const buttonRef = useRef<HTMLElement>(null);
   const popupRef = useRef<HTMLDivElement>(null);
 
@@ -69,7 +78,7 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
     showDate > 0
       ? toPersianDigits(
           moment(showDate).format(
-            showTime ? `jYYYY/jMM/jDD\u2003${showTimeFormat}` : `jYYYY/jMM/jDD`
+            showTime ? `jYYYY/jMM/jDD\u2003${dynamicFormat}` : `jYYYY/jMM/jDD`
           )
         )
       : "انتخاب تاریخ";
@@ -77,7 +86,7 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
   const gregorian =
     showDate > 0
       ? moment(showDate).format(
-          showTime ? `YYYY/MM/DD\u2003${showTimeFormat}` : `YYYY/MM/DD`
+          showTime ? `YYYY/MM/DD\u2003${dynamicFormat}` : `YYYY/MM/DD`
         )
       : "Choose date";
 
@@ -112,7 +121,7 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
         ref={buttonRef as React.RefObject<HTMLButtonElement>}
         onClick={handleDropdown}
         className={`flex justify-between items-center gap-1 px-2 rounded-md h-9 w-full  ${
-          showTime ? "xs:w-40 " : "xs:w-28"
+          showTime ? "xs:w-40" : "xs:w-28"
         } ${className}`}
         style={{ color: tertiaryColor, backgroundColor: highlightColor }}
       >
@@ -147,7 +156,12 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
               }
             />
             {showTime && (
-              <div style={{ width: "212px", minWidth: "212px" }}>
+              <div
+                style={{
+                  width: showSecond ? "212px" : "130px",
+                  minWidth: showSecond ? "212px" : "130px",
+                }}
+              >
                 <div
                   className="flex justify-center items-center border-b h-9"
                   style={{
@@ -158,9 +172,9 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
                 >
                   {locale === "fa"
                     ? toPersianDigits(
-                        moment(showDate).locale(locale).format(showTimeFormat)
+                        moment(showDate).locale(locale).format(dynamicFormat)
                       )
-                    : moment(showDate).locale(locale).format(showTimeFormat)}
+                    : moment(showDate).locale(locale).format(dynamicFormat)}
                 </div>
                 <DesktopTimePicker
                   {...props}

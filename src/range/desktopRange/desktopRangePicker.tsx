@@ -1,12 +1,19 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, {
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 
-import moment from "moment-jalaali";
+import moment from 'moment-jalaali';
 
-import MainContent from "../core/mainContent";
-import NavigateButton from "../core/navigateButton";
-import type { IDesktopRangeProps, ISubmittedData } from "../core/type";
-import { useRenderPosition } from "../exportComponents/useRenderPosition";
-import { DownTriangle } from "../icons/DownTriangle";
+import MainContent from '../core/mainContent';
+import NavigateButton from '../core/navigateButton';
+import type {
+  IDesktopRangeProps,
+  ISubmittedData,
+} from '../core/type';
+import { useRenderPosition } from '../exportComponents/useRenderPosition';
+import { DownTriangle } from '../icons/DownTriangle';
 
 export function DesktopRangePicker(props: IDesktopRangeProps) {
   const userAgent = navigator.userAgent;

@@ -4,10 +4,12 @@ import React, {
   useEffect,
   useRef,
   useState,
-} from "react";
-import moment from "moment-jalaali";
-import { toPersianDigits } from "../core/helper";
-import { TimeColumns } from "../exportComponents/timePicker/exportComponents";
+} from 'react';
+
+import moment from 'moment-jalaali';
+
+import { toPersianDigits } from '../core/helper';
+import { TimeColumns } from '../exportComponents/timePicker/exportComponents';
 
 type TUnit = "hour" | "minute" | "second";
 
@@ -25,6 +27,7 @@ interface Props {
   onGetValue?: (e: number) => void;
   onChange?: (e: number) => void;
   setShowDate: Dispatch<SetStateAction<number>>;
+  showSecond?: boolean;
 }
 
 export const DesktopTimePicker: React.FC<Props> = ({
@@ -37,6 +40,7 @@ export const DesktopTimePicker: React.FC<Props> = ({
   minuteStep = 1,
   secondStep = 1,
   onGetValue,
+  showSecond = false,
 }: Props) => {
   const [time, setTime] = useState<number | null>(null);
   const buttonRefs = useRef<(HTMLButtonElement | null)[]>([]);
@@ -88,7 +92,7 @@ export const DesktopTimePicker: React.FC<Props> = ({
     if (onGetValue && time) {
       onGetValue(time);
     }
-  },[time]);
+  }, [time]);
   return (
     <div className="range">
       <div
@@ -111,7 +115,7 @@ export const DesktopTimePicker: React.FC<Props> = ({
           hourStep={hourStep}
           minuteStep={minuteStep}
           secondStep={secondStep}
-          showSecond={true}
+          showSecond={showSecond}
         />
       </div>
     </div>

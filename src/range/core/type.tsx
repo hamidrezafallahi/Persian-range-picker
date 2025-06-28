@@ -44,6 +44,7 @@ export interface IDateProps {
   minuteStep?: number;
   secondStep?: number;
   exportType?: ExportType;
+  isOpenDropdown?: boolean;
 }
 
 export type HandleParams = {
@@ -56,7 +57,6 @@ export interface RangeProps extends IRangeOptions {
   handleSubmit?: (params: HandleParams) => void;
   onNavigateChange?: (date: IDate, compareDate: IDate | null) => void;
   navigation?: boolean;
-  isOpenDropdown?: boolean;
 }
 export interface IRangeOptions {
   model?: "date" | "range";
@@ -91,6 +91,7 @@ export interface IRangeOptions {
   device?: "desktop" | "mobile";
   onChange?: (e: HandleParams) => void;
   onCompareDateChange?: (e: HandleParams) => void;
+  isOpenDropdown?: boolean;
 }
 export interface IBaseProps extends IRangeOptions {
   neutralColor?: string;
