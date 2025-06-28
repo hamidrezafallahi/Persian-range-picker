@@ -43,7 +43,11 @@
 //   return position;
 // }
 ////////////////////////////////////////////////////////////////////////////////
-import { useEffect, type Dispatch, type SetStateAction } from "react";
+import {
+  type Dispatch,
+  type SetStateAction,
+  useEffect,
+} from 'react';
 
 interface UseRenderPositionOptions<T extends HTMLElement> {
   buttonRef: React.RefObject<T | null>; // ⬅ تغییر دادیم
@@ -90,9 +94,7 @@ export function useRenderPosition<T extends HTMLElement = HTMLElement>({
       const centerX = buttonArea.left + buttonArea.width / 2;
       const screenCenter = window.innerWidth / 2;
       const alignLeft = centerX <= screenCenter;
-      const left = alignLeft
-        ? 0
-        : buttonArea.left + buttonArea.width - popupArea.width;
+      const left = alignLeft ? 0 : buttonArea.width - popupArea.width;
       popupRef.current.style.top = `${top}px`;
       popupRef.current.style.left = `${left}px`; //TODO use translate by Ai instead of left
       console.log(top, left);
