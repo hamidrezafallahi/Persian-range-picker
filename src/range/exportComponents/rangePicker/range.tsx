@@ -1,26 +1,24 @@
-import { useEffect, useState } from "react";
 import moment from "moment-jalaali";
 import type {
   ESteps,
+  IBaseProps,
   IDate,
   ITime,
   ITimeZone,
-  RangeProps,
 } from "../../core/type";
-import { DatePicker } from "../datePicker";
-import { Range } from "./range";
+import { DesktopRangePicker } from "../../desktopRange/desktopRangePicker";
+import { useState } from "react";
+import { MobileRangePicker } from "../../mobileRange/mobileRangePicker";
 
-export function RangePicker({ ...props }: Omit<RangeProps, "locale">) {
-  const {
-    model = "range",
-    additionalElement,
-    defaultValue,
-    calendarType = "shamsi",
-    isOpenDropdown = false,
-    onChange,
-  } = props;
+export function Range({ ...props }: IBaseProps) {
+  const deviceType =
+    /Mobile|Android|iPhone|iPad|iPod|Opera Mini|BlackBerry|IEMobile/i.test(
+      navigator.userAgent
+    )
+      ? "mobile"
+      : "desktop";
+  const { isOpenDropdown, additionalElement, calendarType = "shamsi" } = props;
   const locale = calendarType == "shamsi" ? "fa" : "en";
-
   const [date, setDate] = useState<IDate>({
     from:
       locale === "fa"
@@ -36,37 +34,34 @@ export function RangePicker({ ...props }: Omit<RangeProps, "locale">) {
   const [step, setStep] = useState<ESteps>(366);
   const [zone, setZone] = useState<ITimeZone>("manual");
   const [tabKey, setTabKey] = useState<ITime | string>("manual");
-  const handleChangeDateToRange = (e: number | object) => {
-    onChange?.({ type: "date", Data: { from: e } });
-  };
-  useEffect(() => {
-    if (defaultValue) {
-      setDate({
-        from:
-          defaultValue && defaultValue.from > 0
-            ? defaultValue.from
-            : model == "date"
-            ? moment().locale(locale).startOf("day").valueOf()
-            : locale == "fa"
-            ? moment().locale(locale).startOf("jYear").valueOf()
-            : moment().locale(locale).startOf("year").valueOf(),
-        to:
-          defaultValue && defaultValue.to > 0
-            ? defaultValue.to
-            : moment().locale(locale).endOf("day").valueOf(),
-      });
-    }
-  }, [defaultValue]);
+  const [open, setOpen] = useState(isOpenDropdown);
   return (
-    <div className="range">
-      {model == "date" ? (
-        <DatePicker
+    <>
+      {deviceType == "desktop" ? (
+        <DesktopRangePicker
           {...props}
-          defaultValue={date?.from}
-          onChange={handleChangeDateToRange}
+          device={deviceType}
+          step={step}
+          counter={counter}
+          zone={zone}
+          date={date}
+          tabKey={tabKey}
+          compareDate={compareDate}
+          setCompareDate={setCompareDate}
+          activeCompareStep={activeCompareStep}
+          setStep={setStep}
+          setCounter={setCounter}
+          setDate={setDate}
+          setActiveCompareStep={setActiveCompareStep}
+          setTabKey={setTabKey}
+          setZone={setZone}
+          setOpen={setOpen}
+          open={open}
+          additionalElement={additionalElement}
+          activeTable="Year"
         />
       ) : (
-        <Range
+        <MobileRangePicker
           {...props}
           step={step}
           counter={counter}
@@ -83,9 +78,9 @@ export function RangePicker({ ...props }: Omit<RangeProps, "locale">) {
           setStep={setStep}
           setZone={setZone}
           additionalElement={additionalElement}
-          calendarType={calendarType}
+          device={deviceType}
         />
       )}
-    </div>
+    </>
   );
 }

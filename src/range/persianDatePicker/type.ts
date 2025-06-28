@@ -10,7 +10,7 @@ export interface IProps {
   inputClassName?: string;
   model?: "range" | "date";
   mode?: "modal" | "dropdown";
-  name: string;
+  name?: string;
   doubleMonth?: boolean;
   defaultVal?: string;
   disablePreviousDays?: boolean;

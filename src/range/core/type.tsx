@@ -25,7 +25,7 @@ export interface IDateProps {
   secondaryColor?: string;
   accentColor?: string;
   tertiaryColor?: string;
-  locale: IRangeOptions["locale"];
+  locale: TLocale;
   defaultValue?: number;
   onChange?: (e: number | object) => void;
   className?: string;
@@ -56,7 +56,6 @@ export interface RangeProps extends IRangeOptions {
 }
 export interface IRangeOptions {
   model?: "date" | "range";
-  locale?: TLocale;
   calendarType?: "shamsi" | "gregorian";
   isShowNavigationButton?: boolean;
   showComparison?: boolean;

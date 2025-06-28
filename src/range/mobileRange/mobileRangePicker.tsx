@@ -8,7 +8,7 @@ import type { IBaseProps } from "../core/type";
 import { CalenderIcon } from "../icons/CalenderIcon";
 import { MenuArrowBack } from "../icons/MenuArrowBack";
 
-export function MobileRangePicker (props: IBaseProps) {
+export function MobileRangePicker(props: IBaseProps) {
   const {
     onCompareDateChange,
     onChange,
@@ -27,10 +27,12 @@ export function MobileRangePicker (props: IBaseProps) {
     setZone,
     isShowNavigationButton = true,
     popoverClassName = "",
-    locale = "fa",
+    calendarType = "shamsi",
     className,
     device,
   } = props;
+  const locale = calendarType == "shamsi" ? "fa" : "en";
+
   const [type, setType] = useState<string>("date");
   const [customData, setCustomData] = useState<unknown>(null);
   const isInitialRender = useRef(true);
@@ -130,5 +132,4 @@ export function MobileRangePicker (props: IBaseProps) {
       </div>
     </div>
   );
-};
-
+}

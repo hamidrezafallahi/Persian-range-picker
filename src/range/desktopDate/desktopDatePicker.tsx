@@ -1,22 +1,15 @@
-import React, {
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import React, { useEffect, useRef, useState } from "react";
 
-import moment from 'moment-jalaali';
+import moment from "moment-jalaali";
 
-import { Footer } from '../core/footer';
-import { toPersianDigits } from '../core/helper';
-import type {
-  IDate,
-  IDateProps,
-} from '../core/type';
-import { useRenderPosition } from '../exportComponents/useRenderPosition';
+import { Footer } from "../core/footer";
+import { toPersianDigits } from "../core/helper";
+import type { IDate, IDateProps } from "../core/type";
+import { useRenderPosition } from "../exportComponents/useRenderPosition";
 // import { useRenderPosition } from "../exportComponents/useRenderPosition";
-import { CalenderIcon } from '../icons/CalenderIcon';
-import { DatePicker } from '../persianDatePicker';
-import { DesktopTimePicker } from './desktopTimePicker';
+import { CalenderIcon } from "../icons/CalenderIcon";
+import { DatePicker } from "../persianDatePicker";
+import { DesktopTimePicker } from "./desktopTimePicker";
 
 export function DesktopDatePicker({ ...props }: IDateProps) {
   const {

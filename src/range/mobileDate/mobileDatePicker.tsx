@@ -1,21 +1,13 @@
-import {
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import { useEffect, useRef, useState } from "react";
 
-import moment from 'moment-jalaali';
+import moment from "moment-jalaali";
 
-import { Footer } from '../core/footer';
-import { toPersianDigits } from '../core/helper';
-import type {
-  IDate,
-  IDateProps,
-  TUnit,
-} from '../core/type';
-import { TimeColumns } from '../exportComponents/timePicker/exportComponents';
-import { CalenderIcon } from '../icons/CalenderIcon';
-import { DatePicker } from '../persianDatePicker';
+import { Footer } from "../core/footer";
+import { toPersianDigits } from "../core/helper";
+import type { IDate, IDateProps, TUnit } from "../core/type";
+import { TimeColumns } from "../exportComponents/timePicker/exportComponents";
+import { CalenderIcon } from "../icons/CalenderIcon";
+import { DatePicker } from "../persianDatePicker";
 
 export function MobileDate({ ...props }: IDateProps) {
   const {
@@ -34,27 +26,15 @@ export function MobileDate({ ...props }: IDateProps) {
     showSecond = true,
     className,
   } = props;
-  // const initialDate: number = useMemo(() => {
-  //   let temp: number = 0; // Initialize temp as a number
-  //   const temp2: any = defaultValue;
-  //   if (defaultValue) {
-  //     if (temp2 instanceof Date) {
-  //       temp = temp2.valueOf();
-  //     } else if (typeof defaultValue === "number") {
-  //       temp = temp2; // Use the number directly
-  //     }
-  //   }
-  //   return temp;
-  // }, [defaultValue]);
-
   const [showDate, setShowDate] = useState<number>(0);
+  const [content, setContent] = useState<"Date" | "Time">("Date");
   const popoverRef = useRef<HTMLDivElement>(null);
-
+  const dynamicFormat = showSecond ? showTimeFormat : "HH:mm";
   const persian =
     showDate > 0
       ? toPersianDigits(
           moment(showDate).format(
-            showTime ? `${showTimeFormat}\u2003jYYYY/jMM/jDD` : `jYYYY/jMM/jDD`
+            showTime ? `jYYYY/jMM/jDD\u2003${dynamicFormat}` : `jYYYY/jMM/jDD`
           )
         )
       : "انتخاب تاریخ";
@@ -62,17 +42,24 @@ export function MobileDate({ ...props }: IDateProps) {
   const gregorian =
     showDate > 0
       ? moment(showDate).format(
-          showTime ? `${showTimeFormat}\u2003YYYY/MM/DD` : `YYYY/MM/DD`
+          showTime ? `YYYY/MM/DD\u2003${dynamicFormat}` : `YYYY/MM/DD`
         )
       : "Choose date";
 
   const title = locale === "fa" ? persian : gregorian;
 
   const handleDateChange = (e: IDate) => {
-    setShowDate(e.from);
+    if (showTime) {
+      setShowDate(e.from);
+      setContent("Time");
+    } else {
+      setShowDate(e.from);
+      onChange?.(e.from);
+      popoverRef.current?.hidePopover();
+    }
   };
   const handleSubmit = () => {
-    onChange?.({ type: "date", Data: { from: showDate, to: 0 } });
+    onChange?.(showDate);
     popoverRef.current?.hidePopover();
   };
 
@@ -114,21 +101,17 @@ export function MobileDate({ ...props }: IDateProps) {
   }
 
   useEffect(() => {
-    let temp: number = 0; // Initialize temp as a number
-    const temp2: Date | number | undefined = defaultValue; // Specify a union type
-
+    let temp: number = 0;
+    const temp2: Date | number | undefined = defaultValue;
     if (temp2 !== undefined) {
-      // Check if temp2 is not undefined
       if (isDate(temp2)) {
         temp = temp2.valueOf();
       } else if (typeof temp2 === "number") {
-        temp = temp2; // Use the number directly
+        temp = temp2;
       }
     }
-
     setShowDate(temp);
   }, [defaultValue]);
-
   return (
     <div className="range">
       <button
@@ -149,21 +132,21 @@ export function MobileDate({ ...props }: IDateProps) {
       >
         <div className="p-2">
           {/* ////////////////TODO navigation buttons must change between date and time in situation  */}
-          <DatePicker
-            {...props}
-            defaultValue={
-              defaultValue ? { from: defaultValue, to: 0 } : undefined
-            }
-            locale={locale}
-            model="date"
-            name="DesktopDate"
-            onDateChange={handleDateChange}
-            dateFromOutside={{
-              from: showDate ?? new Date().valueOf(),
-              to: 0,
-            }}
-          />
-          {showTime && (
+          {content == "Date" ? (
+            <DatePicker
+              {...props}
+              defaultValue={
+                defaultValue ? { from: defaultValue, to: 0 } : undefined
+              }
+              locale={locale}
+              model="date"
+              onDateChange={handleDateChange}
+              dateFromOutside={{
+                from: showDate ?? new Date().valueOf(),
+                to: 0,
+              }}
+            />
+          ) : (
             <div style={{ zIndex: 1000 }}>
               <div
                 className="flex justify-center items-center border-b h-9"
@@ -175,9 +158,9 @@ export function MobileDate({ ...props }: IDateProps) {
               >
                 {locale === "fa"
                   ? toPersianDigits(
-                      moment(showDate).locale(locale).format(showTimeFormat)
+                      moment(showDate).locale(locale).format(dynamicFormat)
                     )
-                  : moment(showDate).locale(locale).format(showTimeFormat)}
+                  : moment(showDate).locale(locale).format(dynamicFormat)}
               </div>
               <TimeColumns
                 TimeColumnsClassName="flex justify-center items-center  py-2 h-full "
