@@ -1,5 +1,9 @@
-import type { Dispatch, ReactNode, SetStateAction } from "react";
-import React from "react";
+import type {
+  Dispatch,
+  ReactNode,
+  SetStateAction,
+} from 'react';
+import React from 'react';
 
 // type ContentWithOnChange = {
 //   onChange: (e: React.ChangeEvent<any>) => void;
@@ -90,6 +94,7 @@ export interface IRangeOptions {
 }
 export interface IBaseProps extends IRangeOptions {
   neutralColor?: string;
+  locale?: TLocale;
   highlightColor?: string;
   accentColor?: string;
   tertiaryColor?: string;
@@ -176,6 +181,7 @@ export interface IDesktopRangeProps extends IBaseProps {
     isShowLabel?: boolean;
     label?: ReactNode;
   };
+  locale?: TLocale;
   dropdownWidth?: number;
   dropdownHeight?: number;
 }

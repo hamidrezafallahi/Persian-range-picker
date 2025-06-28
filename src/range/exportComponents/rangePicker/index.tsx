@@ -1,14 +1,19 @@
-import { useEffect, useState } from "react";
-import moment from "moment-jalaali";
+import {
+  useEffect,
+  useState,
+} from 'react';
+
+import moment from 'moment-jalaali';
+
 import type {
   ESteps,
   IDate,
   ITime,
   ITimeZone,
   RangeProps,
-} from "../../core/type";
-import { DatePicker } from "../datePicker";
-import { Range } from "./range";
+} from '../../core/type';
+import { DatePicker } from '../datePicker';
+import { Range } from './range';
 
 export function RangePicker({ ...props }: Omit<RangeProps, "locale">) {
   const {
@@ -16,7 +21,7 @@ export function RangePicker({ ...props }: Omit<RangeProps, "locale">) {
     additionalElement,
     defaultValue,
     calendarType = "shamsi",
-    isOpenDropdown = false,
+    // isOpenDropdown = false,
     onChange,
   } = props;
   const locale = calendarType == "shamsi" ? "fa" : "en";
