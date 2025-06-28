@@ -902,9 +902,11 @@
     flex-flow: row;
   }
   .range .xs\:border-l {
+    border-bottom: none;
     border-left: 1px solid #e5e7eb;
   }
   .range .xs\:border-r {
+    border-bottom: none;
     border-right: 1px solid #e5e7eb;
   }
   .range .xs\:border-l-2 {
@@ -1072,9 +1074,8 @@
   margin: 0.5rem 0;
   color: #000000;
 }
-.range{
+.range {
   direction: ltr;
   width: fit-content;
   position: relative;
-  
 }
