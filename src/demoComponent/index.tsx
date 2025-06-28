@@ -1,17 +1,13 @@
-import {
-  DatePicker,
-  RangePicker,
-  TimePicker,
-  Mask,
-} from "../range";
+import { DatePicker, RangePicker, TimePicker, Mask } from "../range";
 
 export default function DemoComponent() {
   return (
-    <>
-        <RangePicker />
-        <DatePicker />
-        <TimePicker />
-        <Mask />
-    </>
+    <div>
+      {/* <div style={{ width: "40%" }}></div> */}
+      <RangePicker />
+      <DatePicker />
+      <TimePicker />
+      <Mask />
+    </div>
   );
 }

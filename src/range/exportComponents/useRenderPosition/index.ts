@@ -69,7 +69,6 @@ export function useRenderPosition<T extends HTMLElement = HTMLElement>({
         buttonRef.current &&
         !buttonRef.current.contains(event.target as Node)
       ) {
-
         setIsOpen(false);
       }
     };
@@ -96,6 +95,7 @@ export function useRenderPosition<T extends HTMLElement = HTMLElement>({
         : buttonArea.left + buttonArea.width - popupArea.width;
       popupRef.current.style.top = `${top}px`;
       popupRef.current.style.left = `${left}px`; //TODO use translate by Ai instead of left
+      console.log(top, left);
     }
   }, [isOpen]);
 }

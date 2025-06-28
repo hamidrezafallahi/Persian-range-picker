@@ -192,110 +192,109 @@ export function DesktopRangePicker(props: IDesktopRangeProps) {
     });
   }, [date, compareDate]);
   return (
-      <div
-        className={`flex flex-col  justify-center w-fit h-14  ${buttonClassName}`}
-        ref={buttonRef as React.RefObject<HTMLDivElement>}
-      >
+    <div
+      className={`flex flex-col  justify-center w-fit h-14 relative  ${buttonClassName}`}
+      ref={buttonRef as React.RefObject<HTMLDivElement>}
+    >
+      <div dir={locale == "fa" ? "rtl" : "ltr"}>
         {label.isShowLabel && label.label}
-        <div className="flex gap-2">
+      </div>
+      <div className="flex gap-2">
+        <div
+          className={`flex justify-center items-center gap-2 px-2 border border-gray-300 rounded-lg w-72 h-8 cursor-pointer ${dateClassName}`}
+          onClick={handleDropdown}
+        >
           <div
-            className={`flex justify-center items-center gap-2 px-2 border border-gray-300 rounded-lg w-72 h-8 cursor-pointer ${dateClassName}`}
-            onClick={handleDropdown}
-          >
-            <div
-              className={`px-2 w-fit  text-center `}
-              style={{
-                color: tertiaryColor,
-              }}
-            >
-              {locale === "fa"
-                ? moment(showDate.date?.from)
-                    .locale("fa")
-                    .format("jDD / jMM / jYYYY")
-                : moment(showDate.date?.from)
-                    .locale("en")
-                    .format("DD / MM / YYYY")}
-            </div>
-            <div
-              className={`text-center`}
-              style={{
-                color: tertiaryColor,
-              }}
-            >
-              -
-            </div>
-            <div
-              className={`"px-2 w-fit text-center`}
-              style={{
-                color: tertiaryColor,
-              }}
-            >
-              {locale === "fa"
-                ? moment(showDate.date?.to)
-                    .locale("fa")
-                    .format("jDD / jMM / jYYYY")
-                : moment(showDate.date?.to)
-                    .locale("en")
-                    .format("DD / MM / YYYY")}
-            </div>
-            <DownTriangle />
-          </div>
-
-          {zone !== "manual" && isShowNavigationButton && (
-            <NavigateButton {...props} locale={locale} />
-          )}
-        </div>
-        {open && (
-          <div
-            ref={popupRef}
+            className={`px-2 w-fit  text-center `}
             style={{
-              backgroundColor: backgroundColor,
-              position: "absolute",
-
-              width: dropdownWidth,
-              height: dropdownHeight,
+              color: tertiaryColor,
             }}
-            className={`absolute z-50  p-2  border border-gray-300 rounded-lg shadow-md  overflow-hidden  ${
-              locale === "fa" ? "right-0" : "left-0"
-            }`}
           >
-            <div className="relative w-full h-full">
-              <MainContent
-                {...props}
-                model="range"
-                locale={locale}
-                device={device}
-                setCustomData={setCustomData}
-                setType={setType}
-              />
-              <div
-                className={`w-full flex ${
-                  locale == "fa" ? "justify-end" : "justify-start"
-                } gap-2 absolute bottom-0 `}
-              >
-                {/* ${tabClassName} */}
-                <button
-                  style={{ color: primaryColor }}
-                  className="p-2 px-3 rounded-md"
-                  onClick={handleCancel}
-                >
-                  {locale == "fa" ? "لغو" : "Cancel"}
-                </button>
-                <button
-                  onClick={() => handleAccept()}
-                  style={{
-                    background: primaryColor,
-                    borderColor: primaryColor,
-                    color: backgroundColor,
-                  }}
-                  className={` p-2 px-3 border  rounded-md`}
-                >
-                  {locale == "fa" ? "اعمال" : "Accept"}
-                </button>
-              </div>
-            </div>
+            {locale === "fa"
+              ? moment(showDate.date?.from)
+                  .locale("fa")
+                  .format("jDD / jMM / jYYYY")
+              : moment(showDate.date?.from)
+                  .locale("en")
+                  .format("DD / MM / YYYY")}
           </div>
+          <div
+            className={`text-center`}
+            style={{
+              color: tertiaryColor,
+            }}
+          >
+            -
+          </div>
+          <div
+            className={`"px-2 w-fit text-center`}
+            style={{
+              color: tertiaryColor,
+            }}
+          >
+            {locale === "fa"
+              ? moment(showDate.date?.to)
+                  .locale("fa")
+                  .format("jDD / jMM / jYYYY")
+              : moment(showDate.date?.to).locale("en").format("DD / MM / YYYY")}
+          </div>
+          <DownTriangle />
+        </div>
+
+        {zone !== "manual" && isShowNavigationButton && (
+          <NavigateButton {...props} locale={locale} />
         )}
       </div>
+      {open && (
+        <div
+          ref={popupRef}
+          style={{
+            backgroundColor: backgroundColor,
+            position: "absolute",
+            width: dropdownWidth,
+            height: dropdownHeight,
+          }}
+          className={`absolute z-50  p-2  border border-gray-300 rounded-lg shadow-md  overflow-hidden  ${
+            locale === "fa" ? "right-0" : "left-0"
+          }`}
+        >
+          <div className="relative w-full h-full">
+            <MainContent
+              {...props}
+              model="range"
+              locale={locale}
+              device={device}
+              setCustomData={setCustomData}
+              setType={setType}
+            />
+            <div
+              className={`w-full flex ${
+                locale !== "fa" ? "justify-end" : "justify-start"
+              } gap-2 absolute bottom-0 `}
+            >
+              {/* ${tabClassName} */}
+              <button
+                style={{ color: primaryColor }}
+                className="p-2 px-3 rounded-md"
+                onClick={handleCancel}
+              >
+                {locale == "fa" ? "لغو" : "Cancel"}
+              </button>
+              <button
+                onClick={() => handleAccept()}
+                style={{
+                  background: primaryColor,
+                  borderColor: primaryColor,
+                  color: backgroundColor,
+                }}
+                className={` p-2 px-3 border  rounded-md`}
+              >
+                {locale == "fa" ? "اعمال" : "Accept"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
   );
 }
