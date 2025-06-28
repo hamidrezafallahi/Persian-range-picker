@@ -1,13 +1,18 @@
-import React, { type ReactNode, useEffect, useRef, useState } from "react";
+import React, {
+  type ReactNode,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 
-import moment from "moment-jalaali";
+import moment from 'moment-jalaali';
 
-import { toPersianDigits } from "../../core/helper";
-import { CalenderIcon } from "../../icons/CalenderIcon";
+import { toPersianDigits } from '../../core/helper';
+import type { TUnit } from '../../core/type';
+import { CalenderIcon } from '../../icons/CalenderIcon';
+import { useRenderPosition } from '../useRenderPosition';
 // import { useRenderPosition } from "../useRenderPosition";
-import { TimeColumns } from "./exportComponents";
-import type { TUnit } from "../../core/type";
-import { useRenderPosition } from "../useRenderPosition";
+import { TimeColumns } from './exportComponents';
 
 interface Props {
   defaultValue?: number;
@@ -133,8 +138,10 @@ export const TimePicker: React.FC<Props> = ({
           className={`relative flex justify-between items-center gap-2  px-2 rounded-md w-full xs:w-28 h-9  ${timeButtonClassName} `}
           style={{ color: tertiaryColor, backgroundColor: highlightColor }}
         >
-          {time ? moment(time).locale(locale).format(dynamicFormat) : "انتخاب زمان"}
           <span className="text-lg">{icon}</span>
+          {time
+            ? moment(time).locale(locale).format(dynamicFormat)
+            : "انتخاب زمان"}
         </button>
 
         {open && (

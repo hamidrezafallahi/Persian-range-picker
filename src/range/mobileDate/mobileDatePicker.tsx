@@ -1,15 +1,23 @@
-import { useEffect, useRef, useState } from "react";
+import {
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 
-import moment from "moment-jalaali";
+import moment from 'moment-jalaali';
 
-import { Footer } from "../core/footer";
-import { toPersianDigits } from "../core/helper";
-import type { IDate, IDateProps, TUnit } from "../core/type";
-import { CalenderIcon } from "../icons/CalenderIcon";
-import { DatePicker } from "../persianDatePicker";
-import { TimeColumns } from "../exportComponents/timePicker/exportComponents";
+import { Footer } from '../core/footer';
+import { toPersianDigits } from '../core/helper';
+import type {
+  IDate,
+  IDateProps,
+  TUnit,
+} from '../core/type';
+import { TimeColumns } from '../exportComponents/timePicker/exportComponents';
+import { CalenderIcon } from '../icons/CalenderIcon';
+import { DatePicker } from '../persianDatePicker';
 
-export function MobileDate  ({ ...props }: IDateProps) {
+export function MobileDate({ ...props }: IDateProps) {
   const {
     onChange,
     defaultValue,
@@ -130,7 +138,8 @@ export function MobileDate  ({ ...props }: IDateProps) {
         } ${className}`}
         style={{ color: tertiaryColor, backgroundColor: highlightColor }}
       >
-        <CalenderIcon /><div className="w-full">{title}</div> 
+        <CalenderIcon />
+        <div className="w-full">{title}</div>
       </button>
       <div
         popover="auto"
@@ -209,5 +218,4 @@ export function MobileDate  ({ ...props }: IDateProps) {
       </div>
     </div>
   );
-};
-
+}

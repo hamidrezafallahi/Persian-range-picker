@@ -1,15 +1,22 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, {
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 
-import moment from "moment-jalaali";
+import moment from 'moment-jalaali';
 
-import { Footer } from "../core/footer";
-import { toPersianDigits } from "../core/helper";
-import type { IDate, IDateProps } from "../core/type";
+import { Footer } from '../core/footer';
+import { toPersianDigits } from '../core/helper';
+import type {
+  IDate,
+  IDateProps,
+} from '../core/type';
+import { useRenderPosition } from '../exportComponents/useRenderPosition';
 // import { useRenderPosition } from "../exportComponents/useRenderPosition";
-import { CalenderIcon } from "../icons/CalenderIcon";
-import { DatePicker } from "../persianDatePicker";
-import { DesktopTimePicker } from "./desktopTimePicker";
-import { useRenderPosition } from "../exportComponents/useRenderPosition";
+import { CalenderIcon } from '../icons/CalenderIcon';
+import { DatePicker } from '../persianDatePicker';
+import { DesktopTimePicker } from './desktopTimePicker';
 
 export function DesktopDatePicker({ ...props }: IDateProps) {
   const {
@@ -107,85 +114,85 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
   }, [defaultValue]);
   // const dateType = locale == ""
   return (
-      <div className="range">
-        <button
-          ref={buttonRef as React.RefObject<HTMLButtonElement>}
-          onClick={handleDropdown}
-          className={`flex justify-between items-center gap-1 px-2 rounded-md h-9 w-full  ${
-            showTime ? "xs:w-40 " : "xs:w-28"
-          } ${className}`}
-          style={{ color: tertiaryColor, backgroundColor: highlightColor }}
+    <div className="range">
+      <button
+        ref={buttonRef as React.RefObject<HTMLButtonElement>}
+        onClick={handleDropdown}
+        className={`flex justify-between items-center gap-1 px-2 rounded-md h-9 w-full  ${
+          showTime ? "xs:w-40 " : "xs:w-28"
+        } ${className}`}
+        style={{ color: tertiaryColor, backgroundColor: highlightColor }}
+      >
+        <CalenderIcon />
+        <div className="w-full text-start">{title}</div>
+      </button>
+      {isOpen && (
+        <div
+          ref={popupRef}
+          style={{
+            position: "absolute",
+            zIndex: 10,
+          }}
+          className="bg-white shadow-lg p-2 border rounded-lg overflow-hidden"
+          dir="ltr"
         >
-          <div className="w-full text-start">{title}</div>
-          <CalenderIcon />
-        </button>
-        {isOpen && (
           <div
-            ref={popupRef}
-            style={{
-              position: "absolute",
-              zIndex: 10,
-            }}
-            className="bg-white shadow-lg p-2 border rounded-lg overflow-hidden"
-            dir="ltr"
+            className={`z-50 flex items-end gap-2 ${
+              showTime && "border-r"
+            } w-full`}
           >
-            <div
-              className={`z-50 flex items-end gap-2 ${
-                showTime && "border-r"
-              } w-full`}
-            >
-              <DatePicker
-                name="DesktopDate"
-                {...props}
-                model="date"
-                locale={locale}
-                onDateChange={handleDateChange}
-                dateFromOutside={{ from: showDate, to: 0 }}
-                calendarBaseWidth={calendarBaseWidth}
-                defaultValue={
-                  defaultValue ? { from: defaultValue, to: 0 } : undefined
-                }
-              />
-              {showTime && (
-                <div style={{ width: "212px", minWidth: "212px" }}>
-                  <div
-                    className="flex justify-center items-center border-b h-9"
-                    style={{
-                      height: "34px",
-                      fontSize: "14px",
-                      color: tertiaryColor,
-                    }}
-                  >
-                    {locale === "fa"
-                      ? toPersianDigits(
-                          moment(showDate).locale(locale).format(showTimeFormat)
-                        )
-                      : moment(showDate).locale(locale).format(showTimeFormat)}
-                  </div>
-                  <DesktopTimePicker
-                    {...props}
-                    displayButtonCount={5}
-                    defaultValue={showDate}
-                    setShowDate={setShowDate}
-                    onGetValue={handleSetTime}
-                  />
-                </div>
-              )}
-            </div>
-
-            <Footer
-              setIsOpen={setIsOpen}
-              setShowDate={setShowDate}
+            <DatePicker
+              name="DesktopDate"
+              {...props}
+              model="date"
               locale={locale}
-              primaryColor={primaryColor}
-              highlightColor={highlightColor}
-              chooseTodayClassName={chooseTodayClassName}
-              showTime={showTime}
-              onSubmit={handleSubmit}
-              onChange={changeHandler}
+              onDateChange={handleDateChange}
+              dateFromOutside={{ from: showDate, to: 0 }}
+              calendarBaseWidth={calendarBaseWidth}
+              defaultValue={
+                defaultValue ? { from: defaultValue, to: 0 } : undefined
+              }
             />
+            {showTime && (
+              <div style={{ width: "212px", minWidth: "212px" }}>
+                <div
+                  className="flex justify-center items-center border-b h-9"
+                  style={{
+                    height: "34px",
+                    fontSize: "14px",
+                    color: tertiaryColor,
+                  }}
+                >
+                  {locale === "fa"
+                    ? toPersianDigits(
+                        moment(showDate).locale(locale).format(showTimeFormat)
+                      )
+                    : moment(showDate).locale(locale).format(showTimeFormat)}
+                </div>
+                <DesktopTimePicker
+                  {...props}
+                  displayButtonCount={5}
+                  defaultValue={showDate}
+                  setShowDate={setShowDate}
+                  onGetValue={handleSetTime}
+                />
+              </div>
+            )}
           </div>
-        )}
-      </div>
+
+          <Footer
+            setIsOpen={setIsOpen}
+            setShowDate={setShowDate}
+            locale={locale}
+            primaryColor={primaryColor}
+            highlightColor={highlightColor}
+            chooseTodayClassName={chooseTodayClassName}
+            showTime={showTime}
+            onSubmit={handleSubmit}
+            onChange={changeHandler}
+          />
+        </div>
+      )}
+    </div>
   );
 }

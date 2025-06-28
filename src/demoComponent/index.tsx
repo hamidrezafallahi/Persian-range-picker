@@ -1,9 +1,14 @@
-import { DatePicker, RangePicker, TimePicker, Mask } from "../range";
+import {
+  DatePicker,
+  Mask,
+  RangePicker,
+  TimePicker,
+} from '../range';
 
 export default function DemoComponent() {
   return (
     <>
-      <RangePicker />
+      <RangePicker locale="en" calendarType="shamsi" />
       <DatePicker showTime />
       <TimePicker />
       <Mask />
