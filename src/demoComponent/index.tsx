@@ -1,11 +1,16 @@
-import { RangePicker } from '../range';
+import {
+  DatePicker,
+  Mask,
+  RangePicker,
+  TimePicker,
+} from '../range';
 
 export default function DemoComponent() {
   return (
     <>
-      <RangePicker calendarType="shamsi" />
+      <RangePicker calendarType="shamsi" model="date" />
 
-      {/* <DatePicker
+      <DatePicker
         showTime
         onChange={(e) => {
           console.log(e);
@@ -14,7 +19,7 @@ export default function DemoComponent() {
         isOpenDropdown
       />
       <TimePicker />
-      <Mask /> */}
+      <Mask />
     </>
   );
 }

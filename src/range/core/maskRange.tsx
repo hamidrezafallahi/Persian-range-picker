@@ -1,7 +1,13 @@
-import React, { type Dispatch, useState } from "react";
+import React, {
+  type Dispatch,
+  useState,
+} from 'react';
 
-import type { IDate, TLocale } from "./type";
-import { Mask } from "../exportComponents/mask";
+import { Mask } from '../exportComponents/mask';
+import type {
+  IDate,
+  TLocale,
+} from './type';
 
 interface IProps {
   date: IDate;
@@ -34,7 +40,7 @@ function MaskRange({ ...props }: IProps) {
     <div className="flex items-center gap-2">
       <Mask
         // {...props}
-        onChange={(e) => handleChange(e as number, "from")}
+        onMaskChange={(e) => handleChange(e as number, "from")}
         defaultValue={date.from}
         maskClassName={` rounded-lg w-fit ${
           error === "from" ? " border-red-100 " : ""
@@ -45,7 +51,7 @@ function MaskRange({ ...props }: IProps) {
       {"_"}
       <Mask
         // {...props}
-        onChange={(e) => handleChange(e as number, "to")}
+        onMaskChange={(e) => handleChange(e as number, "to")}
         defaultValue={date.to}
         maskClassName={`rounded-lg w-fit ${
           error === "from" ? " border-red-100 " : ""

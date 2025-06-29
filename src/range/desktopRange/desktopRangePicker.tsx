@@ -33,7 +33,7 @@ export function DesktopRangePicker(props: IDesktopRangeProps) {
     open,
     handleSubmit,
     handleReject,
-    onChange,
+    onRangeChang,
     onCompareDateChange,
     setCompareDate,
     counter,
@@ -61,7 +61,7 @@ export function DesktopRangePicker(props: IDesktopRangeProps) {
             color: tertiaryColor,
           }}
         >
-          {props.label?.label ?? (props.locale == "en" ? "Date" : "تاریخ")}
+          {props.label?.label ?? (locale == "en" ? "Date" : "تاریخ")}
         </label>
       ),
     },
@@ -100,7 +100,7 @@ export function DesktopRangePicker(props: IDesktopRangeProps) {
           compareDate,
           Data: customData,
         });
-        setOpen(false);
+        setOpen?.(false);
       } else {
         if (onError) {
           onError(
@@ -121,11 +121,11 @@ export function DesktopRangePicker(props: IDesktopRangeProps) {
         }
       }
       setShowDate({ date, compareDate, Data: customData });
-      setOpen(false);
+      setOpen?.(false);
     }
   };
   const handleCancel = () => {
-    setOpen(false);
+    setOpen?.(false);
     setDate(showDate?.date);
     setStep(366);
     setCompareDate(showDate.compareDate);
@@ -140,12 +140,12 @@ export function DesktopRangePicker(props: IDesktopRangeProps) {
   useRenderPosition({
     buttonRef: buttonRef as React.RefObject<HTMLElement>,
     popupRef: popupRef,
-    setIsOpen: setOpen,
-    isOpen: open,
+    setIsOpen: setOpen ?? (() => {}),
+    isOpen: open ?? false,
   });
 
   const handleDropdown = () => {
-    setOpen((prev) => !prev);
+    setOpen?.((prev) => !prev);
   };
   useEffect(() => {
     if (date) {
@@ -174,13 +174,13 @@ export function DesktopRangePicker(props: IDesktopRangeProps) {
 
     if (isInitialRender.current) {
       isInitialRender.current = false;
-    } else if (hasDateChanged && onChange) {
+    } else if (hasDateChanged && onRangeChang) {
       const isEmpty = !date && !compareDate;
       const isInvalidDateTo = date?.to == null || Number.isNaN(date?.to);
       const isInvalid = date?.from && isInvalidDateTo;
 
       if (!(isEmpty || isInvalid)) {
-        onChange({ type, Data: { date, compareDate } });
+        onRangeChang({ type, Data: { date, compareDate } });
       }
     }
 
@@ -188,7 +188,7 @@ export function DesktopRangePicker(props: IDesktopRangeProps) {
   }, [date, compareDate]);
   useEffect(() => {
     if (customData) {
-      onChange?.({ type, Data: { customData } });
+      onRangeChang?.({ type, Data: { customData } });
     }
   }, [customData]);
   useEffect(() => {

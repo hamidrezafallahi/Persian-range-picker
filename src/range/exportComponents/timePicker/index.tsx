@@ -1,39 +1,24 @@
-import React, { type ReactNode, useEffect, useRef, useState } from "react";
-import "../../../main.css";
+import '../../../main.css';
 
-import moment from "moment-jalaali";
+import React, {
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 
-import { toPersianDigits } from "../../core/helper";
-import type { TUnit } from "../../core/type";
-import { CalenderIcon } from "../../icons/CalenderIcon";
-import { useRenderPosition } from "../useRenderPosition";
+import moment from 'moment-jalaali';
+
+import { toPersianDigits } from '../../core/helper';
+import type {
+  ITimePicker,
+  TUnit,
+} from '../../core/type';
+import { CalenderIcon } from '../../icons/CalenderIcon';
+import { useRenderPosition } from '../useRenderPosition';
 // import { useRenderPosition } from "../useRenderPosition";
-import { TimeColumns } from "./exportComponents";
+import { TimeColumns } from './exportComponents';
 
-interface Props {
-  defaultValue?: number;
-  calendarType?: "shamsi" | "gregorian";
-  onChange?: (timestamp: number) => void;
-  containerClassName?: string;
-  okButtonClassName?: string;
-  nowButtonClassName?: string;
-  timeButtonClassName?: string;
-  width?: number;
-  height?: number;
-  displayButtonCount?: number;
-  icon?: ReactNode | null;
-  tertiaryColor?: string;
-  highlightColor?: string;
-  format?: string;
-  showNow?: boolean;
-  renderExtraFooter?: () => ReactNode;
-  showSecond?: boolean;
-  hourStep?: number;
-  minuteStep?: number;
-  secondStep?: number;
-}
-
-export const TimePicker: React.FC<Props> = ({
+export const TimePicker: React.FC<ITimePicker> = ({
   defaultValue,
   onChange,
   calendarType = "shamsi",
@@ -52,7 +37,7 @@ export const TimePicker: React.FC<Props> = ({
   hourStep = 1,
   minuteStep = 1,
   secondStep = 1,
-}: Props) => {
+}: ITimePicker) => {
   const buttonRef = useRef<HTMLButtonElement>(null);
   const popupRef = useRef<HTMLDivElement>(null);
   const [open, setOpen] = useState(false);

@@ -1,27 +1,21 @@
-import React, { type ReactNode, useEffect, useRef, useState } from "react";
-import "../../../main.css";
-import moment from "moment-jalaali";
+import '../../../main.css';
 
-import type { IDate, TLocale } from "../../core/type";
+import React, {
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
+
+import moment from 'moment-jalaali';
+
+import type {
+  IDate,
+  MaskProps,
+  TLocale,
+} from '../../core/type';
 
 type TimeZone = "year" | "month" | "day";
-type MaskProps = {
-  defaultValue?: IDate["from"];
-  onError?: (e: string) => void;
-  onChange?: (e: IDate["from"] | null) => void;
-  calendarType?: "shamsi" | "gregorian";
-  inputClassName?: string;
-  maskClassName?: string;
-  suffix?: ReactNode | boolean;
-  prefix?: ReactNode | boolean;
-  maskHeight?: number;
-  maskFontSize?: number;
-  ErrorClass?: string;
-  dir?: "ltr" | "rtl";
-  autoComplete?: "on" | "off";
-  tertiaryColor?: string;
-  highlightColor?: string;
-};
+
 const defaultErrorClass = "border-red-700 ";
 export function Mask({ ...props }: MaskProps) {
   const {
@@ -30,7 +24,7 @@ export function Mask({ ...props }: MaskProps) {
     onError,
     inputClassName,
     maskClassName,
-    onChange,
+    onMaskChange,
     maskHeight = 36,
     suffix,
     prefix,
@@ -408,7 +402,7 @@ export function Mask({ ...props }: MaskProps) {
           setBaseValue(changeToTimestamp(fullValue, locale));
           setIsEdit(0);
         } else {
-          onChange?.(null);
+          onMaskChange?.(null);
         }
       } else {
         if (
@@ -438,7 +432,7 @@ export function Mask({ ...props }: MaskProps) {
           setBaseValue(changeToTimestamp(temp, locale));
           setIsEdit(0);
         } else {
-          onChange?.(null);
+          onMaskChange?.(null);
           onError?.(message);
         }
       }
@@ -575,7 +569,7 @@ export function Mask({ ...props }: MaskProps) {
           ) {
             setBaseValue(changeToTimestamp(temp, locale));
           } else {
-            onChange?.(null);
+            onMaskChange?.(null);
             onError?.(message);
           }
         }
@@ -616,7 +610,7 @@ export function Mask({ ...props }: MaskProps) {
     fullValueRef.current = temp;
 
     setSeparatedValue([year.toString(), month.toString(), day.toString()]);
-    onChange?.(baseValue);
+    onMaskChange?.(baseValue);
   }, [baseValue]);
   useEffect(() => {
     const [year, month, day] = separatedValue;
