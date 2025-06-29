@@ -1,7 +1,7 @@
 import React, { type Dispatch, useState } from "react";
 
-import {Mask} from "./mask";
 import type { IDate, TLocale } from "./type";
+import { Mask } from "../exportComponents/mask";
 
 interface IProps {
   date: IDate;

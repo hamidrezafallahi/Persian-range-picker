@@ -2,7 +2,7 @@ import React, { type ReactNode, useEffect, useRef, useState } from "react";
 
 import moment from "moment-jalaali";
 
-import type { IDate, TLocale } from "./type";
+import type { IDate, TLocale } from "../../core/type";
 
 type TimeZone = "year" | "month" | "day";
 type MaskProps = {

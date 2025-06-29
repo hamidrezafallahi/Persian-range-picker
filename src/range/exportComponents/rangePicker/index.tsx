@@ -1,9 +1,6 @@
-import {
-  useEffect,
-  useState,
-} from 'react';
+import { useEffect, useState } from "react";
 
-import moment from 'moment-jalaali';
+import moment from "moment-jalaali";
 
 import type {
   ESteps,
@@ -11,10 +8,10 @@ import type {
   ITime,
   ITimeZone,
   RangeProps,
-} from '../../core/type';
-import { DatePicker } from '../datePicker';
-import { Range } from './range';
-
+} from "../../core/type";
+import { DatePicker } from "../datePicker";
+import { Range } from "./range";
+import "../../../main.css";
 export function RangePicker({ ...props }: Omit<RangeProps, "locale">) {
   const {
     model = "range",

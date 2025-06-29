@@ -1,6 +1,7 @@
 import type { IDateProps } from "../../core/type";
 import { DesktopDatePicker } from "../../desktopDate/desktopDatePicker";
 import { MobileDate } from "../../mobileDate/mobileDatePicker";
+import "../../../main.css";
 
 export function DatePicker({ ...props }: Omit<IDateProps, "locale">) {
   const deviceType =

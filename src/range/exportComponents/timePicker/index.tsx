@@ -1,18 +1,14 @@
-import React, {
-  type ReactNode,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import React, { type ReactNode, useEffect, useRef, useState } from "react";
+import "../../../main.css";
 
-import moment from 'moment-jalaali';
+import moment from "moment-jalaali";
 
-import { toPersianDigits } from '../../core/helper';
-import type { TUnit } from '../../core/type';
-import { CalenderIcon } from '../../icons/CalenderIcon';
-import { useRenderPosition } from '../useRenderPosition';
+import { toPersianDigits } from "../../core/helper";
+import type { TUnit } from "../../core/type";
+import { CalenderIcon } from "../../icons/CalenderIcon";
+import { useRenderPosition } from "../useRenderPosition";
 // import { useRenderPosition } from "../useRenderPosition";
-import { TimeColumns } from './exportComponents';
+import { TimeColumns } from "./exportComponents";
 
 interface Props {
   defaultValue?: number;

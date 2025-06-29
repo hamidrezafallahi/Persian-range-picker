@@ -17,7 +17,7 @@ import MobileRangetaghvim from "../../public/images/MobileRangetaghvim.png";
 import TimePicker from "../../public/images/TimePicker.png";
 import TimePicker2 from "../../public/images/TimePicker2.png";
 import TimePickerRun from "../../public/images/TimePickerRun.png";
-import {Mask} from "../range/core/mask";
+import { Mask } from "../range/exportComponents/mask";
 
 const SECTION_KEYS = [
   "mobileRange",
