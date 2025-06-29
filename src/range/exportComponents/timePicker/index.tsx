@@ -168,14 +168,13 @@ export const TimePicker: React.FC<Props> = ({
               secondStep={secondStep}
               showSecond={showSecond}
             />
-
             <div className="flex justify-between gap-4 mt-2">
               {showNow && (
                 <button
                   onClick={handleNow}
                   className={`p-2 px-3 border rounded-md ${nowButtonClassName}`}
                 >
-                  Now
+                  {locale === "fa" ? "الان" : "Now"}
                 </button>
               )}
               <button
@@ -187,7 +186,7 @@ export const TimePicker: React.FC<Props> = ({
                   color: "white",
                 }}
               >
-                OK
+                {locale === "fa" ? "تایید" : "OK"}
               </button>
             </div>
           </div>
