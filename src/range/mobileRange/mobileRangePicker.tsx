@@ -1,17 +1,21 @@
-import { useEffect, useRef, useState } from "react";
+import {
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 
-import moment from "moment-jalaali";
+import moment from 'moment-jalaali';
 
-import MainContent from "../core/mainContent";
-import NavigateButton from "../core/navigateButton";
-import type { IBaseProps } from "../core/type";
-import { CalenderIcon } from "../icons/CalenderIcon";
-import { MenuArrowBack } from "../icons/MenuArrowBack";
+import MainContent from '../core/mainContent';
+import NavigateButton from '../core/navigateButton';
+import type { IBaseProps } from '../core/type';
+import { CalenderIcon } from '../icons/CalenderIcon';
+import { MenuArrowBack } from '../icons/MenuArrowBack';
 
 export function MobileRangePicker(props: IBaseProps) {
   const {
     onCompareDateChange,
-    onChange,
+    onRangeChang,
     step,
     counter,
     zone,
@@ -54,13 +58,13 @@ export function MobileRangePicker(props: IBaseProps) {
 
     if (isInitialRender.current) {
       isInitialRender.current = false;
-    } else if (hasDateChanged && onChange) {
+    } else if (hasDateChanged && onRangeChang) {
       const isEmpty = !date && !compareDate;
       const isInvalidDateTo = date?.to == null || Number.isNaN(date?.to);
       const isInvalid = date?.from && isInvalidDateTo;
 
       if (!(isEmpty || isInvalid)) {
-        onChange({ type, Data: { date, compareDate } });
+        onRangeChang({ type, Data: { date, compareDate } });
       }
     }
 
@@ -68,7 +72,7 @@ export function MobileRangePicker(props: IBaseProps) {
   }, [date, compareDate]);
   useEffect(() => {
     if (customData) {
-      onChange?.({ type, Data: { date, data: customData } });
+      onRangeChang?.({ type, Data: { date, data: customData } });
     }
   }, [customData]);
   return (
