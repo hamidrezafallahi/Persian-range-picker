@@ -1,5 +1,5 @@
 import React, { type ReactNode, useEffect, useRef, useState } from "react";
-
+import "../../../main.css";
 import moment from "moment-jalaali";
 
 import type { IDate, TLocale } from "../../core/type";
