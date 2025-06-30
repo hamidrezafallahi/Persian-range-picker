@@ -110,7 +110,11 @@ export const TimePicker: React.FC<ITimePicker> = ({
           ref={buttonRef as React.RefObject<HTMLButtonElement>}
           onClick={() => setOpen((prev) => !prev)}
           className={`relative flex justify-between items-center gap-2  px-2 rounded-md w-full xs:w-28 h-9  ${timeButtonClassName} `}
-          style={{ color: tertiaryColor, backgroundColor: highlightColor }}
+          style={{
+            color: tertiaryColor,
+            backgroundColor: highlightColor,
+            fontSize: "14px",
+          }}
         >
           <span className="text-lg">{icon}</span>
           {time

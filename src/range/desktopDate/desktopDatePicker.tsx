@@ -116,7 +116,11 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
         className={`flex justify-between items-center gap-1 px-2 rounded-md h-9 w-full  ${
           showTime ? "xs:w-40" : "xs:w-28"
         } ${className}`}
-        style={{ color: tertiaryColor, backgroundColor: highlightColor }}
+        style={{
+          color: tertiaryColor,
+          backgroundColor: highlightColor,
+          fontSize: "14px",
+        }}
       >
         <CalenderIcon />
         <div className="w-full text-start">{title}</div>
