@@ -1,10 +1,6 @@
-import type {
-  Dispatch,
-  ReactNode,
-  SetStateAction,
-} from 'react';
+import type { Dispatch, ReactNode, SetStateAction } from "react";
 
-export type ExportType = "timeStamp" | "date";
+export type ExportType = "timeStamp" | "IsoString";
 type TDeviceType = "desktop" | "mobile";
 export type HandleParams = {
   type: string;
@@ -72,12 +68,13 @@ export interface IDateProps
     IDeviceLocale {
   calendarType?: "shamsi" | "gregorian";
   defaultValue?: number;
-  onChange?: (e: number | object) => void;
+  onChange?: (e: number) => void;
   calendarBaseWidth?: number;
   dropdownWidth?: number;
   dropdownHeight?: number;
   exportType?: ExportType;
   isOpenDropdown?: boolean;
+  disabled?: boolean;
 }
 
 export interface IColorProps {
@@ -183,6 +180,7 @@ export interface IBaseProps extends IRangeOptions, IDeviceLocale {
   type?: string;
   setType?: Dispatch<SetStateAction<string>>;
   activeTable?: "Day" | "Week" | "Month" | "Year" | "manual";
+  disabled?: boolean;
 }
 
 export interface ITimeSections {
@@ -202,6 +200,7 @@ export interface IDesktopRangeProps extends IBaseProps, IDeviceLocale {
   };
   dropdownWidth?: number;
   dropdownHeight?: number;
+  disabled?: boolean;
 }
 
 export interface IMobileProps
@@ -228,6 +227,7 @@ export interface MaskProps
   ErrorClass?: string;
   dir?: "ltr" | "rtl";
   autoComplete?: "on" | "off";
+  disabled?: boolean;
 }
 
 export interface ITimePicker {
@@ -251,6 +251,7 @@ export interface ITimePicker {
   hourStep?: number;
   minuteStep?: number;
   secondStep?: number;
+  disabled?: boolean;
 }
 export interface ISubmittedData {
   date: IDate;

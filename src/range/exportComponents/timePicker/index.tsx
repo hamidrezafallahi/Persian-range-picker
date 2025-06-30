@@ -30,6 +30,7 @@ export const TimePicker: React.FC<ITimePicker> = ({
   hourStep = 1,
   minuteStep = 1,
   secondStep = 1,
+  disabled = false,
 }: ITimePicker) => {
   const buttonRef = useRef<HTMLButtonElement>(null);
   const popupRef = useRef<HTMLDivElement>(null);
@@ -86,7 +87,7 @@ export const TimePicker: React.FC<ITimePicker> = ({
             active === val
               ? "pointer-events-auto opacity-100 !text-main-white bg-main-black "
               : ""
-          } `}
+          }  `}
           ref={(el) => {
             buttonRefs.current[i] = el;
           }}
@@ -107,9 +108,12 @@ export const TimePicker: React.FC<ITimePicker> = ({
     <div className="range" style={{ position: "relative" }}>
       <div>
         <button
+          disabled={disabled}
           ref={buttonRef as React.RefObject<HTMLButtonElement>}
           onClick={() => setOpen((prev) => !prev)}
-          className={`relative flex justify-between items-center gap-2  px-2 rounded-md w-full xs:w-28 h-9  ${timeButtonClassName} `}
+          className={`relative flex justify-between items-center gap-2  px-2 rounded-md w-full xs:w-28 h-9 ${
+            disabled && "cursor-not-allowed"
+          }  ${timeButtonClassName} `}
           style={{
             color: tertiaryColor,
             backgroundColor: highlightColor,

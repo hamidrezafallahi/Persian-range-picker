@@ -95,7 +95,6 @@ export function useRenderPosition<T extends HTMLElement = HTMLElement>({
       popupRef.current.style.left = `${left}px`; //TODO use translate by Ai instead of left
       // popupRef.current.style.transform = `translateY(${top}px)`;
       // popupRef.current.style.transform = `translateX(${top}px)`;
-      console.log(top, left);
     }
   }, [isOpen]);
 }

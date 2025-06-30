@@ -22,10 +22,10 @@ export function Mask({ ...props }: MaskProps) {
     prefix,
     maskFontSize = 16,
     ErrorClass = defaultErrorClass,
-    dir = "ltr",
     autoComplete = "off",
     tertiaryColor = "#939393",
     highlightColor = "#f4f4f4",
+    disabled = false,
   } = props;
   const locale = calendarType == "shamsi" ? "fa" : "en";
 
@@ -616,17 +616,22 @@ export function Mask({ ...props }: MaskProps) {
     }
   }, [defaultValue]);
   return (
-    <div className="range">
+    <div
+      className="range"
+      style={{ cursor: disabled ? "not-allowed" : "auto" }}
+    >
       <div
-        className={` flex justify-center items-center gap-2   rounded-md  xs:w-28  w-full  align-center px-2 ${maskClassName} 
+        className={` flex justify-center items-center gap-2   rounded-md  xs:w-28  w-full  align-center px-2  
+          ${maskClassName} 
  ${errorTarget.length > 0 && ErrorClass}
       `}
         style={{
           height: `${maskHeight}px`,
           color: tertiaryColor,
           backgroundColor: highlightColor,
+          pointerEvents: disabled ? "none" : "auto",
+          userSelect: disabled ? "none" : "auto",
         }}
-        dir={dir}
       >
         <div className="">{suffix && suffix}</div>
         {isEdit !== 2 ? (

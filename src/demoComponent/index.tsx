@@ -1,9 +1,4 @@
-import {
-  DatePicker,
-  Mask,
-  RangePicker,
-  TimePicker,
-} from '../range';
+import { DatePicker, Mask, RangePicker, TimePicker } from "../range";
 
 export default function DemoComponent() {
   return (

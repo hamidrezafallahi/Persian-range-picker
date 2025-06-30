@@ -1,16 +1,12 @@
-import {
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import { useEffect, useRef, useState } from "react";
 
-import moment from 'moment-jalaali';
+import moment from "moment-jalaali";
 
-import MainContent from '../core/mainContent';
-import NavigateButton from '../core/navigateButton';
-import type { IBaseProps } from '../core/type';
-import { CalenderIcon } from '../icons/CalenderIcon';
-import { MenuArrowBack } from '../icons/MenuArrowBack';
+import MainContent from "../core/mainContent";
+import NavigateButton from "../core/navigateButton";
+import type { IBaseProps } from "../core/type";
+import { CalenderIcon } from "../icons/CalenderIcon";
+import { MenuArrowBack } from "../icons/MenuArrowBack";
 
 export function MobileRangePicker(props: IBaseProps) {
   const {
@@ -34,6 +30,7 @@ export function MobileRangePicker(props: IBaseProps) {
     calendarType = "shamsi",
     className,
     device,
+    disabled,
   } = props;
   const locale = calendarType == "shamsi" ? "fa" : "en";
 
@@ -79,8 +76,11 @@ export function MobileRangePicker(props: IBaseProps) {
     <div className="range">
       <div className={`flex ${className}`}>
         <button
+          disabled={disabled}
           popoverTarget="mobileRangeModal"
-          className="flex justify-center items-center gap-2 w-full sm:w-fit"
+          className={`flex justify-center items-center gap-2 w-full sm:w-fit ${
+            disabled && "cursor-not-allowed"
+          }`}
         >
           <CalenderIcon />
           <div className="w-fit text-gray-gray8 text-center">

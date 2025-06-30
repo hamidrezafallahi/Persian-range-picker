@@ -960,6 +960,9 @@
 .range .w-500 {
   width: 500px;
 }
+.range .cursor-not-allowed {
+  cursor: not-allowed;
+}
 
 .range .gap-2 {
   gap: 8px;

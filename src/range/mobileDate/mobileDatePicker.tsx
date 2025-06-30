@@ -25,6 +25,7 @@ export function MobileDate({ ...props }: IDateProps) {
     secondStep = 1,
     showSecond = true,
     className,
+    disabled = false,
   } = props;
   const [showDate, setShowDate] = useState<number>(0);
   const [content, setContent] = useState<"Date" | "Time">("Date");
@@ -115,10 +116,11 @@ export function MobileDate({ ...props }: IDateProps) {
   return (
     <div className="range">
       <button
+        disabled={disabled}
         popoverTarget="mobileDateModal"
-        className={`flex justify-between items-center gap-2 px-1 h-9 rounded-md  w-full  ${
-          showTime ? "xs:w-40 " : "xs:w-28"
-        } ${className}`}
+        className={`flex justify-between items-center gap-2 px-1 h-9 rounded-md  w-full ${
+          disabled && "cursor-not-allowed"
+        }  ${showTime ? "xs:w-40 " : "xs:w-28"} ${className}`}
         style={{ color: tertiaryColor, backgroundColor: highlightColor }}
       >
         <CalenderIcon />

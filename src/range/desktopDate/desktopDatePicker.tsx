@@ -25,8 +25,8 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
     chooseTodayClassName = "",
     showTimeFormat = "HH:mm:ss",
     isOpenDropdown = false,
-    exportType = "timeStamp", //TODO here you should change type of export date or timestamp /preset is timestamp
     showSecond = false,
+    disabled = false,
   } = props;
   //TODO add export type everywhere
   const dynamicFormat = showSecond ? showTimeFormat : "HH:mm";
@@ -41,18 +41,13 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
     setIsOpen: setIsOpen,
     isOpen: isOpen,
   });
-  const changeHandler = (e: number) => {
-    if (!e) return;
-    setShowDate(e);
-    onChange?.(exportType == "timeStamp" ? e : new Date(e));
-  };
 
   const handleDropdown = () => setIsOpen((prev) => !prev);
 
   const handleSubmit = () => {
     const finalDate = showTime ? showDate : moment(showDate).valueOf();
     // if (finalDate !== undefined) {
-    onChange?.(exportType === "timeStamp" ? finalDate : new Date(finalDate));
+    onChange?.(finalDate);
     // }
   };
 
@@ -62,7 +57,7 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
       : moment(date.from).startOf("day").valueOf();
     setShowDate(finalDate);
     if (!showTime) {
-      onChange?.(exportType == "timeStamp" ? finalDate : new Date(finalDate));
+      onChange?.(finalDate);
       setIsOpen(false);
     }
   };
@@ -91,6 +86,11 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
   function isDate(value: Date | number | undefined): value is Date {
     return value instanceof Date;
   }
+  const changeHandler = (e: number) => {
+    if (!e) return;
+    setShowDate(e);
+    onChange?.(e);
+  };
 
   useEffect(() => {
     let temp: number = 0; // Initialize temp as a number
@@ -111,11 +111,12 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
   return (
     <div className="range" style={{ position: "relative" }}>
       <button
+        disabled={disabled}
         ref={buttonRef as React.RefObject<HTMLButtonElement>}
         onClick={handleDropdown}
-        className={`flex justify-between items-center gap-1 px-2 rounded-md h-9 w-full  ${
-          showTime ? "xs:w-40" : "xs:w-28"
-        } ${className}`}
+        className={`flex justify-between items-center gap-1 px-2 rounded-md h-9 w-full ${
+          disabled && "cursor-not-allowed"
+        }  ${showTime ? "xs:w-40" : "xs:w-28"} ${className}`}
         style={{
           color: tertiaryColor,
           backgroundColor: highlightColor,

@@ -22,6 +22,7 @@ export function RangePicker({ ...props }: Omit<RangeProps, "locale">) {
     calendarType = "shamsi",
     // isOpenDropdown = false,
     onChange,
+    exportType = "IsoString",
   } = props;
   const locale = calendarType == "shamsi" ? "fa" : "en";
 
@@ -40,8 +41,18 @@ export function RangePicker({ ...props }: Omit<RangeProps, "locale">) {
   const [step, setStep] = useState<ESteps>(366);
   const [zone, setZone] = useState<ITimeZone>("manual");
   const [tabKey, setTabKey] = useState<ITime | string>("manual");
-  const handleChangeDateToRange = (e: number | object) => {
-    onChange?.({ type: "date", Data: { from: e } });
+  const handleChangeDateToRange = (e: number | string) => {
+    onChange?.({
+      type: "date",
+      Data: {
+        from:
+          exportType == "timeStamp"
+            ? e
+            : locale == "fa"
+            ? moment(e).format("YYYY-MM-DDTHH:mm:ss.SSSZ")
+            : moment.utc(e).format("YYYY-MM-DDTHH:mm:ss.SSSZ"),
+      },
+    });
   };
   useEffect(() => {
     if (defaultValue) {
