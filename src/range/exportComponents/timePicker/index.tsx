@@ -1,22 +1,15 @@
-import '../../../main.css';
+import "../../../main.css";
 
-import React, {
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import React, { useEffect, useRef, useState } from "react";
 
-import moment from 'moment-jalaali';
+import moment from "moment-jalaali";
 
-import { toPersianDigits } from '../../core/helper';
-import type {
-  ITimePicker,
-  TUnit,
-} from '../../core/type';
-import { CalenderIcon } from '../../icons/CalenderIcon';
-import { useRenderPosition } from '../useRenderPosition';
+import { toPersianDigits } from "../../core/helper";
+import type { ITimePicker, TUnit } from "../../core/type";
+import { CalenderIcon } from "../../icons/CalenderIcon";
+import { useRenderPosition } from "../useRenderPosition";
 // import { useRenderPosition } from "../useRenderPosition";
-import { TimeColumns } from './exportComponents';
+import { TimeColumns } from "./exportComponents";
 
 export const TimePicker: React.FC<ITimePicker> = ({
   defaultValue,
@@ -111,8 +104,8 @@ export const TimePicker: React.FC<ITimePicker> = ({
     }
   }, [defaultValue]);
   return (
-    <div className="range">
-      <div className="relative">
+    <div className="range" style={{ position: "relative" }}>
+      <div>
         <button
           ref={buttonRef as React.RefObject<HTMLButtonElement>}
           onClick={() => setOpen((prev) => !prev)}

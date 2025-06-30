@@ -1,18 +1,10 @@
-import '../../../main.css';
+import "../../../main.css";
 
-import React, {
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import React, { useEffect, useRef, useState } from "react";
 
-import moment from 'moment-jalaali';
+import moment from "moment-jalaali";
 
-import type {
-  IDate,
-  MaskProps,
-  TLocale,
-} from '../../core/type';
+import type { IDate, MaskProps, TLocale } from "../../core/type";
 
 type TimeZone = "year" | "month" | "day";
 

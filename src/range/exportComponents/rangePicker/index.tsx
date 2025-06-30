@@ -1,3 +1,5 @@
+import "../../../main.css";
+
 import { useEffect, useState } from "react";
 
 import moment from "moment-jalaali";
@@ -11,7 +13,7 @@ import type {
 } from "../../core/type";
 import { DatePicker } from "../datePicker";
 import { Range } from "./range";
-import "../../../main.css";
+
 export function RangePicker({ ...props }: Omit<RangeProps, "locale">) {
   const {
     model = "range",
@@ -60,7 +62,7 @@ export function RangePicker({ ...props }: Omit<RangeProps, "locale">) {
     }
   }, [defaultValue]);
   return (
-    <div className="range">
+    <div className="range" style={{ position: "relative" }}>
       {model == "date" ? (
         <DatePicker
           {...props}
