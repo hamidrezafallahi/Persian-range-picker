@@ -1,23 +1,27 @@
-import { type ReactNode, useState } from "react";
+import {
+  type ReactNode,
+  useState,
+} from 'react';
 
-import Capture from "../../public/images/Capture.png";
-import desktop2 from "../../public/images/desktop2.png";
-import desktopDate1 from "../../public/images/desktopDate1.png";
-import DesktopDatePicker from "../../public/images/DesktopDatePicker.png";
-import DesktopRange from "../../public/images/DesktopRange.png";
-import DesktopRange2 from "../../public/images/DesktopRange2.png";
-import DesktopRangePicker from "../../public/images/DesktopRangePicker.png";
-import DateMask from "../../public/images/Mask.png";
-import MobileDate from "../../public/images/MobileDate.png";
-import mobileDate2 from "../../public/images/mobileDate2.png";
-import MobileDatePickerImage from "../../public/images/MobileDatePickerImage.png";
-import MobileRange from "../../public/images/MobileRange.png";
-import MobileRangeManual from "../../public/images/MobileRangeManual.png";
-import MobileRangetaghvim from "../../public/images/MobileRangetaghvim.png";
-import TimePicker from "../../public/images/TimePicker.png";
-import TimePicker2 from "../../public/images/TimePicker2.png";
-import TimePickerRun from "../../public/images/TimePickerRun.png";
-import { Mask } from "../range/exportComponents/mask";
+import Capture from '../../public/images/Capture.png';
+import desktop2 from '../../public/images/desktop2.png';
+import desktopDate1 from '../../public/images/desktopDate1.png';
+import DesktopDatePicker from '../../public/images/DesktopDatePicker.png';
+import DesktopRange from '../../public/images/DesktopRange.png';
+import DesktopRange2 from '../../public/images/DesktopRange2.png';
+import DesktopRangePicker from '../../public/images/DesktopRangePicker.png';
+import DateMask from '../../public/images/Mask.png';
+import MobileDate from '../../public/images/MobileDate.png';
+import mobileDate2 from '../../public/images/mobileDate2.png';
+import MobileDatePickerImage
+  from '../../public/images/MobileDatePickerImage.png';
+import MobileRange from '../../public/images/MobileRange.png';
+import MobileRangeManual from '../../public/images/MobileRangeManual.png';
+import MobileRangetaghvim from '../../public/images/MobileRangetaghvim.png';
+import TimePicker from '../../public/images/TimePicker.png';
+import TimePicker2 from '../../public/images/TimePicker2.png';
+import TimePickerRun from '../../public/images/TimePickerRun.png';
+import { Mask } from '../range/exportComponents/mask';
 
 const SECTION_KEYS = [
   "mobileRange",
