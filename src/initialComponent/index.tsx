@@ -3,24 +3,23 @@ import {
   useState,
 } from 'react';
 
-import Capture from '/images/Capture.png';
-import desktop2 from '/images/desktop2.png';
-import desktopDate1 from '/images/desktopDate1.png';
-import DesktopDatePicker from '/images/DesktopDatePicker.png';
-import DesktopRange from '/images/DesktopRange.png';
-import DesktopRange2 from '/images/DesktopRange2.png';
-import DesktopRangePicker from '/images/DesktopRangePicker.png';
-import DateMask from '/images/Mask.png';
-import MobileDate from '/images/MobileDate.png';
-import mobileDate2 from '/images/mobileDate2.png';
-import MobileDatePickerImage from '/images/MobileDatePickerImage.png';
-import MobileRange from '/images/MobileRange.png';
-import MobileRangeManual from '/images/MobileRangeManual.png';
-import MobileRangetaghvim from '/images/MobileRangetaghvim.png';
-import TimePicker from '/images/TimePicker.png';
-import TimePicker2 from '/images/TimePicker2.png';
-import TimePickerRun from '/images/TimePickerRun.png';
-
+import Capture from '../assets/images/Capture.png';
+import desktop2 from '../assets/images/desktop2.png';
+import desktopDate1 from '../assets/images/desktopDate1.png';
+import DesktopDatePicker from '../assets/images/DesktopDatePicker.png';
+import DesktopRange from '../assets/images/DesktopRange.png';
+import DesktopRange2 from '../assets/images/DesktopRange2.png';
+import DesktopRangePicker from '../assets/images/DesktopRangePicker.png';
+import DateMask from '../assets/images/Mask.png';
+import MobileDate from '../assets/images/MobileDate.png';
+import mobileDate2 from '../assets/images/mobileDate2.png';
+import MobileDatePickerImage from '../assets/images/MobileDatePickerImage.png';
+import MobileRange from '../assets/images/MobileRange.png';
+import MobileRangeManual from '../assets/images/MobileRangeManual.png';
+import MobileRangetaghvim from '../assets/images/MobileRangetaghvim.png';
+import TimePicker from '../assets/images/TimePicker.png';
+import TimePicker2 from '../assets/images/TimePicker2.png';
+import TimePickerRun from '../assets/images/TimePickerRun.png';
 import { Mask } from '../range/exportComponents/mask';
 
 const SECTION_KEYS = [
