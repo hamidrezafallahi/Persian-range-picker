@@ -130,9 +130,12 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
             }}
           >
             <Mask
+              {...props}
+              exportType="timeStamp"
               defaultValue={showDate}
               onMaskChange={(e) => {
                 setShowDate(e as number);
+                onChange?.(e as number);
               }}
             />
           </div>

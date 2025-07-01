@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useState } from "react";
 
-import moment from 'moment-jalaali';
+import moment from "moment-jalaali";
 
 import type {
   ESteps,
@@ -8,9 +8,9 @@ import type {
   IDate,
   ITime,
   ITimeZone,
-} from '../../core/type';
-import { DesktopRangePicker } from '../../desktopRange/desktopRangePicker';
-import { MobileRangePicker } from '../../mobileRange/mobileRangePicker';
+} from "../../core/type";
+import { DesktopRangePicker } from "../../desktopRange/desktopRangePicker";
+import { MobileRangePicker } from "../../mobileRange/mobileRangePicker";
 
 export function Range({ ...props }: IBaseProps) {
   const deviceType =
@@ -65,6 +65,7 @@ export function Range({ ...props }: IBaseProps) {
           open={open}
           additionalElement={additionalElement}
           activeTable="Year"
+          locale={locale}
         />
       ) : (
         <MobileRangePicker
@@ -85,6 +86,7 @@ export function Range({ ...props }: IBaseProps) {
           setZone={setZone}
           additionalElement={additionalElement}
           device={deviceType}
+          locale={locale}
         />
       )}
     </>

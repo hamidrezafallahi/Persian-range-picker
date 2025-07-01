@@ -1,15 +1,12 @@
-import Comparison from '../comparison';
-import { TickIcon } from '../icons/TickIcon';
-import { getTimestampsForPeriod } from './helper';
-import type {
-  IBaseProps,
-  ITimeSections,
-} from './type';
-import { ESteps } from './type';
+import Comparison from "../comparison";
+import { TickIcon } from "../icons/TickIcon";
+import { getTimestampsForPeriod } from "./helper";
+import type { IBaseProps, ITimeSections } from "./type";
+import { ESteps } from "./type";
 
 function PeriodList({ ...props }: IBaseProps) {
   const {
-    onRangeChang,
+    onChange,
     setDate,
     setStep,
     setZone,
@@ -101,7 +98,7 @@ function PeriodList({ ...props }: IBaseProps) {
     setActiveCompareStep(null);
     setCompareDate(null);
     setCounter(0);
-    onRangeChang?.({ type: "date", Data: item.value });
+    onChange?.({ type: "date", Data: item.value });
   };
   const filteredPeriod = period.filter(
     (item) =>

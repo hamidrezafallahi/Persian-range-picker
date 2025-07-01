@@ -127,15 +127,10 @@ export interface RangeProps
     >,
     Omit<
       IRangeOptions,
-      | "defaultValue"
-      | "onRangeChang"
-      | "calendarType"
-      | "device"
-      | "isOpenDropdown"
+      "defaultValue" | "onChange" | "calendarType" | "device" | "isOpenDropdown"
     > {
   defaultValue?: IDate;
   onChange?: (e: HandleParams) => void;
-  onRangeChang?: (e: HandleParams) => void; // keep if needed, or remove if using onChange only
   calendarType?: "shamsi" | "gregorian";
   isOpenDropdown?: boolean;
   device?: TDeviceType;
@@ -153,7 +148,7 @@ export interface IRangeOptions extends IColorProps, IClassNameProps {
   additionalElement?: IAdditionalElementType[];
   defaultValue?: IDate;
   onError?: (e: string) => void;
-  onRangeChang?: (e: HandleParams) => void;
+  onChange?: (e: HandleParams) => void;
   onCompareDateChange?: (e: HandleParams) => void;
   isOpenDropdown?: boolean;
   device?: TDeviceType;

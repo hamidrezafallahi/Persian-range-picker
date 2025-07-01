@@ -11,7 +11,7 @@ import { MenuArrowBack } from "../icons/MenuArrowBack";
 export function MobileRangePicker(props: IBaseProps) {
   const {
     onCompareDateChange,
-    onRangeChang,
+    onChange,
     step,
     counter,
     zone,
@@ -55,13 +55,13 @@ export function MobileRangePicker(props: IBaseProps) {
 
     if (isInitialRender.current) {
       isInitialRender.current = false;
-    } else if (hasDateChanged && onRangeChang) {
+    } else if (hasDateChanged && onChange) {
       const isEmpty = !date && !compareDate;
       const isInvalidDateTo = date?.to == null || Number.isNaN(date?.to);
       const isInvalid = date?.from && isInvalidDateTo;
 
       if (!(isEmpty || isInvalid)) {
-        onRangeChang({ type, Data: { date, compareDate } });
+        onChange({ type, Data: { date, compareDate } });
       }
     }
 
@@ -69,7 +69,7 @@ export function MobileRangePicker(props: IBaseProps) {
   }, [date, compareDate]);
   useEffect(() => {
     if (customData) {
-      onRangeChang?.({ type, Data: { date, data: customData } });
+      onChange?.({ type, Data: { date, data: customData } });
     }
   }, [customData]);
   return (

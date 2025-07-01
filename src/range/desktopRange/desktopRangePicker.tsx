@@ -26,7 +26,7 @@ export function DesktopRangePicker(props: IDesktopRangeProps) {
     open,
     handleSubmit,
     handleReject,
-    onRangeChang,
+    onChange,
     onCompareDateChange,
     setCompareDate,
     counter,
@@ -44,7 +44,6 @@ export function DesktopRangePicker(props: IDesktopRangeProps) {
     dropdownWidth = 460,
     dropdownHeight = 460,
     device = deviceType,
-    disabled = false,
     label = {
       isShowLabel: true,
       label: (
@@ -76,8 +75,9 @@ export function DesktopRangePicker(props: IDesktopRangeProps) {
 
   const [type, setType] = useState<string>("date");
   const [customData, setCustomData] = useState<unknown>(null);
-
   const handleAccept = () => {
+    console.log("handleAccept");
+
     if (date) {
       if (date.from && date.to && date.from < date.to) {
         if (handleSubmit) {
@@ -167,13 +167,13 @@ export function DesktopRangePicker(props: IDesktopRangeProps) {
 
     if (isInitialRender.current) {
       isInitialRender.current = false;
-    } else if (hasDateChanged && onRangeChang) {
+    } else if (hasDateChanged && onChange) {
       const isEmpty = !date && !compareDate;
       const isInvalidDateTo = date?.to == null || Number.isNaN(date?.to);
       const isInvalid = date?.from && isInvalidDateTo;
 
       if (!(isEmpty || isInvalid)) {
-        onRangeChang({ type, Data: { date, compareDate } });
+        onChange({ type, Data: { date, compareDate } });
       }
     }
 
@@ -181,7 +181,7 @@ export function DesktopRangePicker(props: IDesktopRangeProps) {
   }, [date, compareDate]);
   useEffect(() => {
     if (customData) {
-      onRangeChang?.({ type, Data: { customData } });
+      onChange?.({ type, Data: { customData } });
     }
   }, [customData]);
   useEffect(() => {
@@ -203,7 +203,6 @@ export function DesktopRangePicker(props: IDesktopRangeProps) {
         <button
           className={`flex justify-center items-center gap-2 px-2 border border-gray-300 rounded-lg w-72 h-8 cursor-pointer ${dateClassName}`}
           onClick={handleDropdown}
-          disabled={disabled}
         >
           <DownTriangle />
           <div
@@ -272,9 +271,8 @@ export function DesktopRangePicker(props: IDesktopRangeProps) {
               setType={setType}
             />
             <div
-              className={`w-full flex ${
-                locale !== "fa" ? "justify-end" : "justify-start"
-              } gap-2 absolute bottom-0 `}
+              className={`w-full flex gap-2 absolute bottom-0 flex-row-reverse justify-end`}
+              dir={locale == "fa" ? "ltr" : "rtl"}
             >
               {/* ${tabClassName} */}
               <button
