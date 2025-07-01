@@ -1,12 +1,19 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, {
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 
-import moment from "moment-jalaali";
+import moment from 'moment-jalaali';
 
-import MainContent from "../core/mainContent";
-import NavigateButton from "../core/navigateButton";
-import type { IDesktopRangeProps, ISubmittedData } from "../core/type";
-import { useRenderPosition } from "../exportComponents/useRenderPosition";
-import { DownTriangle } from "../icons/DownTriangle";
+import MainContent from '../core/mainContent';
+import NavigateButton from '../core/navigateButton';
+import type {
+  IDesktopRangeProps,
+  ISubmittedData,
+} from '../core/type';
+import { useRenderPosition } from '../exportComponents/useRenderPosition';
+import { DownTriangle } from '../icons/DownTriangle';
 
 export function DesktopRangePicker(props: IDesktopRangeProps) {
   const userAgent = navigator.userAgent;
@@ -44,7 +51,6 @@ export function DesktopRangePicker(props: IDesktopRangeProps) {
     dropdownWidth = 460,
     dropdownHeight = 460,
     device = deviceType,
-    disabled = false,
     label = {
       isShowLabel: true,
       label: (
@@ -59,6 +65,7 @@ export function DesktopRangePicker(props: IDesktopRangeProps) {
       ),
     },
   } = props;
+  console.log(locale);
   const isInitialRender = useRef(true);
   const prevDate = useRef(date);
   const prevCompareDate = useRef(compareDate);
@@ -200,10 +207,9 @@ export function DesktopRangePicker(props: IDesktopRangeProps) {
         {label.isShowLabel && label.label}
       </div>
       <div className="flex gap-2">
-        <button
+        <div
           className={`flex justify-center items-center gap-2 px-2 border border-gray-300 rounded-lg w-72 h-8 cursor-pointer ${dateClassName}`}
           onClick={handleDropdown}
-          disabled={disabled}
         >
           <div
             className={`px-2 w-fit  text-center `}
@@ -240,7 +246,7 @@ export function DesktopRangePicker(props: IDesktopRangeProps) {
               : moment(showDate.date?.to).locale("en").format("DD / MM / YYYY")}
           </div>
           <DownTriangle />
-        </button>
+        </div>
 
         {zone !== "manual" && isShowNavigationButton && (
           <NavigateButton {...props} locale={locale} />
@@ -269,9 +275,8 @@ export function DesktopRangePicker(props: IDesktopRangeProps) {
               setType={setType}
             />
             <div
-              className={`w-full flex ${
-                locale !== "fa" ? "justify-end" : "justify-start"
-              } gap-2 absolute bottom-0 `}
+              className={`w-full flex gap-2 absolute bottom-0 flex-row-reverse justify-end`}
+              dir={locale == "fa" ? "ltr" : "rtl"}
             >
               {/* ${tabClassName} */}
               <button

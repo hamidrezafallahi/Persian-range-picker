@@ -93,11 +93,14 @@ const MainContent = ({ ...props }: IProps) => {
       className={"flex flex-col xs:flex-row p-1 xs:h-full"}
     >
       <div
-        className={` flex xs:flex-col border-b   p-1 w-full xs:overflow-y-auto xs:w-28  justify-around gap-9 p-2  max-w-[430px] xs:h-10 overflow-x-auto"
-    }
-    ${locale !== "fa" ? "xs:border-r" : "xs:border-l"}
-    ${tabClassName}
-  `.trim()}
+        className={`
+      flex xs:flex-col border-b w-full 
+      xs:overflow-y-auto xs:w-28 xs:h-full
+      justify-around gap-2 p-2 max-w-[430px] 
+      overflow-x-auto
+      ${locale !== "fa" ? "xs:border-r" : "xs:border-l"}
+      ${tabClassName}
+    `.trim()}
       >
         {tabs.map((tab) => (
           <button

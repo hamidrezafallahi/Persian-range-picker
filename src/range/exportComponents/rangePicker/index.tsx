@@ -1,8 +1,11 @@
-import "../../../main.css";
+// import "../../../main.css";
 
-import { useEffect, useState } from "react";
+import {
+  useEffect,
+  useState,
+} from 'react';
 
-import moment from "moment-jalaali";
+import moment from 'moment-jalaali';
 
 import type {
   ESteps,
@@ -10,9 +13,9 @@ import type {
   ITime,
   ITimeZone,
   RangeProps,
-} from "../../core/type";
-import { DatePicker } from "../datePicker";
-import { Range } from "./range";
+} from '../../core/type';
+import { DatePicker } from '../datePicker';
+import { Range } from './range';
 
 export function RangePicker({ ...props }: Omit<RangeProps, "locale">) {
   const {
@@ -22,7 +25,6 @@ export function RangePicker({ ...props }: Omit<RangeProps, "locale">) {
     calendarType = "shamsi",
     // isOpenDropdown = false,
     onChange,
-    exportType = "IsoString",
   } = props;
   const locale = calendarType == "shamsi" ? "fa" : "en";
 
@@ -41,18 +43,8 @@ export function RangePicker({ ...props }: Omit<RangeProps, "locale">) {
   const [step, setStep] = useState<ESteps>(366);
   const [zone, setZone] = useState<ITimeZone>("manual");
   const [tabKey, setTabKey] = useState<ITime | string>("manual");
-  const handleChangeDateToRange = (e: number | string) => {
-    onChange?.({
-      type: "date",
-      Data: {
-        from:
-          exportType == "timeStamp"
-            ? e
-            : locale == "fa"
-            ? moment(e).format("YYYY-MM-DDTHH:mm:ss.SSSZ")
-            : moment.utc(e).format("YYYY-MM-DDTHH:mm:ss.SSSZ"),
-      },
-    });
+  const handleChangeDateToRange = (e: number | object) => {
+    onChange?.({ type: "date", Data: { from: e } });
   };
   useEffect(() => {
     if (defaultValue) {
@@ -98,7 +90,6 @@ export function RangePicker({ ...props }: Omit<RangeProps, "locale">) {
           setStep={setStep}
           setZone={setZone}
           additionalElement={additionalElement}
-          calendarType={calendarType}
         />
       )}
     </div>

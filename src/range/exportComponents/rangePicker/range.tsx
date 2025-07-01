@@ -65,6 +65,7 @@ export function Range({ ...props }: IBaseProps) {
           open={open}
           additionalElement={additionalElement}
           activeTable="Year"
+          locale={locale}
         />
       ) : (
         <MobileRangePicker
@@ -85,6 +86,7 @@ export function Range({ ...props }: IBaseProps) {
           setZone={setZone}
           additionalElement={additionalElement}
           device={deviceType}
+          locale={locale}
         />
       )}
     </>
