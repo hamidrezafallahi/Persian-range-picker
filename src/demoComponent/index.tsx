@@ -1,21 +1,28 @@
-import { DatePicker, Mask, RangePicker, TimePicker } from "../range";
+import {
+  DatePicker,
+  Mask,
+  RangePicker,
+  TimePicker,
+} from '../range';
 
 export default function DemoComponent() {
   return (
     <>
       <RangePicker
+        model="date"
+        showMask
+        isTodaySelectPreset
         calendarType="shamsi"
         onChange={(e) => {
           console.log("RangePicker has changed", e);
         }}
         exportType="timeStamp"
       />
-
       <DatePicker
         showTime
         showSecond
         showMask
-        // isTodaySelectPreset
+        isTodaySelectPreset
         onChange={(e) => {
           console.log(e);
         }}

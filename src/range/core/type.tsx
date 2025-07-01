@@ -1,4 +1,8 @@
-import type { Dispatch, ReactNode, SetStateAction } from "react";
+import type {
+  Dispatch,
+  ReactNode,
+  SetStateAction,
+} from 'react';
 
 export type ExportType = "timeStamp" | "IsoString";
 type TDeviceType = "desktop" | "mobile";
@@ -210,7 +214,7 @@ export interface IMobileProps
 
 export interface MaskProps
   extends Pick<IColorProps, "tertiaryColor" | "highlightColor">,
-    Pick<IClassNameProps, "maskClassName"> {
+    Pick<IClassNameProps, "maskClassName" | "className"> {
   defaultValue?: IDate["from"];
   onError?: (e: string) => void;
   onMaskChange?: (e: IDate["from"] | number | string | null) => void;
@@ -229,7 +233,7 @@ export interface MaskProps
   exportType?: ExportType;
 }
 
-export interface ITimePicker {
+export interface ITimePicker extends IClassNameProps {
   defaultValue?: number;
   calendarType?: "shamsi" | "gregorian";
   onChange?: (e: number | string) => void;
