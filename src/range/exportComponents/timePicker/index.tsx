@@ -31,6 +31,7 @@ export const TimePicker: React.FC<ITimePicker> = ({
   minuteStep = 1,
   secondStep = 1,
   disabled = false,
+  exportType = "IsoString",
 }: ITimePicker) => {
   const buttonRef = useRef<HTMLButtonElement>(null);
   const popupRef = useRef<HTMLDivElement>(null);
@@ -61,7 +62,13 @@ export const TimePicker: React.FC<ITimePicker> = ({
 
   const handleSubmit = () => {
     if (time && time > 0) {
-      onChange?.(time);
+      const value =
+        exportType === "timeStamp"
+          ? time
+          : calendarType === "shamsi"
+          ? moment(time).format("YYYY-MM-DDTHH:mm:ss.SSSZ")
+          : moment.utc(time).format("YYYY-MM-DDTHH:mm:ss.SSSZ");
+      onChange?.(value);
     }
     setOpen(false);
   };
@@ -70,7 +77,14 @@ export const TimePicker: React.FC<ITimePicker> = ({
     const now = moment().locale(locale).valueOf();
     setTime(now);
     setOpen(false);
-    onChange?.(now);
+    const value =
+      exportType === "timeStamp"
+        ? now
+        : calendarType === "shamsi"
+        ? moment(now).format("YYYY-MM-DDTHH:mm:ss.SSSZ")
+        : moment.utc(now).format("YYYY-MM-DDTHH:mm:ss.SSSZ");
+
+    onChange?.(value);
   };
 
   const renderOptions = (count: number, unit: TUnit, step = 1) => {

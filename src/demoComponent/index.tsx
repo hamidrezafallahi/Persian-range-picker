@@ -3,7 +3,7 @@ import { DatePicker, Mask, RangePicker, TimePicker } from "../range";
 export default function DemoComponent() {
   return (
     <>
-      <RangePicker calendarType="shamsi" model="date" />
+      <RangePicker calendarType="shamsi" model="date" showMask />
 
       <DatePicker
         showTime
@@ -14,7 +14,11 @@ export default function DemoComponent() {
         isOpenDropdown
       />
       <TimePicker />
-      <Mask />
+      <Mask
+        onMaskChange={(e) => {
+          console.log("mask has changed", e);
+        }}
+      />
     </>
   );
 }

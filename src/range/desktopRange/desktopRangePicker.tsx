@@ -205,28 +205,7 @@ export function DesktopRangePicker(props: IDesktopRangeProps) {
           onClick={handleDropdown}
           disabled={disabled}
         >
-          <div
-            className={`px-2 w-fit  text-center `}
-            style={{
-              color: tertiaryColor,
-            }}
-          >
-            {locale === "fa"
-              ? moment(showDate.date?.from)
-                  .locale("fa")
-                  .format("jDD / jMM / jYYYY")
-              : moment(showDate.date?.from)
-                  .locale("en")
-                  .format("DD / MM / YYYY")}
-          </div>
-          <div
-            className={`text-center`}
-            style={{
-              color: tertiaryColor,
-            }}
-          >
-            -
-          </div>
+          <DownTriangle />
           <div
             className={`"px-2 w-fit text-center`}
             style={{
@@ -236,10 +215,34 @@ export function DesktopRangePicker(props: IDesktopRangeProps) {
             {locale === "fa"
               ? moment(showDate.date?.to)
                   .locale("fa")
-                  .format("jDD / jMM / jYYYY")
-              : moment(showDate.date?.to).locale("en").format("DD / MM / YYYY")}
+                  .format("jYYYY/ jMM /jDD  ")
+              : moment(showDate.date?.to)
+                  .locale("en")
+                  .format("  YYYY / MM / DD")}
           </div>
-          <DownTriangle />
+
+          <div
+            className={`text-center`}
+            style={{
+              color: tertiaryColor,
+            }}
+          >
+            -
+          </div>
+          <div
+            className={`px-2 w-fit  text-center `}
+            style={{
+              color: tertiaryColor,
+            }}
+          >
+            {locale === "fa"
+              ? moment(showDate.date?.from)
+                  .locale("fa")
+                  .format("jYYYY / jMM / jDD")
+              : moment(showDate.date?.from)
+                  .locale("en")
+                  .format("YYYY / MM / DD")}
+          </div>
         </button>
 
         {zone !== "manual" && isShowNavigationButton && (

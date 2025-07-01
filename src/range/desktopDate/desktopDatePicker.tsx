@@ -6,10 +6,10 @@ import { Footer } from "../core/footer";
 import { toPersianDigits } from "../core/helper";
 import type { IDate, IDateProps } from "../core/type";
 import { useRenderPosition } from "../exportComponents/useRenderPosition";
-// import { useRenderPosition } from "../exportComponents/useRenderPosition";
 import { CalenderIcon } from "../icons/CalenderIcon";
 import { DatePicker } from "../persianDatePicker";
 import { DesktopTimePicker } from "./desktopTimePicker";
+import { Mask } from "../exportComponents/mask";
 
 export function DesktopDatePicker({ ...props }: IDateProps) {
   const {
@@ -26,9 +26,9 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
     showTimeFormat = "HH:mm:ss",
     isOpenDropdown = false,
     showSecond = false,
+    showMask = false,
     disabled = false,
   } = props;
-  //TODO add export type everywhere
   const dynamicFormat = showSecond ? showTimeFormat : "HH:mm";
   const [showDate, setShowDate] = useState<number>(0);
   const [isOpen, setIsOpen] = useState(isOpenDropdown);
@@ -46,9 +46,7 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
 
   const handleSubmit = () => {
     const finalDate = showTime ? showDate : moment(showDate).valueOf();
-    // if (finalDate !== undefined) {
     onChange?.(finalDate);
-    // }
   };
 
   const handleDateChange = (date: IDate) => {
@@ -79,7 +77,6 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
       : "Choose date";
 
   const title = locale === "fa" ? persian : gregorian;
-
   const handleSetTime = (timestamp: number) => {
     setShowDate(timestamp);
   };
@@ -107,7 +104,6 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
 
     setShowDate(temp);
   }, [defaultValue]);
-  // const dateType = locale == ""
   return (
     <div className="range" style={{ position: "relative" }}>
       <button
@@ -116,7 +112,9 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
         onClick={handleDropdown}
         className={`flex justify-between items-center gap-1 px-2 rounded-md h-9 w-full ${
           disabled && "cursor-not-allowed"
-        }  ${showTime ? "xs:w-40" : "xs:w-28"} ${className}`}
+        }
+            
+          ${className}`}
         style={{
           color: tertiaryColor,
           backgroundColor: highlightColor,
@@ -124,7 +122,23 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
         }}
       >
         <CalenderIcon />
-        <div className="w-full text-start">{title}</div>
+        {showMask ? (
+          <div
+            onClick={(e) => {
+              e.stopPropagation();
+              e.preventDefault();
+            }}
+          >
+            <Mask
+              defaultValue={showDate}
+              onMaskChange={(e) => {
+                setShowDate(e as number);
+              }}
+            />
+          </div>
+        ) : (
+          <div className="w-full text-start">{title}</div>
+        )}
       </button>
       {isOpen && (
         <div

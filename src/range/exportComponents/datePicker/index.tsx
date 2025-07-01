@@ -3,10 +3,7 @@ import { DesktopDatePicker } from "../../desktopDate/desktopDatePicker";
 import { MobileDate } from "../../mobileDate/mobileDatePicker";
 import "../../../main.css";
 import moment from "moment-jalaali";
-interface IProps extends IDateProps {
-  onChange?: (e: number | string) => void;
-}
-export function DatePicker({ ...props }: Omit<IProps, "locale">) {
+export function DatePicker({ ...props }: Omit<IDateProps, "locale">) {
   const { onChange, exportType = "IsoString" } = props;
   const deviceType =
     /Mobile|Android|iPhone|iPad|iPod|Opera Mini|BlackBerry|IEMobile/i.test(
@@ -16,7 +13,7 @@ export function DatePicker({ ...props }: Omit<IProps, "locale">) {
       : "desktop";
   const { calendarType = "shamsi" } = props;
   const locale = calendarType == "shamsi" ? "fa" : "en";
-  const changeHandler = (e: number) => {
+  const changeHandler = (e: number | string) => {
     if (!e) return;
     onChange?.(
       exportType == "timeStamp"

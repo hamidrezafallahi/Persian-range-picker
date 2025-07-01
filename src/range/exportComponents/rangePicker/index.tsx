@@ -29,9 +29,11 @@ export function RangePicker({ ...props }: Omit<RangeProps, "locale">) {
   const [date, setDate] = useState<IDate>({
     from:
       locale === "fa"
-        ? moment().locale("fa").startOf("jYear").valueOf()
+        ? model == "date"
+          ? 0
+          : moment().locale("fa").startOf("jYear").valueOf()
         : moment().locale("en").startOf("year").valueOf(),
-    to: moment().locale(locale).startOf("day").valueOf(),
+    to: model == "date" ? 0 : moment().locale(locale).startOf("day").valueOf(),
   });
   const [compareDate, setCompareDate] = useState<IDate | null>(null);
   const [counter, setCounter] = useState(0);

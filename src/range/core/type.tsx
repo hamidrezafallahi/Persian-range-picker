@@ -68,7 +68,8 @@ export interface IDateProps
     IDeviceLocale {
   calendarType?: "shamsi" | "gregorian";
   defaultValue?: number;
-  onChange?: (e: number) => void;
+  showMask?: boolean;
+  onChange?: (e: number | string) => void;
   calendarBaseWidth?: number;
   dropdownWidth?: number;
   dropdownHeight?: number;
@@ -217,7 +218,7 @@ export interface MaskProps
     Pick<IClassNameProps, "maskClassName"> {
   defaultValue?: IDate["from"];
   onError?: (e: string) => void;
-  onMaskChange?: (e: IDate["from"] | null) => void;
+  onMaskChange?: (e: IDate["from"] | number | string | null) => void;
   calendarType?: "shamsi" | "gregorian";
   inputClassName?: string;
   suffix?: ReactNode | boolean;
@@ -228,12 +229,15 @@ export interface MaskProps
   dir?: "ltr" | "rtl";
   autoComplete?: "on" | "off";
   disabled?: boolean;
+  maskPlaceHolder?: string;
+  isTodaySelectPreset?: boolean;
+  exportType?: ExportType;
 }
 
 export interface ITimePicker {
   defaultValue?: number;
   calendarType?: "shamsi" | "gregorian";
-  onChange?: (timestamp: number) => void;
+  onChange?: (e: number | string) => void;
   containerClassName?: string;
   okButtonClassName?: string;
   nowButtonClassName?: string;
@@ -252,6 +256,7 @@ export interface ITimePicker {
   minuteStep?: number;
   secondStep?: number;
   disabled?: boolean;
+  exportType?: ExportType;
 }
 export interface ISubmittedData {
   date: IDate;

@@ -26,6 +26,9 @@ export function Mask({ ...props }: MaskProps) {
     tertiaryColor = "#939393",
     highlightColor = "#f4f4f4",
     disabled = false,
+    maskPlaceHolder,
+    isTodaySelectPreset = false,
+    exportType = "IsoString",
   } = props;
   const locale = calendarType == "shamsi" ? "fa" : "en";
 
@@ -74,7 +77,6 @@ export function Mask({ ...props }: MaskProps) {
     const english = "0123456789";
     return input.replace(/[۰-۹]/g, (d) => english[persian.indexOf(d)] || d);
   };
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const rawValue = e.target.value;
     const newValue = convertPersianToEnglishNumbers(rawValue).replace(
@@ -590,11 +592,6 @@ export function Mask({ ...props }: MaskProps) {
     if (!baseValue) {
       return;
     }
-    // if (isInitialMount.current && isEdit !== 2) {
-    //   isInitialMount.current = false;
-    //   return;
-    // }
-
     const dateValues = timestampToDateNumbers(locale, baseValue);
     const [year, month, day] = dateValues;
     const temp = `${year}${month}${day}`.substring(0, 8);
@@ -602,7 +599,13 @@ export function Mask({ ...props }: MaskProps) {
     fullValueRef.current = temp;
 
     setSeparatedValue([year.toString(), month.toString(), day.toString()]);
-    onMaskChange?.(baseValue);
+    onMaskChange?.(
+      exportType == "timeStamp"
+        ? baseValue
+        : locale == "fa"
+        ? moment(baseValue).format("YYYY-MM-DDTHH:mm:ss.SSSZ")
+        : moment.utc(baseValue).format("YYYY-MM-DDTHH:mm:ss.SSSZ")
+    );
   }, [baseValue]);
   useEffect(() => {
     const [year, month, day] = separatedValue;
@@ -611,10 +614,21 @@ export function Mask({ ...props }: MaskProps) {
     fullValueRef.current = temp;
   }, [separatedValue]);
   useEffect(() => {
-    if (defaultValue) {
+    if (defaultValue && defaultValue !== baseValue) {
       setBaseValue(defaultValue);
     }
   }, [defaultValue]);
+  useEffect(() => {
+    const today =
+      locale !== "fa"
+        ? moment().startOf("D").valueOf()
+        : moment().utc().startOf("day").valueOf();
+    if (isTodaySelectPreset) {
+      // onMaskChange?.(today);
+      setBaseValue(today);
+    }
+  }, [isTodaySelectPreset]);
+
   return (
     <div
       className="range"
@@ -645,11 +659,19 @@ export function Mask({ ...props }: MaskProps) {
                 style={{ fontSize: maskFontSize }}
                 className="flex justify-center gap-1 w-full text-base item-center same-font"
               >
-                <div>{separatedValue[0] || "____"}</div>
-                <div>{"/"}</div>
-                <div>{separatedValue[1] || "__"}</div>
-                <div>{"/"}</div>
-                <div>{separatedValue[2] || "__"}</div>
+                {baseValue == null ? (
+                  <div style={{ fontSize: "14px" }}>
+                    {maskPlaceHolder ?? "____/__/__"}
+                  </div>
+                ) : (
+                  <>
+                    <div>{separatedValue[0] || "____"}</div>
+                    <div>{"/"}</div>
+                    <div>{separatedValue[1] || "__"}</div>
+                    <div>{"/"}</div>
+                    <div>{separatedValue[2] || "__"}</div>
+                  </>
+                )}
               </div>
             ) : (
               <div
@@ -845,19 +867,31 @@ export function Mask({ ...props }: MaskProps) {
 }
 
 function timestampToDateNumbers(locale: TLocale, timestamp?: number) {
-  const year =
-    locale == "fa"
-      ? moment(timestamp).format("jYYYY")
-      : moment(timestamp).format("YYYY");
-  const month =
-    locale == "fa"
-      ? moment(timestamp).format("jMM")
-      : moment(timestamp).format("MM");
-  const day =
-    locale == "fa"
-      ? moment(timestamp).locale(locale).format("jDD")
-      : moment(timestamp).locale(locale).format("DD");
-  return [year, month, day];
+  if (timestamp == undefined || timestamp == 0) {
+    const year =
+      locale == "fa" ? moment().format("jYYYY") : moment().format("YYYY");
+    const month =
+      locale == "fa" ? moment().format("jMM") : moment().format("MM");
+    const day =
+      locale == "fa"
+        ? moment().locale(locale).format("jDD")
+        : moment().locale(locale).format("DD");
+    return [year, month, day];
+  } else {
+    const year =
+      locale == "fa"
+        ? moment(timestamp).format("jYYYY")
+        : moment(timestamp).format("YYYY");
+    const month =
+      locale == "fa"
+        ? moment(timestamp).format("jMM")
+        : moment(timestamp).format("MM");
+    const day =
+      locale == "fa"
+        ? moment(timestamp).locale(locale).format("jDD")
+        : moment(timestamp).locale(locale).format("DD");
+    return [year, month, day];
+  }
 }
 function checkDateByRegex(timestamp: number, locale: TLocale) {
   const gregorianRegex = /^\d{4}\/(0[1-9]|1[0-2])\/(0[1-9]|[12][0-9]|3[01])$/;
