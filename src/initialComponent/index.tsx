@@ -1,26 +1,23 @@
-import {
-  type ReactNode,
-  useState,
-} from 'react';
+import { type ReactNode, useState } from "react";
 
-import Capture from '../assets/images/Capture.png';
-import desktop2 from '../assets/images/desktop2.png';
-import desktopDate1 from '../assets/images/desktopDate1.png';
-import DesktopDatePicker from '../assets/images/DesktopDatePicker.png';
-import DesktopRange from '../assets/images/DesktopRange.png';
-import DesktopRange2 from '../assets/images/DesktopRange2.png';
-import DesktopRangePicker from '../assets/images/DesktopRangePicker.png';
-import DateMask from '../assets/images/Mask.png';
-import MobileDate from '../assets/images/MobileDate.png';
-import mobileDate2 from '../assets/images/mobileDate2.png';
-import MobileDatePickerImage from '../assets/images/MobileDatePickerImage.png';
-import MobileRange from '../assets/images/MobileRange.png';
-import MobileRangeManual from '../assets/images/MobileRangeManual.png';
-import MobileRangetaghvim from '../assets/images/MobileRangetaghvim.png';
-import TimePicker from '../assets/images/TimePicker.png';
-import TimePicker2 from '../assets/images/TimePicker2.png';
-import TimePickerRun from '../assets/images/TimePickerRun.png';
-import { Mask } from '../range/exportComponents/mask';
+import Capture from "../assets/images/Capture.png";
+import desktop2 from "../assets/images/desktop2.png";
+import desktopDate1 from "../assets/images/desktopDate1.png";
+import DesktopDatePicker from "../assets/images/DesktopDatePicker.png";
+import DesktopRange from "../assets/images/DesktopRange.png";
+import DesktopRange2 from "../assets/images/DesktopRange2.png";
+import DesktopRangePicker from "../assets/images/DesktopRangePicker.png";
+import DateMask from "../assets/images/Mask.png";
+import MobileDate from "../assets/images/MobileDate.png";
+import mobileDate2 from "../assets/images/mobileDate2.png";
+import MobileDatePickerImage from "../assets/images/MobileDatePickerImage.png";
+import MobileRange from "../assets/images/MobileRange.png";
+import MobileRangeManual from "../assets/images/MobileRangeManual.png";
+import MobileRangetaghvim from "../assets/images/MobileRangetaghvim.png";
+import TimePicker from "../assets/images/TimePicker.png";
+import TimePicker2 from "../assets/images/TimePicker2.png";
+import TimePickerRun from "../assets/images/TimePickerRun.png";
+import { Mask } from "../range/exportComponents/mask";
 
 const SECTION_KEYS = [
   "mobileRange",
@@ -169,7 +166,7 @@ const TEXT: Record<"fa" | "en", LanguageText> = {
 export function InitialComponent() {
   const [language, setLanguage] = useState<"fa" | "en">("fa");
   const [activeKey, setActiveKey] = useState<SectionKey | "">("");
-
+  const t = TEXT[language];
   const handleSectionClick = (key: SectionKey) => {
     setActiveKey((prev) => (prev === key ? "" : key));
     setTimeout(() => {
@@ -179,25 +176,45 @@ export function InitialComponent() {
   };
 
   const toggleLanguage = () => {
-    setLanguage((prev) => (prev === "fa" ? "en" : "fa"));
+    setLanguage(language == "fa" ? "en" : "fa");
+    const container = document.getElementById("container");
+    container?.getAttribute("dir");
+    if (container) {
+      if (container?.classList.contains("rtl")) {
+        container?.classList.remove("rtl");
+        container?.classList.add("ltr");
+      } else {
+        container?.classList.remove("ltr");
+        container?.classList.add("rtl");
+      }
+    }
+    const langButton = document.getElementById("langButton");
+    if (langButton) {
+      if (langButton.innerText == "fa") {
+        langButton.innerText = "en";
+      } else {
+        langButton.innerText = "fa";
+      }
+    }
   };
-
-  const t = TEXT[language];
 
   return (
     <div
       id="container"
       style={{
         background: "#1d1f30",
-        direction: language === "fa" ? "rtl" : "ltr",
-        textAlign: language === "fa" ? "right" : "left",
+        textAlign: "right",
         position: "relative",
       }}
     >
       <div className="persianRangeHeader">
         <div className="flex justify-around items-center">
-          <button className="lanButton" onClick={toggleLanguage}>
-            {language}
+          <button
+            className="lanButton"
+            id="langButton"
+            onClick={toggleLanguage}
+          >
+            fa
           </button>
           <div
             style={{
