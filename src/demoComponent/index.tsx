@@ -1,15 +1,11 @@
-import {
-  DatePicker,
-  Mask,
-  RangePicker,
-  TimePicker,
-} from '../range';
+import { DatePicker, Mask, RangePicker, TimePicker } from "../range";
 
 export default function DemoComponent() {
   return (
     <>
       <RangePicker
         model="date"
+        disabled
         showMask
         isTodaySelectPreset
         calendarType="shamsi"
@@ -19,6 +15,7 @@ export default function DemoComponent() {
         exportType="timeStamp"
       />
       <DatePicker
+        disabled
         showTime
         showSecond
         showMask
@@ -31,12 +28,14 @@ export default function DemoComponent() {
         exportType="timeStamp"
       />
       <TimePicker
+        disabled
         onChange={(e) => {
           console.log(e);
         }}
         exportType="timeStamp"
       />
       <Mask
+        disabled
         // isTodaySelectPreset
         onMaskChange={(e) => {
           console.log("mask has changed", e);
