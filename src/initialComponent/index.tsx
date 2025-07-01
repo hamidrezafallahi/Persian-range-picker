@@ -1,4 +1,4 @@
-import { type ReactNode, useState } from "react";
+import { type ReactNode } from "react";
 
 import Capture from "../assets/images/Capture.png";
 import desktop2 from "../assets/images/desktop2.png";
@@ -107,8 +107,8 @@ const TEXT: Record<"fa" | "en", LanguageText> = {
   },
   en: {
     sections: {
-      content: "content",
-      image: "image",
+      content: "Content",
+      image: "Image",
       mobileRange: {
         title: "Mobile Range",
         desc: "This section allows selecting a range of dates for mobile display.",
@@ -164,11 +164,9 @@ const TEXT: Record<"fa" | "en", LanguageText> = {
 };
 
 export function InitialComponent() {
-  const [language, setLanguage] = useState<"fa" | "en">("fa");
-  const [activeKey, setActiveKey] = useState<SectionKey | "">("");
-  const t = TEXT[language];
+  let lang: "fa" | "en" = "fa";
+
   const handleSectionClick = (key: SectionKey) => {
-    setActiveKey((prev) => (prev === key ? "" : key));
     setTimeout(() => {
       const section = document.getElementById(key);
       section?.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -176,25 +174,51 @@ export function InitialComponent() {
   };
 
   const toggleLanguage = () => {
-    setLanguage(language == "fa" ? "en" : "fa");
+    lang = lang === "fa" ? "en" : "fa";
+
     const container = document.getElementById("container");
-    container?.getAttribute("dir");
     if (container) {
-      if (container?.classList.contains("rtl")) {
-        container?.classList.remove("rtl");
-        container?.classList.add("ltr");
-      } else {
-        container?.classList.remove("ltr");
-        container?.classList.add("rtl");
-      }
+      container.classList.remove("rtl", "ltr");
+      container.classList.add(lang === "fa" ? "rtl" : "ltr");
+      container.style.textAlign = lang === "fa" ? "right" : "left";
     }
+
     const langButton = document.getElementById("langButton");
     if (langButton) {
-      if (langButton.innerText == "fa") {
-        langButton.innerText = "en";
-      } else {
-        langButton.innerText = "fa";
+      langButton.innerText = lang;
+    }
+
+    const titleButton = document.getElementById("titleButton");
+    if (titleButton) {
+      titleButton.innerText = TEXT[lang].sections.content;
+    }
+
+    SECTION_KEYS.forEach((key) => {
+      const btn = document.getElementById(`btn-${key}`);
+      if (btn) {
+        btn.textContent = TEXT[lang].sections[key].title;
       }
+    });
+
+    SECTION_KEYS.forEach((key) => {
+      const sectionEl = document.getElementById(key);
+      const section = TEXT[lang].sections[key];
+      if (sectionEl && section) {
+        const titleEl = sectionEl.querySelector("h2");
+        if (titleEl) {
+          titleEl.textContent = section.title;
+        }
+        const descEl = sectionEl.querySelector("p");
+        if (descEl) {
+          descEl.textContent = section.desc;
+        }
+      }
+    });
+
+    const displayCard = document.querySelector(".displayCard");
+    if (displayCard) {
+      displayCard.children[0].textContent = TEXT[lang].sections.image;
+      displayCard.children[1].textContent = TEXT[lang].sections.content;
     }
   };
 
@@ -214,7 +238,7 @@ export function InitialComponent() {
             id="langButton"
             onClick={toggleLanguage}
           >
-            fa
+            {lang}
           </button>
           <div
             style={{
@@ -227,23 +251,24 @@ export function InitialComponent() {
             {SECTION_KEYS.map((key) => (
               <button
                 key={key}
-                className={`buttonStyle ${activeKey === key ? "active" : ""}`}
+                id={`btn-${key}`}
+                className="buttonStyle"
                 onClick={() => handleSectionClick(key)}
               >
-                {t.sections[key].title}
+                {TEXT[lang].sections[key].title}
               </button>
             ))}
           </div>
         </div>
 
         <div className="displayCard">
-          <div>{t.sections.image}</div>
-          <div>{t.sections.content}</div>
+          <div>{TEXT[lang].sections.image}</div>
+          <div id="titleButton">{TEXT[lang].sections.content}</div>
         </div>
       </div>
 
       {SECTION_KEYS.map((key) => {
-        const section = t.sections[key];
+        const section = TEXT[lang].sections[key];
         return (
           <div className="scopeTitle" key={key} id={key}>
             <h2
@@ -253,7 +278,7 @@ export function InitialComponent() {
               {section.title}
             </h2>
 
-            {activeKey === key && (
+            {"desktopRange" === key && (
               <div className="sectionContent">
                 {section.image && (
                   <img
