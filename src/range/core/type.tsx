@@ -249,7 +249,6 @@ export interface ITimePicker extends IClassNameProps {
   highlightColor?: string;
   format?: string;
   showNow?: boolean;
-  renderExtraFooter?: () => ReactNode;
   showSecond?: boolean;
   hourStep?: number;
   minuteStep?: number;

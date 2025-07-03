@@ -33,7 +33,8 @@ export default function DemoComponent() {
         onChange={(e) => {
           console.log(e);
         }}
-        exportType="timeStamp"
+        showSecond
+        // exportType="timeStamp"
       />
       <Mask
         disabled

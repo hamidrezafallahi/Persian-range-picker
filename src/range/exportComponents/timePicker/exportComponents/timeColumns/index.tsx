@@ -38,7 +38,7 @@ export const TimeColumns: React.FC<Props> = ({
   TimeColumnsClassName,
 }) => {
   return (
-    <div className={`flex gap-4 ${TimeColumnsClassName}`} dir="ltr">
+    <div className={`flex justify-center gap-4 ${TimeColumnsClassName}`} dir="ltr">
       <TimeColumn
         count={24}
         unit="hour"

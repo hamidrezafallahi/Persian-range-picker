@@ -30,6 +30,12 @@ export function MobileDate({ ...props }: IDateProps) {
   const [showDate, setShowDate] = useState<number>(0);
   const [content, setContent] = useState<"Date" | "Time">("Date");
   const popoverRef = useRef<HTMLDivElement>(null);
+    const device: "mobile" | "desktop" =
+    /Mobile|Android|iPhone|iPad|iPod|Opera Mini|BlackBerry|IEMobile/i.test(
+      navigator.userAgent
+    )
+      ? "mobile"
+      : "desktop";
   const dynamicFormat = showSecond ? showTimeFormat : "HH:mm";
   const persian =
     showDate > 0
@@ -61,6 +67,7 @@ export function MobileDate({ ...props }: IDateProps) {
   };
   const handleSubmit = () => {
     onChange?.(showDate);
+    setContent("Date");
     popoverRef.current?.hidePopover();
   };
 
@@ -114,14 +121,14 @@ export function MobileDate({ ...props }: IDateProps) {
     setShowDate(temp);
   }, [defaultValue]);
   return (
-    <div className="range">
+    <div className="range" style={{ position: "relative", width:device=="desktop"?"fit-content":"100%" }}>
       <button
         disabled={disabled}
         popoverTarget="mobileDateModal"
         className={`flex justify-between items-center gap-2 px-1 h-9 rounded-md  w-full ${
           disabled && "cursor-not-allowed"
-        }  ${showTime ? "xs:w-40 " : "xs:w-28"} ${className}`}
-        style={{ color: tertiaryColor, backgroundColor: highlightColor }}
+        }   ${className}`}
+        style={{ color: tertiaryColor, backgroundColor: highlightColor, width:"100%" }}
       >
         <CalenderIcon />
         <div className="w-full">{title}</div>
@@ -149,7 +156,7 @@ export function MobileDate({ ...props }: IDateProps) {
               }}
             />
           ) : (
-            <div style={{ zIndex: 1000 }}>
+            <div style={{ zIndex: 10 }}>
               <div
                 className="flex justify-center items-center border-b h-9"
                 style={{
@@ -195,7 +202,7 @@ export function MobileDate({ ...props }: IDateProps) {
             highlightColor={highlightColor}
             chooseTodayClassName={chooseTodayClassName}
             showTime={showTime}
-            onNowButton={handleClosePopup}
+            // onNowButton={handleClosePopup}
             onTodayButton={handleClosePopup}
             onSubmit={handleSubmit}
             onChange={onChange} //////type error unknown type fix by net
