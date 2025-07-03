@@ -6,6 +6,7 @@ import type { IDesktopRangeProps } from "./type";
 
 interface IFooter {
   setShowDate: Dispatch<SetStateAction<number>>;
+  showDate: number;
   setIsOpen?: Dispatch<SetStateAction<boolean>>;
   locale: IDesktopRangeProps["locale"];
   elements?: ReactNode[] | null;
@@ -32,24 +33,42 @@ export const Footer = ({ ...props }: IFooter) => {
     onSubmit,
     onNowButton,
     onTodayButton,
+    showDate,
   } = props;
 
   const handleSelect = (key: "today" | "now" | "submit") => {
-    const now = moment().locale(locale).valueOf();
     const todayStart = moment().locale(locale).startOf("day").valueOf();
-    const date = key === "now" ? now : todayStart;
+
     if (key === "today") {
       setShowDate(todayStart);
       onChange?.(todayStart);
       onTodayButton?.();
+      setIsOpen?.(false);
     } else if (key === "now") {
-      setShowDate(date);
-      onChange?.(now);
+      const now = locale === "fa" ? moment() : moment.utc();
+      let updated;
+
+      const isInvalid =
+        !showDate || isNaN(showDate) || !moment(showDate).isValid();
+
+      if (isInvalid) {
+        updated = locale === "fa" ? moment() : moment.utc();
+      } else {
+        updated =
+          locale === "fa" ? moment(showDate) : moment.utc(moment(showDate));
+      }
+
+      updated = updated
+        .set("hour", now.hour())
+        .set("minute", now.minute())
+        .set("second", now.second());
+
+      setShowDate(updated.valueOf());
       onNowButton?.();
     } else if (key === "submit") {
       onSubmit?.();
+      setIsOpen?.(false);
     }
-    setIsOpen?.(false);
   };
 
   return (

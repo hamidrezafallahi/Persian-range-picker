@@ -39,6 +39,12 @@ export const TimePicker: React.FC<ITimePicker> = ({
   const [time, setTime] = useState<number | null>(
     defaultValue ? defaultValue : null
   );
+   const device:"mobile"|"desktop" =
+    /Mobile|Android|iPhone|iPad|iPod|Opera Mini|BlackBerry|IEMobile/i.test(
+      navigator.userAgent
+    )
+      ? "mobile"
+      : "desktop";
   const buttonRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const locale = calendarType == "shamsi" ? "fa" : "en";
   const dynamicFormat = showSecond ? format : "HH:mm";
@@ -73,20 +79,25 @@ export const TimePicker: React.FC<ITimePicker> = ({
     setOpen(false);
   };
 
-  const handleNow = () => {
-    const now = moment().locale(locale).valueOf();
-    setTime(now);
-    setOpen(false);
-    const value =
-      exportType === "timeStamp"
-        ? now
-        : calendarType === "shamsi"
-        ? moment(now).format("YYYY-MM-DDTHH:mm:ss.SSSZ")
-        : moment.utc(now).format("YYYY-MM-DDTHH:mm:ss.SSSZ");
+const handleNow = () => {
+  const now = locale === "fa" ? moment() : moment.utc();
+  let updated;
 
-    onChange?.(value);
-  };
+  const isInvalid = !time || isNaN(time) || !moment(time).isValid();
 
+  if (isInvalid) {
+    updated = locale === "fa" ? moment() : moment.utc();
+  } else {
+    updated = locale === "fa" ? moment(time) : moment.utc(moment(time));
+  }
+
+  updated = updated
+    .set("hour", now.hour())
+    .set("minute", now.minute())
+    .set("second", now.second());
+
+  setTime(updated.valueOf());
+};
   const renderOptions = (count: number, unit: TUnit, step = 1) => {
     const pad = (num: number) => num.toString().padStart(2, "0");
     const active = moment(time).locale(locale).get(unit);

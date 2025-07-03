@@ -110,7 +110,7 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
         disabled={disabled}
         ref={buttonRef as React.RefObject<HTMLButtonElement>}
         onClick={handleDropdown}
-        className={`flex justify-between items-center gap-1 px-2 rounded-md h-9 w-full ${
+        className={`flex justify-between items-center gap-1 px-2 rounded-md h-9 w-full   ${
           disabled && "cursor-not-allowed"
         }
             
@@ -205,6 +205,7 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
           <Footer
             setIsOpen={setIsOpen}
             setShowDate={setShowDate}
+            showDate={showDate}
             locale={locale}
             primaryColor={primaryColor}
             highlightColor={highlightColor}

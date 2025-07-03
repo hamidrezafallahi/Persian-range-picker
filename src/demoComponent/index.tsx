@@ -5,9 +5,10 @@ export default function DemoComponent() {
     <>
       <RangePicker
         model="date"
-        disabled
         showMask
-        isTodaySelectPreset
+        showTime
+        showSecond
+        // isTodaySelectPreset
         calendarType="shamsi"
         onChange={(e) => {
           console.log("RangePicker has changed", e);
@@ -15,7 +16,7 @@ export default function DemoComponent() {
         exportType="timeStamp"
       />
       <DatePicker
-        disabled
+        // disabled
         showTime
         showSecond
         showMask
@@ -28,7 +29,7 @@ export default function DemoComponent() {
         exportType="timeStamp"
       />
       <TimePicker
-        disabled
+        // disabled
         onChange={(e) => {
           console.log(e);
         }}

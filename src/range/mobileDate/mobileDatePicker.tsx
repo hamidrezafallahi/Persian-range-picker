@@ -189,6 +189,7 @@ export function MobileDate({ ...props }: IDateProps) {
         <div className="bottom-0 fixed p-2 w-full" style={{ width: "100" }}>
           <Footer
             setShowDate={setShowDate}
+            showDate={showDate}
             locale={locale}
             primaryColor={primaryColor}
             highlightColor={highlightColor}

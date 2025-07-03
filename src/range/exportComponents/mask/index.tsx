@@ -614,8 +614,18 @@ export function Mask({ ...props }: MaskProps) {
     fullValueRef.current = temp;
   }, [separatedValue]);
   useEffect(() => {
+   if (!baseValue) {
+      return;
+    }
     if (defaultValue && defaultValue !== baseValue) {
-      setBaseValue(defaultValue);
+    const dateValues = timestampToDateNumbers(locale, baseValue);
+    const [year, month, day] = dateValues;
+    const temp = `${year}${month}${day}`.substring(0, 8);
+    setFullValue(temp);
+    fullValueRef.current = temp;
+
+    setSeparatedValue([year.toString(), month.toString(), day.toString()]);
+      // setBaseValue(defaultValue);
     }
   }, [defaultValue]);
   useEffect(() => {
