@@ -203,6 +203,7 @@ export function DesktopRangePicker(props: IDesktopRangeProps) {
         <button
           className={`flex justify-center items-center gap-2 px-2 border border-gray-300 rounded-lg w-72 h-8 cursor-pointer ${dateClassName}`}
           onClick={handleDropdown}
+          dir="ltr"
         >
           <DownTriangle />
           <div

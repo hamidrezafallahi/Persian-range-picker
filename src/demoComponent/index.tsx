@@ -2,12 +2,8 @@ import { DatePicker, Mask, RangePicker, TimePicker } from "../range";
 
 export default function DemoComponent() {
   return (
-    <>
+    <div dir="rtl">
       <RangePicker
-        model="date"
-        showMask
-        showTime
-        showSecond
         // isTodaySelectPreset
         calendarType="shamsi"
         onChange={(e) => {
@@ -44,6 +40,6 @@ export default function DemoComponent() {
         }}
         exportType="timeStamp"
       />
-    </>
+    </div>
   );
 }
