@@ -1,35 +1,34 @@
 import { type ReactNode, useState } from "react";
 
-import Capture from "../assets/images/Capture.png";
-import DateMask from "../assets/images/Mask.png";
-import MobileDate from "../assets/images/MobileDate.png";
-import mobileDate2 from "../assets/images/mobileDate2.png";
-import MobileDatePickerImage from "../assets/images/MobileDatePickerImage.png";
-import MobileRange from "../assets/images/MobileRange.png";
-import MobileRangeManual from "../assets/images/MobileRangeManual.png";
-import MobileRangetaghvim from "../assets/images/MobileRangetaghvim.png";
-import TimePicker from "../assets/images/TimePicker.png";
-import TimePicker2 from "../assets/images/TimePicker2.png";
-import TimePickerRun from "../assets/images/TimePickerRun.png";
+import dateP from "../assets/images/dateP.png";
+import maskP from "../assets/images/maskP.png";
+import rangePic from "../assets/images/rangeP.png";
+import timeP from "../assets/images/timeP.png";
+import useR from "../assets/images/useR.png";
+import useR1 from "../assets/images/useR1.png";
+import useR2 from "../assets/images/useR2.png";
+import dateVid from "../assets/video/Date.mp4";
+import MaskVid from "../assets/video/mask.mp4";
+import rangeVid from "../assets/video/range1.mp4";
+import Time from "../assets/video/time.mp4";
+import { DatePicker, RangePicker, TimePicker } from "../range";
 import { Mask } from "../range/exportComponents/mask";
 
 const SECTION_KEYS = [
+  "Range",
   "Date",
   "Mask",
   "timepicker",
   "rendersideHook",
-  "Range",
 ] as const;
-
 type SectionKey = (typeof SECTION_KEYS)[number];
-
 type SectionContent = {
   title: string;
   desc: string;
   image?: string;
   image1?: string;
   image2?: string;
-  image3?: string;
+  video?: string;
   component?: ReactNode;
 };
 
@@ -43,76 +42,141 @@ type LanguageText = {
 const TEXT: Record<"fa" | "en", LanguageText> = {
   fa: {
     sections: {
-      content: "محتوا",
+      content: "محتوا را از فهرست انتخاب کنید.",
       image: "تصویر",
       Range: {
         title: "محدوده زمانی",
-        desc: "در این بخش، می‌توان محدوده‌ای از تاریخ‌ها را برای نمایش  انتخاب کرد.",
-        image: Capture,
-        image1: MobileRange,
-        image2: MobileRangeManual,
+        desc: "محدوده زمانی ابزاری است که به شما اجازه می‌دهد یک بازه از تاریخ‌ها یا زمان‌ها را برای عملیات فیلتر، گزارش‌گیری یا تنظیمات انتخاب کنید. این ابزار مخصوصاً برای فرم‌ها یا صفحه‌های گزارش بسیار کاربردی است.",
+        video: rangeVid,
+        image: rangePic,
+        component: (
+          <RangePicker
+            calendarType="shamsi"
+            onChange={(e) => console.log("RangePicker has changed", e)}
+            exportType="timeStamp"
+            showComparison
+          />
+        ),
       },
       Date: {
         title: "تاریخ ",
-        desc: "تاریخ  برای انتخاب آسان تاریخ در دستگاه‌های مختلف طراحی شده.",
-        image: MobileDatePickerImage,
-        image1: MobileDate,
-        image2: mobileDate2,
+        desc: "این انتخابگر تاریخ طراحی شده تا به ساده‌ترین شکل ممکن تاریخ‌ها را در قالب شمسی یا میلادی انتخاب کنید. پشتیبانی از زمان و ثانیه نیز به شما دقت بیشتری در انتخاب می‌دهد.",
+        image: dateP,
+        video: dateVid,
+        component: (
+          <DatePicker
+            showTime
+            showSecond
+            isTodaySelectPreset
+            onChange={(e) => console.log(e)}
+            calendarType="shamsi"
+            exportType="timeStamp"
+          />
+        ),
       },
       Mask: {
-        component: <Mask />,
+        component: <Mask calendarType="shamsi" />,
         title: "ورودی تاریخ",
-        desc: "ورودی تاریخ به شما امکان می‌دهد فرمت ورودی تاریخ را محدود کنید.",
-        image: DateMask,
+        desc: "ورودی تاریخ با ماسک باعث می‌شود کاربر تنها در قالب خاصی بتواند مقدار وارد کند. این قابلیت از بروز خطاهای متداول جلوگیری می‌کند و یکپارچگی داده‌ها را حفظ می‌کند.",
+        video: MaskVid,
+        image: maskP,
       },
       timepicker: {
         title: "انتخابگر زمان",
-        desc: "ابزاری برای انتخاب زمان با دقت بالا.",
-        image: TimePicker,
-        image1: TimePickerRun,
-        image2: TimePicker2,
+        desc: "این ابزار انتخاب زمان، به شما اجازه می‌دهد ساعت و دقیقه (و در صورت نیاز ثانیه) را به راحتی انتخاب کنید. مناسب برای فرم‌های رزرو، قرار ملاقات و تنظیم هشدارهاست.",
+        video: Time,
+        image: timeP,
+        component: (
+          <TimePicker
+            calendarType="shamsi"
+            onChange={(e) => console.log(e)}
+            showSecond
+          />
+        ),
       },
       rendersideHook: {
         title: "هوک رندر جانبی",
-        desc: "این بخش هوک‌هایی برای رندر کردن مقادیر جانبی را نشان می‌دهد.",
+        desc: ` یک هوک قدرتمند برای کنترل موقعیت عناصر مانند تولتیپ‌ها، منوها و پنجره‌های بازشو است.
+ویژگی‌های کلیدی آن شامل این موارد است:
+  ، مدیریت خودکار موقعیت و جابجایی هوشمندانه
+  ، جلوگیری از بیرون‌زدگی محتوا از صفحه (prevent overflow)
+  ، پشتیبانی از موقعیت‌های مختلف (بالا، پایین، چپ، راست و ...)
+  ، امکان تعیین فاصله دلخواه (offset) و margin
+ ، عملکرد سریع، سبک و بدون وابستگی به فریم‌ورک خاص`,
+        image: useR,
+        image1: useR1,
+        image2: useR2,
       },
     },
   },
   en: {
     sections: {
-      content: "Content",
+      content: "choose content from the menu.",
       image: "Image",
       Range: {
         title: "Range",
-        desc: "This section allows selecting a range of dates for mobile display.",
-        image: Capture,
-        image1: MobileRange,
-        image2: MobileRangeManual,
-        image3: MobileRangetaghvim,
+        desc: "The time range tool allows you to select a range of dates or times for filtering operations, reporting, or settings. This tool is especially useful for forms or report pages.",
+        video: rangeVid,
+        image: rangePic,
+        component: (
+          <RangePicker
+            calendarType="gregorian"
+            onChange={(e) => console.log("RangePicker has changed", e)}
+            exportType="timeStamp"
+            showComparison
+          />
+        ),
       },
       Date: {
         title: "Date",
-        desc: "Mobile date picker designed for mobile devices.",
-        image: MobileDatePickerImage,
-        image1: MobileDate,
-        image2: mobileDate2,
+        desc: "This date picker is designed to let you select dates in either the Shamsi or Gregorian format in the simplest way possible. Support for time and seconds also gives you greater precision in selection.",
+        image: dateP,
+        video: dateVid,
+        component: (
+          <DatePicker
+            showTime
+            showSecond
+            showMask
+            isTodaySelectPreset
+            onChange={(e) => console.log(e)}
+            calendarType="gregorian"
+            exportType="timeStamp"
+          />
+        ),
       },
       Mask: {
-        component: <Mask />,
+        component: <Mask calendarType="gregorian" />,
         title: "Mask",
-        desc: "mask restricts the input format of dates.",
-        image: DateMask,
+        desc: "The masked date input ensures that users can only enter values in a specific format. This feature helps prevent common errors and maintains data consistency.",
+        video: MaskVid,
+        image: maskP,
       },
       timepicker: {
         title: "Time Picker",
-        desc: "A tool to accurately pick time values.",
-        image: TimePicker,
-        image1: TimePickerRun,
-        image2: TimePicker2,
+        desc: "This time picker tool allows you to easily select hours and minutes (and seconds if needed). It's ideal for reservation forms, appointments, and setting reminders.",
+        image: timeP,
+        video: Time,
+        component: (
+          <TimePicker
+            calendarType="gregorian"
+            onChange={(e) => console.log(e)}
+            showSecond
+          />
+        ),
       },
       rendersideHook: {
         title: "Render Side Hook",
-        desc: "Demonstrates hooks for rendering side data.",
+        desc: `A powerful hook for controlling the position of elements such as tooltips, menus, and popups.
+
+Key features include:
+- Automatic position management with smart repositioning
+- Prevention of content overflow from the screen
+- Support for multiple positions (top, bottom, left, right, etc.)
+- Customizable offset and margin
+- Fast, lightweight, and framework-agnostic performance.`,
+        image: useR,
+        image1: useR1,
+        image2: useR2,
       },
     },
   },
@@ -120,7 +184,9 @@ const TEXT: Record<"fa" | "en", LanguageText> = {
 
 export function InitialComponent() {
   const [lang, setLang] = useState<"fa" | "en">("fa");
-  const [activeSection, setActiveSection] = useState<SectionKey | null>(null);
+  const [activeSection, setActiveSection] = useState<SectionKey | null>(
+    "Range"
+  );
   const sections = TEXT[lang].sections;
 
   const handleLangToggle = () => {
@@ -142,47 +208,49 @@ export function InitialComponent() {
         height: "100dvh",
         display: "flex",
         direction: lang === "fa" ? "rtl" : "ltr",
+        fontFamily: "sans-serif",
       }}
     >
       {/* Sidebar */}
       <div
         style={{
-          width: "220px",
-          backgroundColor: "#2f2f2f",
+          width: "240px",
+          backgroundColor: "#1f1f1f",
           color: "#fff",
-          padding: "1rem",
+          padding: "1.5rem 1rem",
           display: "flex",
           flexDirection: "column",
+          gap: "0.75rem",
+          boxShadow: "4px 0 10px rgba(0,0,0,0.1)",
         }}
       >
         <button
-          id="langButton"
           onClick={handleLangToggle}
           style={{
-            marginBottom: "1rem",
+            padding: "0.5rem",
             backgroundColor: "#4a90e2",
             border: "none",
-            padding: "0.5rem",
-            color: "#fff",
+            color: "white",
+            borderRadius: "6px",
             cursor: "pointer",
-            borderRadius: "4px",
+            fontWeight: "bold",
           }}
         >
-          {lang}
+          {lang === "fa" ? "English" : "فارسی"}
         </button>
+
         {SECTION_KEYS.map((key) => (
           <button
             key={key}
             onClick={() => setActiveSection(key)}
             style={{
-              marginBottom: "0.5rem",
-              padding: "0.5rem",
-              backgroundColor: activeSection === key ? "#666" : "#444",
-              border: "none",
+              padding: "0.6rem 0.5rem",
+              backgroundColor: activeSection === key ? "#4a90e2" : "#2c2c2c",
               color: "#fff",
-              textAlign: "center",
+              border: "none",
               borderRadius: "4px",
               cursor: "pointer",
+              textAlign: "start",
             }}
           >
             {sections[key].title}
@@ -194,60 +262,133 @@ export function InitialComponent() {
       <div
         style={{
           flex: 1,
-          backgroundColor: "#f1f1f1",
+          backgroundColor: "#f8f9fa",
           padding: "2rem",
           overflowY: "auto",
         }}
       >
         {activeSection ? (
-          <div>
-            <h2 style={{ fontSize: "1.5rem", marginBottom: "1rem" }}>
+          <div
+            style={{
+              backgroundColor: "#fff",
+              borderRadius: "12px",
+              padding: "2rem",
+              boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+              lineHeight: 1.8,
+            }}
+          >
+            <h2
+              style={{
+                fontSize: "1.75rem",
+                color: "#222",
+                marginBottom: "1rem",
+              }}
+            >
               {sections[activeSection].title}
             </h2>
-            <p style={{ marginBottom: "1rem" }}>
+            <p
+              style={{
+                color: "#444",
+                fontSize: "1rem",
+                marginBottom: "1.5rem",
+              }}
+            >
               {sections[activeSection].desc}
             </p>
 
+            {sections[activeSection].video && (
+              <div
+                style={{
+                  padding: "1rem",
+                  backgroundColor: "#f0f0f0",
+                }}
+              >
+                <video
+                  autoPlay
+                  loop
+                  playsInline
+                  muted
+                  src={sections[activeSection].video}
+                  style={{
+                    borderRadius: "8px",
+                    marginBottom: "1.5rem",
+                  }}
+                />
+              </div>
+            )}
+
+            {sections[activeSection].image && (
+              <div
+                style={{
+                  padding: "1rem",
+                  backgroundColor: "#f0f0f0",
+                }}
+              >
+                <img
+                  alt="preview"
+                  src={sections[activeSection].image}
+                  style={{
+                    width: "60%",
+                    borderRadius: "8px",
+                    marginBottom: "1.5rem",
+                  }}
+                />
+              </div>
+            )}
+            {sections[activeSection].image1 && (
+              <div
+                style={{
+                  padding: "1rem",
+                  backgroundColor: "#f0f0f0",
+                }}
+              >
+                <img
+                  alt="preview"
+                  src={sections[activeSection].image1}
+                  style={{
+                    width: "60%",
+                    borderRadius: "8px",
+                    marginBottom: "1.5rem",
+                  }}
+                />
+              </div>
+            )}
+            {sections[activeSection].image2 && (
+              <div
+                style={{
+                  padding: "1rem",
+                  backgroundColor: "#f0f0f0",
+                }}
+              >
+                <img
+                  alt="preview"
+                  src={sections[activeSection].image2}
+                  style={{
+                    width: "60%",
+                    borderRadius: "8px",
+                    marginBottom: "1.5rem",
+                  }}
+                />
+              </div>
+            )}
+
             {sections[activeSection].component && (
-              <div style={{ marginBottom: "1rem" }}>
+              <div
+                style={{
+                  padding: "1rem",
+                  backgroundColor: "#f0f0f0",
+                  display: "flex",
+                  justifyContent: "end",
+                }}
+              >
                 {sections[activeSection].component}
               </div>
             )}
-            {sections[activeSection].image && (
-              <img
-                src={sections[activeSection].image}
-                alt=""
-                style={{
-                  maxWidth: "100%",
-                  marginBottom: "1rem",
-                  borderRadius: "8px",
-                }}
-              />
-            )}
-            {sections[activeSection].image1 && (
-              <img
-                src={sections[activeSection].image1}
-                alt=""
-                style={{ maxWidth: "100%", marginBottom: "1rem" }}
-              />
-            )}
-            {sections[activeSection].image2 && (
-              <img
-                src={sections[activeSection].image2}
-                alt=""
-                style={{ maxWidth: "100%", marginBottom: "1rem" }}
-              />
-            )}
-            {sections[activeSection].image3 && (
-              <img
-                src={sections[activeSection].image3}
-                alt=""
-                style={{ maxWidth: "100%", marginBottom: "1rem" }}
-              />
-            )}
           </div>
         ) : (
-          <div style={{ color: "#999" }}>{sections.content} را انتخاب کنید</div>
+          <div style={{ color: "#777", fontSize: "1.2rem" }}>
+            {sections.content}
+          </div>
         )}
       </div>
     </div>

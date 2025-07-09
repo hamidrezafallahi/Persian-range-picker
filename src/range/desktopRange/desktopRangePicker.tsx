@@ -199,7 +199,7 @@ export function DesktopRangePicker(props: IDesktopRangeProps) {
       <div dir={locale == "fa" ? "rtl" : "ltr"}>
         {label.isShowLabel && label.label}
       </div>
-      <div className="flex gap-2">
+      <div className="flex gap-2" dir="rtl">
         <button
           className={`flex justify-center items-center gap-2 px-2 border border-gray-300 rounded-lg w-72 h-8 cursor-pointer ${dateClassName}`}
           onClick={handleDropdown}
