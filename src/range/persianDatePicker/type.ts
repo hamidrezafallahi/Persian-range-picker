@@ -1,5 +1,9 @@
-import type { ReactNode } from "react";
-import type { IDate, TLocale } from "../core/type";
+import type { ReactNode } from 'react';
+
+import type {
+  IDate,
+  TLocale,
+} from '../core/type';
 
 export interface IProps {
   dateFromOutside: IDate;

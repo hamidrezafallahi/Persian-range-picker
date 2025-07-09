@@ -15,7 +15,7 @@ export default function DemoComponent() {
         // disabled
         showTime
         showSecond
-        showMask
+        // showMask
         isTodaySelectPreset
         onChange={(e) => {
           console.log(e);
