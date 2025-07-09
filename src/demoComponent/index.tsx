@@ -1,4 +1,4 @@
-import { DatePicker, Mask, RangePicker, TimePicker } from "../range";
+import { RangePicker } from "../range";
 
 export default function DemoComponent() {
   return (
@@ -10,8 +10,9 @@ export default function DemoComponent() {
           console.log("RangePicker has changed", e);
         }}
         exportType="timeStamp"
+        showComparison
       />
-      <DatePicker
+      {/* <DatePicker
         // disabled
         showTime
         showSecond
@@ -39,7 +40,7 @@ export default function DemoComponent() {
           console.log("mask has changed", e);
         }}
         exportType="timeStamp"
-      />
+      /> */}
     </div>
   );
 }

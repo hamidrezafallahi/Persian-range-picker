@@ -1,29 +1,33 @@
 import { type ReactNode, useState } from "react";
 
 import dateP from "../assets/images/dateP.png";
-import maskP from "../assets/images/maskp.png";
-import rangePic from "../assets/images/range.png";
+import maskP from "../assets/images/maskP.png";
+import rangePic from "../assets/images/rangeP.png";
 import timeP from "../assets/images/timeP.png";
-import useR from "../assets/images/useRender.png";
+import useR from "../assets/images/useR.png";
+import useR1 from "../assets/images/useR1.png";
+import useR2 from "../assets/images/useR2.png";
 import dateVid from "../assets/video/Date.mp4";
 import MaskVid from "../assets/video/mask.mp4";
-import rangeVid from "../assets/video/range.mp4";
+import rangeVid from "../assets/video/range1.mp4";
 import Time from "../assets/video/time.mp4";
 import { DatePicker, RangePicker, TimePicker } from "../range";
 import { Mask } from "../range/exportComponents/mask";
 
 const SECTION_KEYS = [
+  "Range",
   "Date",
   "Mask",
   "timepicker",
   "rendersideHook",
-  "Range",
 ] as const;
 type SectionKey = (typeof SECTION_KEYS)[number];
 type SectionContent = {
   title: string;
   desc: string;
   image?: string;
+  image1?: string;
+  image2?: string;
   video?: string;
   component?: ReactNode;
 };
@@ -38,7 +42,7 @@ type LanguageText = {
 const TEXT: Record<"fa" | "en", LanguageText> = {
   fa: {
     sections: {
-      content: "محتوا",
+      content: "محتوا را از فهرست انتخاب کنید.",
       image: "تصویر",
       Range: {
         title: "محدوده زمانی",
@@ -50,6 +54,7 @@ const TEXT: Record<"fa" | "en", LanguageText> = {
             calendarType="shamsi"
             onChange={(e) => console.log("RangePicker has changed", e)}
             exportType="timeStamp"
+            showComparison
           />
         ),
       },
@@ -99,16 +104,18 @@ const TEXT: Record<"fa" | "en", LanguageText> = {
   ، امکان تعیین فاصله دلخواه (offset) و margin
  ، عملکرد سریع، سبک و بدون وابستگی به فریم‌ورک خاص`,
         image: useR,
+        image1: useR1,
+        image2: useR2,
       },
     },
   },
   en: {
     sections: {
-      content: "Content",
+      content: "choose content from the menu.",
       image: "Image",
       Range: {
         title: "Range",
-        desc: "This section allows selecting a range of dates for mobile display.",
+        desc: "The time range tool allows you to select a range of dates or times for filtering operations, reporting, or settings. This tool is especially useful for forms or report pages.",
         video: rangeVid,
         image: rangePic,
         component: (
@@ -116,12 +123,13 @@ const TEXT: Record<"fa" | "en", LanguageText> = {
             calendarType="gregorian"
             onChange={(e) => console.log("RangePicker has changed", e)}
             exportType="timeStamp"
+            showComparison
           />
         ),
       },
       Date: {
         title: "Date",
-        desc: "Mobile date picker designed for mobile devices.",
+        desc: "This date picker is designed to let you select dates in either the Shamsi or Gregorian format in the simplest way possible. Support for time and seconds also gives you greater precision in selection.",
         image: dateP,
         video: dateVid,
         component: (
@@ -139,13 +147,13 @@ const TEXT: Record<"fa" | "en", LanguageText> = {
       Mask: {
         component: <Mask calendarType="gregorian" />,
         title: "Mask",
-        desc: "Mask restricts the input format of dates.",
+        desc: "The masked date input ensures that users can only enter values in a specific format. This feature helps prevent common errors and maintains data consistency.",
         video: MaskVid,
         image: maskP,
       },
       timepicker: {
         title: "Time Picker",
-        desc: "A tool to accurately pick time values.",
+        desc: "This time picker tool allows you to easily select hours and minutes (and seconds if needed). It's ideal for reservation forms, appointments, and setting reminders.",
         image: timeP,
         video: Time,
         component: (
@@ -158,7 +166,14 @@ const TEXT: Record<"fa" | "en", LanguageText> = {
       },
       rendersideHook: {
         title: "Render Side Hook",
-        desc: "A powerful hook for positioning tooltips, popovers, or menus with offset, overflow prevention, and direction control.",
+        desc: `A powerful hook for controlling the position of elements such as tooltips, menus, and popups.
+
+Key features include:
+- Automatic position management with smart repositioning
+- Prevention of content overflow from the screen
+- Support for multiple positions (top, bottom, left, right, etc.)
+- Customizable offset and margin
+- Fast, lightweight, and framework-agnostic performance.`,
         image: useR,
       },
     },
@@ -167,7 +182,9 @@ const TEXT: Record<"fa" | "en", LanguageText> = {
 
 export function InitialComponent() {
   const [lang, setLang] = useState<"fa" | "en">("fa");
-  const [activeSection, setActiveSection] = useState<SectionKey | null>(null);
+  const [activeSection, setActiveSection] = useState<SectionKey | null>(
+    "Range"
+  );
   const sections = TEXT[lang].sections;
 
   const handleLangToggle = () => {
@@ -316,6 +333,42 @@ export function InitialComponent() {
                 />
               </div>
             )}
+            {sections[activeSection].image1 && (
+              <div
+                style={{
+                  padding: "1rem",
+                  backgroundColor: "#f0f0f0",
+                }}
+              >
+                <img
+                  alt="preview"
+                  src={sections[activeSection].image1}
+                  style={{
+                    width: "60%",
+                    borderRadius: "8px",
+                    marginBottom: "1.5rem",
+                  }}
+                />
+              </div>
+            )}
+            {sections[activeSection].image2 && (
+              <div
+                style={{
+                  padding: "1rem",
+                  backgroundColor: "#f0f0f0",
+                }}
+              >
+                <img
+                  alt="preview"
+                  src={sections[activeSection].image2}
+                  style={{
+                    width: "60%",
+                    borderRadius: "8px",
+                    marginBottom: "1.5rem",
+                  }}
+                />
+              </div>
+            )}
 
             {sections[activeSection].component && (
               <div
@@ -332,7 +385,7 @@ export function InitialComponent() {
           </div>
         ) : (
           <div style={{ color: "#777", fontSize: "1.2rem" }}>
-            {sections.content} را از منو انتخاب کنید.
+            {sections.content}
           </div>
         )}
       </div>
