@@ -2,7 +2,7 @@ import { DatePicker, Mask, RangePicker, TimePicker } from "../range";
 
 export default function DemoComponent() {
   return (
-    <div dir="rtl">
+    <div>
       <RangePicker
         // isTodaySelectPreset
         calendarType="shamsi"
