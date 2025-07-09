@@ -175,6 +175,8 @@ Key features include:
 - Customizable offset and margin
 - Fast, lightweight, and framework-agnostic performance.`,
         image: useR,
+        image1: useR1,
+        image2: useR2,
       },
     },
   },
