@@ -1,0 +1,282 @@
+import { jsx as _jsx, Fragment as _Fragment, jsxs as _jsxs } from "react/jsx-runtime";
+import { memo, useCallback, useState } from "react";
+import jmoment from "moment-jalaali";
+import DataPickerBody from "./dataPickerBody";
+import DatePickerHeader from "./datePickerHeader";
+import { CalendarViews } from "./enum";
+import { getFirstDayIndexInMonth, getNumberOfDays, isEqualDays, } from "./helper";
+import MonthPicker from "./monthPicker";
+import YearPicker from "./yearPicker";
+const todayTimestamp = new Date().setHours(0, 0, 0, 0);
+const today = jmoment();
+const Calendar = ({ onChange, model = "date", startDate, endDate, locale = "en", disablePreviousDays = false, renderDayFn, calendarBaseWidth, containerClassName, primaryColor = "#000", backgroundColor = "#fff ", tertiaryColor = "#939393", highlightColor = "#f4f4f4", secondaryColor = "#585858", datePickerBodyClassName = "", yearPickerClassName = "", datePickerHeaderClassName = "", }) => {
+    const [state, setState] = useState({
+        year: locale === "fa" ? today.jYear() : today.year(),
+        month: locale === "fa" ? today.jMonth() : today.month(),
+        hoveredDay: null,
+    });
+    const [view, setView] = useState(CalendarViews.DAY);
+    const changeYearHandler = (year) => {
+        setState((prev) => ({ ...prev, year: year }));
+        setView(CalendarViews.MONTH);
+    };
+    const changeMonthHandler = (month) => {
+        setState((prev) => ({ ...prev, month }));
+        setView(CalendarViews.DAY);
+    };
+    const setMonth = (offset) => {
+        let year = state.year;
+        let month = state.month + offset;
+        if (month === -1) {
+            month = 11;
+            year = year - 1;
+        }
+        else if (month === 12) {
+            month = 0;
+            year = year + 1;
+        }
+        setState((prev) => {
+            return {
+                ...prev,
+                year,
+                month,
+            };
+        });
+    };
+    const setYear = (offset) => {
+        setState((prev) => ({ ...prev, year: prev.year + offset }));
+    };
+    const setRange = (selectedDay) => {
+        if (startDate &&
+            endDate &&
+            startDate === endDate &&
+            startDate === selectedDay) {
+            setState((prev) => {
+                return {
+                    ...prev,
+                    hoveredDay: null,
+                };
+            });
+            onChange(null, null);
+            return;
+        }
+        if (startDate && endDate) {
+            setState((prev) => {
+                return {
+                    ...prev,
+                    selectedDay,
+                    hoveredDay: selectedDay,
+                };
+            });
+            onChange(selectedDay, null);
+            return;
+        }
+        if (!startDate) {
+            setState((prev) => {
+                return {
+                    ...prev,
+                    hoveredDay: selectedDay,
+                };
+            });
+            onChange(selectedDay, null);
+        }
+        else {
+            if (selectedDay > startDate) {
+                if (endDate &&
+                    Math.abs(selectedDay - startDate) < Math.abs(endDate - selectedDay)) {
+                    setState((prev) => {
+                        return {
+                            ...prev,
+                            selectedDay,
+                            hoveredDay: selectedDay,
+                        };
+                    });
+                    onChange(selectedDay, endDate);
+                }
+                else if (startDate === selectedDay) {
+                    setState((prev) => {
+                        return {
+                            ...prev,
+                            selectedDay,
+                            hoveredDay: selectedDay,
+                        };
+                    });
+                    onChange(selectedDay, selectedDay);
+                }
+                else {
+                    setState((prev) => {
+                        return {
+                            ...prev,
+                            hoveredDay: selectedDay,
+                        };
+                    });
+                    onChange(startDate, selectedDay);
+                }
+            }
+            else if (startDate > selectedDay) {
+                setState((prev) => {
+                    return {
+                        ...prev,
+                        selectedDay,
+                        hoveredDay: selectedDay,
+                    };
+                });
+                onChange(selectedDay, 0);
+            }
+            else if (startDate === selectedDay) {
+                setState((prev) => {
+                    return {
+                        ...prev,
+                        selectedDay,
+                        from: selectedDay,
+                        to: selectedDay,
+                        hoveredDay: selectedDay,
+                    };
+                });
+                onChange(selectedDay, selectedDay);
+            }
+        }
+    };
+    const onDateClick = useCallback((timestamp) => {
+        if (model === "range") {
+            setRange(timestamp);
+        }
+        else {
+            setState((prev) => {
+                return {
+                    ...prev,
+                    selectedDay: timestamp,
+                    from: timestamp,
+                    to: timestamp,
+                    hoveredDay: timestamp,
+                };
+            });
+            onChange(timestamp, null);
+        }
+    }, [model, onChange, endDate, startDate]);
+    const changeViewHandler = (viewName) => {
+        setView(viewName);
+    };
+    const getCalendarBlockDetails = (year, month) => {
+        const currentMonthDaysCount = getNumberOfDays(year, month, locale);
+        const monthBlockArray = [];
+        const offsetFromPrevMonth = getFirstDayIndexInMonth(year, month, locale);
+        const offsetFromNextMonth = 42 - currentMonthDaysCount - offsetFromPrevMonth;
+        if (offsetFromPrevMonth > 0) {
+            const prevMonthDaysCount = month === 1
+                ? getNumberOfDays(year - 1, 12, locale)
+                : getNumberOfDays(year, month - 1, locale);
+            for (let offset = 0; offset < offsetFromPrevMonth; offset++) {
+                const dateString = `${month === 0 ? year - 1 : year}/${(month === 0 ? 11 : month - 1) + 1}/${prevMonthDaysCount - offset}`;
+                const date = new Date(locale === "fa"
+                    ? jmoment(dateString, "jYYYY-jMM-jDD").format()
+                    : dateString);
+                monthBlockArray.push({
+                    timestamp: date.setHours(0, 0, 0, 0),
+                    currentMonth: false,
+                });
+            }
+        }
+        for (let day = 1; day <= currentMonthDaysCount; day++) {
+            const dateString = `${year}/${month + 1}/${day}`;
+            const date = new Date(locale === "fa"
+                ? jmoment(dateString, "jYYYY-jMM-jDD").format()
+                : dateString);
+            monthBlockArray.push({
+                timestamp: date.setHours(0, 0, 0, 0),
+                currentMonth: true,
+            });
+        }
+        //adding offset from next month to the current block
+        if (offsetFromNextMonth > 0) {
+            for (let offset = 1; offset <= offsetFromNextMonth; offset++) {
+                const dateString = `${month === 11 ? year + 1 : year}/${month === 11 ? 12 : month + 1}/${offset}`;
+                const date = new Date(locale === "fa"
+                    ? jmoment(dateString, "jYYYY-jMM-jDD").format()
+                    : dateString);
+                monthBlockArray.push({
+                    timestamp: date.setHours(0, 0, 0, 0),
+                    currentMonth: false,
+                });
+            }
+        }
+        return monthBlockArray;
+    };
+    const renderDay = useCallback((day, index) => {
+        const currentDay = jmoment(day.timestamp);
+        const isDisabled = day.timestamp < todayTimestamp &&
+            disablePreviousDays &&
+            model == "date";
+        const isToday = isEqualDays(day.timestamp, todayTimestamp);
+        const isSelectedSingleDate = isEqualDays(day.timestamp, startDate) && model === "date";
+        const isHoveredDay = model === "range" &&
+            startDate &&
+            !endDate &&
+            state.hoveredDay >= day.timestamp &&
+            day.timestamp > startDate;
+        const isFromDate = isEqualDays(day.timestamp, startDate) && model === "range";
+        const isToDate = isEqualDays(day.timestamp, endDate);
+        const isInrange = endDate &&
+            startDate &&
+            day.timestamp > startDate &&
+            day.timestamp < endDate;
+        return (_jsx("div", { className: "flex justify-center items-center w-full h-full", children: _jsx("button", { disabled: isDisabled, onMouseOver: () => {
+                    if (!endDate && state.hoveredDay) {
+                        setState((prev) => {
+                            return {
+                                ...prev,
+                                hoveredDay: day.timestamp,
+                            };
+                        });
+                    }
+                    else if (endDate && state.hoveredDay) {
+                        setState((prev) => {
+                            return {
+                                ...prev,
+                                hoveredDay: day.timestamp,
+                            };
+                        });
+                    }
+                }, className: "flex flex-col justify-evenly items-center !rounded-md w-[clamp(24px,24px,30px)] aspect-square text-center cursor-pointer", style: {
+                    pointerEvents: isDisabled ? "none" : "auto",
+                    opacity: isDisabled ? 0.5 : day.currentMonth ? 1 : 0,
+                    color: isToDate || isFromDate || isSelectedSingleDate
+                        ? backgroundColor
+                        : tertiaryColor,
+                    borderColor: isToday ? secondaryColor : "",
+                    borderWidth: isToday ? "2px" : "",
+                    background: isToDate || isFromDate
+                        ? primaryColor
+                        : isSelectedSingleDate
+                            ? tertiaryColor
+                            : isInrange || isHoveredDay
+                                ? highlightColor
+                                : "",
+                    fontSize: "14px",
+                }, onClick: () => {
+                    if (!day.currentMonth)
+                        return;
+                    onDateClick(day.timestamp);
+                }, children: _jsx("span", { children: locale === "fa"
+                        ? currentDay.jDate().toLocaleString("fa")
+                        : currentDay.date() }) }, index) }, index));
+    }, [
+        startDate,
+        endDate,
+        state.hoveredDay,
+        model,
+        disablePreviousDays,
+        locale,
+        onDateClick,
+    ]);
+    const renderCalendar = (year, month) => {
+        const monthD = getCalendarBlockDetails(year, month);
+        const days = monthD.map((day, index) => renderDayFn ? renderDayFn(day, index) : renderDay(day, index));
+        const weekNameList = locale === "en"
+            ? ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"]
+            : ["ش", "ی", "د", "س", "چ", "پ", "ج"];
+        return (_jsxs(_Fragment, { children: [_jsx("div", { className: `grid grid-cols-7 justify-between gap-x-2 w-full p-2 `, dir: locale === "fa" ? "rtl" : "ltr", children: weekNameList.map((dName, i) => (_jsx("span", { className: `  font-normal  text-center   `, style: { fontSize: "14px", color: secondaryColor }, children: dName }, i))) }), _jsx("div", { className: `w-full !min-w-6  grid grid-cols-7  justify-between  gap-y-2   `, dir: locale === "fa" ? "rtl" : "ltr", children: days })] }));
+    };
+    return (_jsx("div", { style: { width: calendarBaseWidth }, className: `flex flex-col items-center w-full h-fit  ${containerClassName}`, children: view === CalendarViews.DAY ? (_jsxs("div", { className: "flex flex-col items-center w-full", children: [_jsx(DatePickerHeader, { datePickerHeaderClassName: datePickerHeaderClassName, year: state.year, month: state.month, setMonth: setMonth, locale: locale, onViewChange: changeViewHandler, highlightColor: highlightColor, tertiaryColor: tertiaryColor, secondaryColor: secondaryColor }), _jsx("hr", { className: "mt-2 !border w-full" }), _jsx(DataPickerBody, { year: state.year, month: state.month, renderMonthBody: renderCalendar, locale: locale, datePickerBodyClassName: datePickerBodyClassName, onDateClick: onDateClick })] })) : view === CalendarViews.MONTH ? (_jsx(MonthPicker, { currentMonth: state.month, locale: locale, onSelectMonth: changeMonthHandler, onChangeYear: setYear, currentYear: state.year, tertiaryColor: tertiaryColor, secondaryColor: secondaryColor, backgroundColor: backgroundColor })) : (_jsx(YearPicker, { currentYear: state.year, primaryColor: primaryColor, onSelectYear: changeYearHandler, yearPickerClassName: yearPickerClassName, secondaryColor: secondaryColor, backgroundColor: backgroundColor })) }));
+};
+export default memo(Calendar);

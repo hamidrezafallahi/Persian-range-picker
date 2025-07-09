@@ -1,7 +1,21 @@
 {
-  "files": [],
-  "references": [
-    { "path": "./tsconfig.app.json" },
-    { "path": "./tsconfig.node.json" }
-  ]
+  // "files": [],
+  // "references": [
+  //   { "path": "./tsconfig.app.json" },
+  //   { "path": "./tsconfig.node.json" }
+  // ],
+  "compilerOptions": {
+    "target": "ES2017",
+    "module": "ESNext",
+    "lib": ["DOM", "ES2017", "ES2015.Iterable"],
+    "declaration": true,
+    "declarationDir": "./dist",
+    "outDir": "./dist",
+    "jsx": "react-jsx",
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "skipLibCheck": true,
+    "strict": true
+  },
+  "include": ["src"]
 }

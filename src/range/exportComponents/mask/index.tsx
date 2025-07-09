@@ -260,7 +260,7 @@ export function Mask({ ...props }: MaskProps) {
         return [...prev.filter((item) => item !== target)];
       });
       if (name !== "day") {
-        const focusable = [...document.querySelectorAll("input")].sort(
+        const focusable = Array.from(document.querySelectorAll("input")).sort(
           (a, b) => a.tabIndex - b.tabIndex
         );
 
@@ -446,7 +446,7 @@ export function Mask({ ...props }: MaskProps) {
   };
 
   function moveToPreviousTabindex() {
-    const focusable = [...document.querySelectorAll("input")].sort(
+    const focusable = Array.from(document.querySelectorAll("input")).sort(
       (a, b) => a.tabIndex - b.tabIndex
     );
 
@@ -614,17 +614,17 @@ export function Mask({ ...props }: MaskProps) {
     fullValueRef.current = temp;
   }, [separatedValue]);
   useEffect(() => {
-   if (!baseValue) {
+    if (!baseValue) {
       return;
     }
     if (defaultValue && defaultValue !== baseValue) {
-    const dateValues = timestampToDateNumbers(locale, baseValue);
-    const [year, month, day] = dateValues;
-    const temp = `${year}${month}${day}`.substring(0, 8);
-    setFullValue(temp);
-    fullValueRef.current = temp;
+      const dateValues = timestampToDateNumbers(locale, baseValue);
+      const [year, month, day] = dateValues;
+      const temp = `${year}${month}${day}`.substring(0, 8);
+      setFullValue(temp);
+      fullValueRef.current = temp;
 
-    setSeparatedValue([year.toString(), month.toString(), day.toString()]);
+      setSeparatedValue([year.toString(), month.toString(), day.toString()]);
       // setBaseValue(defaultValue);
     }
   }, [defaultValue]);

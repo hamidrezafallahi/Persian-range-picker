@@ -1,9 +1,21 @@
 {
-  "name": "persian-range-picker",
+  "name": "react-persian-range-picker",
   "version": "0.1.0",
   "license": "MIT",
   "type": "module",
-  "build": "vite build",
+  "main": "dist/persian-range-picker.umd.js",
+  "module": "dist/persian-range-picker.es.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "import": "./dist/persian-range-picker.es.js",
+      "require": "./dist/persian-range-picker.umd.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/hamidrezafallahi/Persian-range-picker.git"
@@ -14,15 +26,15 @@
   "homepage": "https://github.com/hamidrezafallahi/persian-range-picker#readme",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build:types": "tsc --emitDeclarationOnly",
+    "build:js": "rollup -c",
+    "build": "npm run build:js && npm run build:types",
     "lint": "eslint .",
     "preview": "vite preview"
   },
   "peerDependencies": {
-    "react": ">=18.0.0",
-    "react-dom": ">=18.0.0",
-    "moment-jalaali": "^0.10.4",
-    "@types/moment-jalaali": "^0.7.9"
+    "@types/moment-jalaali": "^0.7.9",
+    "moment-jalaali": "^0.10.4"
   },
   "devDependencies": {
     "@eslint/js": "^9.25.0",
@@ -38,6 +50,7 @@
     "globals": "^16.0.0",
     "moment-jalaali": "^0.10.4",
     "rollup": "^4.41.1",
+    "rollup-plugin-postcss": "^4.0.2",
     "rollup-plugin-typescript2": "^0.36.0",
     "typescript": "~5.8.3",
     "typescript-eslint": "^8.30.1",
