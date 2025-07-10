@@ -1,9 +1,5 @@
-// import "../../../main.css";
-
 import { useEffect, useState } from "react";
-
 import moment from "moment-jalaali";
-
 import type {
   ESteps,
   IDate,

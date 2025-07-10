@@ -9,7 +9,7 @@
   "files": [
     "dist"
   ],
-  "exports": {
+   "exports": {
     ".": {
       "import": "./dist/persian-range-picker.es.js",
       "require": "./dist/persian-range-picker.umd.js",
@@ -30,7 +30,9 @@
     "build:js": "rollup -c",
     "build": "npm run build:js && npm run build:types",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "clean:generated": "powershell -ExecutionPolicy Bypass -File scripts/clean-generated.ps1"
+
   },
   "peerDependencies": {
     "@types/moment-jalaali": "^0.7.9",

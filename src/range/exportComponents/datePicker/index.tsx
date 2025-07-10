@@ -1,7 +1,6 @@
 import type { IDateProps } from "../../core/type";
 import { DesktopDatePicker } from "../../desktopDate/desktopDatePicker";
 import { MobileDate } from "../../mobileDate/mobileDatePicker";
-import "../../../main.css";
 import moment from "moment-jalaali";
 export function DatePicker({ ...props }: Omit<IDateProps, "locale">) {
   const { onChange, exportType = "IsoString" } = props;

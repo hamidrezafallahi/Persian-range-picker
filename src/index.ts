@@ -1,3 +1,4 @@
+import "./main.css"
 export { RangePicker } from "./range";
 export { DatePicker} from "./range/exportComponents/datePicker";
 export { TimePicker } from "./range/exportComponents/timePicker";

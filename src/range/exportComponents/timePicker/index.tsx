@@ -1,9 +1,5 @@
-import "../../../main.css";
-
 import React, { useEffect, useRef, useState } from "react";
-
 import moment from "moment-jalaali";
-
 import { toPersianDigits } from "../../core/helper";
 import type { ITimePicker, TUnit } from "../../core/type";
 import { CalenderIcon } from "../../icons/CalenderIcon";

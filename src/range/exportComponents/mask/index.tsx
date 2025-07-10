@@ -1,13 +1,7 @@
-import "../../../main.css";
-
 import React, { useEffect, useRef, useState } from "react";
-
 import moment from "moment-jalaali";
-
 import type { IDate, MaskProps, TLocale } from "../../core/type";
-
 type TimeZone = "year" | "month" | "day";
-
 const defaultErrorClass = "border-red-700 ";
 export function Mask({ ...props }: MaskProps) {
   const {
