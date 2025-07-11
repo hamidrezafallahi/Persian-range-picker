@@ -76,8 +76,6 @@ export function DesktopRangePicker(props: IDesktopRangeProps) {
   const [type, setType] = useState<string>("date");
   const [customData, setCustomData] = useState<unknown>(null);
   const handleAccept = () => {
-    console.log("handleAccept");
-
     if (date) {
       if (date.from && date.to && date.from < date.to) {
         if (handleSubmit) {

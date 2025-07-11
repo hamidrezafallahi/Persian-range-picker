@@ -1,4 +1,5 @@
-import { RangePicker } from "../range";
+import { useState } from "react";
+import { DatePicker, Mask, RangePicker, TimePicker } from "../range";
 
 export default function DemoComponent() {
   return (
@@ -9,7 +10,6 @@ export default function DemoComponent() {
         onChange={(e) => {
           console.log("RangePicker has changed", e);
         }}
-        exportType="timeStamp"
         showComparison
       />
       {/* <DatePicker
@@ -24,23 +24,24 @@ export default function DemoComponent() {
         calendarType="shamsi"
         // isOpenDropdown
         exportType="timeStamp"
-      />
-      <TimePicker
+      /> */}
+      {/* <TimePicker
         // disabled
         onChange={(e) => {
           console.log(e);
         }}
         showSecond
         // exportType="timeStamp"
-      />
+      /> */}
+    
       <Mask
-        disabled
+        // disabled
         // isTodaySelectPreset
         onMaskChange={(e) => {
           console.log("mask has changed", e);
         }}
-        exportType="timeStamp"
-      /> */}
+        // exportType="timeStamp"
+      />
     </div>
   );
 }

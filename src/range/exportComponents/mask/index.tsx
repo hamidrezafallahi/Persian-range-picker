@@ -25,7 +25,6 @@ export function Mask({ ...props }: MaskProps) {
     exportType = "IsoString",
   } = props;
   const locale = calendarType == "shamsi" ? "fa" : "en";
-
   const temp = timestampToDateNumbers(locale, defaultValue);
   const [separatedValue, setSeparatedValue] = useState(temp);
   const [baseValue, setBaseValue] = useState<IDate["from"] | null>(null);
@@ -56,6 +55,7 @@ export function Mask({ ...props }: MaskProps) {
   errors.current = errorTarget;
   separatedValueRef.current = separatedValue;
   editModeRef.current = isEdit;
+
   const formatFullValueToTimeStamp = (FullValue: string) => {
     let changeToTimestamp = null;
     if (locale == "en") {
@@ -583,7 +583,7 @@ export function Mask({ ...props }: MaskProps) {
     };
   }, [isEdit]);
   useEffect(() => {
-    if (!baseValue) {
+    if (!baseValue || baseValue == defaultValue) {
       return;
     }
     const dateValues = timestampToDateNumbers(locale, baseValue);
@@ -595,7 +595,7 @@ export function Mask({ ...props }: MaskProps) {
     setSeparatedValue([year.toString(), month.toString(), day.toString()]);
     onMaskChange?.(
       exportType == "timeStamp"
-        ? baseValue
+        ? baseValue.valueOf()
         : locale == "fa"
         ? moment(baseValue).format("YYYY-MM-DDTHH:mm:ss.SSSZ")
         : moment.utc(baseValue).format("YYYY-MM-DDTHH:mm:ss.SSSZ")
@@ -608,18 +608,18 @@ export function Mask({ ...props }: MaskProps) {
     fullValueRef.current = temp;
   }, [separatedValue]);
   useEffect(() => {
-    if (!baseValue) {
-      return;
-    }
+    // if (!baseValue) {
+    // return
+    // }
     if (defaultValue && defaultValue !== baseValue) {
-      const dateValues = timestampToDateNumbers(locale, baseValue);
+      const dateValues = timestampToDateNumbers(locale, defaultValue);
       const [year, month, day] = dateValues;
       const temp = `${year}${month}${day}`.substring(0, 8);
       setFullValue(temp);
       fullValueRef.current = temp;
 
       setSeparatedValue([year.toString(), month.toString(), day.toString()]);
-      // setBaseValue(defaultValue);
+      setBaseValue(defaultValue);
     }
   }, [defaultValue]);
   useEffect(() => {
