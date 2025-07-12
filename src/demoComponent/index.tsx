@@ -12,7 +12,7 @@ export default function DemoComponent() {
         }}
         showComparison
       />
-      {/* <DatePicker
+      <DatePicker
         // disabled
         showTime
         showSecond
@@ -24,16 +24,16 @@ export default function DemoComponent() {
         calendarType="shamsi"
         // isOpenDropdown
         exportType="timeStamp"
-      /> */}
-      {/* <TimePicker
+      />
+      <TimePicker
         // disabled
         onChange={(e) => {
           console.log(e);
         }}
         showSecond
         // exportType="timeStamp"
-      /> */}
-    
+      />
+
       <Mask
         // disabled
         // isTodaySelectPreset

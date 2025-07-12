@@ -1,13 +1,7 @@
-import React, {
-  type Dispatch,
-  useState,
-} from 'react';
+import React, { type Dispatch, useState } from "react";
 
-import { Mask } from '../exportComponents/mask';
-import type {
-  IDate,
-  TLocale,
-} from './type';
+import { Mask } from "../exportComponents/mask";
+import type { IDate, TLocale } from "./type";
 
 interface IProps {
   date: IDate;
@@ -47,6 +41,7 @@ function MaskRange({ ...props }: IProps) {
         }`}
         prefix={false}
         suffix={false}
+        exportType="timeStamp"
       />
       {"_"}
       <Mask
@@ -58,6 +53,7 @@ function MaskRange({ ...props }: IProps) {
         }`}
         prefix={false}
         suffix={false}
+        exportType="timeStamp"
       />
     </div>
   );
