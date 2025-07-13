@@ -64,6 +64,18 @@ export const Footer = ({ ...props }: IFooter) => {
         .set("second", now.second());
 
       setShowDate(updated.valueOf());
+      const hourDiv = document.getElementById("hour");
+      if (hourDiv) {
+        hourDiv.scrollTop = now.hour() * 40;
+      }
+      const minuteDiv = document.getElementById("minute");
+      if (minuteDiv) {
+        minuteDiv.scrollTop = now.minute() * 40;
+      }
+      const secondDiv = document.getElementById("second");
+      if (secondDiv) {
+        secondDiv.scrollTop = now.second() * 40;
+      }
       onNowButton?.();
     } else if (key === "submit") {
       onSubmit?.();
@@ -72,7 +84,7 @@ export const Footer = ({ ...props }: IFooter) => {
   };
 
   return (
-    <div className="flex gap-2 mt-2 px-2">
+    <div className="flex gap-2 mb-2 px-2">
       {showTime ? (
         <div className="flex justify-between w-full">
           <NowButton handleSelect={handleSelect} />

@@ -61,6 +61,10 @@ export const TimePicker: React.FC<ITimePicker> = ({
       ? moment(time).locale(locale).set(unit, value)
       : moment().locale(locale).set(unit, value);
     setTime(updated.valueOf());
+    const targetDiv = document.getElementById(unit);
+    if (targetDiv) {
+      targetDiv.scrollTop = value * 40;
+    }
   };
 
   const handleSubmit = () => {
@@ -95,6 +99,18 @@ export const TimePicker: React.FC<ITimePicker> = ({
       .set("second", now.second());
 
     setTime(updated.valueOf());
+    const hourDiv = document.getElementById("hour");
+    if (hourDiv) {
+      hourDiv.scrollTop = now.hour() * 40;
+    }
+    const minuteDiv = document.getElementById("minute");
+    if (minuteDiv) {
+      minuteDiv.scrollTop = now.minute() * 40;
+    }
+    const secondDiv = document.getElementById("second");
+    if (secondDiv) {
+      secondDiv.scrollTop = now.second() * 40;
+    }
   };
   const renderOptions = (count: number, unit: TUnit, step = 1) => {
     const pad = (num: number) => num.toString().padStart(2, "0");
@@ -127,8 +143,15 @@ export const TimePicker: React.FC<ITimePicker> = ({
       setTime(defaultValue);
     }
   }, [defaultValue]);
+
   return (
-    <div className="range" style={{ position: "relative", width:device=="desktop"?"fit-content":"100%" }}>
+    <div
+      className="range"
+      style={{
+        position: "relative",
+        width: device == "desktop" ? "fit-content" : "100%",
+      }}
+    >
       {device == "desktop" ? (
         <>
           <button
@@ -236,6 +259,24 @@ export const TimePicker: React.FC<ITimePicker> = ({
               // }}
               className={`relative border-none  w-full h-full flex flex-col gap-2 bg-white  p-3  ${containerClassName}`}
             >
+              <div
+                className="flex justify-center items-center border-b h-9"
+                style={{
+                  height: "34px",
+                  fontSize: "14px",
+                  color: tertiaryColor,
+                }}
+              >
+                {time
+                  ? locale === "fa"
+                    ? toPersianDigits(
+                        moment(time).locale(locale).format(dynamicFormat)
+                      )
+                    : moment(time).locale(locale).format(dynamicFormat)
+                  : locale == "fa"
+                  ? "زمان را انتخاب کنید"
+                  : "Choose time"}
+              </div>
               <TimeColumns
                 renderHeight={`${renderHeight}px`}
                 renderOptions={(count, unit) =>
@@ -254,8 +295,8 @@ export const TimePicker: React.FC<ITimePicker> = ({
                 secondStep={secondStep}
                 showSecond={showSecond}
               />
-              <div className="fixed bottom-0 left-0 right-0 w-full p-2">
-                <div className="flex justify-between gap-4 mt-2 ">
+              <div className="right-0 bottom-0 left-0 fixed p-2 w-full">
+                <div className="flex justify-between gap-4 mt-2">
                   {showNow && (
                     <button
                       onClick={handleNow}

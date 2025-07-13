@@ -23,7 +23,6 @@ export default function DemoComponent() {
         }}
         calendarType="shamsi"
         // isOpenDropdown
-        exportType="timeStamp"
       />
       <TimePicker
         // disabled

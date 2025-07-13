@@ -8,6 +8,7 @@ import type { IDate, IDateProps, TUnit } from "../core/type";
 import { TimeColumns } from "../exportComponents/timePicker/exportComponents";
 import { CalenderIcon } from "../icons/CalenderIcon";
 import { DatePicker } from "../persianDatePicker";
+import { MenuArrowBack } from "../icons/MenuArrowBack";
 
 export function MobileDate({ ...props }: IDateProps) {
   const {
@@ -30,7 +31,7 @@ export function MobileDate({ ...props }: IDateProps) {
   const [showDate, setShowDate] = useState<number>(0);
   const [content, setContent] = useState<"Date" | "Time">("Date");
   const popoverRef = useRef<HTMLDivElement>(null);
-    const device: "mobile" | "desktop" =
+  const device: "mobile" | "desktop" =
     /Mobile|Android|iPhone|iPad|iPod|Opera Mini|BlackBerry|IEMobile/i.test(
       navigator.userAgent
     )
@@ -76,6 +77,10 @@ export function MobileDate({ ...props }: IDateProps) {
       ? moment(showDate).locale(locale).set(unit, value)
       : moment().locale(locale).set(unit, value);
     setShowDate(updated.valueOf());
+    const targetDiv = document.getElementById(unit);
+    if (targetDiv) {
+      targetDiv.scrollTop = value * 40;
+    }
   };
 
   const renderOptions = (count: number, unit: TUnit, step = 1) => {
@@ -121,14 +126,24 @@ export function MobileDate({ ...props }: IDateProps) {
     setShowDate(temp);
   }, [defaultValue]);
   return (
-    <div className="range" style={{ position: "relative", width:device=="desktop"?"fit-content":"100%" }}>
+    <div
+      className="range"
+      style={{
+        position: "relative",
+        width: device == "desktop" ? "fit-content" : "100%",
+      }}
+    >
       <button
         disabled={disabled}
         popoverTarget="mobileDateModal"
         className={`flex justify-between items-center gap-2 px-1 h-9 rounded-md  w-full ${
           disabled && "cursor-not-allowed"
         }   ${className}`}
-        style={{ color: tertiaryColor, backgroundColor: highlightColor, width:"100%" }}
+        style={{
+          color: tertiaryColor,
+          backgroundColor: highlightColor,
+          width: "100%",
+        }}
       >
         <CalenderIcon />
         <div className="w-full">{title}</div>
@@ -158,7 +173,7 @@ export function MobileDate({ ...props }: IDateProps) {
           ) : (
             <div style={{ zIndex: 10 }}>
               <div
-                className="flex justify-center items-center border-b h-9"
+                className="relative flex justify-center items-center border-b h-9"
                 style={{
                   height: "34px",
                   fontSize: "14px",
@@ -170,6 +185,15 @@ export function MobileDate({ ...props }: IDateProps) {
                       moment(showDate).locale(locale).format(dynamicFormat)
                     )
                   : moment(showDate).locale(locale).format(dynamicFormat)}
+                <button
+                  className="top-0 right-0 absolute flex justify-center items-center rounded w-10 aspect-square"
+                  style={{ background: "#ecedf2" }}
+                  onClick={() => {
+                    setContent("Date");
+                  }}
+                >
+                  <MenuArrowBack />
+                </button>
               </div>
               <TimeColumns
                 TimeColumnsClassName="flex justify-center items-center  py-2 h-full "

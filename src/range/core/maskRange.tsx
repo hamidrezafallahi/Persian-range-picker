@@ -2,6 +2,7 @@ import React, { type Dispatch, useState } from "react";
 
 import { Mask } from "../exportComponents/mask";
 import type { IDate, TLocale } from "./type";
+import moment from "moment-jalaali";
 
 interface IProps {
   date: IDate;
@@ -10,8 +11,7 @@ interface IProps {
 }
 function MaskRange({ ...props }: IProps) {
   const [error, setError] = useState<"from" | "to" | null>(null);
-
-  const { date, setDate } = props;
+  const { date, setDate, locale } = props;
   const handleChange = (e: IDate["from"], name: "from" | "to") => {
     if (name === "from") {
       if (date.to && e > date.to) {
@@ -26,7 +26,13 @@ function MaskRange({ ...props }: IProps) {
         return;
       }
       setError(null);
-      setDate?.({ from: date.from, to: e });
+      let endOfDate: number;
+      if (locale == "fa") {
+        endOfDate = moment(e).endOf("day").valueOf();
+      } else {
+        endOfDate = moment(e).utc().endOf("day").valueOf();
+      }
+      setDate?.({ from: date.from, to: endOfDate });
     }
   };
 
