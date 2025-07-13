@@ -28,6 +28,7 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
     showSecond = false,
     showMask = false,
     disabled = false,
+    Style,
   } = props;
   const dynamicFormat = showSecond ? showTimeFormat : "HH:mm";
   const [showDate, setShowDate] = useState<number>(0);
@@ -105,17 +106,18 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
     setShowDate(temp);
   }, [defaultValue]);
   return (
-    <div className="range" style={{ position: "relative" }}>
+    <div className="range" style={{ position: "relative", width: "100%" }}>
       <button
         disabled={disabled}
         ref={buttonRef as React.RefObject<HTMLButtonElement>}
         onClick={handleDropdown}
-        className={`flex justify-between items-center gap-1 px-2 rounded-md h-9 w-full   ${
+        className={`flex justify-between items-center gap-1 px-2 rounded-md h-9 w-full ${
           disabled && "cursor-not-allowed"
         }
             
           ${className}`}
         style={{
+          ...Style,
           color: tertiaryColor,
           backgroundColor: highlightColor,
           fontSize: "14px",
