@@ -10,7 +10,8 @@ import { CalenderIcon } from "../icons/CalenderIcon";
 import { DatePicker } from "../persianDatePicker";
 import { DesktopTimePicker } from "./desktopTimePicker";
 import { Mask } from "../exportComponents/mask";
-
+import { createPortal } from "react-dom";
+import styles from "../../main.module.css";
 export function DesktopDatePicker({ ...props }: IDateProps) {
   const {
     locale = "fa",
@@ -29,6 +30,7 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
     showMask = false,
     disabled = false,
     Style,
+    exportType = "IsoString",
   } = props;
   const dynamicFormat = showSecond ? showTimeFormat : "HH:mm";
   const [showDate, setShowDate] = useState<number>(0);
@@ -47,7 +49,11 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
 
   const handleSubmit = () => {
     const finalDate = showTime ? showDate : moment(showDate).valueOf();
-    onChange?.(finalDate);
+    if (exportType == "IsoString") {
+      onChange?.(new Date(finalDate).toISOString());
+    } else {
+      onChange?.(finalDate);
+    }
   };
 
   const handleDateChange = (date: IDate) => {
@@ -56,7 +62,11 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
       : moment(date.from).startOf("day").valueOf();
     setShowDate(finalDate);
     if (!showTime) {
-      onChange?.(finalDate);
+      if (exportType == "IsoString") {
+        onChange?.(new Date(finalDate).toISOString());
+      } else {
+        onChange?.(finalDate);
+      }
       setIsOpen(false);
     }
   };
@@ -111,15 +121,12 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
         disabled={disabled}
         ref={buttonRef as React.RefObject<HTMLButtonElement>}
         onClick={handleDropdown}
-        className={`flex justify-between items-center gap-1 px-2 rounded-md h-9 w-full ${
-          disabled && "cursor-not-allowed"
-        }
-            
-          ${className}`}
+        className={`${styles.flex} ${styles.justify_between} ${styles.items_center} ${styles.gap_1} ${styles.px_2} ${styles.bg_red_400} ${styles.rounded_md} ${styles.h_9} ${styles.w_full} ${className}`}
         style={{
           ...Style,
           color: tertiaryColor,
-          backgroundColor: highlightColor,
+          // backgroundColor: highlightColor,
+          cursor: disabled ? "not-allowed" : "default",
           fontSize: "14px",
         }}
       >
@@ -142,82 +149,87 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
             />
           </div>
         ) : (
-          <div className="w-full text-start">{title}</div>
+          <div className={`w-full text-start ${styles.bg_red_400}`}>
+            {title}
+          </div>
         )}
       </button>
-      {isOpen && (
-        <div
-          ref={popupRef}
-          style={{
-            position: "absolute",
-            zIndex: 10,
-          }}
-          className="bg-white shadow-lg p-2 border rounded-lg overflow-hidden"
-          dir="ltr"
-        >
+      {isOpen &&
+        createPortal(
           <div
-            className={`z-50 flex items-end gap-2 ${
-              showTime && "border-r"
-            } w-full`}
+            ref={popupRef}
+            style={{
+              position: "absolute",
+              zIndex: 10,
+              background: "#fff",
+            }}
+            className="bg-white shadow-lg p-2 border rounded-lg overflow-hidden"
+            dir="ltr"
           >
-            <DatePicker
-              name="DesktopDate"
-              {...props}
-              model="date"
-              locale={locale}
-              onDateChange={handleDateChange}
-              dateFromOutside={{ from: showDate, to: 0 }}
-              calendarBaseWidth={calendarBaseWidth}
-              defaultValue={
-                defaultValue ? { from: defaultValue, to: 0 } : undefined
-              }
-            />
-            {showTime && (
-              <div
-                style={{
-                  width: showSecond ? "212px" : "130px",
-                  minWidth: showSecond ? "212px" : "130px",
-                }}
-              >
+            <div
+              className={`z-50 flex items-end gap-2 ${
+                showTime && "border-r"
+              } w-full`}
+            >
+              <DatePicker
+                name="DesktopDate"
+                {...props}
+                model="date"
+                locale={locale}
+                onDateChange={handleDateChange}
+                dateFromOutside={{ from: showDate, to: 0 }}
+                calendarBaseWidth={calendarBaseWidth}
+                defaultValue={
+                  defaultValue ? { from: defaultValue, to: 0 } : undefined
+                }
+              />
+              {showTime && (
                 <div
-                  className="flex justify-center items-center border-b h-9"
                   style={{
-                    height: "34px",
-                    fontSize: "14px",
-                    color: tertiaryColor,
+                    width: showSecond ? "212px" : "130px",
+                    minWidth: showSecond ? "212px" : "130px",
                   }}
                 >
-                  {locale === "fa"
-                    ? toPersianDigits(
-                        moment(showDate).locale(locale).format(dynamicFormat)
-                      )
-                    : moment(showDate).locale(locale).format(dynamicFormat)}
+                  <div
+                    className="flex justify-center items-center border-b h-9"
+                    style={{
+                      height: "34px",
+                      fontSize: "14px",
+                      color: tertiaryColor,
+                    }}
+                  >
+                    {locale === "fa"
+                      ? toPersianDigits(
+                          moment(showDate).locale(locale).format(dynamicFormat)
+                        )
+                      : moment(showDate).locale(locale).format(dynamicFormat)}
+                  </div>
+                  <DesktopTimePicker
+                    {...props}
+                    displayButtonCount={5}
+                    defaultValue={showDate}
+                    setShowDate={setShowDate}
+                    onGetValue={handleSetTime}
+                  />
                 </div>
-                <DesktopTimePicker
-                  {...props}
-                  displayButtonCount={5}
-                  defaultValue={showDate}
-                  setShowDate={setShowDate}
-                  onGetValue={handleSetTime}
-                />
-              </div>
-            )}
-          </div>
+              )}
+            </div>
 
-          <Footer
-            setIsOpen={setIsOpen}
-            setShowDate={setShowDate}
-            showDate={showDate}
-            locale={locale}
-            primaryColor={primaryColor}
-            highlightColor={highlightColor}
-            chooseTodayClassName={chooseTodayClassName}
-            showTime={showTime}
-            onSubmit={handleSubmit}
-            onChange={changeHandler}
-          />
-        </div>
-      )}
+            <Footer
+              setIsOpen={setIsOpen}
+              setShowDate={setShowDate}
+              showDate={showDate}
+              locale={locale}
+              primaryColor={primaryColor}
+              highlightColor={highlightColor}
+              chooseTodayClassName={chooseTodayClassName}
+              showTime={showTime}
+              onSubmit={handleSubmit}
+              onChange={changeHandler}
+            />
+          </div>,
+          document.body
+        )}
     </div>
   );
 }
