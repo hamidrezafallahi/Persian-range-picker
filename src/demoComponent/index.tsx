@@ -12,12 +12,12 @@ export default function DemoComponent() {
         }}
         showComparison
       />
-      <div className={`${style.bg_red_400}`} style={{ height: "500px" }}>
+      <div className={`${style.bg_red_400}`} style={{ height: "800px" }}>
         height
       </div>
 
       <div className={`${style.flex}`}>
-        <div className={`${style.bg_red_400}`} style={{ width: "900px" }}>
+        <div className={`${style.bg_red_400}`} style={{ width: "1300px" }}>
           test
         </div>
         <DatePicker

@@ -203,7 +203,7 @@ const MonthPicker = ({
   ${style.text_sm} 
   ${style.justify_center} 
   ${style.items_center} 
-  ${style.rounded_md_force} 
+  ${style.rounded_md} 
   ${style.overflow_hidden} 
   ${style.p_1} 
   ${style.col_span_1}

@@ -10,7 +10,7 @@ function CustomSwitch({ ...props }: IProps) {
 
   return (
     <>
-      <label className="switch">
+      <label className={`${style.switch}`}>
         <input
           type="checkbox"
           onChange={onChange}

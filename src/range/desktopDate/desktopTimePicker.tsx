@@ -72,7 +72,7 @@ export const DesktopTimePicker: React.FC<Props> = ({
             ${style.flex_col}
             ${style.justify_evenly}
             ${style.items_center}
-            ${style.rounded_md_force}
+            ${style.rounded_md}
             ${style.w_6}
             ${style.aspect_square}
             ${style.text_center}

@@ -41,16 +41,12 @@ export function useRenderPosition<T extends HTMLElement = HTMLElement>({
       const top = placeAbove
         ? buttonArea.top - popupArea.height - offset
         : buttonArea.top + buttonArea.height + offset;
-
-      const centerX = buttonArea.left + buttonArea.width / 2;
-      const screenCenter = window.innerWidth / 2;
-      const alignLeft = centerX <= screenCenter;
+      const alignLeft = popupArea.width + buttonArea.left <= window.innerWidth;
       const left = alignLeft
         ? buttonArea.left
         : buttonArea.right - popupArea.width;
       popupRef.current.style.top = `${top}px`;
       popupRef.current.style.left = `${left}px`;
-      console.log(buttonArea, popupArea);
     }
   }, [isOpen]);
 }
