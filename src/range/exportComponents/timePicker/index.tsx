@@ -203,8 +203,8 @@ export const TimePicker: React.FC<ITimePicker> = ({
                 ref={popupRef}
                 style={{
                   position: "absolute",
-                  // width: 190,
-                  zIndex: 10,
+                  background: "#fff",
+                  zIndex: 1000,
                 }}
                 className={`
                 ${style.flex}

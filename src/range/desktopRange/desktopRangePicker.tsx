@@ -276,6 +276,7 @@ export function DesktopRangePicker(props: IDesktopRangeProps) {
             style={{
               backgroundColor: backgroundColor,
               position: "absolute",
+              zIndex: 1000,
               width: dropdownWidth,
               height: dropdownHeight,
             }}

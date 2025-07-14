@@ -158,7 +158,7 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
             ref={popupRef}
             style={{
               position: "absolute",
-              zIndex: 10,
+              zIndex: 1000,
               background: "#fff",
             }}
             className={`
