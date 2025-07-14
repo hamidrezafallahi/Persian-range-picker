@@ -12,4 +12,11 @@ export type {
   IDesktopRangeProps,
   IRangeOptions,
   RangeProps,
+  MaskProps,
+  ExportType,
+  IClassNameProps,
+  IMobileProps,
+  ITimePicker,
+  TLocale,
+  ISubmittedData,
 } from "./range/core/type";
