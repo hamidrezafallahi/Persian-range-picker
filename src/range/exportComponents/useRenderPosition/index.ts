@@ -47,10 +47,10 @@ export function useRenderPosition<T extends HTMLElement = HTMLElement>({
       const alignLeft = centerX <= screenCenter;
       const left = alignLeft
         ? buttonArea.left
-        : buttonArea.left + popupArea.width - buttonArea.width;
+        : buttonArea.right - popupArea.width;
       popupRef.current.style.top = `${top}px`;
       popupRef.current.style.left = `${left}px`;
-      console.log(top, popupArea, buttonArea);
+      console.log(buttonArea, popupArea);
     }
   }, [isOpen]);
 }

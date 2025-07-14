@@ -116,16 +116,16 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
     setShowDate(temp);
   }, [defaultValue]);
   return (
-    <div className="range" style={{ position: "relative", width: "100%" }}>
+    <>
       <button
         disabled={disabled}
         ref={buttonRef as React.RefObject<HTMLButtonElement>}
         onClick={handleDropdown}
-        className={`${styles.flex} ${styles.justify_between} ${styles.items_center} ${styles.gap_1} ${styles.px_2} ${styles.bg_red_400} ${styles.rounded_md} ${styles.h_9} ${styles.w_full} ${className}`}
+        className={`${styles.flex} ${styles.justify_between} ${styles.items_center} ${styles.gap_1} ${styles.px_2}   ${styles.rounded_md} ${styles.h_9}  ${className}`}
         style={{
           ...Style,
           color: tertiaryColor,
-          // backgroundColor: highlightColor,
+          backgroundColor: highlightColor,
           cursor: disabled ? "not-allowed" : "default",
           fontSize: "14px",
         }}
@@ -149,9 +149,7 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
             />
           </div>
         ) : (
-          <div className={`w-full text-start ${styles.bg_red_400}`}>
-            {title}
-          </div>
+          <div className={`w-full text-start`}>{title}</div>
         )}
       </button>
       {isOpen &&
@@ -230,6 +228,6 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
           </div>,
           document.body
         )}
-    </div>
+    </>
   );
 }

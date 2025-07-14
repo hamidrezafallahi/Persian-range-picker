@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { DatePicker, Mask, RangePicker, TimePicker } from "../range";
-
+import style from "../main.module.css";
 export default function DemoComponent() {
   return (
     <div>
@@ -12,19 +12,28 @@ export default function DemoComponent() {
         }}
         showComparison
       />
-      <DatePicker
-        // disabled
-        showTime
-        showSecond
-        // showMask
-        className="!w-full"
-        isTodaySelectPreset
-        onChange={(e) => {
-          console.log(e);
-        }}
-        calendarType="shamsi"
-        // isOpenDropdown
-      />
+      <div className={`${style.bg_red_400}`} style={{ height: "500px" }}>
+        height
+      </div>
+
+      <div className={`${style.flex}`}>
+        <div className={`${style.bg_red_400}`} style={{ width: "900px" }}>
+          test
+        </div>
+        <DatePicker
+          // disabled
+          showTime
+          showSecond
+          // showMask
+          // className="!w-full"
+          // isTodaySelectPreset
+          onChange={(e) => {
+            console.log(e);
+          }}
+          calendarType="shamsi"
+          // isOpenDropdown
+        />
+      </div>
       <TimePicker
         // disabled
         onChange={(e) => {
