@@ -163,7 +163,7 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
               zIndex: 10,
               background: "#fff",
             }}
-            className="bg-white shadow-lg p-2 border rounded-lg overflow-hidden"
+            className={`${styles.bg_red_400} shadow-lg p-2 border rounded-lg overflow-hidden`}
             dir="ltr"
           >
             <div
