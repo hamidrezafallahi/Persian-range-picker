@@ -126,7 +126,7 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
           ...Style,
           color: tertiaryColor,
           backgroundColor: highlightColor,
-          cursor: disabled ? "not-allowed" : "default",
+          cursor: disabled ? "not-allowed" : "pointer",
           fontSize: "14px",
         }}
       >

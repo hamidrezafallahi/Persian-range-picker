@@ -182,13 +182,14 @@ export const TimePicker: React.FC<ITimePicker> = ({
               ${style.w_full}
               ${style.xs_w_28}
               ${style.h_9}
-              ${disabled ? style.cursor_not_allowed : ""}
+            
               ${timeButtonClassName}
             `}
             style={{
               color: tertiaryColor,
               backgroundColor: highlightColor,
               fontSize: "14px",
+              cursor: disabled ? "not-allowed" : "pointer",
             }}
           >
             <span className={style.text_lg}>{icon}</span>
