@@ -1,5 +1,5 @@
 import React, { type Dispatch, useState } from "react";
-
+import style from "../../main.module.css";
 import { Mask } from "../exportComponents/mask";
 import type { IDate, TLocale } from "./type";
 import moment from "moment-jalaali";
@@ -37,14 +37,22 @@ function MaskRange({ ...props }: IProps) {
   };
 
   return (
-    <div className="flex items-center gap-2">
+    <div
+      className={`
+      ${style.flex}
+      ${style.items_center}
+      ${style.gap_2}
+    `}
+    >
       <Mask
         // {...props}
         onMaskChange={(e) => handleChange(e as number, "from")}
         defaultValue={date.from}
-        maskClassName={` rounded-lg w-fit ${
-          error === "from" ? " border-red-100 " : ""
-        }`}
+        maskClassName={`
+          ${style.rounded_lg} 
+          ${style.w_fit} 
+          ${error === "from" ? style.border_red_100 : ""}
+        `}
         prefix={false}
         suffix={false}
         exportType="timeStamp"
@@ -54,9 +62,11 @@ function MaskRange({ ...props }: IProps) {
         // {...props}
         onMaskChange={(e) => handleChange(e as number, "to")}
         defaultValue={date.to}
-        maskClassName={`rounded-lg w-fit ${
-          error === "from" ? " border-red-100 " : ""
-        }`}
+        maskClassName={`
+          ${style.rounded_lg} 
+          ${style.w_fit} 
+          ${error === "from" ? style.border_red_100 : ""}
+        `}
         prefix={false}
         suffix={false}
         exportType="timeStamp"

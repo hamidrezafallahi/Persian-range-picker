@@ -1,5 +1,5 @@
 import { type ReactNode, useState } from "react";
-
+import style from "../main.module.css";
 import dateP from "../assets/images/dateP.png";
 import maskP from "../assets/images/maskP.png";
 import rangePic from "../assets/images/rangeP.png";

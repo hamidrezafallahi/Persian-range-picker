@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-
+import style from "../../main.module.css";
 import moment from "moment-jalaali";
 
 import MainContent from "../core/mainContent";
@@ -73,21 +73,46 @@ export function MobileRangePicker(props: IBaseProps) {
     }
   }, [customData]);
   return (
-    <div className="range">
-      <div className={`flex ${className}`}>
+    <>
+      <div className={`${style.flex} ${className}`}>
         <button
           disabled={disabled}
           popoverTarget="mobileRangeModal"
-          className={`flex justify-center items-center gap-2 w-full sm:w-fit ${
-            disabled && "cursor-not-allowed"
-          }`}
+          className={`
+            ${style.flex}
+            ${style.justify_center}
+            ${style.items_center}
+            ${style.gap_2}
+            ${style.w_full}
+            ${style.sm_w_fit}
+            ${disabled ? style.cursor_not_allowed : ""}
+          `}
         >
           <CalenderIcon />
-          <div className="w-fit text-gray-gray8 text-center">
+          <div
+            className={`
+  ${style.w_fit}
+  ${style.text_gray_gray8}
+  ${style.text_center}
+`}
+          >
             {date && moment(date.from as number).format("jYYYY/jMM/jDD")}
           </div>
-          <div className="text-gray-gray8 text-center">{"-"}</div>
-          <div className="w-fit text-gray-gray8 text-center">
+          <div
+            className={`
+  ${style.text_gray_gray8}
+  ${style.text_center}
+`}
+          >
+            {"-"}
+          </div>
+          <div
+            className={`
+  ${style.w_fit}
+  ${style.text_gray_gray8}
+  ${style.text_center}
+`}
+          >
             {date && moment(date.to as number).format("jYYYY/jMM/jDD")}
           </div>
         </button>
@@ -113,12 +138,33 @@ export function MobileRangePicker(props: IBaseProps) {
         <div
           popover="auto"
           id="mobileRangeModal"
-          className={`w-full h-full ${popoverClassName} border-none`}
+          className={`
+            ${style.w_full}
+            ${style.h_full}
+            ${style.border_none}
+            ${popoverClassName}
+          `}
         >
-          <div className="flex gap-1" dir={locale == "fa" ? "rtl" : "ltr"}>
+          <div
+            className={`
+  ${style.flex}
+  ${style.gap_1}
+`}
+            dir={locale == "fa" ? "rtl" : "ltr"}
+          >
             <button
               popoverTarget="mobileRangeModal"
-              className="flex justify-center items-center gap-2 font-IRANSans font-extrabold !text-black-black3 text-base whitespace-nowrap"
+              className={`
+                ${style.flex}
+                ${style.justify_center}
+                ${style.items_center}
+                ${style.gap_2}
+                ${style.font_IRANSans}
+                ${style.font_extrabold}
+                ${style.text_base}
+                ${style.whitespace_nowrap}
+              `}
+              style={{ color: "#6e6e6e" }}
             >
               <MenuArrowBack />
               <span>{locale == "fa" ? "تاریخ" : "Date"}</span>
@@ -134,6 +180,6 @@ export function MobileRangePicker(props: IBaseProps) {
           />
         </div>
       </div>
-    </div>
+    </>
   );
 }

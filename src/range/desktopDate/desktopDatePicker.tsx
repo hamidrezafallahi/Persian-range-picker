@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-
+import style from "../../main.module.css";
 import moment from "moment-jalaali";
 
 import { Footer } from "../core/footer";
@@ -149,7 +149,7 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
             />
           </div>
         ) : (
-          <div className={`w-full text-start`}>{title}</div>
+          <div className={`${style.w_full} ${style.text_start}`}>{title}</div>
         )}
       </button>
       {isOpen &&
@@ -161,13 +161,24 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
               zIndex: 10,
               background: "#fff",
             }}
-            className={`${styles.bg_red_400} shadow-lg p-2 border rounded-lg overflow-hidden`}
+            className={`
+              ${style.shadow_lg}
+              ${style.p_2}
+              ${style.border}
+              ${style.rounded_lg}
+              ${style.overflow_hidden}
+            `}
             dir="ltr"
           >
             <div
-              className={`z-50 flex items-end gap-2 ${
-                showTime && "border-r"
-              } w-full`}
+              className={`
+  ${style.z_50}
+  ${style.flex}
+  ${style.items_end}
+  ${style.gap_2}
+  ${showTime ? style.border_r : ""}
+  ${style.w_full}
+`}
             >
               <DatePicker
                 name="DesktopDate"
@@ -189,7 +200,13 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
                   }}
                 >
                   <div
-                    className="flex justify-center items-center border-b h-9"
+                    className={`
+  ${style.flex}
+  ${style.justify_center}
+  ${style.items_center}
+  ${style.border_b}
+  ${style.h_9}
+`}
                     style={{
                       height: "34px",
                       fontSize: "14px",

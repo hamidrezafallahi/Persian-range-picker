@@ -1,12 +1,9 @@
-import type { FC } from 'react';
-import {
-  useMemo,
-  useState,
-} from 'react';
-
-import { LeftChevron } from '../icons/LeftChevron';
-import { RightChevron } from '../icons/RightChevron';
-import { convertToPersianNumbers } from './helper';
+import type { FC } from "react";
+import { useMemo, useState } from "react";
+import style from "../../main.module.css";
+import { LeftChevron } from "../icons/LeftChevron";
+import { RightChevron } from "../icons/RightChevron";
+import { convertToPersianNumbers } from "./helper";
 
 interface Props {
   currentYear: number;
@@ -47,16 +44,32 @@ const YearPicker: FC<Props> = ({
 
   return (
     <div
-      className={`w-full flex flex-col min-h-[327px] ${yearPickerClassName}`}
+      className={`
+      ${style.w_full}
+      ${style.flex}
+      ${style.flex_col}
+     
+      ${yearPickerClassName}
+    `}
+      style={{ minHeight: "327px" }}
     >
-      <div className={`w-full flex justify-between`}>
+      <div
+        className={`
+  ${style.w_full}
+  ${style.flex}
+  ${style.justify_between}
+`}
+      >
         <div onClick={() => changePageHandler(1)}>
           <LeftChevron secondaryColor={secondaryColor} />
         </div>
         <div>
           <span
             style={{ color: primaryColor }}
-            className="font-bold text-sm"
+            className={`
+              ${style.font_bold}
+              ${style.text_sm}
+            `}
           >{`${convertToPersianNumbers(
             yearList[0].toString()
           )} - ${convertToPersianNumbers(
@@ -64,11 +77,21 @@ const YearPicker: FC<Props> = ({
           )}`}</span>
         </div>
         <div onClick={() => changePageHandler(-1)}>
-            <RightChevron secondaryColor={secondaryColor} />
+          <RightChevron secondaryColor={secondaryColor} />
         </div>
       </div>
       <div
-        className={`w-full mx-auto flex flex-wrap justify-center items-center pt-4  overflow-y-auto  !h-full`} //need classname
+        className={`
+  ${style.w_full}
+  ${style.mx_auto}
+  ${style.flex}
+  ${style.flex_wrap}
+  ${style.justify_center}
+  ${style.items_center}
+  ${style.pt_4}
+  ${style.overflow_y_auto}
+  ${style.h_full}
+`}
       >
         {yearList.map((year) => (
           <div
@@ -76,15 +99,24 @@ const YearPicker: FC<Props> = ({
               backgroundColor: year === currentYear ? secondaryColor : "",
               color: year === currentYear ? backgroundColor : secondaryColor,
               fontWeight: year === currentYear ? "500" : "",
+              width: "80px",
             }}
             key={year}
-            className={`w-[80px] h-9 flex justify-center items-center rounded 
-           
-
+            className={`
+             
+              ${style.h_9}
+              ${style.flex}
+              ${style.justify_center}
+              ${style.items_center}
+              ${style.rounded}
             `}
             onClick={() => selectYearHandler(year)}
           >
-            <span className="text-sm">
+            <span
+              className={`
+  ${style.text_sm}
+`}
+            >
               {convertToPersianNumbers(year.toString())}
             </span>
           </div>

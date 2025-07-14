@@ -123,16 +123,16 @@ input:focus {
 .\!bg_gray_gray10 {
   background-color: #585858 !important;
 }
-.hover\:bg_main_white:hover {
+.hover_bg_main_white:hover {
   background-color: #ffffff;
 }
-.hover\:\!bg_gray_gray9:hover {
+.hover_bg_gray_gray9:hover {
   background-color: #767676 !important;
 }
-.\*\:before\:\!bg_main_black > *::before {
+.\*\:before_bg_main_black > *::before {
   background-color: #0e0e0e !important;
 }
-.\*\:before\:\!bg_gray_gray6 > *::before {
+.\*\:before_bg_gray_gray6 > *::before {
   background-color: #cecece !important;
 }
 
@@ -194,7 +194,7 @@ input:focus {
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
     0 4px 6px -2px rgba(0, 0, 0, 0.05);
 }
-.\*\:\!shadow_none > * {
+.\*_shadow_none > * {
   box-shadow: none !important;
 }
 
@@ -240,9 +240,6 @@ input:focus {
 }
 .bottom_16 {
   bottom: 4rem;
-}
-.top_\[50\%\] {
-  top: 50%;
 }
 /* ==================== TYPOGRAPHY ==================== */
 .text_xs {
@@ -317,7 +314,7 @@ input:focus {
 .hover\:text_gray_700:hover {
   color: #374151;
 }
-.hover\:\!text_main_white:hover {
+.hover_text_main_white:hover {
   color: #ffffff !important;
 }
 
@@ -386,9 +383,6 @@ input:focus {
 .w_\[clamp\(24px\,24px\,30px\)\] {
   width: 24px;
 }
-.max_w_\[430px\] {
-  max-width: 430px;
-}
 .\!min_w_6 {
   min-width: 1.5rem !important;
 }
@@ -443,9 +437,6 @@ input:focus {
 }
 .\!h_8 {
   height: 2rem !important;
-}
-.\!h_\[calc\(100\%-52px\)\] {
-  height: calc(100% - 52px) !important;
 }
 .h_\[calc\(100dvh-8\.8rem\)\] {
   height: calc(100dvh - 8.8rem);
@@ -866,7 +857,7 @@ input:focus {
     border-bottom: 2px solid !important;
   }
 
-  .xs\:\!h-\[calc\(100\%-52px\)\] {
+  .xs_h-\[calc\(100\%-52px\)\] {
     height: calc(100% - 52px) !important;
   }
   .xs_h_full {
@@ -923,16 +914,16 @@ input:focus {
   .xs_overflow_y_auto {
     overflow-y: auto;
   }
-  .xs\:\!flex_row {
+  .xs_flex_row {
     flex-direction: row !important;
   }
   .xs_block {
     display: block;
   }
-  .xs\:\!border_r {
+  .xs_border_r {
     border-right-width: 1px !important;
   }
-  .xs\:\!border_l {
+  .xs_border_l {
     border-left: 1px solid #e5e7eb !important;
   }
   .xs_w_64 {

@@ -1,6 +1,6 @@
 import type { FC, ReactNode, RefObject } from "react";
 import { memo, useCallback, useState } from "react";
-
+import style from "../../main.module.css";
 import jmoment from "moment-jalaali";
 
 import type { TLocale } from "../core/type";
@@ -314,7 +314,13 @@ const Calendar: FC<Props> = ({
         day.timestamp < endDate;
       return (
         <div
-          className="flex justify-center items-center w-full h-full"
+          className={`
+          ${style.flex}
+          ${style.justify_center}
+          ${style.items_center}
+          ${style.w_full}
+          ${style.h_full}
+        `}
           key={index}
         >
           <button
@@ -337,7 +343,17 @@ const Calendar: FC<Props> = ({
                 });
               }
             }}
-            className="flex flex-col justify-evenly items-center !rounded-md w-[clamp(24px,24px,30px)] aspect-square text-center cursor-pointer"
+            className={`
+              ${style.flex}
+              ${style.flex_col}
+              ${style.justify_evenly}
+              ${style.items_center}
+              ${style.rounded_md}
+              ${style.w_6}
+              ${style.aspect_square}
+              ${style.text_center}
+              ${style.cursor_pointer}
+            `}
             style={{
               pointerEvents: isDisabled ? "none" : "auto",
               opacity: isDisabled ? 0.5 : day.currentMonth ? 1 : 0,
@@ -395,13 +411,23 @@ const Calendar: FC<Props> = ({
     return (
       <>
         <div
-          className={`grid grid-cols-7 justify-between gap-x-2 w-full p-2 `}
+          className={`
+          ${style.grid}
+          ${style.grid_cols_7}
+          ${style.justify_between}
+          ${style.gap_x_2}
+          ${style.w_full}
+          ${style.p_2}
+        `}
           dir={locale === "fa" ? "rtl" : "ltr"}
         >
           {weekNameList.map((dName, i) => (
             <span
               key={i}
-              className={`  font-normal  text-center   `}
+              className={`
+                ${style.font_normal}
+                ${style.text_center}
+              `}
               style={{ fontSize: "14px", color: secondaryColor }}
             >
               {dName}
@@ -409,7 +435,14 @@ const Calendar: FC<Props> = ({
           ))}
         </div>
         <div
-          className={`w-full !min-w-6  grid grid-cols-7  justify-between  gap-y-2   `}
+          className={`
+  ${style.w_full}
+  ${style.grid}
+  ${style.grid_cols_7}
+  ${style.justify_between}
+  ${style.gap_y_2}
+`}
+          style={{ minWidth: "24px" }}
           dir={locale === "fa" ? "rtl" : "ltr"}
         >
           {days}
@@ -421,10 +454,24 @@ const Calendar: FC<Props> = ({
   return (
     <div
       style={{ width: calendarBaseWidth }}
-      className={`flex flex-col items-center w-full h-fit  ${containerClassName}`}
+      className={`
+        ${style.flex}
+        ${style.flex_col}
+        ${style.items_center}
+        ${style.w_full}
+        ${style.h_fit}
+        ${containerClassName}
+      `}
     >
       {view === CalendarViews.DAY ? (
-        <div className="flex flex-col items-center w-full">
+        <div
+          className={`
+          ${style.flex}
+          ${style.flex_col}
+          ${style.items_center}
+          ${style.w_full}
+        `}
+        >
           <DatePickerHeader
             datePickerHeaderClassName={datePickerHeaderClassName}
             year={state.year}
@@ -436,7 +483,13 @@ const Calendar: FC<Props> = ({
             tertiaryColor={tertiaryColor}
             secondaryColor={secondaryColor}
           />
-          <hr className="mt-2 !border w-full" />
+          <hr
+            className={`
+  ${style.mt_2}
+  ${style.border}
+  ${style.w_full}
+`}
+          />
           <DataPickerBody
             year={state.year}
             month={state.month}

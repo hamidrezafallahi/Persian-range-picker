@@ -1,5 +1,5 @@
 import React, { useRef } from "react";
-
+import style from "../../../../../main.module.css";
 type Props = {
   renderHeight?: string;
   renderOptions: (
@@ -22,9 +22,9 @@ const TimeColumn: React.FC<{
   const title = unit == "hour" ? "HH" : unit == "minute" ? "MM" : "SS";
   const ref = useRef(null);
   return (
-    <div className="flex flex-col gap-4">
+    <div className={`${style.flex} ${style.flex_col} ${style.gap_4}`}>
       <div
-        className="flex justify-center"
+        className={`${style.flex} ${style.justify_center}`}
         style={{
           // position: "sticky",
           // top: 0,
@@ -34,7 +34,15 @@ const TimeColumn: React.FC<{
         {title}
       </div>
       <div
-        className="relative flex flex-col gap-4 px-2 overflow-x-hidden overflow-y-auto"
+        className={`
+  ${style.relative}
+  ${style.flex}
+  ${style.flex_col}
+  ${style.gap_4}
+  ${style.px_2}
+  ${style.overflow_x_hidden}
+  ${style.overflow_y_auto}
+`}
         style={{ maxHeight: renderHeight, scrollBehavior: "smooth" }}
         id={unit}
       >
@@ -52,7 +60,12 @@ export const TimeColumns: React.FC<Props> = ({
 }) => {
   return (
     <div
-      className={`flex justify-evenly gap-4 ${TimeColumnsClassName}`}
+      className={`
+      ${style.flex}
+      ${style.justify_evenly}
+      ${style.gap_4}
+      ${TimeColumnsClassName}
+    `}
       dir="ltr"
     >
       <TimeColumn

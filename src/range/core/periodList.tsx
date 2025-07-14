@@ -3,7 +3,7 @@ import { TickIcon } from "../icons/TickIcon";
 import { getTimestampsForPeriod } from "./helper";
 import type { IBaseProps, ITimeSections } from "./type";
 import { ESteps } from "./type";
-
+import style from "../../main.module.css";
 function PeriodList({ ...props }: IBaseProps) {
   const {
     onChange,
@@ -137,16 +137,24 @@ function PeriodList({ ...props }: IBaseProps) {
           <button
             key={index}
             onClick={() => timeHandler(item)}
-            className={`relative flex flex-col items-start w-full h-fit ${periodClassName}`}
+            className={`
+              ${style.relative}
+              ${style.flex}
+              ${style.flex_col}
+              ${style.items_start}
+              ${style.w_full}
+              ${style.h_fit}
+              ${periodClassName}
+            `}
             dir={locale == "fa" ? "rtl" : "ltr"}
           >
             <div style={{ color: active ? accentColor : tertiaryColor }}>
               {item.title}
             </div>
             <div
-              className="text-xs"
               style={{
                 color: active ? neutralColor : tertiaryColor,
+                fontSize: "0.75rem",
               }}
             >
               {stringDateFrom}
@@ -154,9 +162,11 @@ function PeriodList({ ...props }: IBaseProps) {
             </div>
             {active && (
               <span
-                className={` absolute top-[50%] ${
-                  locale == "en" ? "right-5" : "left-5"
-                }`}
+                style={{ top: "50%" }}
+                className={`
+                ${style.absolute}
+                ${locale === "en" ? style.right_5 : style.left_5}
+              `}
               >
                 <TickIcon accentColor={accentColor} />
               </span>
@@ -164,7 +174,7 @@ function PeriodList({ ...props }: IBaseProps) {
             {index < filteredPeriod.length - 1 && (
               <div
                 style={{ backgroundColor: highlightColor }}
-                className="m-0 w-px h-full"
+                className={`${style.m_0} ${style.w_px} ${style.h_full}`}
               />
             )}
           </button>

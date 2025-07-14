@@ -1,5 +1,3 @@
-import "./main.module.css";
-
 export { Mask, RangePicker } from "./range";
 export { DatePicker } from "./range/exportComponents/datePicker";
 export { TimePicker } from "./range/exportComponents/timePicker";
