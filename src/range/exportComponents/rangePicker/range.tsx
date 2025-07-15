@@ -4,7 +4,7 @@ import moment from "moment-jalaali";
 
 import type {
   ESteps,
-  IBaseProps,
+  IRangeProps,
   IDate,
   ITime,
   ITimeZone,
@@ -12,7 +12,7 @@ import type {
 import { DesktopRangePicker } from "../../desktopRange/desktopRangePicker";
 import { MobileRangePicker } from "../../mobileRange/mobileRangePicker";
 
-export function Range({ ...props }: IBaseProps) {
+export function Range({ ...props }: IRangeProps) {
   const deviceType =
     /Mobile|Android|iPhone|iPad|iPod|Opera Mini|BlackBerry|IEMobile/i.test(
       navigator.userAgent

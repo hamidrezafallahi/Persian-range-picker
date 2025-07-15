@@ -37,6 +37,7 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
   const [isOpen, setIsOpen] = useState(isOpenDropdown);
   const buttonRef = useRef<HTMLElement>(null);
   const popupRef = useRef<HTMLDivElement>(null);
+  console.log(tertiaryColor);
 
   useRenderPosition({
     buttonRef: buttonRef as React.RefObject<HTMLElement>,
@@ -115,6 +116,7 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
 
     setShowDate(temp);
   }, [defaultValue]);
+
   return (
     <>
       <button
@@ -124,7 +126,6 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
         className={`${styles.flex} ${styles.justify_between} ${styles.items_center} ${styles.gap_1} ${styles.px_2}   ${styles.rounded_md} ${styles.h_9}  ${className}`}
         style={{
           ...Style,
-          color: tertiaryColor,
           backgroundColor: highlightColor,
           cursor: disabled ? "not-allowed" : "pointer",
           fontSize: "14px",
@@ -149,7 +150,15 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
             />
           </div>
         ) : (
-          <div className={`${style.w_full} ${style.text_start}`}>{title}</div>
+          <div
+            className={` ${style.text_start} ${style.text_gray_gray7} `}
+            dir="ltr"
+            style={{
+              color: tertiaryColor,
+            }}
+          >
+            {title}
+          </div>
         )}
       </button>
       {isOpen &&
@@ -158,7 +167,7 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
             ref={popupRef}
             style={{
               position: "absolute",
-              zIndex: 1000,
+              zIndex: 1050,
               background: "#fff",
             }}
             className={`

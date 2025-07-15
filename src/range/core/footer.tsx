@@ -2,13 +2,13 @@ import type { Dispatch, ReactNode, SetStateAction } from "react";
 import style from "../../main.module.css";
 import moment from "moment-jalaali";
 
-import type { IDesktopRangeProps } from "./type";
+import type { IRangeProps } from "./type";
 
 interface IFooter {
   setShowDate: Dispatch<SetStateAction<number>>;
   showDate: number;
   setIsOpen?: Dispatch<SetStateAction<boolean>>;
-  locale: IDesktopRangeProps["locale"];
+  locale: IRangeProps["locale"];
   elements?: ReactNode[] | null;
   primaryColor?: string;
   highlightColor?: string;

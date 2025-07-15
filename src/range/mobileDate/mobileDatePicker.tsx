@@ -161,7 +161,9 @@ export function MobileDate({ ...props }: IDateProps) {
         }}
       >
         <CalenderIcon />
-        <div className={style.w_full}>{title}</div>
+        <div className={style.w_full} dir="ltr">
+          {title}
+        </div>
       </button>
       <div
         popover="auto"

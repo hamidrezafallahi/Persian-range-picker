@@ -122,12 +122,9 @@ export interface IDeviceLocale {
 }
 
 export interface RangeProps
-  extends Omit<
-      IDateProps,
-      "defaultValue" | "onChange" | "calendarType" | "device" | "isOpenDropdown"
-    >,
+  extends IRangeOptions,
     Omit<
-      IRangeOptions,
+      IRangeProps,
       "defaultValue" | "onChange" | "calendarType" | "device" | "isOpenDropdown"
     > {
   defaultValue?: IDate;
@@ -187,14 +184,10 @@ export interface ITimeSections {
   step: ESteps;
 }
 
-export interface IDesktopRangeProps extends IBaseProps, IDeviceLocale {
+export interface IRangeProps extends IBaseProps, IDeviceLocale {
   handleSubmit?: RangeProps["handleSubmit"];
   handleReject?: RangeProps["handleReject"];
-  showLabel?: boolean;
-  label?: {
-    isShowLabel?: boolean;
-    label?: ReactNode;
-  };
+  label?: boolean | ReactNode | string;
   dropdownWidth?: number;
   dropdownHeight?: number;
   disabled?: boolean;
@@ -258,3 +251,26 @@ export interface ISubmittedData {
   compareDate: IDate | null;
   Data: unknown;
 }
+export interface IRangePickerProps
+  extends Omit<IRangeOptions, "defaultValue" | "onChange">,
+    Omit<IDateProps, "defaultValue" | "onChange">,
+    IDeviceLocale {
+  handleSubmit?: RangeProps["handleSubmit"];
+  handleReject?: RangeProps["handleReject"];
+  label?: boolean | ReactNode | string;
+  dropdownWidth?: number;
+  dropdownHeight?: number;
+  disabled?: boolean;
+  onNavigateChange?: (date: IDate, compareDate: IDate | null) => void;
+  componentStep?: ESteps;
+  open?: boolean;
+  setOpen?: Dispatch<SetStateAction<boolean>>;
+  type?: string;
+  setType?: Dispatch<SetStateAction<string>>;
+  activeTable?: "Day" | "Week" | "Month" | "Year" | "manual";
+  defaultValue?: IDate;
+  onChange?: (e: HandleParams) => void;
+}
+export interface IDatePickerProps extends IDate {}
+export interface IMaskProps extends IDate {}
+export interface ITimePickerProps extends IDate {}

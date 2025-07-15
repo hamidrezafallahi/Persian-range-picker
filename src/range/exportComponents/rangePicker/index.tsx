@@ -5,12 +5,12 @@ import type {
   IDate,
   ITime,
   ITimeZone,
-  RangeProps,
+  IRangePickerProps,
 } from "../../core/type";
 import { DatePicker } from "../datePicker";
 import { Range } from "./range";
 
-export function RangePicker({ ...props }: Omit<RangeProps, "locale">) {
+export function RangePicker({ ...props }: IRangePickerProps) {
   const {
     model = "range",
     additionalElement,
@@ -20,7 +20,6 @@ export function RangePicker({ ...props }: Omit<RangeProps, "locale">) {
     onChange,
   } = props;
   const locale = calendarType == "shamsi" ? "fa" : "en";
-
   const [date, setDate] = useState<IDate>({
     from:
       locale === "fa"

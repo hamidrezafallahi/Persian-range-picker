@@ -1,18 +1,21 @@
-import { useState } from "react";
 import { DatePicker, Mask, RangePicker, TimePicker } from "../range";
 import style from "../main.module.css";
 export default function DemoComponent() {
   return (
-    <div>
+    <div className={style.bg_red_100} dir="rtl">
       <RangePicker
         // isTodaySelectPreset
+        className={`${style.bg_red_400} `}
         calendarType="shamsi"
+        model="date"
         onChange={(e) => {
           console.log("RangePicker has changed", e);
         }}
-        showComparison
+        // primaryColor="#000"
+        // tertiaryColor="#00f"
+        // showComparison
       />
-      <div className={`${style.bg_red_400}`} style={{ height: "800px" }}>
+      <div className={`${style.bg_red_400}`} style={{ height: "500px" }}>
         height
       </div>
 
@@ -20,7 +23,7 @@ export default function DemoComponent() {
         <div className={`${style.bg_red_400}`} style={{ width: "1300px" }}>
           test
         </div>
-        <DatePicker
+        {/* <DatePicker
           // disabled
           showTime
           showSecond
@@ -32,7 +35,7 @@ export default function DemoComponent() {
           }}
           calendarType="shamsi"
           // isOpenDropdown
-        />
+        /> */}
       </div>
       <TimePicker
         // disabled

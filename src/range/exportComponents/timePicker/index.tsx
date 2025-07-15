@@ -205,7 +205,7 @@ export const TimePicker: React.FC<ITimePicker> = ({
                 style={{
                   position: "absolute",
                   background: "#fff",
-                  zIndex: 1000,
+                  zIndex: 1050,
                 }}
                 className={`
                 ${style.flex}

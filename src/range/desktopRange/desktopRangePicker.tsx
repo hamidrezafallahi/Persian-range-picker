@@ -4,12 +4,13 @@ import moment from "moment-jalaali";
 
 import MainContent from "../core/mainContent";
 import NavigateButton from "../core/navigateButton";
-import type { IDesktopRangeProps, ISubmittedData } from "../core/type";
+import type { IRangeProps, ISubmittedData } from "../core/type";
 import { useRenderPosition } from "../exportComponents/useRenderPosition";
 import { DownTriangle } from "../icons/DownTriangle";
 import { createPortal } from "react-dom";
+import { toPersianDigits } from "../core/helper";
 
-export function DesktopRangePicker(props: IDesktopRangeProps) {
+export function DesktopRangePicker(props: IRangeProps) {
   const userAgent = navigator.userAgent;
   const deviceType =
     /Mobile|Android|iPhone|iPad|iPod|Opera Mini|BlackBerry|IEMobile/i.test(
@@ -45,19 +46,7 @@ export function DesktopRangePicker(props: IDesktopRangeProps) {
     dropdownWidth = 460,
     dropdownHeight = 460,
     device = deviceType,
-    label = {
-      isShowLabel: true,
-      label: (
-        <label
-          className={style.text_xs}
-          style={{
-            color: tertiaryColor,
-          }}
-        >
-          {props.label?.label ?? (locale == "en" ? "Date" : "تاریخ")}
-        </label>
-      ),
-    },
+    label = props.locale == "en" ? "Date" : "تاریخ",
   } = props;
   const isInitialRender = useRef(true);
   const prevDate = useRef(date);
@@ -76,6 +65,26 @@ export function DesktopRangePicker(props: IDesktopRangeProps) {
 
   const [type, setType] = useState<string>("date");
   const [customData, setCustomData] = useState<unknown>(null);
+  const buttonRef = useRef<HTMLElement>(null);
+  const popupRef = useRef<HTMLDivElement>(null);
+  const DateFrom =
+    date.from > 0
+      ? locale === "fa"
+        ? toPersianDigits(moment(date.from).format("jYYYY/jMM/jDD"))
+        : moment(date.from).format("YYYY/MM/DD")
+      : locale === "fa"
+      ? "انتخاب تاریخ"
+      : "Choose date";
+
+  const DateTo =
+    date.to > 0
+      ? locale === "fa"
+        ? toPersianDigits(moment(date.to).format("jYYYY/jMM/jDD"))
+        : moment(date.to).format("YYYY/MM/DD")
+      : locale === "fa"
+      ? "انتخاب تاریخ"
+      : "Choose date";
+
   const handleAccept = () => {
     if (date) {
       if (date.from && date.to && date.from < date.to) {
@@ -125,9 +134,6 @@ export function DesktopRangePicker(props: IDesktopRangeProps) {
       handleReject();
     }
   };
-
-  const buttonRef = useRef<HTMLElement>(null);
-  const popupRef = useRef<HTMLDivElement>(null);
 
   useRenderPosition({
     buttonRef: buttonRef as React.RefObject<HTMLElement>,
@@ -197,74 +203,45 @@ export function DesktopRangePicker(props: IDesktopRangeProps) {
       ${style.flex_col}
       ${style.justify_center}
       ${style.w_fit}
-      ${style.h_14}
+      ${label ? style.h_14 : style.h_8}
       ${style.relative}
       ${buttonClassName}
+      
     `}
       ref={buttonRef as React.RefObject<HTMLDivElement>}
     >
-      <div dir={locale == "fa" ? "rtl" : "ltr"}>
-        {label.isShowLabel && label.label}
-      </div>
-      <div className={`${style.flex} ${style.gap_2}`} dir="rtl">
+      {label && <div>{label}</div>}
+      <div className={`${style.flex} ${style.gap_2}  `}>
         <button
           className={`
-  ${style.flex}
-  ${style.justify_center}
-  ${style.items_center}
-  ${style.gap_2}
-  ${style.px_2}
-  ${style.border}
-  ${style.border_gray_300}
-  ${style.rounded_lg}
-  ${style.w_72}
-  ${style.h_8}
-  ${style.cursor_pointer}
-  ${dateClassName}
-`}
+            ${style.flex}
+            ${style.justify_between}
+            ${style.items_center}
+            ${style.gap_2}
+            ${style.px_2}
+            ${style.border}
+            ${style.border_gray_300}
+            ${style.rounded_md}
+            ${style.h_8}
+            ${style.cursor_pointer}
+            ${dateClassName}
+            ${style.bg_white}
+                    `}
           onClick={handleDropdown}
-          dir="ltr"
         >
+          <div
+            className={`${style.px_2} ${style.w_fit} ${style.text_center}`}
+            style={{
+              color: tertiaryColor,
+              direction: "ltr",
+            }}
+          >
+            {DateFrom}
+            {" _ "}
+            {DateTo}
+          </div>
           <DownTriangle />
-          <div
-            className={`${style.px_2} ${style.w_fit} ${style.text_center}`}
-            style={{
-              color: tertiaryColor,
-            }}
-          >
-            {locale === "fa"
-              ? moment(showDate.date?.to)
-                  .locale("fa")
-                  .format("jYYYY/ jMM /jDD  ")
-              : moment(showDate.date?.to)
-                  .locale("en")
-                  .format("  YYYY / MM / DD")}
-          </div>
-
-          <div
-            className={style.text_center}
-            style={{
-              color: tertiaryColor,
-            }}
-          >
-            -
-          </div>
-          <div
-            className={`${style.px_2} ${style.w_fit} ${style.text_center}`}
-            style={{
-              color: tertiaryColor,
-            }}
-          >
-            {locale === "fa"
-              ? moment(showDate.date?.from)
-                  .locale("fa")
-                  .format("jYYYY / jMM / jDD")
-              : moment(showDate.date?.from)
-                  .locale("en")
-                  .format("YYYY / MM / DD")}
-          </div>
         </button>
-
         {zone !== "manual" && isShowNavigationButton && (
           <NavigateButton {...props} locale={locale} />
         )}
@@ -276,7 +253,7 @@ export function DesktopRangePicker(props: IDesktopRangeProps) {
             style={{
               backgroundColor: backgroundColor,
               position: "absolute",
-              zIndex: 1000,
+              zIndex: 1050,
               width: dropdownWidth,
               height: dropdownHeight,
             }}

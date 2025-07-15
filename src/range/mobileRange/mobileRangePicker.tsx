@@ -4,11 +4,11 @@ import moment from "moment-jalaali";
 
 import MainContent from "../core/mainContent";
 import NavigateButton from "../core/navigateButton";
-import type { IBaseProps } from "../core/type";
+import type { IRangeProps } from "../core/type";
 import { CalenderIcon } from "../icons/CalenderIcon";
 import { MenuArrowBack } from "../icons/MenuArrowBack";
 
-export function MobileRangePicker(props: IBaseProps) {
+export function MobileRangePicker(props: IRangeProps) {
   const {
     onCompareDateChange,
     onChange,

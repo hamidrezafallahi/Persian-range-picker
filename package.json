@@ -21,9 +21,9 @@
   ],
   "exports": {
     ".": {
+      "types": "./dist/index.d.ts",
       "import": "./dist/persian-range-picker.es.js",
-      "require": "./dist/persian-range-picker.umd.js",
-      "types": "./dist/index.d.ts"
+      "require": "./dist/persian-range-picker.umd.js"
     }
   },
   "repository": {

@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import style from "../../main.module.css";
 import moment from "moment-jalaali";
 
@@ -36,7 +36,8 @@ function NavigateButton({ ...props }: INavigationProps) {
     setCompareDate,
     locale = "fa",
   } = props;
-
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [dir, setDir] = useState<"ltr" | "rtl">("ltr");
   const stepChangeHandler = (phase: "increment" | "decrement") => {
     if (phase == "increment") {
       if (counter < 0) {
@@ -86,28 +87,32 @@ function NavigateButton({ ...props }: INavigationProps) {
   useEffect(() => {
     setCounter(0);
   }, [zone]);
+
+  useEffect(() => {
+    if (containerRef.current) {
+      const computedDir = getComputedStyle(containerRef.current).direction;
+      setDir(computedDir === "rtl" ? "rtl" : "ltr");
+    }
+  }, []);
   return (
-    <div
-      dir={locale == "fa" ? "rtl" : "ltr"}
-      className={`${style.flex} ${style.gap_2}`}
-    >
+    <div className={`${style.flex} ${style.gap_2}`} ref={containerRef}>
       <button
-        className={`${style.px_1} ${style.xs_border} ${style.rounded_lg}`}
-        disabled={step == ESteps.manual}
-        onClick={() => {
-          stepChangeHandler("increment");
-        }}
-      >
-        <RightChevron />
-      </button>
-      <button
-        className={`${style.px_1} ${style.xs_border} ${style.rounded_lg}`}
+        className={`${style.px_1} ${style.xs_border} ${style.rounded_md} ${style.bg_white}`}
         disabled={step == ESteps.manual}
         onClick={() => {
           stepChangeHandler("decrement");
         }}
       >
-        <LeftChevron />
+        {dir == "rtl" ? <RightChevron /> : <LeftChevron />}
+      </button>
+      <button
+        className={`${style.px_1} ${style.xs_border} ${style.rounded_md} ${style.bg_white}`}
+        disabled={step == ESteps.manual}
+        onClick={() => {
+          stepChangeHandler("increment");
+        }}
+      >
+        {dir == "rtl" ? <LeftChevron /> : <RightChevron />}
       </button>
     </div>
   );
