@@ -37,7 +37,6 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
   const [isOpen, setIsOpen] = useState(isOpenDropdown);
   const buttonRef = useRef<HTMLElement>(null);
   const popupRef = useRef<HTMLDivElement>(null);
-  console.log(tertiaryColor);
 
   useRenderPosition({
     buttonRef: buttonRef as React.RefObject<HTMLElement>,

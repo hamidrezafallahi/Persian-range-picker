@@ -4,7 +4,6 @@ import { toPersianDigits } from "../../core/helper";
 import type { ITimePicker, TUnit } from "../../core/type";
 import { CalenderIcon } from "../../icons/CalenderIcon";
 import { useRenderPosition } from "../useRenderPosition";
-// import { useRenderPosition } from "../useRenderPosition";
 import { TimeColumns } from "./exportComponents";
 import style from "../../../main.module.css";
 import { createPortal } from "react-dom";

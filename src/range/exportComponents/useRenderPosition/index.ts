@@ -1,8 +1,8 @@
 import { type Dispatch, type SetStateAction, useEffect } from "react";
 
 interface UseRenderPositionOptions<T extends HTMLElement> {
-  buttonRef: React.RefObject<T | null>; // ⬅ تغییر دادیم
-  popupRef: React.RefObject<T | null>; // ⬅ تغییر دادیم
+  buttonRef: React.RefObject<T | null>;
+  popupRef: React.RefObject<T | null>;
   offset?: number;
   setIsOpen: Dispatch<SetStateAction<boolean>>;
   isOpen: boolean;
@@ -31,22 +31,37 @@ export function useRenderPosition<T extends HTMLElement = HTMLElement>({
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
   useEffect(() => {
-    if (isOpen && buttonRef.current && popupRef.current) {
-      const buttonArea = buttonRef.current.getBoundingClientRect();
-      const popupArea = popupRef.current.getBoundingClientRect();
-      const enoughSpaceBelow =
-        buttonArea.bottom + popupArea.height <= window.innerHeight;
-      const enoughSpaceAbove = buttonArea.top - popupArea.height >= 0;
-      const placeAbove = !enoughSpaceBelow && enoughSpaceAbove;
-      const top = placeAbove
-        ? buttonArea.top - popupArea.height - offset
-        : buttonArea.top + buttonArea.height + offset;
-      const alignLeft = popupArea.width + buttonArea.left <= window.innerWidth;
-      const left = alignLeft
-        ? buttonArea.left
-        : buttonArea.right - popupArea.width;
-      popupRef.current.style.top = `${top}px`;
-      popupRef.current.style.left = `${left}px`;
+    const updatePosition = () => {
+      if (isOpen && buttonRef.current && popupRef.current) {
+        const buttonArea = buttonRef.current.getBoundingClientRect();
+        const popupArea = popupRef.current.getBoundingClientRect();
+        const enoughSpaceBelow =
+          buttonArea.bottom + popupArea.height <= window.innerHeight;
+        const enoughSpaceAbove = buttonArea.top - popupArea.height >= 0;
+        const placeAbove = !enoughSpaceBelow && enoughSpaceAbove;
+        const top = placeAbove
+          ? buttonArea.top - popupArea.height - offset
+          : buttonArea.top + buttonArea.height + offset;
+        const alignLeft =
+          popupArea.width + buttonArea.left <= window.innerWidth;
+        const left = alignLeft
+          ? buttonArea.left
+          : buttonArea.right - popupArea.width;
+        console.log(top, left, buttonArea, popupArea);
+
+        popupRef.current.style.top = `${top}px`;
+        popupRef.current.style.left = `${left}px`;
+      }
+    };
+    if (isOpen) {
+      updatePosition();
+      window.addEventListener("scroll", updatePosition, true);
+      window.addEventListener("resize", updatePosition);
     }
+
+    return () => {
+      window.removeEventListener("scroll", updatePosition, true);
+      window.removeEventListener("resize", updatePosition);
+    };
   }, [isOpen]);
 }

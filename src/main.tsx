@@ -2,11 +2,12 @@ import "./main.module.css";
 
 import { createRoot } from "react-dom/client";
 
-import { InitialComponent } from "./initialComponent";
+// import { InitialComponent } from "./initialComponent";
+import DemoComponent from "./demoComponent";
 
 createRoot(document.getElementById("root")!).render(
   <>
     {/* <InitialComponent /> */}
-    <InitialComponent />
+    <DemoComponent />
   </>
 );
