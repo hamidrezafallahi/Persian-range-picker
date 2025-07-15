@@ -1,8 +1,4 @@
-import type {
-  Dispatch,
-  ReactNode,
-  SetStateAction,
-} from 'react';
+import type { Dispatch, ReactNode, SetStateAction } from "react";
 
 export type ExportType = "timeStamp" | "IsoString";
 type TDeviceType = "desktop" | "mobile";
@@ -80,6 +76,7 @@ export interface IDateProps
   exportType?: ExportType;
   isOpenDropdown?: boolean;
   disabled?: boolean;
+  Style?: React.CSSProperties;
 }
 
 export interface IColorProps {

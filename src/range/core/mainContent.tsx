@@ -4,15 +4,11 @@ import React, {
   type ReactNode,
   type SetStateAction,
   useState,
-} from 'react';
-
-import Manual from './manual';
-import PeriodList from './periodList';
-import {
-  ESteps,
-  type IBaseProps,
-  type ITime,
-} from './type';
+} from "react";
+import style from "../../main.module.css";
+import Manual from "./manual";
+import PeriodList from "./periodList";
+import { ESteps, type IBaseProps, type ITime } from "./type";
 
 interface IProps extends IBaseProps {
   setCustomData: Dispatch<SetStateAction<unknown>>;
@@ -90,17 +86,19 @@ const MainContent = ({ ...props }: IProps) => {
   return (
     <div
       dir={locale == "fa" ? "rtl" : "ltr"}
-      className={"flex flex-col xs:flex-row p-1 xs:h-full"}
+      className={`${style.flex} ${style.flex_col} ${style.xs_flex_row} ${style.p_1} ${style.xs_h_full}`}
     >
       <div
-        className={`
-      flex xs:flex-col border-b w-full 
-      xs:overflow-y-auto xs:w-28 xs:h-full
-      justify-around gap-2 p-2 max-w-[430px] 
-      overflow-x-auto
-      ${locale !== "fa" ? "xs:border-r" : "xs:border-l"}
+        className={`${style.flex} ${style.xs_flex_col} ${style.border_b} ${
+          style.xs_w_28
+        }
+ ${style.w_full} ${style.xs_overflow_y_auto}
+        ${style.xs_h_full} ${style.justify_around} ${style.gap_2} ${style.p_2}  
+        ${style.overflow_x_auto} 
+              ${locale !== "fa" ? style.xs_border_r : style.xs_border_l}
       ${tabClassName}
-    `.trim()}
+        `}
+        style={{ maxWidth: "430px" }}
       >
         {tabs.map((tab) => (
           <button
@@ -110,16 +108,21 @@ const MainContent = ({ ...props }: IProps) => {
             }}
             key={tab.key}
             onClick={() => handleTabChange(tab.key)}
-            className={`${periodListClassName} font-medium text-right text-nowrap text-sm 
-            ${
-              activeTab === tab.key
-                ? locale == "fa"
-                  ? "border-b-2  xs:border-r-2 "
-                  : "border-b-2  xs:border-l-2 "
-                : "  text-gray-500 hover:text-gray-700"
-            }
-            flex justify-center xs:justify-start xs:gap-3 items-center
-            
+            className={`
+              ${periodListClassName} 
+              ${style.font_medium} ${style.text_right} ${style.text_nowrap} ${
+              style.text_sm
+            } 
+              ${
+                activeTab === tab.key
+                  ? locale === "fa"
+                    ? `${style.border_b_2} ${style.xs_border_r_2}`
+                    : `${style.border_b_2} ${style.xs_border_l_2}`
+                  : `${style.text_gray_500} ${style.hover_text_gray_700}`
+              }
+              ${style.flex} ${style.justify_center} ${style.xs_justify_start} ${
+              style.xs_gap_3
+            } ${style.items_center}
             `}
           >
             {tab.label}
@@ -127,7 +130,17 @@ const MainContent = ({ ...props }: IProps) => {
         ))}
       </div>
 
-      <div className="flex flex-col gap-4 p-2 w-full !h-[calc(100%-52px)] overflow-y-auto">
+      <div
+        className={`
+  ${style.flex} 
+  ${style.flex_col} 
+  ${style.gap_4} 
+  ${style.p_2} 
+  ${style.w_full} 
+  ${style.overflow_y_auto}
+`}
+        style={{ height: "calc(100% - 52px)" }}
+      >
         {currentTab &&
           (() => {
             return cloneElement(

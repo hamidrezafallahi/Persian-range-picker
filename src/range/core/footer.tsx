@@ -1,5 +1,5 @@
 import type { Dispatch, ReactNode, SetStateAction } from "react";
-
+import style from "../../main.module.css";
 import moment from "moment-jalaali";
 
 import type { IDesktopRangeProps } from "./type";
@@ -64,6 +64,18 @@ export const Footer = ({ ...props }: IFooter) => {
         .set("second", now.second());
 
       setShowDate(updated.valueOf());
+      const hourDiv = document.getElementById("hour");
+      if (hourDiv) {
+        hourDiv.scrollTop = now.hour() * 40;
+      }
+      const minuteDiv = document.getElementById("minute");
+      if (minuteDiv) {
+        minuteDiv.scrollTop = now.minute() * 40;
+      }
+      const secondDiv = document.getElementById("second");
+      if (secondDiv) {
+        secondDiv.scrollTop = now.second() * 40;
+      }
       onNowButton?.();
     } else if (key === "submit") {
       onSubmit?.();
@@ -72,9 +84,11 @@ export const Footer = ({ ...props }: IFooter) => {
   };
 
   return (
-    <div className="flex gap-2 mt-2 px-2">
+    <div className={`${style.flex} ${style.gap_2} ${style.mb_2} ${style.px_2}`}>
       {showTime ? (
-        <div className="flex justify-between w-full">
+        <div
+          className={`${style.flex} ${style.justify_between} ${style.w_full} `}
+        >
           <NowButton handleSelect={handleSelect} />
           <SubmitTimeButton handleSelect={handleSelect} />
         </div>
@@ -82,7 +96,7 @@ export const Footer = ({ ...props }: IFooter) => {
         <button
           onClick={() => handleSelect("today")}
           style={{ backgroundColor: highlightColor, color: primaryColor }}
-          className={`w-full h-10 text-center ${chooseTodayClassName}`}
+          className={`${style.w_full} ${style.h_10} ${style.text_center} ${chooseTodayClassName} `}
         >
           {locale === "fa" ? "انتخاب امروز" : "Choose today"}
         </button>
@@ -95,7 +109,7 @@ const NowButton = ({ ...props }) => {
   const { handleSelect, nowButtonClassName = "" } = props;
   return (
     <button
-      className={`p-2 px-3 border rounded-md ${nowButtonClassName}`}
+      className={`${style.p_2} ${style.px_3} ${style.border} ${style.rounded_md} ${nowButtonClassName}`}
       onClick={() => handleSelect("now")}
     >
       now
@@ -108,7 +122,7 @@ const SubmitTimeButton = ({ ...props }) => {
   return (
     <button
       onClick={() => handleSelect("submit")}
-      className={`p-2 px-3 border rounded-md ${okButtonClassName}`}
+      className={`${style.p_2} ${style.px_3} ${style.border} ${style.rounded_md} ${okButtonClassName}`}
       style={{
         background: "black",
         borderColor: "black",

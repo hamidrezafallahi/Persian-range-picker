@@ -60,7 +60,7 @@ export function RangePicker({ ...props }: Omit<RangeProps, "locale">) {
     }
   }, [defaultValue]);
   return (
-    <div className="range" style={{ position: "relative" }}>
+    <>
       {model == "date" ? (
         <DatePicker
           {...props}
@@ -87,6 +87,6 @@ export function RangePicker({ ...props }: Omit<RangeProps, "locale">) {
           additionalElement={additionalElement}
         />
       )}
-    </div>
+    </>
   );
 }

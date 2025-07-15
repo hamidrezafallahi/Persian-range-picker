@@ -1,3 +1,4 @@
+import style from "../../../main.module.css";
 interface IProps {
   checked: boolean;
   disabled?: boolean;
@@ -9,7 +10,7 @@ function CustomSwitch({ ...props }: IProps) {
 
   return (
     <>
-      <label className="switch">
+      <label className={`${style.switch}`}>
         <input
           type="checkbox"
           onChange={onChange}
@@ -17,7 +18,7 @@ function CustomSwitch({ ...props }: IProps) {
           disabled={disabled}
           className={className}
         />
-        <span className="slider"></span>
+        <span className={`${style.slider}`}></span>
       </label>
     </>
   );

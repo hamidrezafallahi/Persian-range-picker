@@ -1,5 +1,5 @@
 import type { FC } from "react";
-
+import style from "../../main.module.css";
 import { LeftChevron } from "../icons/LeftChevron";
 import { RightChevron } from "../icons/RightChevron";
 import { months } from "./constants";
@@ -32,13 +32,25 @@ const MonthPicker: FC<Props> = ({
   const monthList = months[locale];
 
   return (
-    <div className={`!h-full `}>
-      <div className={`w-full flex justify-between `}>
+    <div className={`${style.h_full} `}>
+      <div
+        className={`
+  ${style.w_full}
+  ${style.flex}
+  ${style.justify_between}
+`}
+      >
         <div onClick={() => onChangeYear(1)}>
           <LeftChevron secondaryColor={secondaryColor} />
         </div>
         <div>
-          <span className="font-bold text-sm" style={{ color: secondaryColor }}>
+          <span
+            className={`
+  ${style.font_bold}
+  ${style.text_sm}
+`}
+            style={{ color: secondaryColor }}
+          >
             {convertToPersianNumbers(currentYear.toString())}
           </span>
         </div>
@@ -47,7 +59,17 @@ const MonthPicker: FC<Props> = ({
         </div>
       </div>
       <div
-        className={`w-full flex flex-wrap gap-x-2 gap-y-5  justify-center items-center pt-5  ${monthPickerClassName}`} //need classname
+        className={`
+  ${style.w_full}
+  ${style.flex}
+  ${style.flex_wrap}
+  ${style.gap_x_2}
+  ${style.gap_y_5}
+  ${style.justify_center}
+  ${style.items_center}
+  ${style.pt_5}
+  ${monthPickerClassName}
+`}
       >
         {monthList.map((month, index) => (
           <div
@@ -57,10 +79,23 @@ const MonthPicker: FC<Props> = ({
               fontWeight: currentMonth === index ? "  500 " : "",
             }}
             key={index}
-            className={`w-20 h-9 rounded flex justify-center items-center `} //need classname
+            className={`
+              ${style.w_20}
+              ${style.h_9}
+              ${style.rounded}
+              ${style.flex}
+              ${style.justify_center}
+              ${style.items_center}
+            `}
             onClick={() => onSelectMonth(index)}
           >
-            <span className="text-sm">{month}</span>
+            <span
+              className={`
+  ${style.text_sm}
+`}
+            >
+              {month}
+            </span>
           </div>
         ))}
       </div>

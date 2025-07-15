@@ -1,5 +1,5 @@
 import { useState } from "react";
-
+import style from "../../main.module.css";
 import moment from "moment-jalaali";
 
 import type { IDate, TLocale } from "./type";
@@ -133,7 +133,14 @@ const MonthPicker = ({
   return (
     <div
       dir={locale == "fa" ? "rtl" : "ltr"}
-      className={`justify-between gap-2 grid grid-cols-6  w-full  ${monthPickerClassName}`}
+      className={`
+        ${style.justify_between} 
+        ${style.gap_2} 
+        ${style.grid} 
+        ${style.grid_cols_6} 
+        ${style.w_full} 
+        ${monthPickerClassName}
+      `}
       // onMouseLeave={() => {
       //   setState((prev) => {
       //     return {
@@ -179,11 +186,28 @@ const MonthPicker = ({
         return (
           <div
             key={index}
-            className="flex justify-center items-center w-full h-full"
+            className={`
+              ${style.flex} 
+              ${style.justify_center} 
+              ${style.items_center} 
+              ${style.w_full} 
+              ${style.h_full}
+            `}
           >
             <button
-              className={`w-[clamp(24px,24px,30px)] dateButton aspect-square flex text-sm justify-center items-center !rounded-md overflow-hidden  p-1 col-span-1
-                `}
+              className={`
+  ${style.dateButton} 
+  ${style.w_6} 
+  ${style.aspect_square} 
+  ${style.flex} 
+  ${style.text_sm} 
+  ${style.justify_center} 
+  ${style.items_center} 
+  ${style.rounded_md} 
+  ${style.overflow_hidden} 
+  ${style.p_1} 
+  ${style.col_span_1}
+`}
               onClick={() => {
                 handleMonthPicker(chosenMonth);
               }}
@@ -214,41 +238,3 @@ const MonthPicker = ({
 };
 
 export default MonthPicker;
-
-// const handleMonthPicker = (chosenMonth, index) => {
-//   setHoveredMonth([]);
-
-//   // Initialize new state values
-//   let newFrom = dateFromOutside.from;
-//   let newTo = dateFromOutside.to;
-
-//   if (dateFromOutside.from == null) {
-//     newFrom = moment(chosenMonth).startOf("jMonth").valueOf();
-//   } else if (dateFromOutside.from && dateFromOutside.to == null) {
-//     if (chosenMonth <= dateFromOutside.from) {
-//       newFrom = moment(chosenMonth).startOf("jMonth").valueOf();
-//     } else {
-//       newTo = moment(chosenMonth).endOf("jMonth").valueOf();
-//     }
-//   } else if (dateFromOutside.from && dateFromOutside.to) {
-//     if (chosenMonth < dateFromOutside.from) {
-//       newFrom = moment(chosenMonth).startOf("jMonth").valueOf();
-//     } else if (dateFromOutside.to < chosenMonth) {
-//       newTo = moment(chosenMonth).endOf("jMonth").valueOf();
-//     } else {
-//       if (
-//         Math.abs(dateFromOutside.from - chosenMonth) <
-//         Math.abs(dateFromOutside.to - chosenMonth)
-//       ) {
-//         newFrom = moment(chosenMonth).startOf("jMonth").valueOf();
-//       } else {
-//         newTo = moment(chosenMonth).endOf("jMonth").valueOf();
-//       }
-//     }
-//   }
-//   if (onDateChange) {
-//     onDateChange({ from: newFrom, to: newTo });
-//   }
-//   setDateFromOutside({ from: newFrom, to: newTo });
-//   setHoveredMonth([index]);
-// };

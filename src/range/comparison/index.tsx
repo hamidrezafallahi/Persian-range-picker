@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import style from "../../main.module.css";
 
 // import { CustomSwitch } from "@components/atoms/defaultElements";
 import { stepToTimeIndex, time } from "../core/helper";
@@ -40,7 +41,9 @@ function Comparison({ ...props }: IProps) {
 
   return (
     <>
-      <div className="flex justify-between w-full">
+      <div
+        className={`${style.flex} ${style.justify_between} ${style.w_full} `}
+      >
         <div
           style={{ color: primaryColor }}
           dir={locale == "fa" ? "rtl" : "ltr"}

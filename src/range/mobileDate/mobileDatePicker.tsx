@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-
+import style from "../../main.module.css";
 import moment from "moment-jalaali";
 
 import { Footer } from "../core/footer";
@@ -8,6 +8,7 @@ import type { IDate, IDateProps, TUnit } from "../core/type";
 import { TimeColumns } from "../exportComponents/timePicker/exportComponents";
 import { CalenderIcon } from "../icons/CalenderIcon";
 import { DatePicker } from "../persianDatePicker";
+import { MenuArrowBack } from "../icons/MenuArrowBack";
 
 export function MobileDate({ ...props }: IDateProps) {
   const {
@@ -30,7 +31,7 @@ export function MobileDate({ ...props }: IDateProps) {
   const [showDate, setShowDate] = useState<number>(0);
   const [content, setContent] = useState<"Date" | "Time">("Date");
   const popoverRef = useRef<HTMLDivElement>(null);
-    const device: "mobile" | "desktop" =
+  const device: "mobile" | "desktop" =
     /Mobile|Android|iPhone|iPad|iPod|Opera Mini|BlackBerry|IEMobile/i.test(
       navigator.userAgent
     )
@@ -76,6 +77,10 @@ export function MobileDate({ ...props }: IDateProps) {
       ? moment(showDate).locale(locale).set(unit, value)
       : moment().locale(locale).set(unit, value);
     setShowDate(updated.valueOf());
+    const targetDiv = document.getElementById(unit);
+    if (targetDiv) {
+      targetDiv.scrollTop = value * 40;
+    }
   };
 
   const renderOptions = (count: number, unit: TUnit, step = 1) => {
@@ -88,11 +93,19 @@ export function MobileDate({ ...props }: IDateProps) {
         <button
           key={val}
           onClick={() => handleTimeChange(unit, val)}
-          className={`flex justify-center items-center !rounded-md w-6 aspect-square ${
-            active === val
-              ? "pointer-events-auto opacity-100 text-gray123 "
-              : ""
-          } `}
+          className={`
+            ${style.flex}
+            ${style.justify_center}
+            ${style.items_center}
+            ${style.rounded_md}
+            ${style.w_6}
+            ${style.aspect_square}
+            ${
+              active === val
+                ? `${style.pointer_events_auto} ${style.opacity_100} ${style.text_gray123}`
+                : ""
+            }
+          `}
           style={{ color: tertiaryColor, fontSize: "14px" }}
         >
           {locale == "fa" ? toPersianDigits(pad(val)) : pad(val)}
@@ -121,25 +134,48 @@ export function MobileDate({ ...props }: IDateProps) {
     setShowDate(temp);
   }, [defaultValue]);
   return (
-    <div className="range" style={{ position: "relative", width:device=="desktop"?"fit-content":"100%" }}>
+    <div
+      style={{
+        width: device == "desktop" ? "fit-content" : "100%",
+      }}
+    >
       <button
         disabled={disabled}
         popoverTarget="mobileDateModal"
-        className={`flex justify-between items-center gap-2 px-1 h-9 rounded-md  w-full ${
-          disabled && "cursor-not-allowed"
-        }   ${className}`}
-        style={{ color: tertiaryColor, backgroundColor: highlightColor, width:"100%" }}
+        className={`
+          ${style.flex}
+          ${style.justify_between}
+          ${style.items_center}
+          ${style.gap_2}
+          ${style.px_1}
+          ${style.h_9}
+          ${style.rounded_md}
+          ${style.w_full}
+          ${disabled ? style.cursor_not_allowed : ""}
+          ${className}
+        `}
+        style={{
+          color: tertiaryColor,
+          backgroundColor: highlightColor,
+          width: "100%",
+        }}
       >
         <CalenderIcon />
-        <div className="w-full">{title}</div>
+        <div className={style.w_full}>{title}</div>
       </button>
       <div
         popover="auto"
         id="mobileDateModal"
         ref={popoverRef}
-        className="relative p-0 border-none w-full h-full"
+        className={`
+          ${style.relative}
+          ${style.p_0}
+          ${style.border_none}
+          ${style.w_full}
+          ${style.h_full}
+        `}
       >
-        <div className="p-2">
+        <div className={style.p_2}>
           {/* ////////////////TODO navigation buttons must change between date and time in situation  */}
           {content == "Date" ? (
             <DatePicker
@@ -158,7 +194,14 @@ export function MobileDate({ ...props }: IDateProps) {
           ) : (
             <div style={{ zIndex: 10 }}>
               <div
-                className="flex justify-center items-center border-b h-9"
+                className={`
+  ${style.relative}
+  ${style.flex}
+  ${style.justify_center}
+  ${style.items_center}
+  ${style.border_b}
+  ${style.h_9}
+`}
                 style={{
                   height: "34px",
                   fontSize: "14px",
@@ -170,9 +213,34 @@ export function MobileDate({ ...props }: IDateProps) {
                       moment(showDate).locale(locale).format(dynamicFormat)
                     )
                   : moment(showDate).locale(locale).format(dynamicFormat)}
+                <button
+                  className={`
+  ${style.top_0}
+  ${style.right_0}
+  ${style.absolute}
+  ${style.flex}
+  ${style.justify_center}
+  ${style.items_center}
+  ${style.rounded}
+  ${style.w_10}
+  ${style.aspect_square}
+`}
+                  style={{ background: "#ecedf2" }}
+                  onClick={() => {
+                    setContent("Date");
+                  }}
+                >
+                  <MenuArrowBack />
+                </button>
               </div>
               <TimeColumns
-                TimeColumnsClassName="flex justify-center items-center  py-2 h-full "
+                TimeColumnsClassName={`
+  ${style.flex}
+  ${style.justify_center}
+  ${style.items_center}
+  ${style.py_2}
+  ${style.h_full}
+`}
                 renderHeight={`${280}px`}
                 renderOptions={(count, unit) =>
                   renderOptions(
@@ -193,7 +261,15 @@ export function MobileDate({ ...props }: IDateProps) {
             </div>
           )}
         </div>
-        <div className="bottom-0 fixed p-2 w-full" style={{ width: "100" }}>
+        <div
+          className={`
+  ${style.bottom_0}
+  ${style.fixed}
+  ${style.p_2}
+  ${style.w_full}
+`}
+          style={{ width: "100" }}
+        >
           <Footer
             setShowDate={setShowDate}
             showDate={showDate}

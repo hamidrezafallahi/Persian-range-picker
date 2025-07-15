@@ -1,13 +1,8 @@
-import React, {
-  type Dispatch,
-  useState,
-} from 'react';
-
-import { Mask } from '../exportComponents/mask';
-import type {
-  IDate,
-  TLocale,
-} from './type';
+import React, { type Dispatch, useState } from "react";
+import style from "../../main.module.css";
+import { Mask } from "../exportComponents/mask";
+import type { IDate, TLocale } from "./type";
+import moment from "moment-jalaali";
 
 interface IProps {
   date: IDate;
@@ -16,8 +11,7 @@ interface IProps {
 }
 function MaskRange({ ...props }: IProps) {
   const [error, setError] = useState<"from" | "to" | null>(null);
-
-  const { date, setDate } = props;
+  const { date, setDate, locale } = props;
   const handleChange = (e: IDate["from"], name: "from" | "to") => {
     if (name === "from") {
       if (date.to && e > date.to) {
@@ -32,32 +26,50 @@ function MaskRange({ ...props }: IProps) {
         return;
       }
       setError(null);
-      setDate?.({ from: date.from, to: e });
+      let endOfDate: number;
+      if (locale == "fa") {
+        endOfDate = moment(e).endOf("day").valueOf();
+      } else {
+        endOfDate = moment(e).utc().endOf("day").valueOf();
+      }
+      setDate?.({ from: date.from, to: endOfDate });
     }
   };
 
   return (
-    <div className="flex items-center gap-2">
+    <div
+      className={`
+      ${style.flex}
+      ${style.items_center}
+      ${style.gap_2}
+    `}
+    >
       <Mask
         // {...props}
         onMaskChange={(e) => handleChange(e as number, "from")}
         defaultValue={date.from}
-        maskClassName={` rounded-lg w-fit ${
-          error === "from" ? " border-red-100 " : ""
-        }`}
+        maskClassName={`
+          ${style.rounded_lg} 
+          ${style.w_fit} 
+          ${error === "from" ? style.border_red_100 : ""}
+        `}
         prefix={false}
         suffix={false}
+        exportType="timeStamp"
       />
       {"_"}
       <Mask
         // {...props}
         onMaskChange={(e) => handleChange(e as number, "to")}
         defaultValue={date.to}
-        maskClassName={`rounded-lg w-fit ${
-          error === "from" ? " border-red-100 " : ""
-        }`}
+        maskClassName={`
+          ${style.rounded_lg} 
+          ${style.w_fit} 
+          ${error === "from" ? style.border_red_100 : ""}
+        `}
         prefix={false}
         suffix={false}
+        exportType="timeStamp"
       />
     </div>
   );

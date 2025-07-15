@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-
+import style from "../../main.module.css";
 import moment from "moment-jalaali";
 
 import { LeftChevron } from "../icons/LeftChevron";
@@ -87,9 +87,12 @@ function NavigateButton({ ...props }: INavigationProps) {
     setCounter(0);
   }, [zone]);
   return (
-    <div dir={locale == "fa" ? "rtl" : "ltr"} className="flex gap-2">
+    <div
+      dir={locale == "fa" ? "rtl" : "ltr"}
+      className={`${style.flex} ${style.gap_2}`}
+    >
       <button
-        className="px-1 xs:border rounded-lg"
+        className={`${style.px_1} ${style.xs_border} ${style.rounded_lg}`}
         disabled={step == ESteps.manual}
         onClick={() => {
           stepChangeHandler("increment");
@@ -98,7 +101,7 @@ function NavigateButton({ ...props }: INavigationProps) {
         <RightChevron />
       </button>
       <button
-        className="px-1 xs:border rounded-lg"
+        className={`${style.px_1} ${style.xs_border} ${style.rounded_lg}`}
         disabled={step == ESteps.manual}
         onClick={() => {
           stepChangeHandler("decrement");

@@ -1,6 +1,7 @@
 import { period } from "../core/helper";
 import type { IBaseProps, ITimeSections } from "../core/type";
 import { TickIcon } from "../icons/TickIcon";
+import style from "../../main.module.css";
 
 const CompareList = ({ ...props }: IBaseProps) => {
   const {
@@ -10,7 +11,6 @@ const CompareList = ({ ...props }: IBaseProps) => {
     activeCompareStep,
     setCompareDate,
     componentStep,
-
     locale = "fa",
     accentColor = "#2563eb", // تأکیدی (برای جلب توجه، مثلاً نوتیفیکیشن‌ها یا CTAها)- آبی
     tertiaryColor = "#939393", //رنگ سوم، معمولاً برای جزئیات یا عناصر کم‌اهمیت‌تر   -  رنگ متن
@@ -70,8 +70,12 @@ const CompareList = ({ ...props }: IBaseProps) => {
           <button
             key={index}
             onClick={() => timeHandler(item)}
-            className={`relative  flex flex-col items-start gap-y-2 pb-2 w-full h-fit
-                ${index < filteredPeriod.length - 1 && "border-b"}
+            className={`${style.relative} ${style.flex} ${style.flex_col}  ${
+              style.items_start
+            }
+            ${style.gap_y_2} ${style.pb_2} ${style.w_full} ${style.h_fit}
+               
+                ${index < filteredPeriod.length - 1 && style.border_b}
                 `}
             dir={locale == "fa" ? "rtl" : "ltr"}
           >
@@ -82,7 +86,7 @@ const CompareList = ({ ...props }: IBaseProps) => {
               style={{
                 color: active ? neutralColor : tertiaryColor,
               }}
-              className={`text-xs whitespace-nowrap overflow-hidden`}
+              className={`${style.text_xs} ${style.whitespace_nowrap} ${style.overflow_hidden}`}
             >
               {locale == "fa" ? " از " : "From "}
               {stringDateFrom}
@@ -91,8 +95,8 @@ const CompareList = ({ ...props }: IBaseProps) => {
             </div>
             {active && (
               <span
-                className={` absolute my-auto ${
-                  locale == "en" ? "right-5" : "left-5"
+                className={`${style.absolute} ${style.my_auto}   ${
+                  locale == "en" ? style.right_5 : style.left_5
                 }`}
               >
                 <TickIcon {...props} />

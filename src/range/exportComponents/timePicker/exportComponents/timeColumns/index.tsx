@@ -1,5 +1,5 @@
-import React from "react";
-
+import React, { useRef } from "react";
+import style from "../../../../../main.module.css";
 type Props = {
   renderHeight?: string;
   renderOptions: (
@@ -19,14 +19,35 @@ const TimeColumn: React.FC<{
   renderHeight?: string;
   renderOptions: Props["renderOptions"];
 }> = ({ count, unit, renderHeight, renderOptions }) => {
-  const title = unit == "hour"?"HH":unit == "minute"?"MM":"SS"
+  const title = unit == "hour" ? "HH" : unit == "minute" ? "MM" : "SS";
+  const ref = useRef(null);
   return (
-    <div
-      className="flex flex-col gap-4 px-2 overflow-x-hidden overflow-y-auto relative"
-      style={{ maxHeight: renderHeight }}
-    >
-      <div style={{position:"sticky",top:0,background:"#fff", color:"#939393"}}>{title}</div>
-      {renderOptions(count, unit)}
+    <div className={`${style.flex} ${style.flex_col} ${style.gap_4}`}>
+      <div
+        className={`${style.flex} ${style.justify_center}`}
+        style={{
+          // position: "sticky",
+          // top: 0,
+          color: "#939393",
+        }}
+      >
+        {title}
+      </div>
+      <div
+        className={`
+  ${style.relative}
+  ${style.flex}
+  ${style.flex_col}
+  ${style.gap_4}
+  ${style.px_2}
+  ${style.overflow_x_hidden}
+  ${style.overflow_y_auto}
+`}
+        style={{ maxHeight: renderHeight, scrollBehavior: "smooth" }}
+        id={unit}
+      >
+        {renderOptions(count, unit)}
+      </div>
     </div>
   );
 };
@@ -38,7 +59,15 @@ export const TimeColumns: React.FC<Props> = ({
   TimeColumnsClassName,
 }) => {
   return (
-    <div className={`flex justify-center gap-4 ${TimeColumnsClassName}`} dir="ltr">
+    <div
+      className={`
+      ${style.flex}
+      ${style.justify_evenly}
+      ${style.gap_4}
+      ${TimeColumnsClassName}
+    `}
+      dir="ltr"
+    >
       <TimeColumn
         count={24}
         unit="hour"

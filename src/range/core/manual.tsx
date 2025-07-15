@@ -8,7 +8,7 @@ import MaskRange from "./maskRange";
 import MonthPicker from "./monthPicker";
 import type { IBaseProps, IDate } from "./type";
 import { ESteps } from "./type";
-
+import style from "../../main.module.css";
 const Manual = (props: IBaseProps) => {
   const {
     date,
@@ -28,7 +28,17 @@ const Manual = (props: IBaseProps) => {
   const switchHandler = () => {};
 
   return (
-    <div className="flex flex-col justify-center items-center gap-2 mx-auto xs:w-60">
+    <div
+      className={`
+      ${style.flex}
+      ${style.flex_col}
+      ${style.justify_center}
+      ${style.items_center}
+      ${style.gap_2}
+      ${style.mx_auto}
+      ${style.xs_w_60}
+    `}
+    >
       <MonthPicker
         {...props}
         monthPickerClassName={monthPickerClassName}
@@ -52,7 +62,6 @@ const Manual = (props: IBaseProps) => {
       />
       <DatePicker
         {...props}
-        chooseTodayClassName="bg-red-500"
         name="custom range"
         dateFromOutside={date}
         onDateChange={(e: IDate) => {

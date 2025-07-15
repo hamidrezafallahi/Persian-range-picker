@@ -5,7 +5,7 @@ import React, {
   useRef,
   useState,
 } from "react";
-
+import style from "../../main.module.css";
 import moment from "moment-jalaali";
 
 import { toPersianDigits } from "../core/helper";
@@ -67,11 +67,22 @@ export const DesktopTimePicker: React.FC<Props> = ({
         <button
           key={val}
           onClick={() => handleTimeChange(unit, val)}
-          className={`flex flex-col justify-evenly items-center !rounded-md w-[clamp(24px,24px,30px)] aspect-square text-center cursor-pointer ${
-            active === val
-              ? "pointer-events-auto opacity-100 text-gray123 text-sm"
-              : ""
-          } `}
+          className={`
+            ${style.flex}
+            ${style.flex_col}
+            ${style.justify_evenly}
+            ${style.items_center}
+            ${style.rounded_md}
+            ${style.w_6}
+            ${style.aspect_square}
+            ${style.text_center}
+            ${style.cursor_pointer}
+            ${
+              active === val
+                ? `${style.pointer_events_auto} ${style.opacity_100} ${style.text_gray123} ${style.text_sm}`
+                : ""
+            }
+          `}
           ref={(el) => {
             buttonRefs.current[i] = el;
           }}
@@ -94,10 +105,14 @@ export const DesktopTimePicker: React.FC<Props> = ({
     }
   }, [time]);
   return (
-    <div className="range" style={{ position: "relative" }}>
+    <>
       <div
         style={{ paddingTop: "12px" }}
-        className={`flex justify-center ${containerClassName}`}
+        className={`
+          ${style.flex} 
+          ${style.justify_center} 
+          ${containerClassName}
+        `}
       >
         <TimeColumns
           renderHeight={`${renderHeight}px`}
@@ -118,6 +133,6 @@ export const DesktopTimePicker: React.FC<Props> = ({
           showSecond={showSecond}
         />
       </div>
-    </div>
+    </>
   );
 };

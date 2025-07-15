@@ -39,13 +39,12 @@ export function useRenderPosition<T extends HTMLElement = HTMLElement>({
       const enoughSpaceAbove = buttonArea.top - popupArea.height >= 0;
       const placeAbove = !enoughSpaceBelow && enoughSpaceAbove;
       const top = placeAbove
-        ? -popupArea.height - offset
-        : buttonArea.height + offset;
-
-      const centerX = buttonArea.left + buttonArea.width / 2;
-      const screenCenter = window.innerWidth / 2;
-      const alignLeft = centerX <= screenCenter;
-      const left = alignLeft ? 0 : buttonArea.width - popupArea.width;
+        ? buttonArea.top - popupArea.height - offset
+        : buttonArea.top + buttonArea.height + offset;
+      const alignLeft = popupArea.width + buttonArea.left <= window.innerWidth;
+      const left = alignLeft
+        ? buttonArea.left
+        : buttonArea.right - popupArea.width;
       popupRef.current.style.top = `${top}px`;
       popupRef.current.style.left = `${left}px`;
     }

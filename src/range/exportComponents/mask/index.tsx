@@ -1,8 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import moment from "moment-jalaali";
+import style from "../../../main.module.css";
 import type { IDate, MaskProps, TLocale } from "../../core/type";
 type TimeZone = "year" | "month" | "day";
-const defaultErrorClass = "border-red-700 ";
+const defaultErrorClass = `${style.border_red_700}`;
 export function Mask({ ...props }: MaskProps) {
   const {
     defaultValue,
@@ -634,15 +635,20 @@ export function Mask({ ...props }: MaskProps) {
   }, [isTodaySelectPreset]);
 
   return (
-    <div
-      className="range"
-      style={{ cursor: disabled ? "not-allowed" : "auto" }}
-    >
+    <div style={{ cursor: disabled ? "not-allowed" : "auto" }}>
       <div
-        className={` flex justify-center items-center gap-2   rounded-md  xs:w-28  w-full  align-center px-2  
-          ${maskClassName} 
- ${errorTarget.length > 0 && ErrorClass}
-      `}
+        className={`
+  ${style.flex}
+  ${style.justify_center}
+  ${style.items_center}
+  ${style.gap_2}
+  ${style.rounded_md}
+  ${style.xs_w_28}
+  ${style.w_full}
+  ${style.px_2}
+  ${maskClassName}
+  ${errorTarget.length > 0 ? ErrorClass : ""}
+`}
         style={{
           height: `${maskHeight}px`,
           color: tertiaryColor,
@@ -651,17 +657,25 @@ export function Mask({ ...props }: MaskProps) {
           userSelect: disabled ? "none" : "auto",
         }}
       >
-        <div className="">{suffix && suffix}</div>
+        <div>{suffix && suffix}</div>
         {isEdit !== 2 ? (
           <div
             ref={focusRef}
-            className="flex justify-center w-full item-center"
+            className={`${style.flex} ${style.justify_center} ${style.w_full} ${style.items_center}`}
             dir="ltr"
           >
             {isEdit == 0 ? (
               <div
                 style={{ fontSize: maskFontSize }}
-                className="flex justify-center gap-1 w-full text-base item-center same-font"
+                className={`
+                  ${style.flex} 
+                  ${style.justify_center} 
+                  ${style.gap_1} 
+                  ${style.w_full} 
+                  ${style.text_base} 
+                  ${style.items_center} 
+                  ${style.same_font}
+                `}
               >
                 {baseValue == null ? (
                   <div style={{ fontSize: "14px" }}>
@@ -679,7 +693,13 @@ export function Mask({ ...props }: MaskProps) {
               </div>
             ) : (
               <div
-                className="flex justify-center items-center w-full same-font"
+                className={`
+                ${style.flex} 
+                ${style.justify_center} 
+                ${style.items_center} 
+                ${style.w_full} 
+                ${style.same_font}
+              `}
                 style={{ gap: "2px" }}
               >
                 <input
@@ -694,7 +714,7 @@ export function Mask({ ...props }: MaskProps) {
                   onKeyDown={handleKeyDown}
                   maxLength={4}
                   minLength={4}
-                  className={`same-font  ${inputClassName} `}
+                  className={`${style.same_font}  ${inputClassName} `}
                   style={{
                     width: (4 * maskFontSize) / 2 + 8,
                     fontSize: maskFontSize,
@@ -729,7 +749,7 @@ export function Mask({ ...props }: MaskProps) {
                   onKeyDown={handleKeyDown}
                   maxLength={2}
                   minLength={2}
-                  className={`same-font ${inputClassName}`}
+                  className={`${style.same_font} ${inputClassName}`}
                   style={{
                     width: (2 * maskFontSize) / 2 + 6,
                     fontSize: maskFontSize,
@@ -740,7 +760,7 @@ export function Mask({ ...props }: MaskProps) {
                   placeholder="__"
                 />
                 <span
-                  className="same-font"
+                  className={`${style.same_font}`}
                   style={{
                     userSelect: "none",
                     pointerEvents: "none",
@@ -765,7 +785,7 @@ export function Mask({ ...props }: MaskProps) {
                   onKeyDown={handleKeyDown}
                   maxLength={2}
                   minLength={2}
-                  className={`same-font  ${inputClassName}`}
+                  className={`${style.same_font}  ${inputClassName}`}
                   style={{
                     fontSize: maskFontSize,
                     width: (2 * maskFontSize) / 2 + 6,
@@ -781,7 +801,14 @@ export function Mask({ ...props }: MaskProps) {
         ) : (
           <div
             ref={fullRef}
-            className={`relative flex justify-center w-full text-base p-2 `}
+            className={`
+              ${style.relative} 
+              ${style.flex} 
+              ${style.justify_center} 
+              ${style.w_full} 
+              ${style.text_base} 
+              ${style.p_2}
+            `}
             style={{ height: `${maskHeight}px` }}
             dir="ltr"
           >
@@ -799,13 +826,22 @@ export function Mask({ ...props }: MaskProps) {
               onKeyDown={handleKeyDown}
               maxLength={8}
               minLength={8}
-              className={`opacity-0 w-full`}
+              className={`${style.opacity_0} ${style.w_full}`}
               style={{ width: (8 * maskFontSize) / 2 }}
             />
             <div
-              className={`z-10 absolute inset-0  mx-auto    text-base flex justify-center items-center same-font  ${
-                inputClassName && inputClassName
-              }`}
+              className={`
+  ${style.z_10}
+  ${style.absolute}
+  ${style.inset_0}
+  ${style.mx_auto}
+  ${style.text_base}
+  ${style.flex}
+  ${style.justify_center}
+  ${style.items_center}
+  ${style.same_font}
+  ${inputClassName ?? ""}
+`}
               onKeyDown={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
@@ -831,7 +867,11 @@ export function Mask({ ...props }: MaskProps) {
                         }
                         ref={spanRefs[index]}
                         onMouseDown={handleFocusOnRelatedInputElement}
-                        className={` same-font selected-text  ${inputClassName} `}
+                        className={`
+                          ${style.same_font} 
+                          ${style.selected_text} 
+                          ${inputClassName}
+                        `}
                         style={{
                           // userSelect: "none",
                           // pointerEvents: "none",
@@ -840,9 +880,10 @@ export function Mask({ ...props }: MaskProps) {
                       >
                         <span
                           style={{ lineHeight: "10px" }}
-                          className={`selected-text ${
-                            errorTarget.includes(index) && ErrorClass
-                          }`}
+                          className={`
+                            ${style.selected_text}
+                            ${errorTarget.includes(index) ? ErrorClass : ""}
+                          `}
                         >
                           {item}
                         </span>
@@ -853,7 +894,12 @@ export function Mask({ ...props }: MaskProps) {
                             width: maskFontSize / 2 + 6,
                             height: maskFontSize + 1,
                           }}
-                          className="flex justify-center items-center selected-text"
+                          className={`
+                            ${style.flex}
+                            ${style.justify_center}
+                            ${style.items_center}
+                            ${style.selected_text}
+                          `}
                         >
                           /
                         </span>
@@ -864,7 +910,7 @@ export function Mask({ ...props }: MaskProps) {
             </div>
           </div>
         )}
-        <div className="">{prefix && prefix}</div>
+        <div>{prefix && prefix}</div>
       </div>
     </div>
   );

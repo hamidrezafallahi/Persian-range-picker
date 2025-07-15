@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-
+import style from "../../main.module.css";
 import moment from "moment-jalaali";
 
 import type { IBaseProps, ITime } from "../core/type";
@@ -94,12 +94,12 @@ function ManualCompare({ ...props }: IBaseProps) {
     }
   }, [date]);
   return (
-    <div className="flex flex-col">
+    <div className={`${style.flex} ${style.flex_col} ${style.w_full}`}>
       <button
         disabled={disableButton == "manual"}
         key="manual"
         onClick={() => timeHandler("manual")}
-        className="relative flex flex-col items-start gap-2 w-full h-fit"
+        className={`${style.flex} ${style.flex_col} ${style.relative} ${style.items_start} ${style.gap_2} ${style.w_full} ${style.h_fit}`}
       >
         <div
           style={{ color: active == "manual" ? accentColor : tertiaryColor }}
@@ -108,16 +108,15 @@ function ManualCompare({ ...props }: IBaseProps) {
         </div>
         <div
           style={{ color: active == "manual" ? neutralColor : tertiaryColor }}
-          className={`text-xs 
-          }`}
+          className={`${style.text_xs}`}
         >
           {stringDateFrom}
           {" - "} {stringDateTo}{" "}
         </div>
         {active == "manual" && (
           <span
-            className={` absolute my-auto ${
-              locale == "en" ? "right-5" : "left-5"
+            className={`${style.absolute} ${style.my_auto} ${
+              locale == "en" ? style.right_5 : style.left_5
             }`}
           >
             <TickIcon accentColor={accentColor} />
@@ -126,14 +125,14 @@ function ManualCompare({ ...props }: IBaseProps) {
         {/* <Divider className="m-0" /> */}
         <div
           style={{ backgroundColor: tertiaryColor }}
-          className="m-0 w-px h-full"
+          className={`${style.m_0} ${style.h_full}`}
         />
       </button>
       <button
         disabled={disableButton == "collapse"}
         key="collapse"
         onClick={() => timeHandler("collapse")}
-        className="relative flex flex-col items-start w-full h-fit"
+        className={`${style.relative} ${style.flex} ${style.flex_col} ${style.items_start} ${style.w_full} ${style.h_fit} `}
       >
         <div
           style={{ color: active == "collapse" ? accentColor : tertiaryColor }}
@@ -151,8 +150,8 @@ function ManualCompare({ ...props }: IBaseProps) {
         </div>
         {active == "collapse" && (
           <span
-            className={` absolute my-auto ${
-              locale == "en" ? "right-5" : "left-5"
+            className={`${style.absolute} ${style.my_auto}   ${
+              locale == "en" ? style.right_5 : style.left_5
             }`}
           >
             <TickIcon accentColor={accentColor} />

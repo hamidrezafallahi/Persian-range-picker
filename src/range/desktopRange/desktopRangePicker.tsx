@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-
+import style from "../../main.module.css";
 import moment from "moment-jalaali";
 
 import MainContent from "../core/mainContent";
@@ -7,6 +7,7 @@ import NavigateButton from "../core/navigateButton";
 import type { IDesktopRangeProps, ISubmittedData } from "../core/type";
 import { useRenderPosition } from "../exportComponents/useRenderPosition";
 import { DownTriangle } from "../icons/DownTriangle";
+import { createPortal } from "react-dom";
 
 export function DesktopRangePicker(props: IDesktopRangeProps) {
   const userAgent = navigator.userAgent;
@@ -48,7 +49,7 @@ export function DesktopRangePicker(props: IDesktopRangeProps) {
       isShowLabel: true,
       label: (
         <label
-          className="text-xs"
+          className={style.text_xs}
           style={{
             color: tertiaryColor,
           }}
@@ -191,21 +192,42 @@ export function DesktopRangePicker(props: IDesktopRangeProps) {
   }, [date, compareDate]);
   return (
     <div
-      className={`flex flex-col  justify-center w-fit h-14 relative  ${buttonClassName}`}
+      className={`
+      ${style.flex}
+      ${style.flex_col}
+      ${style.justify_center}
+      ${style.w_fit}
+      ${style.h_14}
+      ${style.relative}
+      ${buttonClassName}
+    `}
       ref={buttonRef as React.RefObject<HTMLDivElement>}
     >
       <div dir={locale == "fa" ? "rtl" : "ltr"}>
         {label.isShowLabel && label.label}
       </div>
-      <div className="flex gap-2" dir="rtl">
+      <div className={`${style.flex} ${style.gap_2}`} dir="rtl">
         <button
-          className={`flex justify-center items-center gap-2 px-2 border border-gray-300 rounded-lg w-72 h-8 cursor-pointer ${dateClassName}`}
+          className={`
+  ${style.flex}
+  ${style.justify_center}
+  ${style.items_center}
+  ${style.gap_2}
+  ${style.px_2}
+  ${style.border}
+  ${style.border_gray_300}
+  ${style.rounded_lg}
+  ${style.w_72}
+  ${style.h_8}
+  ${style.cursor_pointer}
+  ${dateClassName}
+`}
           onClick={handleDropdown}
           dir="ltr"
         >
           <DownTriangle />
           <div
-            className={`"px-2 w-fit text-center`}
+            className={`${style.px_2} ${style.w_fit} ${style.text_center}`}
             style={{
               color: tertiaryColor,
             }}
@@ -220,7 +242,7 @@ export function DesktopRangePicker(props: IDesktopRangeProps) {
           </div>
 
           <div
-            className={`text-center`}
+            className={style.text_center}
             style={{
               color: tertiaryColor,
             }}
@@ -228,7 +250,7 @@ export function DesktopRangePicker(props: IDesktopRangeProps) {
             -
           </div>
           <div
-            className={`px-2 w-fit  text-center `}
+            className={`${style.px_2} ${style.w_fit} ${style.text_center}`}
             style={{
               color: tertiaryColor,
             }}
@@ -247,55 +269,75 @@ export function DesktopRangePicker(props: IDesktopRangeProps) {
           <NavigateButton {...props} locale={locale} />
         )}
       </div>
-      {open && (
-        <div
-          ref={popupRef}
-          style={{
-            backgroundColor: backgroundColor,
-            position: "absolute",
-            width: dropdownWidth,
-            height: dropdownHeight,
-          }}
-          className={`absolute z-50  p-2  border border-gray-300 rounded-lg shadow-md  overflow-hidden  ${
-            locale === "fa" ? "right-0" : "left-0"
-          }`}
-        >
-          <div className="relative w-full h-full">
-            <MainContent
-              {...props}
-              model="range"
-              locale={locale}
-              device={device}
-              setCustomData={setCustomData}
-              setType={setType}
-            />
+      {open &&
+        createPortal(
+          <div
+            ref={popupRef}
+            style={{
+              backgroundColor: backgroundColor,
+              position: "absolute",
+              zIndex: 1000,
+              width: dropdownWidth,
+              height: dropdownHeight,
+            }}
+            className={`
+            ${style.absolute}
+            ${style.z_50}
+            ${style.p_2}
+            ${style.border}
+            ${style.border_gray_300}
+            ${style.rounded_lg}
+            ${style.shadow_md}
+            ${style.overflow_hidden}
+            ${locale === "fa" ? style.right_0 : style.left_0}
+          `}
+          >
             <div
-              className={`w-full flex gap-2 absolute bottom-0 flex-row-reverse justify-end`}
-              dir={locale == "fa" ? "ltr" : "rtl"}
+              className={`${style.relative} ${style.w_full} ${style.h_full}`}
             >
-              {/* ${tabClassName} */}
-              <button
-                style={{ color: primaryColor }}
-                className="p-2 px-3 rounded-md"
-                onClick={handleCancel}
+              <MainContent
+                {...props}
+                model="range"
+                locale={locale}
+                device={device}
+                setCustomData={setCustomData}
+                setType={setType}
+              />
+              <div
+                className={`
+  ${style.w_full}
+  ${style.flex}
+  ${style.gap_2}
+  ${style.absolute}
+  ${style.bottom_0}
+  ${style.flex_row_reverse}
+  ${style.justify_end}
+`}
+                dir={locale == "fa" ? "ltr" : "rtl"}
               >
-                {locale == "fa" ? "لغو" : "Cancel"}
-              </button>
-              <button
-                onClick={() => handleAccept()}
-                style={{
-                  background: primaryColor,
-                  borderColor: primaryColor,
-                  color: backgroundColor,
-                }}
-                className={` p-2 px-3 border  rounded-md`}
-              >
-                {locale == "fa" ? "اعمال" : "Accept"}
-              </button>
+                <button
+                  style={{ color: primaryColor }}
+                  className={`${style.p_2} ${style.px_3} ${style.rounded_md}`}
+                  onClick={handleCancel}
+                >
+                  {locale == "fa" ? "لغو" : "Cancel"}
+                </button>
+                <button
+                  onClick={() => handleAccept()}
+                  style={{
+                    background: primaryColor,
+                    borderColor: primaryColor,
+                    color: backgroundColor,
+                  }}
+                  className={`${style.p_2} ${style.px_3} ${style.border} ${style.rounded_md}`}
+                >
+                  {locale == "fa" ? "اعمال" : "Accept"}
+                </button>
+              </div>
             </div>
-          </div>
-        </div>
-      )}
+          </div>,
+          document.body
+        )}
     </div>
   );
 }
