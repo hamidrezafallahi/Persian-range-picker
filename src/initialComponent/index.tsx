@@ -1,5 +1,5 @@
 import { type ReactNode, useState } from "react";
-import style from "../main.module.css";
+
 import dateP from "../assets/images/dateP.png";
 import maskP from "../assets/images/maskP.png";
 import rangePic from "../assets/images/rangeP.png";
@@ -8,9 +8,12 @@ import useR from "../assets/images/useR.png";
 import useR1 from "../assets/images/useR1.png";
 import useR2 from "../assets/images/useR2.png";
 import dateVid from "../assets/video/Date.mp4";
+import dateVidE from "../assets/video/dateE.mp4";
 import MaskVid from "../assets/video/mask.mp4";
 import rangeVid from "../assets/video/range1.mp4";
+import rangeVidE from "../assets/video/rangeE.mp4";
 import Time from "../assets/video/time.mp4";
+import timeVidE from "../assets/video/timeE.mp4";
 import { DatePicker, RangePicker, TimePicker } from "../range";
 import { Mask } from "../range/exportComponents/mask";
 
@@ -116,7 +119,7 @@ const TEXT: Record<"fa" | "en", LanguageText> = {
       Range: {
         title: "Range",
         desc: "The time range tool allows you to select a range of dates or times for filtering operations, reporting, or settings. This tool is especially useful for forms or report pages.",
-        video: rangeVid,
+        video: rangeVidE,
         image: rangePic,
         component: (
           <RangePicker
@@ -131,7 +134,7 @@ const TEXT: Record<"fa" | "en", LanguageText> = {
         title: "Date",
         desc: "This date picker is designed to let you select dates in either the Shamsi or Gregorian format in the simplest way possible. Support for time and seconds also gives you greater precision in selection.",
         image: dateP,
-        video: dateVid,
+        video: dateVidE,
         component: (
           <DatePicker
             showTime
@@ -155,7 +158,7 @@ const TEXT: Record<"fa" | "en", LanguageText> = {
         title: "Time Picker",
         desc: "This time picker tool allows you to easily select hours and minutes (and seconds if needed). It's ideal for reservation forms, appointments, and setting reminders.",
         image: timeP,
-        video: Time,
+        video: timeVidE,
         component: (
           <TimePicker
             calendarType="gregorian"
