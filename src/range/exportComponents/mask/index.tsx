@@ -1,10 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import moment from "moment-jalaali";
 import style from "../../../main.module.css";
-import type { IDate, MaskProps, TLocale } from "../../core/type";
+import type { IDate, IMaskProps, TLocale } from "../../core/type";
 type TimeZone = "year" | "month" | "day";
 const defaultErrorClass = `${style.border_red_700}`;
-export function Mask({ ...props }: MaskProps) {
+export function Mask({ ...props }: IMaskProps) {
   const {
     defaultValue,
     calendarType = "shamsi",

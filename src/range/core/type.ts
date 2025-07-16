@@ -63,8 +63,8 @@ export interface IDateProps
   extends IColorProps,
     IClassNameProps,
     ITimeSettings,
-    ITimePicker,
-    MaskProps,
+    ITimePickerProps,
+    IMaskProps,
     IDeviceLocale {
   calendarType?: "shamsi" | "gregorian";
   defaultValue?: number;
@@ -202,7 +202,7 @@ export interface IMobileProps
   chooseTodayClassName?: string;
 }
 
-export interface MaskProps
+export interface IMaskProps
   extends Pick<IColorProps, "tertiaryColor" | "highlightColor">,
     Pick<IClassNameProps, "maskClassName" | "className"> {
   defaultValue?: IDate["from"];
@@ -223,7 +223,7 @@ export interface MaskProps
   exportType?: ExportType;
 }
 
-export interface ITimePicker extends IClassNameProps {
+export interface ITimePickerProps extends IClassNameProps {
   defaultValue?: number;
   calendarType?: "shamsi" | "gregorian";
   onChange?: (e: number | string) => void;
@@ -271,6 +271,4 @@ export interface IRangePickerProps
   defaultValue?: IDate;
   onChange?: (e: HandleParams) => void;
 }
-export interface IDatePickerProps extends IDate {}
-export interface IMaskProps extends IDate {}
-export interface ITimePickerProps extends IDate {}
+export interface IDatePickerProps extends Omit<IDateProps, "locale"> {}

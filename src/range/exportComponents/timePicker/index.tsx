@@ -1,14 +1,14 @@
 import React, { useEffect, useRef, useState } from "react";
 import moment from "moment-jalaali";
 import { toPersianDigits } from "../../core/helper";
-import type { ITimePicker, TUnit } from "../../core/type";
+import type { ITimePickerProps, TUnit } from "../../core/type";
 import { CalenderIcon } from "../../icons/CalenderIcon";
 import { useRenderPosition } from "../useRenderPosition";
 import { TimeColumns } from "./exportComponents";
 import style from "../../../main.module.css";
 import { createPortal } from "react-dom";
 
-export const TimePicker: React.FC<ITimePicker> = ({
+export const TimePicker: React.FC<ITimePickerProps> = ({
   defaultValue,
   onChange,
   calendarType = "shamsi",
@@ -28,7 +28,7 @@ export const TimePicker: React.FC<ITimePicker> = ({
   secondStep = 1,
   disabled = false,
   exportType = "IsoString",
-}: ITimePicker) => {
+}: ITimePickerProps) => {
   const buttonRef = useRef<HTMLButtonElement>(null);
   const popupRef = useRef<HTMLDivElement>(null);
   const [open, setOpen] = useState(false);
