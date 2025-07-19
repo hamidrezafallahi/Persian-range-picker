@@ -131,7 +131,6 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
           fontSize: "14px",
         }}
       >
-        <CalenderIcon />
         {showMask ? (
           <div
             onClick={(e) => {
@@ -153,7 +152,6 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
         ) : (
           <div
             className={` ${style.text_start} ${style.text_gray_gray7} `}
-            dir="ltr"
             style={{
               color: tertiaryColor,
             }}
@@ -161,6 +159,7 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
             {title}
           </div>
         )}
+        <CalenderIcon />
       </button>
       {isOpen &&
         createPortal(

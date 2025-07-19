@@ -26,8 +26,8 @@ export default function DemoComponent() {
         </div> */}
       <DatePicker
         // disabled
-        showTime
-        showSecond
+        // showTime
+        // showSecond
         // showMask
         // isTodaySelectPreset
         onChange={(e) => {
@@ -38,11 +38,11 @@ export default function DemoComponent() {
       />
       {/* </div> */}
       <TimePicker
-        // disabled
+        disabled
         onChange={(e) => {
           console.log(e);
         }}
-        showSecond
+        // showSecond
         // exportType="timeStamp"
       />
 

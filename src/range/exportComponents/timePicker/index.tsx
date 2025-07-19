@@ -191,10 +191,10 @@ export const TimePicker: React.FC<ITimePickerProps> = ({
           ...props.Style,
         }}
       >
-        <span className={style.text_lg}>{icon}</span>
         {time
           ? moment(time).locale(locale).format(dynamicFormat)
           : "انتخاب زمان"}
+        <span className={style.text_lg}>{icon}</span>
       </button>
 
       {open &&
