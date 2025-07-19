@@ -16,28 +16,29 @@ export default function DemoComponent() {
         // showComparison
         showMask
       />
-      <div className={`${style.bg_red_400}`} style={{ height: "1000px" }}>
+      {/* <div className={`${style.bg_red_400}`} style={{ height: "1000px" }}>
         height
-      </div>
-
+      </div> */}
+      {/* 
       <div className={`${style.flex}`}>
         <div className={`${style.bg_red_400}`} style={{ width: "500px" }}>
           test
-        </div>
-        <DatePicker
-          // disabled
-          showTime
-          showSecond
-          // showMask
-          // className="!w-full"
-          // isTodaySelectPreset
-          onChange={(e) => {
-            console.log(e);
-          }}
-          calendarType="shamsi"
-          // isOpenDropdown
-        />
-      </div>
+        </div> */}
+      <DatePicker
+        // disabled
+        showTime
+        showSecond
+        // showMask
+        className="!w-full"
+        buttonClassName="!w-full"
+        // isTodaySelectPreset
+        onChange={(e) => {
+          console.log(e);
+        }}
+        calendarType="shamsi"
+        // isOpenDropdown
+      />
+      {/* </div> */}
       <TimePicker
         // disabled
         onChange={(e) => {
