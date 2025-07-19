@@ -225,6 +225,7 @@ export interface IMaskProps
 
 export interface ITimePickerProps extends IClassNameProps {
   defaultValue?: number;
+  Style?: React.CSSProperties;
   calendarType?: "shamsi" | "gregorian";
   onChange?: (e: number | string) => void;
   containerClassName?: string;

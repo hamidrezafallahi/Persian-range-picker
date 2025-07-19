@@ -45,6 +45,7 @@ export default function DemoComponent() {
           console.log(e);
         }}
         showSecond
+        Style={{ width: "60%" }}
         // exportType="timeStamp"
       />
 

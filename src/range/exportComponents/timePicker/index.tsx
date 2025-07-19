@@ -9,26 +9,29 @@ import style from "../../../main.module.css";
 import { createPortal } from "react-dom";
 
 export const TimePicker: React.FC<ITimePickerProps> = ({
-  defaultValue,
-  onChange,
-  calendarType = "shamsi",
-  containerClassName,
-  okButtonClassName,
-  nowButtonClassName,
-  timeButtonClassName,
-  displayButtonCount = 5,
-  icon = <CalenderIcon />,
-  tertiaryColor = "#939393",
-  highlightColor = "#f4f4f4",
-  format = "HH:mm:ss",
-  showSecond = false,
-  showNow = true,
-  hourStep = 1,
-  minuteStep = 1,
-  secondStep = 1,
-  disabled = false,
-  exportType = "IsoString",
+  ...props
 }: ITimePickerProps) => {
+  const {
+    defaultValue,
+    onChange,
+    calendarType = "shamsi",
+    containerClassName,
+    okButtonClassName,
+    nowButtonClassName,
+    timeButtonClassName,
+    displayButtonCount = 5,
+    icon = <CalenderIcon />,
+    tertiaryColor = "#939393",
+    highlightColor = "#f4f4f4",
+    format = "HH:mm:ss",
+    showSecond = false,
+    showNow = true,
+    hourStep = 1,
+    minuteStep = 1,
+    secondStep = 1,
+    disabled = false,
+    exportType = "IsoString",
+  } = props;
   const buttonRef = useRef<HTMLButtonElement>(null);
   const popupRef = useRef<HTMLDivElement>(null);
   const [open, setOpen] = useState(false);
@@ -157,20 +160,16 @@ export const TimePicker: React.FC<ITimePickerProps> = ({
       setTime(defaultValue);
     }
   }, [defaultValue]);
+  console.log(props.Style);
 
   return (
-    <div
-      style={{
-        width: device == "desktop" ? "fit-content" : "100%",
-      }}
-    >
-      {device == "desktop" ? (
-        <>
-          <button
-            disabled={disabled}
-            ref={buttonRef as React.RefObject<HTMLButtonElement>}
-            onClick={() => setOpen((prev) => !prev)}
-            className={`
+    <>
+      <button
+        disabled={disabled}
+        popoverTarget="mobileTimeModal"
+        ref={buttonRef as React.RefObject<HTMLButtonElement>}
+        onClick={() => setOpen((prev) => !prev)}
+        className={`
               ${style.relative}
               ${style.flex}
               ${style.justify_between}
@@ -184,21 +183,24 @@ export const TimePicker: React.FC<ITimePickerProps> = ({
             
               ${timeButtonClassName}
             `}
-            style={{
-              color: tertiaryColor,
-              backgroundColor: highlightColor,
-              fontSize: "14px",
-              cursor: disabled ? "not-allowed" : "pointer",
-            }}
-          >
-            <span className={style.text_lg}>{icon}</span>
-            {time
-              ? moment(time).locale(locale).format(dynamicFormat)
-              : "انتخاب زمان"}
-          </button>
+        style={{
+          color: tertiaryColor,
+          backgroundColor: highlightColor,
+          fontSize: "14px",
+          cursor: disabled ? "not-allowed" : "pointer",
+          ...props.Style,
+        }}
+      >
+        <span className={style.text_lg}>{icon}</span>
+        {time
+          ? moment(time).locale(locale).format(dynamicFormat)
+          : "انتخاب زمان"}
+      </button>
 
-          {open &&
-            createPortal(
+      {open &&
+        createPortal(
+          <>
+            {device === "desktop" ? (
               <div
                 ref={popupRef}
                 style={{
@@ -272,53 +274,18 @@ export const TimePicker: React.FC<ITimePickerProps> = ({
                     {locale === "fa" ? "تایید" : "OK"}
                   </button>
                 </div>
-              </div>,
-              document.body
-            )}
-        </>
-      ) : (
-        <>
-          <button
-            disabled={disabled}
-            popoverTarget="mobileTimeModal"
-            ref={buttonRef as React.RefObject<HTMLButtonElement>}
-            onClick={() => setOpen((prev) => !prev)}
-            className={`
-              ${style.relative}
-              ${style.flex}
-              ${style.justify_between}
-              ${style.items_center}
-              ${style.gap_2}
-              ${style.px_2}
-              ${style.rounded_md}
-              ${style.w_full}
-              ${style.h_9}
-              ${disabled ? style.cursor_not_allowed : ""}
-              ${timeButtonClassName}
-            `}
-            style={{
-              color: tertiaryColor,
-              backgroundColor: highlightColor,
-              fontSize: "14px",
-            }}
-          >
-            <span className={style.text_lg}>{icon}</span>
-            {time
-              ? moment(time).locale(locale).format(dynamicFormat)
-              : "انتخاب زمان"}
-          </button>
-
-          {open && (
-            <div
-              popover="auto"
-              id="mobileTimeModal"
-              ref={popoverRef}
-              // style={{
-              //   position: "absolute",
-              //   // width: 190,
-              //   zIndex: 10,
-              // }}
-              className={`
+              </div>
+            ) : (
+              <div
+                popover="auto"
+                id="mobileTimeModal"
+                ref={popoverRef}
+                // style={{
+                //   position: "absolute",
+                //   // width: 190,
+                //   zIndex: 10,
+                // }}
+                className={`
                 ${style.relative}
                 ${style.flex}
                 ${style.justify_between}
@@ -331,45 +298,45 @@ export const TimePicker: React.FC<ITimePickerProps> = ({
                 ${disabled ? style.cursor_not_allowed : ""}
                 ${timeButtonClassName}
               `}
-            >
-              <div
-                className={`${style.flex} ${style.justify_center} ${style.items_center} ${style.border_b} ${style.h_9}`}
-                style={{
-                  height: "34px",
-                  fontSize: "14px",
-                  color: tertiaryColor,
-                }}
               >
-                {time
-                  ? locale === "fa"
-                    ? toPersianDigits(
-                        moment(time).locale(locale).format(dynamicFormat)
-                      )
-                    : moment(time).locale(locale).format(dynamicFormat)
-                  : locale == "fa"
-                  ? "زمان را انتخاب کنید"
-                  : "Choose time"}
-              </div>
-              <TimeColumns
-                renderHeight={`${renderHeight}px`}
-                renderOptions={(count, unit) =>
-                  renderOptions(
-                    count,
-                    unit,
-                    unit === "hour"
-                      ? hourStep
-                      : unit === "minute"
-                      ? minuteStep
-                      : secondStep
-                  )
-                }
-                hourStep={hourStep}
-                minuteStep={minuteStep}
-                secondStep={secondStep}
-                showSecond={showSecond}
-              />
-              <div
-                className={`
+                <div
+                  className={`${style.flex} ${style.justify_center} ${style.items_center} ${style.border_b} ${style.h_9}`}
+                  style={{
+                    height: "34px",
+                    fontSize: "14px",
+                    color: tertiaryColor,
+                  }}
+                >
+                  {time
+                    ? locale === "fa"
+                      ? toPersianDigits(
+                          moment(time).locale(locale).format(dynamicFormat)
+                        )
+                      : moment(time).locale(locale).format(dynamicFormat)
+                    : locale == "fa"
+                    ? "زمان را انتخاب کنید"
+                    : "Choose time"}
+                </div>
+                <TimeColumns
+                  renderHeight={`${renderHeight}px`}
+                  renderOptions={(count, unit) =>
+                    renderOptions(
+                      count,
+                      unit,
+                      unit === "hour"
+                        ? hourStep
+                        : unit === "minute"
+                        ? minuteStep
+                        : secondStep
+                    )
+                  }
+                  hourStep={hourStep}
+                  minuteStep={minuteStep}
+                  secondStep={secondStep}
+                  showSecond={showSecond}
+                />
+                <div
+                  className={`
   ${style.right_0} 
   ${style.bottom_0} 
   ${style.left_0} 
@@ -377,47 +344,48 @@ export const TimePicker: React.FC<ITimePickerProps> = ({
   ${style.p_2} 
   ${style.w_full}
 `}
-              >
-                <div
-                  className={`${style.flex} ${style.justify_between} ${style.gap_4} ${style.mt_2}`}
                 >
-                  {showNow && (
-                    <button
-                      onClick={handleNow}
-                      className={`
+                  <div
+                    className={`${style.flex} ${style.justify_between} ${style.gap_4} ${style.mt_2}`}
+                  >
+                    {showNow && (
+                      <button
+                        onClick={handleNow}
+                        className={`
                         ${style.p_2}
                         ${style.px_3}
                         ${style.border}
                         ${style.rounded_md}
                         ${nowButtonClassName}
                       `}
-                    >
-                      {locale === "fa" ? "الان" : "Now"}
-                    </button>
-                  )}
-                  <button
-                    onClick={handleSubmit}
-                    className={`
+                      >
+                        {locale === "fa" ? "الان" : "Now"}
+                      </button>
+                    )}
+                    <button
+                      onClick={handleSubmit}
+                      className={`
                       ${style.p_2}
                       ${style.px_3}
                       ${style.border}
                       ${style.rounded_md}
                       ${okButtonClassName}
                     `}
-                    style={{
-                      background: "black",
-                      borderColor: "black",
-                      color: "white",
-                    }}
-                  >
-                    {locale === "fa" ? "تایید" : "OK"}
-                  </button>
+                      style={{
+                        background: "black",
+                        borderColor: "black",
+                        color: "white",
+                      }}
+                    >
+                      {locale === "fa" ? "تایید" : "OK"}
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
-          )}
-        </>
-      )}
-    </div>
+            )}
+          </>,
+          document.body
+        )}
+    </>
   );
 };
