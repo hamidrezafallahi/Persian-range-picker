@@ -643,7 +643,7 @@ export function Mask({ ...props }: IMaskProps) {
   ${style.items_center}
   ${style.gap_2}
   ${style.rounded_md}
-  ${style.xs_w_28}
+  ${style.xs_w_40}
   ${style.w_full}
   ${style.px_2}
   ${maskClassName}
@@ -655,6 +655,7 @@ export function Mask({ ...props }: IMaskProps) {
           backgroundColor: highlightColor,
           pointerEvents: disabled ? "none" : "auto",
           userSelect: disabled ? "none" : "auto",
+          ...props.Style,
         }}
       >
         <div>{suffix && suffix}</div>

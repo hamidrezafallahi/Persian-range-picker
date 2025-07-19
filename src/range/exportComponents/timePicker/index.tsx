@@ -178,7 +178,7 @@ export const TimePicker: React.FC<ITimePickerProps> = ({
               ${style.px_2}
               ${style.rounded_md}
               ${style.w_full}
-              ${style.xs_w_28}
+              ${style.xs_w_40}
               ${style.h_9}
             
               ${timeButtonClassName}

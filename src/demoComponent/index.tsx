@@ -7,10 +7,10 @@ export default function DemoComponent() {
         // isTodaySelectPreset
         className={`${style.bg_red_400} `}
         calendarType="shamsi"
-        model="date"
         onChange={(e) => {
           console.log("RangePicker has changed", e);
         }}
+        Style={{ width: "60%" }}
         // primaryColor="#000"
         // tertiaryColor="#00f"
         // showComparison
@@ -29,8 +29,6 @@ export default function DemoComponent() {
         showTime
         showSecond
         // showMask
-        className="!w-full"
-        buttonClassName="!w-full"
         // isTodaySelectPreset
         onChange={(e) => {
           console.log(e);
@@ -45,7 +43,6 @@ export default function DemoComponent() {
           console.log(e);
         }}
         showSecond
-        Style={{ width: "60%" }}
         // exportType="timeStamp"
       />
 

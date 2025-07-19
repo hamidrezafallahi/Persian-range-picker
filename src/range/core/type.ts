@@ -221,6 +221,7 @@ export interface IMaskProps
   maskPlaceHolder?: string;
   isTodaySelectPreset?: boolean;
   exportType?: ExportType;
+  Style?: React.CSSProperties;
 }
 
 export interface ITimePickerProps extends IClassNameProps {
