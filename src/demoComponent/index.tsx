@@ -16,15 +16,15 @@ export default function DemoComponent() {
         // showComparison
         showMask
       />
-      <div className={`${style.bg_red_400}`} style={{ height: "2000px" }}>
+      <div className={`${style.bg_red_400}`} style={{ height: "1000px" }}>
         height
       </div>
 
       <div className={`${style.flex}`}>
-        <div className={`${style.bg_red_400}`} style={{ width: "1300px" }}>
+        <div className={`${style.bg_red_400}`} style={{ width: "500px" }}>
           test
         </div>
-        {/* <DatePicker
+        <DatePicker
           // disabled
           showTime
           showSecond
@@ -36,7 +36,7 @@ export default function DemoComponent() {
           }}
           calendarType="shamsi"
           // isOpenDropdown
-        /> */}
+        />
       </div>
       <TimePicker
         // disabled

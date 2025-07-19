@@ -32,6 +32,10 @@ export function useRenderPosition<T extends HTMLElement = HTMLElement>({
   }, []);
   useEffect(() => {
     const updatePosition = () => {
+      const scrollTop = window.scrollY || document.documentElement.scrollTop;
+      const scrollLeft = window.scrollX || document.documentElement.scrollLeft;
+      // ... existing position logic
+
       if (isOpen && buttonRef.current && popupRef.current) {
         const buttonArea = buttonRef.current.getBoundingClientRect();
         const popupArea = popupRef.current.getBoundingClientRect();
@@ -47,10 +51,8 @@ export function useRenderPosition<T extends HTMLElement = HTMLElement>({
         const left = alignLeft
           ? buttonArea.left
           : buttonArea.right - popupArea.width;
-        console.log(top, left, buttonArea, popupArea);
-
-        popupRef.current.style.top = `${top}px`;
-        popupRef.current.style.left = `${left}px`;
+        popupRef.current.style.top = `${top + scrollTop}px`;
+        popupRef.current.style.left = `${left + scrollLeft}px`;
       }
     };
     if (isOpen) {
