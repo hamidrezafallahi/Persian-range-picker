@@ -93,6 +93,7 @@ export function MobileDate({ ...props }: IDateProps) {
         <button
           key={val}
           onClick={() => handleTimeChange(unit, val)}
+          type="button"
           className={`
             ${style.flex}
             ${style.justify_center}
@@ -228,6 +229,7 @@ export function MobileDate({ ...props }: IDateProps) {
   ${style.aspect_square}
 `}
                   style={{ background: "#ecedf2" }}
+                  type="button"
                   onClick={() => {
                     setContent("Date");
                   }}

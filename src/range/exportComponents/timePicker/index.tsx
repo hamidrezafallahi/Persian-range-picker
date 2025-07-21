@@ -126,6 +126,7 @@ export const TimePicker: React.FC<ITimePickerProps> = ({
         <button
           key={val}
           onClick={() => handleTimeChange(unit, val)}
+          type="button"
           className={`
             ${style.flex}
             ${style.justify_center}
@@ -169,6 +170,7 @@ export const TimePicker: React.FC<ITimePickerProps> = ({
         popoverTarget="mobileTimeModal"
         ref={buttonRef as React.RefObject<HTMLButtonElement>}
         onClick={() => setOpen((prev) => !prev)}
+        type="button"
         className={`
               ${style.relative}
               ${style.flex}
@@ -245,6 +247,7 @@ export const TimePicker: React.FC<ITimePickerProps> = ({
                   {showNow && (
                     <button
                       onClick={handleNow}
+                      type="button"
                       className={`
                       ${style.p_2}
                       ${style.px_3}
@@ -258,6 +261,7 @@ export const TimePicker: React.FC<ITimePickerProps> = ({
                   )}
                   <button
                     onClick={handleSubmit}
+                    type="button"
                     className={`
                     ${style.p_2}
                     ${style.px_3}
@@ -351,6 +355,7 @@ export const TimePicker: React.FC<ITimePickerProps> = ({
                     {showNow && (
                       <button
                         onClick={handleNow}
+                        type="button"
                         className={`
                         ${style.p_2}
                         ${style.px_3}
@@ -364,6 +369,7 @@ export const TimePicker: React.FC<ITimePickerProps> = ({
                     )}
                     <button
                       onClick={handleSubmit}
+                      type="button"
                       className={`
                       ${style.p_2}
                       ${style.px_3}

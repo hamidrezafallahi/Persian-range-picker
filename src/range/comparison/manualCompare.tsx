@@ -99,6 +99,7 @@ function ManualCompare({ ...props }: IBaseProps) {
         disabled={disableButton == "manual"}
         key="manual"
         onClick={() => timeHandler("manual")}
+        type="button"
         className={`${style.flex} ${style.flex_col} ${style.relative} ${style.items_start} ${style.gap_2} ${style.w_full} ${style.h_fit}`}
       >
         <div
@@ -132,6 +133,7 @@ function ManualCompare({ ...props }: IBaseProps) {
         disabled={disableButton == "collapse"}
         key="collapse"
         onClick={() => timeHandler("collapse")}
+        type="button"
         className={`${style.relative} ${style.flex} ${style.flex_col} ${style.items_start} ${style.w_full} ${style.h_fit} `}
       >
         <div

@@ -211,6 +211,7 @@ const MonthPicker = ({
               onClick={() => {
                 handleMonthPicker(chosenMonth);
               }}
+              type="button"
               onMouseOver={() => {
                 handleHoveredMonth(index);
               }}

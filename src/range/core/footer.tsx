@@ -95,6 +95,7 @@ export const Footer = ({ ...props }: IFooter) => {
       ) : (
         <button
           onClick={() => handleSelect("today")}
+          type="button"
           style={{ backgroundColor: highlightColor, color: primaryColor }}
           className={`${style.w_full} ${style.h_10} ${style.text_center} ${chooseTodayClassName} `}
         >
@@ -111,6 +112,7 @@ const NowButton = ({ ...props }) => {
     <button
       className={`${style.p_2} ${style.px_3} ${style.border} ${style.rounded_md} ${nowButtonClassName}`}
       onClick={() => handleSelect("now")}
+      type="button"
     >
       now
     </button>
@@ -122,6 +124,7 @@ const SubmitTimeButton = ({ ...props }) => {
   return (
     <button
       onClick={() => handleSelect("submit")}
+      type="button"
       className={`${style.p_2} ${style.px_3} ${style.border} ${style.rounded_md} ${okButtonClassName}`}
       style={{
         background: "black",

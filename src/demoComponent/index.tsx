@@ -2,7 +2,7 @@ import { DatePicker, Mask, RangePicker, TimePicker } from "../range";
 import style from "../main.module.css";
 export default function DemoComponent() {
   return (
-    <div className={style.bg_red_100} dir="ltr">
+    <div className={style.bg_red_100} dir="rtl">
       <RangePicker
         // isTodaySelectPreset
         className={`${style.bg_red_400} `}

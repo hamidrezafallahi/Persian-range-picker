@@ -67,6 +67,7 @@ export const DesktopTimePicker: React.FC<Props> = ({
         <button
           key={val}
           onClick={() => handleTimeChange(unit, val)}
+          type="button"
           className={`
             ${style.flex}
             ${style.flex_col}

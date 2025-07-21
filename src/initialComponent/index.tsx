@@ -229,6 +229,7 @@ export function InitialComponent() {
       >
         <button
           onClick={handleLangToggle}
+          type="button"
           style={{
             padding: "0.5rem",
             backgroundColor: "#4a90e2",
@@ -246,6 +247,7 @@ export function InitialComponent() {
           <button
             key={key}
             onClick={() => setActiveSection(key)}
+            type="button"
             style={{
               padding: "0.6rem 0.5rem",
               backgroundColor: activeSection === key ? "#4a90e2" : "#2c2c2c",

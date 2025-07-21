@@ -326,6 +326,7 @@ const Calendar: FC<Props> = ({
           <button
             disabled={isDisabled}
             key={index}
+            type="button"
             onMouseOver={() => {
               if (!endDate && state.hoveredDay) {
                 setState((prev) => {

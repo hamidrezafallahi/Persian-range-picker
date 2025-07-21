@@ -108,6 +108,7 @@ const MainContent = ({ ...props }: IProps) => {
             }}
             key={tab.key}
             onClick={() => handleTabChange(tab.key)}
+            type="button"
             className={`
               ${periodListClassName} 
               ${style.font_medium} ${style.text_right} ${style.text_nowrap} ${

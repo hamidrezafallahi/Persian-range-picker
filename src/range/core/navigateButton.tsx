@@ -99,6 +99,7 @@ function NavigateButton({ ...props }: INavigationProps) {
       <button
         className={`${style.px_1} ${style.xs_border} ${style.rounded_md} ${style.bg_white}`}
         disabled={step == ESteps.manual}
+        type="button"
         onClick={() => {
           stepChangeHandler("decrement");
         }}
@@ -108,6 +109,7 @@ function NavigateButton({ ...props }: INavigationProps) {
       <button
         className={`${style.px_1} ${style.xs_border} ${style.rounded_md} ${style.bg_white}`}
         disabled={step == ESteps.manual}
+        type="button"
         onClick={() => {
           stepChangeHandler("increment");
         }}

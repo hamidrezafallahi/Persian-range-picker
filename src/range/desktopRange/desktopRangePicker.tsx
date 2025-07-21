@@ -213,6 +213,7 @@ export function DesktopRangePicker(props: IRangeProps) {
       {label && <div>{label}</div>}
       <div className={`${style.flex} ${style.gap_2}  `}>
         <button
+          type="button"
           className={`
             ${style.flex}
             ${style.justify_between}

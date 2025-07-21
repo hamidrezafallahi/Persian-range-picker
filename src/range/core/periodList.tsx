@@ -137,6 +137,7 @@ function PeriodList({ ...props }: IBaseProps) {
           <button
             key={index}
             onClick={() => timeHandler(item)}
+            type="button"
             className={`
               ${style.relative}
               ${style.flex}

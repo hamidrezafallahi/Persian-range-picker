@@ -69,6 +69,7 @@ const CompareList = ({ ...props }: IBaseProps) => {
         return (
           <button
             key={index}
+            type="button"
             onClick={() => timeHandler(item)}
             className={`${style.relative} ${style.flex} ${style.flex_col}  ${
               style.items_start

@@ -122,6 +122,7 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
         disabled={disabled}
         ref={buttonRef as React.RefObject<HTMLButtonElement>}
         onClick={handleDropdown}
+        type="button"
         className={`${styles.flex} ${styles.justify_between} ${styles.items_center} ${styles.gap_1} ${styles.px_2}   ${styles.rounded_md} ${styles.h_9}   ${style.xs_w_40}
   ${style.w_full}  ${className}`}
         style={{
