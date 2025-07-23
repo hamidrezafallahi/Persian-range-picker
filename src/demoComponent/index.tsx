@@ -1,6 +1,17 @@
-import { DatePicker, Mask, RangePicker, TimePicker } from "../range";
+import {
+  DatePicker,
+  Mask,
+  RangePicker,
+  TimePicker,
+  useRenderPosition,
+} from "../range";
 import style from "../main.module.css";
+import { useRef, useState } from "react";
 export default function DemoComponent() {
+  const [isOpen, setIsOpen] = useState(false);
+  const popupRef = useRef(null);
+  const buttonRef = useRef(null);
+  useRenderPosition({ popupRef, buttonRef, isOpen, setIsOpen });
   return (
     <div className={style.bg_red_100} dir="rtl">
       <RangePicker
@@ -16,6 +27,15 @@ export default function DemoComponent() {
         // showComparison
         showMask
       />
+      <button
+        ref={buttonRef}
+        onClick={() => {
+          setIsOpen(!isOpen);
+        }}
+      >
+        test dropdown
+      </button>
+      {isOpen && <div ref={popupRef}>dropdown area</div>}
       {/* <div className={`${style.bg_red_400}`} style={{ height: "1000px" }}>
         height
       </div> */}
@@ -24,18 +44,21 @@ export default function DemoComponent() {
         <div className={`${style.bg_red_400}`} style={{ width: "500px" }}>
           test
         </div> */}
-      <DatePicker
-        // disabled
-        // showTime
-        // showSecond
-        // showMask
-        // isTodaySelectPreset
-        onChange={(e) => {
-          console.log(e);
-        }}
-        calendarType="shamsi"
-        // isOpenDropdown
-      />
+
+      <div>
+        <DatePicker
+          // disabled
+          // showTime
+          // showSecond
+          // showMask
+          // isTodaySelectPreset
+          onChange={(e) => {
+            console.log(e);
+          }}
+          calendarType="shamsi"
+          // isOpenDropdown
+        />
+      </div>
       {/* </div> */}
       <TimePicker
         disabled

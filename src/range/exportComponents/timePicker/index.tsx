@@ -161,8 +161,6 @@ export const TimePicker: React.FC<ITimePickerProps> = ({
       setTime(defaultValue);
     }
   }, [defaultValue]);
-  console.log(props.Style);
-
   return (
     <>
       <button

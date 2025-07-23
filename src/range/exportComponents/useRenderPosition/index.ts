@@ -51,8 +51,22 @@ export function useRenderPosition<T extends HTMLElement = HTMLElement>({
         const left = alignLeft
           ? buttonArea.left
           : buttonArea.right - popupArea.width;
+        const direction =
+          buttonRef.current?.dir ||
+          getComputedStyle(buttonRef.current!).direction;
+        console.log(direction);
+
         popupRef.current.style.top = `${top + scrollTop}px`;
-        popupRef.current.style.left = `${left + scrollLeft}px`;
+        if (direction === "rtl") {
+          // اگر جا بشه از راست دکمه، قرار بگیره
+          const right = window.innerWidth - buttonArea.right;
+          popupRef.current.style.left = "auto";
+          popupRef.current.style.right = `${right + scrollLeft}px`;
+        } else {
+          const left = buttonArea.left;
+          popupRef.current.style.right = "auto";
+          popupRef.current.style.left = `${left + scrollLeft}px`;
+        }
       }
     };
     if (isOpen) {

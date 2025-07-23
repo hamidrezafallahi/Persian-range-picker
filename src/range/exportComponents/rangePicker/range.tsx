@@ -64,7 +64,7 @@ export function Range({ ...props }: IRangeProps) {
           setOpen={setOpen}
           open={open}
           additionalElement={additionalElement}
-          activeTable="Year"
+          activeTable="manual"
           locale={locale}
         />
       ) : (
@@ -87,6 +87,7 @@ export function Range({ ...props }: IRangeProps) {
           additionalElement={additionalElement}
           device={deviceType}
           locale={locale}
+          activeTable="manual"
         />
       )}
     </>
