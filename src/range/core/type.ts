@@ -213,7 +213,10 @@ export interface IMaskProps
   suffix?: ReactNode | boolean;
   prefix?: ReactNode | boolean;
   maskHeight?: number;
-  maskFontSize?: number;
+  MaskFontStyle?: Pick<
+    React.CSSProperties,
+    "fontFamily" | "fontSize" | "font" | "color" | "fontStyle"
+  >;
   ErrorClass?: string;
   dir?: "ltr" | "rtl";
   autoComplete?: "on" | "off";

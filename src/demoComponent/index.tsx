@@ -1,17 +1,6 @@
-import {
-  DatePicker,
-  Mask,
-  RangePicker,
-  TimePicker,
-  useRenderPosition,
-} from "../range";
+import { DatePicker, Mask, RangePicker } from "../range";
 import style from "../main.module.css";
-import { useRef, useState } from "react";
 export default function DemoComponent() {
-  const [isOpen, setIsOpen] = useState(false);
-  const popupRef = useRef(null);
-  const buttonRef = useRef(null);
-  useRenderPosition({ popupRef, buttonRef, isOpen, setIsOpen });
   return (
     <div className={style.bg_red_100} dir="rtl">
       <RangePicker
@@ -27,15 +16,7 @@ export default function DemoComponent() {
         // showComparison
         showMask
       />
-      <button
-        ref={buttonRef}
-        onClick={() => {
-          setIsOpen(!isOpen);
-        }}
-      >
-        test dropdown
-      </button>
-      {isOpen && <div ref={popupRef}>dropdown area</div>}
+
       {/* <div className={`${style.bg_red_400}`} style={{ height: "1000px" }}>
         height
       </div> */}
@@ -50,7 +31,7 @@ export default function DemoComponent() {
           // disabled
           // showTime
           // showSecond
-          // showMask
+          showMask
           // isTodaySelectPreset
           onChange={(e) => {
             console.log(e);
@@ -60,22 +41,29 @@ export default function DemoComponent() {
         />
       </div>
       {/* </div> */}
-      <TimePicker
+      {/* <TimePicker
         disabled
         onChange={(e) => {
           console.log(e);
         }}
         // showSecond
         // exportType="timeStamp"
-      />
+      /> */}
 
       <Mask
+        // MaskFontStyle={{
+        //   fontFamily: "sans-serif",
+        //   fontSize: 10,
+        //   color: "red",
+        // }}
         // disabled
         // isTodaySelectPreset
         onMaskChange={(e) => {
           console.log("mask has changed", e);
         }}
         // exportType="timeStamp"
+        // maskFontSize={}
+        // maskFontFamily=""
       />
     </div>
   );

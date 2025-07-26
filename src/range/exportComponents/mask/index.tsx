@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import moment from "moment-jalaali";
 import style from "../../../main.module.css";
 import type { IDate, IMaskProps, TLocale } from "../../core/type";
@@ -15,7 +15,6 @@ export function Mask({ ...props }: IMaskProps) {
     maskHeight = 36,
     suffix,
     prefix,
-    maskFontSize = 16,
     ErrorClass = defaultErrorClass,
     autoComplete = "off",
     tertiaryColor = "#939393",
@@ -24,6 +23,8 @@ export function Mask({ ...props }: IMaskProps) {
     maskPlaceHolder,
     isTodaySelectPreset = false,
     exportType = "IsoString",
+    MaskFontStyle = { fontSize: "14px", fontFamily: "unset" },
+    Style,
   } = props;
   const locale = calendarType == "shamsi" ? "fa" : "en";
   const temp = timestampToDateNumbers(locale, defaultValue);
@@ -633,7 +634,10 @@ export function Mask({ ...props }: IMaskProps) {
       setBaseValue(today);
     }
   }, [isTodaySelectPreset]);
-
+  const fontSize = useMemo(() => {
+    const raw = MaskFontStyle?.fontSize;
+    return typeof raw === "string" ? parseFloat(raw) : raw ?? 14;
+  }, [isEdit]);
   return (
     <div style={{ cursor: disabled ? "not-allowed" : "auto" }}>
       <div
@@ -667,21 +671,17 @@ export function Mask({ ...props }: IMaskProps) {
           >
             {isEdit == 0 ? (
               <div
-                style={{ fontSize: maskFontSize }}
                 className={`
                   ${style.flex} 
                   ${style.justify_center} 
                   ${style.gap_1} 
-                  ${style.w_full} 
-                  ${style.text_base} 
+                  ${style.w_full}  
                   ${style.items_center} 
-                  ${style.same_font}
                 `}
+                style={{ ...MaskFontStyle }}
               >
                 {baseValue == null ? (
-                  <div style={{ fontSize: "14px" }}>
-                    {maskPlaceHolder ?? "____/__/__"}
-                  </div>
+                  <div>{maskPlaceHolder ?? "____/__/__"}</div>
                 ) : (
                   <>
                     <div>{separatedValue[0] || "____"}</div>
@@ -699,9 +699,8 @@ export function Mask({ ...props }: IMaskProps) {
                 ${style.justify_center} 
                 ${style.items_center} 
                 ${style.w_full} 
-                ${style.same_font}
               `}
-                style={{ gap: "2px" }}
+                // style={{ gap: "2px" }}
               >
                 <input
                   type="text"
@@ -715,10 +714,12 @@ export function Mask({ ...props }: IMaskProps) {
                   onKeyDown={handleKeyDown}
                   maxLength={4}
                   minLength={4}
-                  className={`${style.same_font}  ${inputClassName} `}
+                  className={` ${inputClassName}`}
                   style={{
-                    width: (4 * maskFontSize) / 2 + 8,
-                    fontSize: maskFontSize,
+                    width: (4 * fontSize) / 2 + 8,
+                    fontSize: fontSize,
+                    color: MaskFontStyle.color,
+                    fontFamily: MaskFontStyle.fontFamily,
                     border: "none",
                     outline: "none",
                     background: "transparent",
@@ -729,8 +730,10 @@ export function Mask({ ...props }: IMaskProps) {
                   style={{
                     userSelect: "none",
                     pointerEvents: "none",
-                    // width: maskFontSize / 2,
-                    fontSize: maskFontSize,
+                    width: fontSize / 2, ////////////////////////////////////////////here
+                    fontSize: fontSize,
+                    color: MaskFontStyle.color,
+                    fontFamily: MaskFontStyle.fontFamily,
                     // paddingRight: "1px",
                     // paddingLeft: "2px",
                   }}
@@ -750,23 +753,26 @@ export function Mask({ ...props }: IMaskProps) {
                   onKeyDown={handleKeyDown}
                   maxLength={2}
                   minLength={2}
-                  className={`${style.same_font} ${inputClassName}`}
+                  className={inputClassName}
                   style={{
-                    width: (2 * maskFontSize) / 2 + 6,
-                    fontSize: maskFontSize,
+                    width: (2 * fontSize) / 2 + 6, ////////////////////////////////////////////here
                     border: "none",
                     outline: "none",
                     background: "transparent",
+                    fontSize: fontSize,
+                    color: MaskFontStyle.color,
+                    fontFamily: MaskFontStyle.fontFamily,
                   }}
                   placeholder="__"
                 />
                 <span
-                  className={`${style.same_font}`}
                   style={{
                     userSelect: "none",
                     pointerEvents: "none",
-                    fontSize: maskFontSize,
-                    // width: maskFontSize / 2,
+                    fontSize: fontSize,
+                    color: MaskFontStyle.color,
+                    fontFamily: MaskFontStyle.fontFamily,
+                    width: fontSize / 2,
                     // width: "1ch",
                     // paddingRight: "1px",
                     // paddingLeft: "1px",
@@ -786,10 +792,12 @@ export function Mask({ ...props }: IMaskProps) {
                   onKeyDown={handleKeyDown}
                   maxLength={2}
                   minLength={2}
-                  className={`${style.same_font}  ${inputClassName}`}
+                  className={inputClassName}
                   style={{
-                    fontSize: maskFontSize,
-                    width: (2 * maskFontSize) / 2 + 6,
+                    fontSize: fontSize,
+                    color: MaskFontStyle.color,
+                    fontFamily: MaskFontStyle.fontFamily,
+                    width: (2 * fontSize) / 2 + 6,
                     border: "none",
                     outline: "none",
                     background: "transparent",
@@ -828,7 +836,12 @@ export function Mask({ ...props }: IMaskProps) {
               maxLength={8}
               minLength={8}
               className={`${style.opacity_0} ${style.w_full}`}
-              style={{ width: (8 * maskFontSize) / 2 }}
+              style={{
+                width: (8 * fontSize) / 2,
+                fontSize: fontSize,
+                color: MaskFontStyle.color,
+                fontFamily: MaskFontStyle.fontFamily,
+              }}
             />
             <div
               className={`
@@ -840,7 +853,6 @@ export function Mask({ ...props }: IMaskProps) {
   ${style.flex}
   ${style.justify_center}
   ${style.items_center}
-  ${style.same_font}
   ${inputClassName ?? ""}
 `}
               onKeyDown={(e) => {
@@ -850,8 +862,7 @@ export function Mask({ ...props }: IMaskProps) {
               style={{
                 display: "flex",
                 // gap: "3px",
-
-                fontSize: maskFontSize,
+                fontSize: fontSize,
                 // height: `${maskHeight}px`,
                 // userSelect: "none",
                 // pointerEvents: "none",
@@ -869,14 +880,15 @@ export function Mask({ ...props }: IMaskProps) {
                         ref={spanRefs[index]}
                         onMouseDown={handleFocusOnRelatedInputElement}
                         className={`
-                          ${style.same_font} 
                           ${style.selected_text} 
                           ${inputClassName}
                         `}
                         style={{
                           // userSelect: "none",
                           // pointerEvents: "none",
-                          fontSize: maskFontSize,
+                          fontSize: fontSize,
+                          color: MaskFontStyle.color,
+                          fontFamily: MaskFontStyle.fontFamily,
                         }}
                       >
                         <span
@@ -892,8 +904,8 @@ export function Mask({ ...props }: IMaskProps) {
                       {index !== 2 && (
                         <span
                           style={{
-                            width: maskFontSize / 2 + 6,
-                            height: maskFontSize + 1,
+                            width: fontSize / 2 + 6,
+                            height: fontSize + 1,
                           }}
                           className={`
                             ${style.flex}

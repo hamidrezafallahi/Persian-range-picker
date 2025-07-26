@@ -54,8 +54,6 @@ export function useRenderPosition<T extends HTMLElement = HTMLElement>({
         const direction =
           buttonRef.current?.dir ||
           getComputedStyle(buttonRef.current!).direction;
-        console.log(direction);
-
         popupRef.current.style.top = `${top + scrollTop}px`;
         if (direction === "rtl") {
           // اگر جا بشه از راست دکمه، قرار بگیره
