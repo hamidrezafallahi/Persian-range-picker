@@ -215,7 +215,7 @@ export interface IMaskProps
   maskHeight?: number;
   MaskFontStyle?: Pick<
     React.CSSProperties,
-    "fontFamily" | "fontSize" | "font" | "color" | "fontStyle"
+    "fontFamily" | "fontSize" | "color"
   >;
   ErrorClass?: string;
   dir?: "ltr" | "rtl";
