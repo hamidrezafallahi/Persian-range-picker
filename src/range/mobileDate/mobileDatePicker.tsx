@@ -3,7 +3,7 @@ import style from "../../main.module.css";
 import moment from "moment-jalaali";
 
 import { Footer } from "../core/footer";
-import { toPersianDigits } from "../core/helper";
+import { getTimestamp, toPersianDigits } from "../core/helper";
 import type { IDate, IDateProps, TUnit } from "../core/type";
 import { TimeColumns } from "../exportComponents/timePicker/exportComponents";
 import { CalenderIcon } from "../icons/CalenderIcon";
@@ -58,11 +58,11 @@ export function MobileDate({ ...props }: IDateProps) {
 
   const handleDateChange = (e: IDate) => {
     if (showTime) {
-      setShowDate(e.from);
+      setShowDate(getTimestamp(e.from));
       setContent("Time");
     } else {
-      setShowDate(e.from);
-      onChange?.(e.from);
+      setShowDate(getTimestamp(e.from));
+      onChange?.(getTimestamp(e.from));
       popoverRef.current?.hidePopover();
     }
   };

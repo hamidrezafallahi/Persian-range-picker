@@ -42,22 +42,31 @@ export function RangePicker({ ...props }: IRangePickerProps) {
   };
   useEffect(() => {
     if (defaultValue) {
-      setDate({
-        from:
-          defaultValue && defaultValue.from > 0
-            ? defaultValue.from
-            : model == "date"
-            ? moment().locale(locale).startOf("day").valueOf()
-            : locale == "fa"
-            ? moment().locale(locale).startOf("jYear").valueOf()
-            : moment().locale(locale).startOf("year").valueOf(),
-        to:
-          defaultValue && defaultValue.to > 0
-            ? defaultValue.to
-            : moment().locale(locale).endOf("day").valueOf(),
-      });
+      const getTimestamp = (
+        val: number | Date | undefined,
+        fallback: number
+      ): number => {
+        if (typeof val === "number" && val > 0) return val;
+        if (val instanceof Date) return val.valueOf();
+        return fallback;
+      };
+
+      const fallbackFrom =
+        model === "date"
+          ? moment().locale(locale).startOf("day").valueOf()
+          : locale === "fa"
+          ? moment().locale(locale).startOf("jYear").valueOf()
+          : moment().locale(locale).startOf("year").valueOf();
+
+      const fallbackTo = moment().locale(locale).endOf("day").valueOf();
+
+      const from = getTimestamp(defaultValue.from, fallbackFrom);
+      const to = getTimestamp(defaultValue.to, fallbackTo);
+
+      setDate({ from, to });
     }
-  }, [defaultValue]);
+  }, [defaultValue, locale, model]);
+
   return (
     <>
       {model == "date" ? (

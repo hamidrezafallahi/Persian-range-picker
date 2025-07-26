@@ -551,3 +551,5 @@ export function getLabel(
       return locale == "fa" ? "بازه نامعتبر" : "invalid date";
   }
 }
+export const getTimestamp = (val: number | Date | undefined): number =>
+  typeof val === "number" ? val : val instanceof Date ? val.valueOf() : 0;

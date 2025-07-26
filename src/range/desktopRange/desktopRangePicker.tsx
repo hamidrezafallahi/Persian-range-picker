@@ -8,7 +8,7 @@ import type { IRangeProps, ISubmittedData } from "../core/type";
 import { useRenderPosition } from "../exportComponents/useRenderPosition";
 import { DownTriangle } from "../icons/DownTriangle";
 import { createPortal } from "react-dom";
-import { toPersianDigits } from "../core/helper";
+import { getTimestamp, toPersianDigits } from "../core/helper";
 
 export function DesktopRangePicker(props: IRangeProps) {
   const userAgent = navigator.userAgent;
@@ -67,20 +67,24 @@ export function DesktopRangePicker(props: IRangeProps) {
   const [customData, setCustomData] = useState<unknown>(null);
   const buttonRef = useRef<HTMLElement>(null);
   const popupRef = useRef<HTMLDivElement>(null);
+
+  const fromTimestamp = getTimestamp(date.from);
+  const toTimestamp = getTimestamp(date.to);
+
   const DateFrom =
-    date.from > 0
+    fromTimestamp > 0
       ? locale === "fa"
-        ? toPersianDigits(moment(date.from).format("jYYYY/jMM/jDD"))
-        : moment(date.from).format("YYYY/MM/DD")
+        ? toPersianDigits(moment(fromTimestamp).format("jYYYY/jMM/jDD"))
+        : moment(fromTimestamp).format("YYYY/MM/DD")
       : locale === "fa"
       ? "انتخاب تاریخ"
       : "Choose date";
 
   const DateTo =
-    date.to > 0
+    toTimestamp > 0
       ? locale === "fa"
-        ? toPersianDigits(moment(date.to).format("jYYYY/jMM/jDD"))
-        : moment(date.to).format("YYYY/MM/DD")
+        ? toPersianDigits(moment(toTimestamp).format("jYYYY/jMM/jDD"))
+        : moment(toTimestamp).format("YYYY/MM/DD")
       : locale === "fa"
       ? "انتخاب تاریخ"
       : "Choose date";

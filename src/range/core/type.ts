@@ -49,8 +49,8 @@ export enum ESteps {
 }
 
 export interface IDate {
-  from: number;
-  to: number;
+  from: number | Date;
+  to: number | Date;
 }
 
 export interface IAdditionalElementType {
@@ -67,7 +67,7 @@ export interface IDateProps
     IMaskProps,
     IDeviceLocale {
   calendarType?: "shamsi" | "gregorian";
-  defaultValue?: number;
+  defaultValue?: number | Date;
   showMask?: boolean;
   onChange?: (e: number | string) => void;
   calendarBaseWidth?: number;
@@ -228,7 +228,7 @@ export interface IMaskProps
 }
 
 export interface ITimePickerProps extends IClassNameProps {
-  defaultValue?: number;
+  defaultValue?: number | Date;
   Style?: React.CSSProperties;
   calendarType?: "shamsi" | "gregorian";
   onChange?: (e: number | string) => void;

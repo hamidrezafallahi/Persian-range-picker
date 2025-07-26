@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 import moment from "moment-jalaali";
 import style from "../../../main.module.css";
 import type { IDate, IMaskProps, TLocale } from "../../core/type";
+import { getTimestamp } from "../../core/helper";
 type TimeZone = "year" | "month" | "day";
 const defaultErrorClass = `${style.border_red_700}`;
 export function Mask({ ...props }: IMaskProps) {
@@ -27,7 +28,7 @@ export function Mask({ ...props }: IMaskProps) {
     Style,
   } = props;
   const locale = calendarType == "shamsi" ? "fa" : "en";
-  const temp = timestampToDateNumbers(locale, defaultValue);
+  const temp = timestampToDateNumbers(locale, getTimestamp(defaultValue));
   const [separatedValue, setSeparatedValue] = useState(temp);
   const [baseValue, setBaseValue] = useState<IDate["from"] | null>(null);
   const [fullValue, setFullValue] = useState<string>(
@@ -588,7 +589,7 @@ export function Mask({ ...props }: IMaskProps) {
     if (!baseValue || baseValue == defaultValue) {
       return;
     }
-    const dateValues = timestampToDateNumbers(locale, baseValue);
+    const dateValues = timestampToDateNumbers(locale, getTimestamp(baseValue));
     const [year, month, day] = dateValues;
     const temp = `${year}${month}${day}`.substring(0, 8);
     setFullValue(temp);
@@ -614,7 +615,10 @@ export function Mask({ ...props }: IMaskProps) {
     // return
     // }
     if (defaultValue && defaultValue !== baseValue) {
-      const dateValues = timestampToDateNumbers(locale, defaultValue);
+      const dateValues = timestampToDateNumbers(
+        locale,
+        getTimestamp(defaultValue)
+      );
       const [year, month, day] = dateValues;
       const temp = `${year}${month}${day}`.substring(0, 8);
       setFullValue(temp);
@@ -631,7 +635,9 @@ export function Mask({ ...props }: IMaskProps) {
         : moment().utc().startOf("day").valueOf();
     if (isTodaySelectPreset) {
       // onMaskChange?.(today);
-      setBaseValue(today);
+      if (today !== baseValue) {
+        setBaseValue(today);
+      }
     }
   }, [isTodaySelectPreset]);
   const fontSize = useMemo(() => {

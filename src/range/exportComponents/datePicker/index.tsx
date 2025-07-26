@@ -22,6 +22,7 @@ export function DatePicker({ ...props }: Omit<IDateProps, "locale">) {
         : moment.utc(e).format("YYYY-MM-DDTHH:mm:ss.SSSZ")
     );
   };
+
   return (
     <>
       {deviceType == "desktop" ? (

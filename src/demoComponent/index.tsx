@@ -4,7 +4,7 @@ export default function DemoComponent() {
   return (
     <div className={style.bg_red_100} dir="rtl">
       <RangePicker
-        // isTodaySelectPreset
+        isTodaySelectPreset
         className={`${style.bg_red_400} `}
         calendarType="shamsi"
         onChange={(e) => {
@@ -14,7 +14,9 @@ export default function DemoComponent() {
         // primaryColor="#000"
         // tertiaryColor="#00f"
         // showComparison
-        showMask
+        // showMask
+        model="date"
+        // defaultValue={{ from: new Date(), to: new Date() }}
       />
 
       {/* <div className={`${style.bg_red_400}`} style={{ height: "1000px" }}>

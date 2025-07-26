@@ -3,7 +3,7 @@ import style from "../../main.module.css";
 import moment from "moment-jalaali";
 
 import { Footer } from "../core/footer";
-import { toPersianDigits } from "../core/helper";
+import { getTimestamp, toPersianDigits } from "../core/helper";
 import type { IDate, IDateProps } from "../core/type";
 import { useRenderPosition } from "../exportComponents/useRenderPosition";
 import { CalenderIcon } from "../icons/CalenderIcon";
@@ -57,12 +57,16 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
   };
 
   const handleDateChange = (date: IDate) => {
+    const rawTimestamp = getTimestamp(date.from);
+
     const finalDate = showTime
-      ? date.from
-      : moment(date.from).startOf("day").valueOf();
+      ? rawTimestamp
+      : moment(rawTimestamp).startOf("day").valueOf();
+
     setShowDate(finalDate);
+
     if (!showTime) {
-      if (exportType == "IsoString") {
+      if (exportType === "IsoString") {
         onChange?.(new Date(finalDate).toISOString());
       } else {
         onChange?.(finalDate);
