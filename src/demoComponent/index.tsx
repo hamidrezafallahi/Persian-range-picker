@@ -14,7 +14,7 @@ export default function DemoComponent() {
         // primaryColor="#000"
         // tertiaryColor="#00f"
         // showComparison
-        // showMask
+        showMask
         model="date"
         // defaultValue={{ from: new Date(), to: new Date() }}
       />
@@ -35,6 +35,7 @@ export default function DemoComponent() {
           // showSecond
           showMask
           // isTodaySelectPreset
+          // defaultValue={1758893693699}
           onChange={(e) => {
             console.log(e);
           }}

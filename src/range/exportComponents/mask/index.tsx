@@ -30,7 +30,13 @@ export function Mask({ ...props }: IMaskProps) {
   const locale = calendarType == "shamsi" ? "fa" : "en";
   const temp = timestampToDateNumbers(locale, getTimestamp(defaultValue));
   const [separatedValue, setSeparatedValue] = useState(temp);
-  const [baseValue, setBaseValue] = useState<IDate["from"] | null>(null);
+  const today =
+    locale !== "fa"
+      ? moment().startOf("D").valueOf()
+      : moment().utc().startOf("day").valueOf();
+  const [baseValue, setBaseValue] = useState<IDate["from"] | null>(
+    isTodaySelectPreset ? today : null
+  );
   const [fullValue, setFullValue] = useState<string>(
     `${temp[0]}${temp[1]}${temp[2]}`
   );
@@ -628,18 +634,7 @@ export function Mask({ ...props }: IMaskProps) {
       setBaseValue(defaultValue);
     }
   }, [defaultValue]);
-  useEffect(() => {
-    const today =
-      locale !== "fa"
-        ? moment().startOf("D").valueOf()
-        : moment().utc().startOf("day").valueOf();
-    if (isTodaySelectPreset) {
-      // onMaskChange?.(today);
-      if (today !== baseValue) {
-        setBaseValue(today);
-      }
-    }
-  }, [isTodaySelectPreset]);
+
   const fontSize = useMemo(() => {
     const raw = MaskFontStyle?.fontSize;
     return typeof raw === "string" ? parseFloat(raw) : raw ?? 14;
