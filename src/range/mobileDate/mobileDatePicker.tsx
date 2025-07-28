@@ -58,11 +58,11 @@ export function MobileDate({ ...props }: IDateProps) {
 
   const handleDateChange = (e: IDate) => {
     if (showTime) {
-      setShowDate(getTimestamp(e.from));
+      setShowDate(getTimestamp(e.from) ?? 0);
       setContent("Time");
     } else {
-      setShowDate(getTimestamp(e.from));
-      onChange?.(getTimestamp(e.from));
+      setShowDate(getTimestamp(e.from) ?? 0);
+      onChange?.(getTimestamp(e.from) ?? 0);
       popoverRef.current?.hidePopover();
     }
   };

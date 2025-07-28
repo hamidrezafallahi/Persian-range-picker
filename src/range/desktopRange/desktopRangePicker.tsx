@@ -68,8 +68,8 @@ export function DesktopRangePicker(props: IRangeProps) {
   const buttonRef = useRef<HTMLElement>(null);
   const popupRef = useRef<HTMLDivElement>(null);
 
-  const fromTimestamp = getTimestamp(date.from);
-  const toTimestamp = getTimestamp(date.to);
+  const fromTimestamp = getTimestamp(date.from) ?? 0;
+  const toTimestamp = getTimestamp(date.to) ?? 0;
 
   const DateFrom =
     fromTimestamp > 0

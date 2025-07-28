@@ -57,7 +57,7 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
   };
 
   const handleDateChange = (date: IDate) => {
-    const rawTimestamp = getTimestamp(date.from);
+    const rawTimestamp = getTimestamp(date.from) ?? 0;
 
     const finalDate = showTime
       ? rawTimestamp

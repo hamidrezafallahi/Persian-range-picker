@@ -592,7 +592,7 @@ export function Mask({ ...props }: IMaskProps) {
     };
   }, [isEdit]);
   useEffect(() => {
-    if (!baseValue || baseValue == defaultValue) {
+    if (!baseValue || baseValue == getTimestamp(defaultValue)) {
       return;
     }
     const dateValues = timestampToDateNumbers(locale, getTimestamp(baseValue));
@@ -620,7 +620,7 @@ export function Mask({ ...props }: IMaskProps) {
     // if (!baseValue) {
     // return
     // }
-    if (defaultValue && defaultValue !== baseValue) {
+    if (defaultValue && getTimestamp(defaultValue) !== baseValue) {
       const dateValues = timestampToDateNumbers(
         locale,
         getTimestamp(defaultValue)
@@ -631,7 +631,7 @@ export function Mask({ ...props }: IMaskProps) {
       fullValueRef.current = temp;
 
       setSeparatedValue([year.toString(), month.toString(), day.toString()]);
-      setBaseValue(defaultValue);
+      setBaseValue(getTimestamp(defaultValue) ?? 0);
     }
   }, [defaultValue]);
 

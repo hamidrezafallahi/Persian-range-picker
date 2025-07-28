@@ -1,6 +1,12 @@
 import moment from "moment-jalaali";
 
-import type { IDate, ITimeSections, ITimeZone, TLocale } from "./type";
+import type {
+  AcceptableDateValue,
+  IDate,
+  ITimeSections,
+  ITimeZone,
+  TLocale,
+} from "./type";
 import { ESteps } from "./type";
 export const toPersianDigits = (str: string) => {
   return str.replace(/\d/g, (d) => "۰۱۲۳۴۵۶۷۸۹"[parseInt(d)]);
@@ -551,5 +557,32 @@ export function getLabel(
       return locale == "fa" ? "بازه نامعتبر" : "invalid date";
   }
 }
-export const getTimestamp = (val: number | Date | undefined): number =>
-  typeof val === "number" ? val : val instanceof Date ? val.valueOf() : 0;
+
+export function getTimestamp(value?: AcceptableDateValue): number | undefined {
+  if (value === undefined || value === null) return undefined;
+
+  if (typeof value === "number") {
+    return value;
+  }
+
+  if (value instanceof Date && !isNaN(value.getTime())) {
+    return value.getTime();
+  }
+
+  if (typeof value === "string") {
+    const parsed = new Date(value);
+    if (!isNaN(parsed.getTime())) {
+      return parsed.getTime();
+    }
+  }
+
+  return undefined;
+}
+export const getTimestampByFallBack = (
+  val: number | Date | undefined,
+  fallback: number
+): number => {
+  if (typeof val === "number" && val > 0) return val;
+  if (val instanceof Date) return val.valueOf();
+  return fallback;
+};

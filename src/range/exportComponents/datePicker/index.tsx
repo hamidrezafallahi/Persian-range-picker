@@ -1,8 +1,12 @@
-import type { IDateProps } from "../../core/type";
+import type { AcceptableDateValue, IDateProps } from "../../core/type";
 import { DesktopDatePicker } from "../../desktopDate/desktopDatePicker";
 import { MobileDate } from "../../mobileDate/mobileDatePicker";
 import moment from "moment-jalaali";
-export function DatePicker({ ...props }: Omit<IDateProps, "locale">) {
+import { getTimestamp } from "../../core/helper";
+type CustomDateProps = Omit<IDateProps, "defaultValue" | "locale"> & {
+  defaultValue?: AcceptableDateValue;
+};
+export function DatePicker({ ...props }: CustomDateProps) {
   const { onChange, exportType = "IsoString" } = props;
   const deviceType =
     /Mobile|Android|iPhone|iPad|iPod|Opera Mini|BlackBerry|IEMobile/i.test(
@@ -10,7 +14,7 @@ export function DatePicker({ ...props }: Omit<IDateProps, "locale">) {
     )
       ? "mobile"
       : "desktop";
-  const { calendarType = "shamsi" } = props;
+  const { calendarType = "shamsi", defaultValue } = props;
   const locale = calendarType == "shamsi" ? "fa" : "en";
   const changeHandler = (e: number | string) => {
     if (!e) return;
@@ -22,7 +26,6 @@ export function DatePicker({ ...props }: Omit<IDateProps, "locale">) {
         : moment.utc(e).format("YYYY-MM-DDTHH:mm:ss.SSSZ")
     );
   };
-
   return (
     <>
       {deviceType == "desktop" ? (
@@ -30,9 +33,14 @@ export function DatePicker({ ...props }: Omit<IDateProps, "locale">) {
           {...props}
           locale={locale}
           onChange={changeHandler}
+          defaultValue={getTimestamp(defaultValue)}
         />
       ) : (
-        <MobileDate {...props} locale={locale} />
+        <MobileDate
+          {...props}
+          locale={locale}
+          defaultValue={getTimestamp(defaultValue)}
+        />
       )}
     </>
   );

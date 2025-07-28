@@ -1,6 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import moment from "moment-jalaali";
-import { getTimestamp, toPersianDigits } from "../../core/helper";
+import {
+  getTimestamp,
+  getTimestampByFallBack,
+  toPersianDigits,
+} from "../../core/helper";
 import type { ITimePickerProps, TUnit } from "../../core/type";
 import { CalenderIcon } from "../../icons/CalenderIcon";
 import { useRenderPosition } from "../useRenderPosition";
@@ -36,7 +40,7 @@ export const TimePicker: React.FC<ITimePickerProps> = ({
   const popupRef = useRef<HTMLDivElement>(null);
   const [open, setOpen] = useState(false);
   const [time, setTime] = useState<number | null>(
-    defaultValue ? getTimestamp(defaultValue) : null
+    getTimestamp(defaultValue) ?? null
   );
   const device: "mobile" | "desktop" =
     /Mobile|Android|iPhone|iPad|iPod|Opera Mini|BlackBerry|IEMobile/i.test(
@@ -158,7 +162,7 @@ export const TimePicker: React.FC<ITimePickerProps> = ({
 
   useEffect(() => {
     if (defaultValue) {
-      setTime(getTimestamp(defaultValue));
+      setTime(getTimestamp(defaultValue) ?? null);
     }
   }, [defaultValue]);
   return (

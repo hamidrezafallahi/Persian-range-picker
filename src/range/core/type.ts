@@ -58,6 +58,7 @@ export interface IAdditionalElementType {
   label: string;
   content: ReactNode;
 }
+export type AcceptableDateValue = number | Date | string;
 
 export interface IDateProps
   extends IColorProps,

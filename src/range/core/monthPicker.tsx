@@ -71,7 +71,7 @@ const MonthPicker = ({
           ? moment(chosenMonth).startOf("jMonth").valueOf()
           : new Date(date.getFullYear(), date.getMonth(), 1).valueOf();
     } else if (dateFromOutside.from && dateFromOutside.to == 0) {
-      if (chosenMonth < getTimestamp(dateFromOutside.from)) {
+      if (chosenMonth < (getTimestamp(dateFromOutside.from) ?? (0 as number))) {
         newFrom =
           locale === "fa"
             ? moment(chosenMonth).startOf("jMonth").valueOf()
@@ -94,7 +94,7 @@ const MonthPicker = ({
     } else if (
       dateFromOutside.from &&
       dateFromOutside.to &&
-      getTimestamp(dateFromOutside.to) > 0
+      (getTimestamp(dateFromOutside.to) as number) > 0
     ) {
       newFrom =
         locale === "fa"
