@@ -1,23 +1,31 @@
-import { type ReactNode, useState } from "react";
+import {
+  type ReactNode,
+  useState,
+} from 'react';
 
-import dateP from "../assets/images/dateP.png";
-import maskP from "../assets/images/maskP.png";
-import rangePic from "../assets/images/rangeP.png";
-import timeP from "../assets/images/timeP.png";
-import useR from "../assets/images/useR.png";
-import useR1 from "../assets/images/useR1.png";
-import useR2 from "../assets/images/useR2.png";
-import dateVid from "../assets/video/Date.mp4";
-import dateVidE from "../assets/video/dateE.mp4";
-import MaskVid from "../assets/video/mask.mp4";
-import rangeVid from "../assets/video/range1.mp4";
-import rangeVidE from "../assets/video/rangeE.mp4";
-import Time from "../assets/video/time.mp4";
-import timeVidE from "../assets/video/timeE.mp4";
-import { DatePicker, RangePicker, TimePicker } from "../range";
-import { Mask } from "../range/exportComponents/mask";
+import dateP from '../assets/images/dateP.png';
+import maskP from '../assets/images/maskP.png';
+import rangePic from '../assets/images/rangeP.png';
+import timeP from '../assets/images/timeP.png';
+import useR from '../assets/images/useR.png';
+import useR1 from '../assets/images/useR1.png';
+import useR2 from '../assets/images/useR2.png';
+import dateVid from '../assets/video/Date.mp4';
+import dateVidE from '../assets/video/dateE.mp4';
+import MaskVid from '../assets/video/mask.mp4';
+import rangeVid from '../assets/video/range1.mp4';
+import rangeVidE from '../assets/video/rangeE.mp4';
+import Time from '../assets/video/time.mp4';
+import timeVidE from '../assets/video/timeE.mp4';
+import {
+  DatePicker,
+  RangePicker,
+  TimePicker,
+} from '../range';
+import { Mask } from '../range/exportComponents/mask';
 
 const SECTION_KEYS = [
+  "QuickStart",
   "Range",
   "Date",
   "Mask",
@@ -75,6 +83,35 @@ const TEXT: Record<"fa" | "en", LanguageText> = {
             calendarType="shamsi"
             exportType="timeStamp"
           />
+        ),
+      },
+      QuickStart: {
+        title: "شروع سریع",
+        desc: `در این بخش با نحوه راه‌اندازی سریع و استفاده از کامپوننت‌های کتابخانه آشنا می‌شوید. فقط با چند خط کد می‌توانید انتخابگر تاریخ، زمان یا بازه زمانی را به پروژه‌تان اضافه کنید.`,
+        video: undefined,
+        image: undefined,
+        component: (
+          <div
+            style={{ display: "flex", flexDirection: "column", gap: "1rem" }}
+          >
+            <pre
+              style={{
+                backgroundColor: "#eee",
+                padding: "1rem",
+                borderRadius: "8px",
+                overflowX: "auto",
+              }}
+            >
+              {`import { DatePicker } from "your-library";
+
+function App() {
+  return (
+    <DatePicker calendarType="shamsi" showTime />
+  );
+}`}
+            </pre>
+            <DatePicker calendarType="shamsi" showTime />
+          </div>
         ),
       },
       Mask: {
@@ -165,6 +202,35 @@ const TEXT: Record<"fa" | "en", LanguageText> = {
             onChange={(e) => console.log(e)}
             showSecond
           />
+        ),
+      },
+      QuickStart: {
+        title: "Quick Start",
+        desc: `This section helps you get started quickly with the components. With just a few lines of code, you can add a Date, Time, or Range Picker to your project.`,
+        video: undefined,
+        image: undefined,
+        component: (
+          <div
+            style={{ display: "flex", flexDirection: "column", gap: "1rem" }}
+          >
+            <pre
+              style={{
+                backgroundColor: "#eee",
+                padding: "1rem",
+                borderRadius: "8px",
+                overflowX: "auto",
+              }}
+            >
+              {`import { DatePicker } from "your-library";
+
+function App() {
+  return (
+    <DatePicker calendarType="gregorian" showTime />
+  );
+}`}
+            </pre>
+            <DatePicker calendarType="gregorian" showTime />
+          </div>
         ),
       },
       rendersideHook: {
