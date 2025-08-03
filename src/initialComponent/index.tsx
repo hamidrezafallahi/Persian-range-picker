@@ -1,28 +1,22 @@
-import {
-  type ReactNode,
-  useState,
-} from 'react';
+import { type ReactNode, useState } from "react";
 
-import dateP from '../assets/images/dateP.png';
-import maskP from '../assets/images/maskP.png';
-import rangePic from '../assets/images/rangeP.png';
-import timeP from '../assets/images/timeP.png';
-import useR from '../assets/images/useR.png';
-import useR1 from '../assets/images/useR1.png';
-import useR2 from '../assets/images/useR2.png';
-import dateVid from '../assets/video/Date.mp4';
-import dateVidE from '../assets/video/dateE.mp4';
-import MaskVid from '../assets/video/mask.mp4';
-import rangeVid from '../assets/video/range1.mp4';
-import rangeVidE from '../assets/video/rangeE.mp4';
-import Time from '../assets/video/time.mp4';
-import timeVidE from '../assets/video/timeE.mp4';
-import {
-  DatePicker,
-  RangePicker,
-  TimePicker,
-} from '../range';
-import { Mask } from '../range/exportComponents/mask';
+import dateP from "../assets/images/dateP.png";
+import maskP from "../assets/images/maskP.png";
+import rangePic from "../assets/images/rangeP.png";
+import timeP from "../assets/images/timeP.png";
+import useR from "../assets/images/useR.png";
+import useR1 from "../assets/images/useR1.png";
+import useR2 from "../assets/images/useR2.png";
+import dateVid from "../assets/video/Date.mp4";
+import dateVidE from "../assets/video/dateE.mp4";
+import MaskVid from "../assets/video/mask.mp4";
+import rangeVid from "../assets/video/range1.mp4";
+import rangeVidE from "../assets/video/rangeE.mp4";
+import Time from "../assets/video/time.mp4";
+import timeVidE from "../assets/video/timeE.mp4";
+import { DatePicker, RangePicker, TimePicker } from "../range";
+import { Mask } from "../range/exportComponents/mask";
+import { TickIcon } from "../range/icons/TickIcon";
 
 const SECTION_KEYS = [
   "QuickStart",
@@ -57,42 +51,95 @@ const TEXT: Record<"fa" | "en", LanguageText> = {
       image: "تصویر",
       QuickStart: {
         title: "معرفی کتابخانه",
-        desc: <>
-          <div>در این کتابخانه ما سعی کردیم یکی از نیاز های برنامه نویسان ایرانی  که انتخاب تاریخ میباشد را حل کنیم. البته این کتابخانه تمامی تاریخ هایی را که نمایش میدهد با گرفتن ورودی نوع تاریخ یعنی gregorian یا shamsi تغییر دهد.  </div>
-          <div>انتخاب تاریخ شمسی عموما با تبدیل لحظه ای تاریخ میلادی به شمسی انجام میشود اما ما در این کتابخانه از ابتدا زمان را به تاریخ شمسی انتخاب مبکنیم </div>
-          <div>همچنین ما سعی کردیم ساده ترین و با کارآمد ترین نوع نمایش محتوا را برای شما به اجرا بگذاریم و حتی دسترسی برای تغییر ظاهری بسیاری در این المانها دیده شده .</div>
-          <div>دیگر اینکه این کتابخانه میزان وابستگی شما به کتابخانه های دیگر برای تبدیل تاریخ را از بین میبرد و تنها یک کتابخانه برای محاسبات تاریخ مورد نیاز است آن هم moment-jalaali.</div>
-          <div>از همکاران عزیزی که این کتابخانه رو توسعه دادند بسیار سپاسگذاریم </div>
-          <br />
-          <strong>انتخاب بازه زمانی مقایسه ای با بازه زمانی ای دیگر </strong>
-          <div>نقطه قوت و عطف این کتابخانه انتخاب بازه زمانی مقایسه ای هست که در آن شما میتوانید یک بازه زمانی رو با زمانهای متفاوتی مقایسه کنید .یعنی علاوه بر انتخاب بازه زمانی شما میتوانید
-            در یک زمان به عنوان خروجی زمان مورد نظر برای مقایسه رو هم بدست بیاورید .
+        desc: (
+          <>
+            <p>
+              این کتابخانه برای پاسخ به نیاز برنامه‌نویسان ایرانی جهت انتخاب
+              تاریخ شمسی طراحی شده است. با پشتیبانی از هر دو نوع تاریخ
+              <strong> میلادی (Gregorian) و شمسی (Shamsi)</strong>، شما
+              می‌توانید نوع تقویم را با یک پارامتر ساده تغییر دهید.
+            </p>
+            <p>
+              برخلاف بسیاری از کتابخانه‌ها که تاریخ میلادی را به‌صورت لحظه‌ای به
+              شمسی تبدیل می‌کنند، این کتابخانه از ابتدا بر اساس تاریخ شمسی کار
+              می‌کند.
+            </p>
+            <p>
+              هدف ما ساده‌سازی تجربه کاربری و فراهم‌کردن امکان شخصی‌سازی بالاست،
+              بنابراین ظاهر اکثر المان‌ها قابل تغییر است.
+            </p>
+            <p>
+              برای تبدیل تاریخ، تنها به یک کتابخانه وابسته هستید:
+              <code>moment-jalaali</code>. دیگر نیازی به ابزارهای متفرقه ندارید.
+            </p>
+            <p>
+              از همه همکارانی که در توسعه‌ی این ابزار مشارکت داشتند، سپاسگزاریم.
+            </p>
 
-            برای مثال در بازه زمانی روزانه میتوان پروژه ای رو تصور کرد برای یک آزمایشگاه و یا بیمارستانی که نیاز دارد روزانه میزان کلسترول یا قند یک بیمار خاص را از دیتابیس چک بکند با روز قبل و یا هفت روز گذشته . همچنین میخواهد ببیند روند این عناصر در بدن بیمار بصورت کاهشی بوده و یا افزایشی ،که
-            ما برای این منظور دو دکمه برای به عقب پریدن بازه زمانی و به عقب پریدن بازه زمانی مقایسه ای در نظر گرفتیم .
-            همچنین اگر شرکتی بدنبال دریافت اطلاعات میزان فروش یا سود دهی خود در سه ماه گذشته و مقایسه ی آن با همین بازه در سال پیش باشد نیز میتواند با این انتخابگر بازه مقایسه ای به راحتی بین بازه های متفاوت
-            حرکت کرده و داده ها را ببیند.
-          </div>
-          <br />
-          <strong>انتخاب تاریخ</strong>
-          <div>دراین المان شما میتوانید مثل اکثر المانهای انتخاب تاریخ، تاریخ را انتخاب کنید .اما ما دو مزیت هم به این المان اضافه کردیم .یکی نمایش تاریخ در قالب Mask  که قابل ویرایش باشد و دیگری اضافه کردن المان TimePicker 
-            در آن که کاربر بتواند تاریخ را حتی تا دقت ثانیه انتخاب کند . 
-          </div>
-          <strong>انتخاب زمان </strong>
-          <div>این المان هم برای انتخاب زمان بوده و اگر تاریخی به عنوان ورودی دریافت کند  زمان آن را تغییر میدهد در غیر اینصورت به تاریخ روز زمان را تغییر میدهد</div>
-          <strong>نگارنده تاریخ  </strong>
-          <div>المان دیگری که بسیار کاربردی هست و وابستگی شما را به کتابخانه های دیگر از بین میبرد نگارنده ی تاریخ یا Mask میباشد که در آن شما میتوانید تاریخ را تایپ کرده و حتی با جهتیاب های روی کیبورد کم یا زیاد کنید. 
-            این نگارنده بر اساس سال و ماهی که شما تایپ کردید تعداد روز های آن ماه را در نظر میگیرد و به کاربر اجازه انتخاب زمانی فرای اون رو نمیدهد و یک تابعی برای نمایش خطای پیش آمده نیز دارد و حتی شما میتوانید ظاهر المان را در زمان ایجاد خطا تغییر دهید و 
-            این المان با پاس دادن صفتی در المان انتخاب تاریخ هم فعال خواهد شد و کاربر میتواند بدون باز کردن انتخاب تاریخ ، تاریخ مورد نظر خود را تایپ کند.
-          </div>
-          <strong>هوک نمایش المان شناور در کنار المان مرتبط </strong>
-          <div>کتابخانه های متعددی با امکانات متفاوت در این زمینه وجود دارند که بتوانند برای شما فضای شناوری در کنار یک فضای دیگر نمایش دهند. ما هم در این کتابخانه برای کاهش میزان وابستگی این هوک رو از پایه نوشتیم تا هم 
-            وابستگی را کاهش دهیم و هم این المان رو بصورت خروجی بگذاریم تا شما علاوه بر استفاده از المانهای این کتابخانه اگر نیاز داشتید بتوانید از این هوک هم استفاده کنید . این هوک دقیقا مشابه react-popperکار میکند و بسیار مناسب برای ساخت dropdown های سفارشی میباشد.</div>
+            <br />
+            <h4> انتخاب بازه‌ی زمانی مقایسه‌ای</h4>
+            <p>
+              یکی از مهم‌ترین قابلیت‌های این ابزار، مقایسه‌ی یک بازه‌ی زمانی با
+              بازه‌ی دیگر است. به‌عنوان مثال:
+            </p>
+            <ul>
+              <li>
+                مقایسه‌ی داده‌های روزانه آزمایشگاهی با روز گذشته یا هفته‌ی قبل
+              </li>
+              <li>بررسی روند فروش شرکت در فصل جاری نسبت به سال گذشته</li>
+            </ul>
+            <p>
+              دو دکمه‌ی مجزا برای جابه‌جایی بازه اصلی و بازه‌ی مقایسه‌ای در نظر
+              گرفته شده است.
+            </p>
 
-        </>,
+            <h4>
+              {" "}
+              <TickIcon /> انتخاب تاریخ
+            </h4>
+            <p>
+              المان انتخاب تاریخ دارای قابلیت نمایش تاریخ به‌صورت قابل ویرایش
+              (Mask) و پشتیبانی از
+              <strong> TimePicker </strong> است. کاربر می‌تواند تاریخ را دقیق تا
+              ثانیه انتخاب کند.
+            </p>
+
+            <h4>
+              {" "}
+              <TickIcon /> انتخاب زمان
+            </h4>
+            <p>
+              این المان فقط برای انتخاب زمان طراحی شده و در صورت دریافت تاریخ،
+              زمان همان را تغییر می‌دهد. در غیر این‌صورت، زمان تاریخ فعلی را
+              تغییر می‌دهد.
+            </p>
+
+            <h4>
+              {" "}
+              <TickIcon /> نگارنده تاریخ (ماسک)
+            </h4>
+            <p>
+              با تایپ مستقیم تاریخ در فرمت مشخص‌شده، کاربر می‌تواند از کیبورد
+              نیز برای کم/زیاد کردن مقادیر استفاده کند. این ورودی به صورت هوشمند
+              تعداد روزهای هر ماه را تشخیص می‌دهد و از ورود مقدار غیرمجاز
+              جلوگیری می‌کند.
+            </p>
+
+            <h4>
+              {" "}
+              <TickIcon /> هوک نمایش المان شناور
+            </h4>
+            <p>
+              یک هوک قدرتمند و بدون وابستگی برای نمایش محتوای شناور (مثل
+              Dropdown یا Tooltip) در کنار یک المان خاص. مشابه رفتار
+              <code>react-popper</code> عمل می‌کند و قابلیت سفارشی‌سازی کامل
+              دارد.
+            </p>
+          </>
+        ),
         video: undefined,
         image: undefined,
-        component: undefined
+        component: undefined,
         //         (
         //           <div
         //             style={{ display: "flex", flexDirection: "column", gap: "1rem" }}
@@ -238,33 +285,116 @@ const TEXT: Record<"fa" | "en", LanguageText> = {
         ),
       },
       QuickStart: {
-        title: "Quick Start",
-        desc: `This section helps you get started quickly with the components. With just a few lines of code, you can add a Date, Time, or Range Picker to your project.`,
+        title: "Introduction",
+        desc: (
+          <>
+            <p>
+              This library is built to address the need for an efficient Shamsi
+              (Jalali) date picker tailored for Persian developers. It supports
+              both
+              <strong> Gregorian and Shamsi </strong> calendars, switchable via
+              a simple prop.
+            </p>
+            <p>
+              Unlike other libraries that convert Gregorian to Shamsi on the
+              fly, this library handles Shamsi dates natively from the start.
+            </p>
+            <p>
+              Our goal is simplicity with flexibility. Almost every UI element
+              is customizable to match your design.
+            </p>
+            <p>
+              For date handling, you only need one dependency:
+              <code>moment-jalaali</code>. Say goodbye to additional conversion
+              libraries.
+            </p>
+            <p>
+              Thanks to all contributors who helped bring this project to life.
+            </p>
+
+            <br />
+            <h4>Comparative Range Selection</h4>
+            <p>
+              One of the key features is the ability to compare one date range
+              with another. For example:
+            </p>
+            <ul>
+              <li>Compare daily lab data with the previous day or last week</li>
+              <li>
+                Check sales trends this quarter vs. the same period last year
+              </li>
+            </ul>
+            <p>
+              Separate buttons allow navigation between the main and comparison
+              ranges.
+            </p>
+
+            <h4>
+              {" "}
+              <TickIcon /> Date Selection
+            </h4>
+            <p>
+              The Date Picker supports editable masked input and includes a
+              <strong> TimePicker </strong> to select down to seconds.
+            </p>
+
+            <h4>
+              {" "}
+              <TickIcon /> Time Selection
+            </h4>
+            <p>
+              This component is for time selection only. It updates the time of
+              a provided date, or defaults to the current date if none is
+              provided.
+            </p>
+
+            <h4>
+              {" "}
+              <TickIcon /> Masked Date Input
+            </h4>
+            <p>
+              The masked input lets users type the date in a structured format
+              and supports keyboard navigation. It validates the day count based
+              on the month/year and can show error messages and style changes
+              accordingly.
+            </p>
+
+            <h4>
+              {" "}
+              <TickIcon /> Floating UI Hook
+            </h4>
+            <p>
+              A fully custom hook, similar to <code>react-popper</code>, that
+              renders a floating element beside a target. It’s lightweight,
+              customizable, and framework-agnostic.
+            </p>
+          </>
+        ),
         video: undefined,
         image: undefined,
-        component: (
-          <div
-            style={{ display: "flex", flexDirection: "column", gap: "1rem" }}
-          >
-            <pre
-              style={{
-                backgroundColor: "#eee",
-                padding: "1rem",
-                borderRadius: "8px",
-                overflowX: "auto",
-              }}
-            >
-              {`import { DatePicker } from "your-library";
+        //         component: (
+        //           <div
+        //             style={{ display: "flex", flexDirection: "column", gap: "1rem" }}
+        //           >
+        //             <pre
+        //               style={{
+        //                 backgroundColor: "#eee",
+        //                 padding: "1rem",
+        //                 borderRadius: "8px",
+        //                 overflowX: "auto",
+        //               }}
+        //             >
+        //               {`import { DatePicker } from "your-library";
 
-function App() {
-  return (
-    <DatePicker calendarType="gregorian" showTime />
-  );
-}`}
-            </pre>
-            <DatePicker calendarType="gregorian" showTime />
-          </div>
-        ),
+        // function App() {
+        //   return (
+        //     <DatePicker calendarType="gregorian" showTime />
+        //   );
+        // }`}
+        //             </pre>
+        //             <DatePicker calendarType="gregorian" showTime />
+        //           </div>
+        //         ),
       },
       rendersideHook: {
         title: "Render Side Hook",
