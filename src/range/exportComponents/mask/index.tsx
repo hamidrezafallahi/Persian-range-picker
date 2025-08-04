@@ -17,6 +17,11 @@ import type {
 
 type TimeZone = "year" | "month" | "day";
 const defaultErrorClass = `${style.border_red_700}`;
+const convertPersianToEnglishNumbers = (input: string): string => {
+  const persian = "۰۱۲۳۴۵۶۷۸۹";
+  const english = "0123456789";
+  return input.replace(/[۰-۹]/g, (d) => english[persian.indexOf(d)] || d);
+};
 export function Mask({ ...props }: IMaskProps) {
   const {
     defaultValue,
@@ -87,11 +92,7 @@ export function Mask({ ...props }: IMaskProps) {
     return changeToTimestamp;
   };
 
-  const convertPersianToEnglishNumbers = (input: string): string => {
-    const persian = "۰۱۲۳۴۵۶۷۸۹";
-    const english = "0123456789";
-    return input.replace(/[۰-۹]/g, (d) => english[persian.indexOf(d)] || d);
-  };
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const rawValue = e.target.value;
     const newValue = convertPersianToEnglishNumbers(rawValue).replace(
@@ -193,14 +194,13 @@ export function Mask({ ...props }: IMaskProps) {
     arrow: React.KeyboardEvent<HTMLInputElement>["key"],
     index: number
   ) {
-    const numValue = Number(value);
+    const cleanedValue = convertPersianToEnglishNumbers(value.trim());
+    const numValue = Number(cleanedValue);
     const isUp = arrow === "ArrowUp";
     const change = isUp ? 1 : -1;
     const newVal = numValue + change;
-
     const clamp = (val: number, min: number, max: number) =>
       Math.min(Math.max(val, min), max);
-
     const pad = (val: number) => val.toString().padStart(2, "0");
 
     switch (index) {
@@ -389,8 +389,8 @@ export function Mask({ ...props }: IMaskProps) {
           activeElement.name == "year"
             ? 0
             : activeElement.name == "month"
-            ? 1
-            : 2;
+              ? 1
+              : 2;
         setSeparatedValue((prev) => {
           const newState = [...prev];
           newState[target] = handleCount(newState[target], event.key, target);
@@ -405,7 +405,7 @@ export function Mask({ ...props }: IMaskProps) {
     if (event.key === "Enter") {
       if (activeElement?.name == "full") {
         if (
-          validFullValue(fullValue, locale, onError ?? (() => {})) &&
+          validFullValue(fullValue, locale, onError ?? (() => { })) &&
           checkDateByRegex(formatFullValueToTimeStamp(fullValue), locale)
         ) {
           setBaseValue(changeToTimestamp(fullValue, locale));
@@ -419,19 +419,19 @@ export function Mask({ ...props }: IMaskProps) {
             yearInputRef.current!.value,
             locale,
             yearInputRef as React.RefObject<HTMLInputElement>,
-            onError ?? (() => {})
+            onError ?? (() => { })
           ) &&
           validSeparatedValue(
             monthInputRef.current!.value,
             locale,
             monthInputRef as React.RefObject<HTMLInputElement>,
-            onError ?? (() => {})
+            onError ?? (() => { })
           ) &&
           validSeparatedValue(
             dayInputRef.current!.value,
             locale,
             dayInputRef as React.RefObject<HTMLInputElement>,
-            onError ?? (() => {})
+            onError ?? (() => { })
           )
         ) {
           const temp =
@@ -532,18 +532,18 @@ export function Mask({ ...props }: IMaskProps) {
       } else {
         if (isEdit == 2) {
           if (
-            validFullValue(fullValueRef.current, locale, onError ?? (() => {}))
+            validFullValue(fullValueRef.current, locale, onError ?? (() => { }))
           ) {
-            const year = fullValueRef.current.slice(0, 4);
-            const month = fullValueRef.current.slice(4, 6);
-            const day = fullValueRef.current.slice(6, 8);
+            const year = convertPersianToEnglishNumbers(fullValueRef.current.slice(0, 4));
+            const month = convertPersianToEnglishNumbers(fullValueRef.current.slice(4, 6));
+            const day = convertPersianToEnglishNumbers(fullValueRef.current.slice(6, 8));
             setSeparatedValue([year, month, day]);
             setBaseValue(changeToTimestamp(fullValueRef.current, locale));
           } else {
             setErrorTarget((prev) => [...prev.filter((item) => item !== 3), 3]);
-            const year = fullValueRef.current.slice(0, 4);
-            const month = fullValueRef.current.slice(4, 6);
-            const day = fullValueRef.current.slice(6, 8);
+            const year = convertPersianToEnglishNumbers(fullValueRef.current.slice(0, 4));
+            const month = convertPersianToEnglishNumbers(fullValueRef.current.slice(4, 6));
+            const day = convertPersianToEnglishNumbers(fullValueRef.current.slice(6, 8));
             setSeparatedValue([year, month, day]);
           }
         }
@@ -618,8 +618,8 @@ export function Mask({ ...props }: IMaskProps) {
       exportType == "timeStamp"
         ? baseValue.valueOf()
         : locale == "fa"
-        ? moment(baseValue).format("YYYY-MM-DDTHH:mm:ss.SSSZ")
-        : moment.utc(baseValue).format("YYYY-MM-DDTHH:mm:ss.SSSZ")
+          ? moment(baseValue).format("YYYY-MM-DDTHH:mm:ss.SSSZ")
+          : moment.utc(baseValue).format("YYYY-MM-DDTHH:mm:ss.SSSZ")
     );
   }, [baseValue]);
   useEffect(() => {
@@ -638,11 +638,10 @@ export function Mask({ ...props }: IMaskProps) {
         getTimestamp(defaultValue)
       );
       const [year, month, day] = dateValues;
-      const temp = `${year}${month}${day}`.substring(0, 8);
+      const temp = `${convertPersianToEnglishNumbers(year)}${convertPersianToEnglishNumbers(month)}${convertPersianToEnglishNumbers(day)}`.substring(0, 8);
       setFullValue(temp);
       fullValueRef.current = temp;
-
-      setSeparatedValue([year.toString(), month.toString(), day.toString()]);
+      setSeparatedValue([convertPersianToEnglishNumbers(year).toString(), convertPersianToEnglishNumbers(month).toString(), convertPersianToEnglishNumbers(day).toString()]);
       setBaseValue(getTimestamp(defaultValue) ?? 0);
     }
   }, [defaultValue]);
@@ -713,7 +712,7 @@ export function Mask({ ...props }: IMaskProps) {
                 ${style.items_center} 
                 ${style.w_full} 
               `}
-                // style={{ gap: "2px" }}
+              // style={{ gap: "2px" }}
               >
                 <input
                   type="text"
@@ -952,7 +951,7 @@ function timestampToDateNumbers(locale: TLocale, timestamp?: number) {
       locale == "fa"
         ? moment().locale(locale).format("jDD")
         : moment().locale(locale).format("DD");
-    return [year, month, day];
+    return [convertPersianToEnglishNumbers(year), convertPersianToEnglishNumbers(month), convertPersianToEnglishNumbers(day)];
   } else {
     const year =
       locale == "fa"
@@ -966,7 +965,7 @@ function timestampToDateNumbers(locale: TLocale, timestamp?: number) {
       locale == "fa"
         ? moment(timestamp).locale(locale).format("jDD")
         : moment(timestamp).locale(locale).format("DD");
-    return [year, month, day];
+    return [convertPersianToEnglishNumbers(year), convertPersianToEnglishNumbers(month), convertPersianToEnglishNumbers(day)];
   }
 }
 function checkDateByRegex(timestamp: number, locale: TLocale) {

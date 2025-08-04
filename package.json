@@ -6,20 +6,22 @@
   "main": "dist/persian-range-picker.umd.js",
   "module": "dist/persian-range-picker.es.js",
   "types": "dist/index.d.ts",
-  "author": "hamidrezafallahi",
-  "keywords": [
-    "react",
-    "datepicker",
-    "date picker",
-    "jalaai",
-    "persian",
-    "calendar",
-    "range",
-    "timepicker",
-    "compare Date",
-    "comparison"
-  ],
-  "description": "کتابخانه ای برای انتخاب بازه زمانی در تاریخ شمسی و میلادی  به همراه انتخاب زمان و ماسک و هوکی که به رندر محل dropdown کمک میکند.",
+  "author": "hamidreza fallahi",
+"keywords": [
+  "react",
+  "date picker",
+  "range picker",
+  "compare picker",
+  "compare",
+  "persian date",
+  "react datepicker",
+  "time picker",
+  "datepicker range",
+  "react persian calendar",
+  "date range picker",
+  "comparison range picker"
+],
+"description": "A React-based Persian (Jalali) date and time range picker with mask input, customizable dropdown rendering, and built-in date range comparison.",
   "files": [
     "dist"
   ],
