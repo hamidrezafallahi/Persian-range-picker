@@ -1,9 +1,15 @@
-import type { FC } from "react";
-import { useMemo, useState } from "react";
-import style from "../../main.module.css";
-import { LeftChevron } from "../icons/LeftChevron";
-import { RightChevron } from "../icons/RightChevron";
-import { convertToPersianNumbers } from "./helper";
+import type { FC } from 'react';
+import {
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
+
+import style from '../../main.module.css';
+import { LeftChevron } from '../icons/LeftChevron';
+import { RightChevron } from '../icons/RightChevron';
+import { convertToPersianNumbers } from './helper';
 
 interface Props {
   currentYear: number;
@@ -23,7 +29,8 @@ const YearPicker: FC<Props> = ({
   primaryColor = "#000", //رنگ اصلی (برای دکمه‌ها، لینک‌ها یا تأکید اصلی برند)
 }) => {
   const [page, setPage] = useState(0);
-
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [dir, setDir] = useState<"ltr" | "rtl">("ltr");
   const yearList = useMemo(() => {
     const firstYear = currentYear + page * 20;
     const yearArray: number[] = [];
@@ -41,6 +48,12 @@ const YearPicker: FC<Props> = ({
   const selectYearHandler = (year: number) => {
     onSelectYear(year);
   };
+  useEffect(() => {
+    if (containerRef.current) {
+      const computedDir = getComputedStyle(containerRef.current).direction;
+      setDir(computedDir === "rtl" ? "rtl" : "ltr");
+    }
+  }, []);
 
   return (
     <div
@@ -50,13 +63,14 @@ const YearPicker: FC<Props> = ({
       ${style.flex_col}
      
       ${yearPickerClassName}
-    `}
+    `} ref={containerRef}
       style={{ minHeight: "327px" }}
     >
       <div
         className={`
   ${style.w_full}
   ${style.flex}
+  ${dir === "ltr" ? style.flex_row : style.flex_row_reverse}
   ${style.justify_between}
 `}
       >

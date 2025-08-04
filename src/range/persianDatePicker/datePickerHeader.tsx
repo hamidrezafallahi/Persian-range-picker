@@ -1,12 +1,15 @@
-import type { FC } from "react";
-import style from "../../main.module.css";
+import type { FC } from 'react';
 
-import type { TLocale } from "../core/type";
-import { LeftChevron } from "../icons/LeftChevron";
-import { RightChevron } from "../icons/RightChevron";
-import { monthMap, PmonthMap } from "./constants";
-import { CalendarViews } from "./enum";
-import { convertToPersianNumbers } from "./helper";
+import style from '../../main.module.css';
+import type { TLocale } from '../core/type';
+import { LeftChevron } from '../icons/LeftChevron';
+import { RightChevron } from '../icons/RightChevron';
+import {
+  monthMap,
+  PmonthMap,
+} from './constants';
+import { CalendarViews } from './enum';
+import { convertToPersianNumbers } from './helper';
 
 interface Props {
   setMonth: (offset: 1 | -1) => void;
@@ -43,7 +46,7 @@ const DatePickerHeader: FC<Props> = ({
       ${style.items_center}
       ${style.w_full}
       ${datePickerHeaderClassName}
-      ${locale === "fa" ? style.flex_row : style["flex_row_reverse"]}
+      ${locale === "fa" ? style.flex_row : style.flex_row_reverse}
     `}
     >
       <div

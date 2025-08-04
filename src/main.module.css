@@ -1,29 +1,33 @@
-/* ==================== SWITCH CONTROL ==================== */
-
 .switch {
   position: relative;
   display: inline-block;
-  width: 50px;
-  height: 28px;
+  width: 36px; /* کوچکتر */
+  height: 20px; /* کوچکتر */
 }
+
 .switch input {
   opacity: 0;
   width: 0;
   height: 0;
 }
+
+.switch input:checked + .slider {
+  background-color: #000;
+}
+
+.switch input:checked + .slider::before {
+  transform: translateX(16px); /* متناسب با عرض جدید */
+}
+
 .switch:disabled + .slider {
   background-color: #e0e0e0;
   cursor: not-allowed;
 }
+
 .switch:disabled + .slider::before {
   background-color: #bdbdbd;
 }
-.switch input:checked + .slider {
-  background-color: #000;
-}
-.switch input:checked + .slider::before {
-  transform: translateX(22px);
-}
+
 .slider {
   position: absolute;
   cursor: pointer;
@@ -33,19 +37,21 @@
   bottom: 0;
   background-color: #ccc;
   transition: background-color 0.4s ease-in-out;
-  border-radius: 34px;
+  border-radius: 20px;
 }
+
 .slider::before {
   content: "";
   position: absolute;
-  height: 22px;
-  width: 22px;
+  height: 14px; /* کوچکتر */
+  width: 14px;  /* کوچکتر */
   left: 3px;
   bottom: 3px;
   background-color: #fff;
   transition: transform 0.4s ease-in-out, background-color 0.4s ease-in-out;
   border-radius: 50%;
 }
+
 
 /* ==================== BUTTONS & INPUTS ==================== */
 button,
@@ -661,6 +667,9 @@ input:focus {
 .flex_row_reverse {
   flex-direction: row-reverse;
 }
+.flex_row {
+  flex-direction: row;
+}
 .flex_wrap {
   flex-wrap: wrap;
 }
@@ -834,14 +843,14 @@ input:focus {
 /* ==================== MEDIA QUERIES ==================== */
 @media (min-width: 431px) {
   .xs_w_28 {
-    width: 112px;
+    width: 112px !important;
   }
   .xs_w_40 {
     width: 160px;
   }
 
   .xs_w_fit {
-    width: fit-content;
+    width: fit-content !important;
   }
 
   .\!border_b {

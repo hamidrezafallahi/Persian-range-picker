@@ -1,10 +1,16 @@
-import type { FC } from "react";
-import style from "../../main.module.css";
-import { LeftChevron } from "../icons/LeftChevron";
-import { RightChevron } from "../icons/RightChevron";
-import { months } from "./constants";
-import { convertToPersianNumbers } from "./helper";
-import type { TLocale } from "../core/type";
+import {
+  type FC,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
+
+import style from '../../main.module.css';
+import type { TLocale } from '../core/type';
+import { LeftChevron } from '../icons/LeftChevron';
+import { RightChevron } from '../icons/RightChevron';
+import { months } from './constants';
+import { convertToPersianNumbers } from './helper';
 
 interface Props {
   currentMonth: number;
@@ -31,12 +37,21 @@ const MonthPicker: FC<Props> = ({
 }) => {
   const monthList = months[locale];
 
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [dir, setDir] = useState<"ltr" | "rtl">("ltr");
+  useEffect(() => {
+    if (containerRef.current) {
+      const computedDir = getComputedStyle(containerRef.current).direction;
+      setDir(computedDir === "rtl" ? "rtl" : "ltr");
+    }
+  }, []);
   return (
-    <div className={`${style.h_full} `}>
+    <div className={`${style.h_full} `}  ref={containerRef}   >
       <div
         className={`
   ${style.w_full}
   ${style.flex}
+  ${dir === "ltr" ? style.flex_row : style.flex_row_reverse}
   ${style.justify_between}
 `}
       >

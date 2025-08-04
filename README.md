@@ -23,9 +23,10 @@
 برای نصب این کتابخانه از npm استفاده کنید:
 
 ```bash
-npm install persian-range-picker
+
+npm i react-persian-range-picker
 # یا با yarn:
-# yarn add persian-range-picker
+# yarn add react-persian-range-picker
 
 
 

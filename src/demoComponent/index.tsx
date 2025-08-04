@@ -1,22 +1,18 @@
-import { DatePicker, Mask, RangePicker } from "../range";
-import style from "../main.module.css";
+import style from '../main.module.css';
+import {
+  DatePicker,
+  Mask,
+  RangePicker,
+} from '../range';
+
 export default function DemoComponent() {
   return (
-    <div className={style.bg_red_100} dir="rtl">
+    <div className={style.bg_red_100} >
       <RangePicker
-        isTodaySelectPreset
-        className={`${style.bg_red_400} `}
-        calendarType="shamsi"
+      showComparison
         onChange={(e) => {
           console.log("RangePicker has changed", e);
         }}
-        Style={{ width: "60%" }}
-        // primaryColor="#000"
-        // tertiaryColor="#00f"
-        // showComparison
-        showMask
-        model="date"
-        // defaultValue={{ from: new Date(), to: new Date() }}
       />
 
       {/* <div className={`${style.bg_red_400}`} style={{ height: "1000px" }}>

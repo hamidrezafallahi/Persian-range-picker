@@ -1,8 +1,16 @@
-import React, { type Dispatch, useState } from "react";
-import style from "../../main.module.css";
-import { Mask } from "../exportComponents/mask";
-import type { IDate, TLocale } from "./type";
-import moment from "moment-jalaali";
+import React, {
+  type Dispatch,
+  useState,
+} from 'react';
+
+import moment from 'moment-jalaali';
+
+import style from '../../main.module.css';
+import { Mask } from '../exportComponents/mask';
+import type {
+  IDate,
+  TLocale,
+} from './type';
 
 interface IProps {
   date: IDate;
@@ -45,12 +53,11 @@ function MaskRange({ ...props }: IProps) {
     `}
     >
       <Mask
-        // {...props}
+        {...props}
         onMaskChange={(e) => handleChange(e as number, "from")}
         defaultValue={date.from}
         maskClassName={`
-          ${style.rounded_lg} 
-          ${style.w_fit} 
+          ${style.xs_w_28} 
           ${error === "from" ? style.border_red_100 : ""}
         `}
         prefix={false}
@@ -59,12 +66,12 @@ function MaskRange({ ...props }: IProps) {
       />
       {"_"}
       <Mask
-        // {...props}
+        {...props}
         onMaskChange={(e) => handleChange(e as number, "to")}
         defaultValue={date.to}
         maskClassName={`
-          ${style.rounded_lg} 
-          ${style.w_fit} 
+ 
+          ${style.xs_w_28} 
           ${error === "from" ? style.border_red_100 : ""}
         `}
         prefix={false}

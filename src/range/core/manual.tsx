@@ -1,14 +1,18 @@
 // import type { ChangeEvent } from "react";
 
-import moment from "moment-jalaali";
+import moment from 'moment-jalaali';
 
-import Comparison from "../comparison";
-import { DatePicker } from "../persianDatePicker";
-import MaskRange from "./maskRange";
-import MonthPicker from "./monthPicker";
-import type { IBaseProps, IDate } from "./type";
-import { ESteps } from "./type";
-import style from "../../main.module.css";
+import style from '../../main.module.css';
+import Comparison from '../comparison';
+import { DatePicker } from '../persianDatePicker';
+import MaskRange from './maskRange';
+import MonthPicker from './monthPicker';
+import type {
+  IBaseProps,
+  IDate,
+} from './type';
+import { ESteps } from './type';
+
 const Manual = (props: IBaseProps) => {
   const {
     date,
@@ -17,7 +21,7 @@ const Manual = (props: IBaseProps) => {
     setDate,
     setZone,
     setStep,
-    showComparison = false,
+    showComparison = true,
     monthPickerClassName,
     model,
     // secondaryColor,

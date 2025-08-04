@@ -1,9 +1,13 @@
-import Comparison from "../comparison";
-import { TickIcon } from "../icons/TickIcon";
-import { getTimestampsForPeriod } from "./helper";
-import type { IBaseProps, ITimeSections } from "./type";
-import { ESteps } from "./type";
-import style from "../../main.module.css";
+import style from '../../main.module.css';
+import Comparison from '../comparison';
+import { TickIcon } from '../icons/TickIcon';
+import { getTimestampsForPeriod } from './helper';
+import type {
+  IBaseProps,
+  ITimeSections,
+} from './type';
+import { ESteps } from './type';
+
 function PeriodList({ ...props }: IBaseProps) {
   const {
     onChange,
@@ -16,7 +20,7 @@ function PeriodList({ ...props }: IBaseProps) {
     setCounter,
     setActiveCompareStep,
     setCompareDate,
-    showComparison = false,
+    showComparison = true,
     periodClassName,
     highlightColor = "#f4f4f4", //رنگ برجسته‌کننده برای هاور، نوتیف یا نقاط توجه
     accentColor = "#2563eb", // تأکیدی (برای جلب توجه، مثلاً نوتیفیکیشن‌ها یا CTAها)- آبی

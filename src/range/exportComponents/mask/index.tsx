@@ -1,8 +1,20 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
-import moment from "moment-jalaali";
-import style from "../../../main.module.css";
-import type { IDate, IMaskProps, TLocale } from "../../core/type";
-import { getTimestamp } from "../../core/helper";
+import React, {
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
+
+import moment from 'moment-jalaali';
+
+import style from '../../../main.module.css';
+import { getTimestamp } from '../../core/helper';
+import type {
+  IDate,
+  IMaskProps,
+  TLocale,
+} from '../../core/type';
+
 type TimeZone = "year" | "month" | "day";
 const defaultErrorClass = `${style.border_red_700}`;
 export function Mask({ ...props }: IMaskProps) {

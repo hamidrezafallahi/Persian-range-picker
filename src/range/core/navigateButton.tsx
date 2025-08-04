@@ -1,12 +1,21 @@
-import { useEffect, useRef, useState } from "react";
-import style from "../../main.module.css";
-import moment from "moment-jalaali";
+import {
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 
-import { LeftChevron } from "../icons/LeftChevron";
-import { RightChevron } from "../icons/RightChevron";
-import type { IBaseProps, ITimeZone, TLocale } from "./type";
-import { ESteps } from "./type";
-import { period } from "./helper";
+import moment from 'moment-jalaali';
+
+import style from '../../main.module.css';
+import { LeftChevron } from '../icons/LeftChevron';
+import { RightChevron } from '../icons/RightChevron';
+import { period } from './helper';
+import type {
+  IBaseProps,
+  ITimeZone,
+  TLocale,
+} from './type';
+import { ESteps } from './type';
 
 interface INavigationProps {
   step: IBaseProps["step"];
@@ -95,7 +104,9 @@ function NavigateButton({ ...props }: INavigationProps) {
     }
   }, []);
   return (
-    <div className={`${style.flex} ${style.gap_2}`} ref={containerRef}>
+    <div className={`${style.flex} ${style.gap_2}  ${dir === "ltr" ? style.flex_row : style.flex_row_reverse}`} ref={containerRef} 
+    
+    >
       <button
         className={`${style.px_1} ${style.xs_border} ${style.rounded_md} ${style.bg_white}`}
         disabled={step == ESteps.manual}
@@ -104,7 +115,7 @@ function NavigateButton({ ...props }: INavigationProps) {
           stepChangeHandler("decrement");
         }}
       >
-        {dir == "rtl" ? <RightChevron /> : <LeftChevron />}
+         <LeftChevron />
       </button>
       <button
         className={`${style.px_1} ${style.xs_border} ${style.rounded_md} ${style.bg_white}`}
@@ -114,7 +125,7 @@ function NavigateButton({ ...props }: INavigationProps) {
           stepChangeHandler("increment");
         }}
       >
-        {dir == "rtl" ? <LeftChevron /> : <RightChevron />}
+         <RightChevron />
       </button>
     </div>
   );
