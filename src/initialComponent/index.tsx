@@ -93,6 +93,14 @@ const TEXT: Record<"fa" | "en", LanguageText> = {
               گرفته شده است.
             </p>
 
+            <p>
+              این کتابخانه مشابه انتخاب بازه زمانی در ابزار معروف{" "}
+              <strong>Google Analytics</strong> طراحی شده است، که به شما امکان
+              انتخاب و مقایسه بازه‌های زمانی را به صورت مجزا و ساده می‌دهد.
+              تفاوت اصلی در پشتیبانی بومی از تقویم شمسی و امکانات پیشرفته‌تر در
+              انتخاب تاریخ و زمان است.
+            </p>
+
             <h4>
               {" "}
               <TickIcon /> انتخاب تاریخ
@@ -137,32 +145,10 @@ const TEXT: Record<"fa" | "en", LanguageText> = {
             </p>
           </>
         ),
+
         video: undefined,
         image: undefined,
         component: undefined,
-        //         (
-        //           <div
-        //             style={{ display: "flex", flexDirection: "column", gap: "1rem" }}
-        //           >
-        //             <pre
-        //               style={{
-        //                 backgroundColor: "#eee",
-        //                 padding: "1rem",
-        //                 borderRadius: "8px",
-        //                 overflowX: "auto",
-        //               }}
-        //             >
-        //               {`import { DatePicker } from "your-library";
-
-        // function App() {
-        //   return (
-        //     <DatePicker calendarType="shamsi" showTime />
-        //   );
-        // }`}
-        //             </pre>
-        //             <DatePicker calendarType="shamsi" showTime />
-        //           </div>
-        //         ),
       },
       Range: {
         title: "محدوده زمانی",
@@ -289,63 +275,75 @@ const TEXT: Record<"fa" | "en", LanguageText> = {
         desc: (
           <>
             <p>
-              This library is built to address the need for an efficient Shamsi
-              (Jalali) date picker tailored for Persian developers. It supports
-              both
-              <strong> Gregorian and Shamsi </strong> calendars, switchable via
-              a simple prop.
+              This library is designed to meet the needs of Iranian developers
+              for selecting Persian (Jalali) dates. Supporting both
+              <strong> Gregorian and Shamsi calendars</strong>, you can easily
+              switch calendar types with a simple parameter.
             </p>
             <p>
-              Unlike other libraries that convert Gregorian to Shamsi on the
-              fly, this library handles Shamsi dates natively from the start.
+              Unlike many libraries that convert Gregorian dates to Jalali on
+              the fly, this library is built natively around the Jalali calendar
+              from the ground up.
             </p>
             <p>
-              Our goal is simplicity with flexibility. Almost every UI element
-              is customizable to match your design.
+              Our goal is to simplify user experience and provide extensive
+              customization options, so the appearance of most components is
+              easily changeable.
             </p>
             <p>
-              For date handling, you only need one dependency:
-              <code>moment-jalaali</code>. Say goodbye to additional conversion
-              libraries.
+              For date conversion, you only depend on one library:
+              <code>moment-jalaali</code>. No need for other external tools.
             </p>
             <p>
-              Thanks to all contributors who helped bring this project to life.
+              We are grateful to all contributors who helped develop this tool.
             </p>
 
             <br />
-            <h4>Comparative Range Selection</h4>
+            <h4>Comparative Date Range Selection</h4>
             <p>
-              One of the key features is the ability to compare one date range
+              One of the key features of this tool is comparing one date range
               with another. For example:
             </p>
             <ul>
-              <li>Compare daily lab data with the previous day or last week</li>
               <li>
-                Check sales trends this quarter vs. the same period last year
+                Comparing daily lab data with the previous day or last week
+              </li>
+              <li>
+                Reviewing company sales trends in the current season versus last
+                year
               </li>
             </ul>
             <p>
-              Separate buttons allow navigation between the main and comparison
-              ranges.
+              Separate buttons are provided to navigate the main date range and
+              the comparison range.
+            </p>
+
+            <p>
+              This library is designed similarly to the Date Range Picker in the
+              well-known <strong>Google Analytics</strong> tool, allowing users
+              to select and compare date ranges separately and easily. The main
+              difference lies in native support for the Jalali calendar and
+              advanced date and time selection features.
             </p>
 
             <h4>
               {" "}
-              <TickIcon /> Date Selection
+              <TickIcon /> Date Picker
             </h4>
             <p>
-              The Date Picker supports editable masked input and includes a
-              <strong> TimePicker </strong> to select down to seconds.
+              The date picker component supports editable masked input and
+              <strong> TimePicker </strong>, allowing users to select date and
+              time down to the second.
             </p>
 
             <h4>
               {" "}
-              <TickIcon /> Time Selection
+              <TickIcon /> Time Picker
             </h4>
             <p>
-              This component is for time selection only. It updates the time of
-              a provided date, or defaults to the current date if none is
-              provided.
+              This component is designed solely for time selection. If provided
+              with a date, it modifies the time part; otherwise, it changes the
+              current date's time.
             </p>
 
             <h4>
@@ -353,48 +351,27 @@ const TEXT: Record<"fa" | "en", LanguageText> = {
               <TickIcon /> Masked Date Input
             </h4>
             <p>
-              The masked input lets users type the date in a structured format
-              and supports keyboard navigation. It validates the day count based
-              on the month/year and can show error messages and style changes
-              accordingly.
+              By typing the date directly in the specified format, users can
+              also use the keyboard to increase/decrease values. The input
+              smartly detects the number of days in each month and prevents
+              invalid entries.
             </p>
 
             <h4>
               {" "}
-              <TickIcon /> Floating UI Hook
+              <TickIcon /> Floating Element Hook
             </h4>
             <p>
-              A fully custom hook, similar to <code>react-popper</code>, that
-              renders a floating element beside a target. It’s lightweight,
-              customizable, and framework-agnostic.
+              A powerful, dependency-free hook to display floating content (like
+              Dropdown or Tooltip) next to a target element. It behaves
+              similarly to
+              <code>react-popper</code> and is fully customizable.
             </p>
           </>
         ),
+
         video: undefined,
         image: undefined,
-        //         component: (
-        //           <div
-        //             style={{ display: "flex", flexDirection: "column", gap: "1rem" }}
-        //           >
-        //             <pre
-        //               style={{
-        //                 backgroundColor: "#eee",
-        //                 padding: "1rem",
-        //                 borderRadius: "8px",
-        //                 overflowX: "auto",
-        //               }}
-        //             >
-        //               {`import { DatePicker } from "your-library";
-
-        // function App() {
-        //   return (
-        //     <DatePicker calendarType="gregorian" showTime />
-        //   );
-        // }`}
-        //             </pre>
-        //             <DatePicker calendarType="gregorian" showTime />
-        //           </div>
-        //         ),
       },
       rendersideHook: {
         title: "Render Side Hook",
