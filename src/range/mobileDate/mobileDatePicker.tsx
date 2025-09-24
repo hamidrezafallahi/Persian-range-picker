@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import style from "../../main.module.css";
 import moment from "moment-jalaali";
-
+import { createPortal } from "react-dom";
 import { Footer } from "../core/footer";
 import { getTimestamp, toPersianDigits } from "../core/helper";
 import type { IDate, IDateProps, TUnit } from "../core/type";
@@ -15,8 +15,8 @@ export function MobileDate({ ...props }: IDateProps) {
     onChange,
     defaultValue,
     locale = "fa",
-    tertiaryColor = "#939393", // رنگ سوم، معمولاً برای جزئیات یا عناصر کم‌اهمیت‌تر - رنگ متن
-    highlightColor = "#f4f4f4", // رنگ برجسته‌کننده برای هاور، نوتیف یا نقاط توجه
+    tertiaryColor = "#939393",
+    highlightColor = "#f4f4f4",
     primaryColor = "#000",
     chooseTodayClassName = "",
     showTime = false,
@@ -28,16 +28,20 @@ export function MobileDate({ ...props }: IDateProps) {
     className,
     disabled = false,
   } = props;
+
   const [showDate, setShowDate] = useState<number>(0);
   const [content, setContent] = useState<"Date" | "Time">("Date");
-  const popoverRef = useRef<HTMLDivElement>(null);
+  const [open, setOpen] = useState(false);
+
   const device: "mobile" | "desktop" =
     /Mobile|Android|iPhone|iPad|iPod|Opera Mini|BlackBerry|IEMobile/i.test(
       navigator.userAgent
     )
       ? "mobile"
       : "desktop";
+
   const dynamicFormat = showSecond ? showTimeFormat : "HH:mm";
+
   const persian =
     showDate > 0
       ? toPersianDigits(
@@ -63,13 +67,14 @@ export function MobileDate({ ...props }: IDateProps) {
     } else {
       setShowDate(getTimestamp(e.from) ?? 0);
       onChange?.(getTimestamp(e.from) ?? 0);
-      popoverRef.current?.hidePopover();
+      setOpen(false);
     }
   };
+
   const handleSubmit = () => {
     onChange?.(showDate);
     setContent("Date");
-    popoverRef.current?.hidePopover();
+    setOpen(false);
   };
 
   const handleTimeChange = (unit: TUnit, value: number) => {
@@ -85,8 +90,8 @@ export function MobileDate({ ...props }: IDateProps) {
 
   const renderOptions = (count: number, unit: TUnit, step = 1) => {
     const pad = (num: number) => num.toString().padStart(2, "0");
-
     const active = moment(showDate).locale(locale).get(unit);
+
     return Array.from({ length: Math.ceil(count / step) }, (_, i) => {
       const val = i * step;
       return (
@@ -115,9 +120,6 @@ export function MobileDate({ ...props }: IDateProps) {
     });
   };
 
-  const handleClosePopup = () => {
-    popoverRef.current?.hidePopover();
-  };
   function isDate(value: Date | number | undefined): value is Date {
     return value instanceof Date;
   }
@@ -134,6 +136,7 @@ export function MobileDate({ ...props }: IDateProps) {
     }
     setShowDate(temp);
   }, [defaultValue]);
+
   return (
     <div
       style={{
@@ -142,7 +145,8 @@ export function MobileDate({ ...props }: IDateProps) {
     >
       <button
         disabled={disabled}
-        popoverTarget="mobileDateModal"
+        type="button"
+        onClick={() => setOpen(true)}
         className={`
           ${style.flex}
           ${style.justify_between}
@@ -166,129 +170,126 @@ export function MobileDate({ ...props }: IDateProps) {
           {title}
         </div>
       </button>
-      <div
-        popover="auto"
-        id="mobileDateModal"
-        ref={popoverRef}
-        className={`
-          ${style.relative}
-          ${style.p_0}
-          ${style.border_none}
-          ${style.w_full}
-          ${style.h_full}
-        `}
-      >
-        <div className={style.p_2}>
-          {/* ////////////////TODO navigation buttons must change between date and time in situation  */}
-          {content == "Date" ? (
-            <DatePicker
-              {...props}
-              defaultValue={
-                defaultValue ? { from: defaultValue, to: 0 } : undefined
-              }
-              locale={locale}
-              model="date"
-              onDateChange={handleDateChange}
-              dateFromOutside={{
-                from: showDate ?? new Date().valueOf(),
-                to: 0,
-              }}
-            />
-          ) : (
-            <div style={{ zIndex: 10 }}>
-              <div
-                className={`
-  ${style.relative}
-  ${style.flex}
-  ${style.justify_center}
-  ${style.items_center}
-  ${style.border_b}
-  ${style.h_9}
-`}
-                style={{
-                  height: "34px",
-                  fontSize: "14px",
-                  color: tertiaryColor,
-                }}
-              >
-                {locale === "fa"
-                  ? toPersianDigits(
-                      moment(showDate).locale(locale).format(dynamicFormat)
-                    )
-                  : moment(showDate).locale(locale).format(dynamicFormat)}
-                <button
-                  className={`
-  ${style.top_0}
-  ${style.right_0}
-  ${style.absolute}
-  ${style.flex}
-  ${style.justify_center}
-  ${style.items_center}
-  ${style.rounded}
-  ${style.w_10}
-  ${style.aspect_square}
-`}
-                  style={{ background: "#ecedf2" }}
-                  type="button"
-                  onClick={() => {
-                    setContent("Date");
+
+      {open &&
+        createPortal(
+          <div
+            style={{
+              position: "fixed",
+              inset: 0,
+              zIndex: 9999,
+              background: "#fff",
+              overflow: "auto",
+            }}
+          >
+            <div className={style.p_2}>
+              {content == "Date" ? (
+                <DatePicker
+                  {...props}
+                  defaultValue={
+                    defaultValue ? { from: defaultValue, to: 0 } : undefined
+                  }
+                  locale={locale}
+                  model="date"
+                  onDateChange={handleDateChange}
+                  dateFromOutside={{
+                    from: showDate ?? new Date().valueOf(),
+                    to: 0,
                   }}
-                >
-                  <MenuArrowBack />
-                </button>
-              </div>
-              <TimeColumns
-                TimeColumnsClassName={`
-  ${style.flex}
-  ${style.justify_center}
-  ${style.items_center}
-  ${style.py_2}
-  ${style.h_full}
-`}
-                renderHeight={`${280}px`}
-                renderOptions={(count, unit) =>
-                  renderOptions(
-                    count,
-                    unit,
-                    unit === "hour"
-                      ? hourStep
-                      : unit === "minute"
-                      ? minuteStep
-                      : secondStep
-                  )
-                }
-                hourStep={hourStep}
-                minuteStep={minuteStep}
-                secondStep={secondStep}
-                showSecond={showSecond}
+                />
+              ) : (
+                <div style={{ zIndex: 10 }}>
+                  <div
+                    className={`
+                      ${style.relative}
+                      ${style.flex}
+                      ${style.justify_center}
+                      ${style.items_center}
+                      ${style.border_b}
+                      ${style.h_9}
+                    `}
+                    style={{
+                      height: "34px",
+                      fontSize: "14px",
+                      color: tertiaryColor,
+                    }}
+                  >
+                    {locale === "fa"
+                      ? toPersianDigits(
+                          moment(showDate).locale(locale).format(dynamicFormat)
+                        )
+                      : moment(showDate).locale(locale).format(dynamicFormat)}
+                    <button
+                      className={`
+                        ${style.top_0}
+                        ${style.right_0}
+                        ${style.absolute}
+                        ${style.flex}
+                        ${style.justify_center}
+                        ${style.items_center}
+                        ${style.rounded}
+                        ${style.w_10}
+                        ${style.aspect_square}
+                      `}
+                      style={{ background: "#ecedf2" }}
+                      type="button"
+                      onClick={() => setContent("Date")}
+                    >
+                      <MenuArrowBack />
+                    </button>
+                  </div>
+                  <TimeColumns
+                    TimeColumnsClassName={`
+                      ${style.flex}
+                      ${style.justify_center}
+                      ${style.items_center}
+                      ${style.py_2}
+                      ${style.h_full}
+                    `}
+                    renderHeight={`${280}px`}
+                    renderOptions={(count, unit) =>
+                      renderOptions(
+                        count,
+                        unit,
+                        unit === "hour"
+                          ? hourStep
+                          : unit === "minute"
+                          ? minuteStep
+                          : secondStep
+                      )
+                    }
+                    hourStep={hourStep}
+                    minuteStep={minuteStep}
+                    secondStep={secondStep}
+                    showSecond={showSecond}
+                  />
+                </div>
+              )}
+            </div>
+            <div
+              className={`
+                ${style.bottom_0}
+                ${style.fixed}
+                ${style.p_2}
+                ${style.w_full}
+              `}
+            >
+              <Footer
+                setShowDate={setShowDate}
+                showDate={showDate}
+                locale={locale}
+                primaryColor={primaryColor}
+                highlightColor={highlightColor}
+                chooseTodayClassName={chooseTodayClassName}
+                showTime={showTime}
+                onTodayButton={() => setOpen(false)}
+                onSubmit={handleSubmit}
+                onChange={onChange}
               />
             </div>
-          )}
-        </div>
-        <div
-          className={`
-  ${style.bottom_0}
-  ${style.fixed}
-  ${style.p_2}
-  ${style.w_full}
-`}
-          style={{ width: "100" }}
-        >
-          <Footer
-            setShowDate={setShowDate}
-            showDate={showDate}
-            locale={locale}
-            primaryColor={primaryColor}
-            highlightColor={highlightColor}
-            chooseTodayClassName={chooseTodayClassName}
-            showTime={showTime}
-            // onNowButton={handleClosePopup}
-            onTodayButton={handleClosePopup}
-            onSubmit={handleSubmit}
-            onChange={onChange} //////type error unknown type fix by net
-          />
-        </div>
-      </div>
+          </div>,
+          document.body
+        )}
     </div>
   );
 }
