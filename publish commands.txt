@@ -1,1 +1,4 @@
 yarn build
+yarn pack 
+npm login
+npm publish --access public
