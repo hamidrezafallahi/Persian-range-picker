@@ -1,8 +1,16 @@
-import { DatePicker } from '../range';
+import { Mask } from '../range';
 
 export default function DemoComponent() {
-  return (
-            <DatePicker/>
+ 
+  return (<>
+            <Mask  />
+            
+  </>
+
+
+
+
+
     // <div className={style.bg_red_100} >
     //   <RangePicker
     //   showComparison

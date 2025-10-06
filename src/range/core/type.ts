@@ -1,4 +1,8 @@
-import type { Dispatch, ReactNode, SetStateAction } from "react";
+import type {
+  Dispatch,
+  ReactNode,
+  SetStateAction,
+} from 'react';
 
 export type ExportType = "timeStamp" | "IsoString";
 type TDeviceType = "desktop" | "mobile";
@@ -226,6 +230,7 @@ export interface IMaskProps
   isTodaySelectPreset?: boolean;
   exportType?: ExportType;
   Style?: React.CSSProperties;
+ 
 }
 
 export interface ITimePickerProps extends IClassNameProps {
