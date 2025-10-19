@@ -1,24 +1,14 @@
-import React, {
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
-import { createPortal } from 'react-dom';
+import React, { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 
-import moment from 'moment-jalaali';
+import moment from "moment-jalaali";
 
-import style from '../../../main.module.css';
-import {
-  getTimestamp,
-  toPersianDigits,
-} from '../../core/helper';
-import type {
-  ITimePickerProps,
-  TUnit,
-} from '../../core/type';
-import { CalenderIcon } from '../../icons/CalenderIcon';
-import { useRenderPosition } from '../useRenderPosition';
-import { TimeColumns } from './exportComponents';
+import style from "../../../main.module.css";
+import { getTimestamp, toPersianDigits } from "../../core/helper";
+import type { ITimePickerProps, TUnit } from "../../core/type";
+import { CalenderIcon } from "../../icons/CalenderIcon";
+import { useRenderPosition } from "../useRenderPosition";
+import { TimeColumns } from "./exportComponents";
 
 export const TimePicker: React.FC<ITimePickerProps> = ({
   ...props
@@ -63,11 +53,11 @@ export const TimePicker: React.FC<ITimePickerProps> = ({
   const dynamicFormat = showSecond ? format : "HH:mm";
 
   const renderHeight =
-    device ===  "desktop"?displayButtonCount * (buttonRefs.current[0]?.offsetHeight ?? 24) +
-    20 +
-    (displayButtonCount - 1) * 16:10 * (buttonRefs.current[0]?.offsetHeight ?? 24) +
-    20 +
-    (10 - 1) * 16;
+    device === "desktop"
+      ? displayButtonCount * (buttonRefs.current[0]?.offsetHeight ?? 24) +
+        20 +
+        (displayButtonCount - 1) * 16
+      : 10 * (buttonRefs.current[0]?.offsetHeight ?? 24) + 20 + (10 - 1) * 16;
 
   useRenderPosition({
     buttonRef: buttonRef as React.RefObject<HTMLElement>,
@@ -179,6 +169,7 @@ export const TimePicker: React.FC<ITimePickerProps> = ({
     <>
       <button
         disabled={disabled}
+        ref={buttonRef as React.RefObject<HTMLButtonElement>}
         onClick={() => setOpen((prev) => !prev)}
         type="button"
         className={`
@@ -215,10 +206,11 @@ export const TimePicker: React.FC<ITimePickerProps> = ({
           <>
             {device === "desktop" ? (
               <div
+                ref={popupRef}
                 style={{
                   position: "absolute",
-                  background: "#fff",
                   zIndex: 1050,
+                  background: "#fff",
                 }}
                 className={`
                 ${style.flex}
@@ -313,7 +305,7 @@ export const TimePicker: React.FC<ITimePickerProps> = ({
               `}
               >
                 <TimeColumns
-                TimeColumnsClassName={`${style.h_full}`}
+                  TimeColumnsClassName={`${style.h_full}`}
                   renderHeight={`${renderHeight}px`}
                   renderOptions={(count, unit) =>
                     renderOptions(
