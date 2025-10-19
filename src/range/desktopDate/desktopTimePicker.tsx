@@ -4,12 +4,13 @@ import React, {
   useEffect,
   useRef,
   useState,
-} from "react";
-import style from "../../main.module.css";
-import moment from "moment-jalaali";
+} from 'react';
 
-import { toPersianDigits } from "../core/helper";
-import { TimeColumns } from "../exportComponents/timePicker/exportComponents";
+import moment from 'moment-jalaali';
+
+import style from '../../main.module.css';
+import { toPersianDigits } from '../core/helper';
+import { TimeColumns } from '../exportComponents/timePicker/exportComponents';
 
 type TUnit = "hour" | "minute" | "second";
 
@@ -78,6 +79,7 @@ export const DesktopTimePicker: React.FC<Props> = ({
             ${style.aspect_square}
             ${style.text_center}
             ${style.cursor_pointer}
+              ${style.border_none}
             ${
               active === val
                 ? `${style.pointer_events_auto} ${style.opacity_100} ${style.text_gray123} ${style.text_sm}`
@@ -108,7 +110,7 @@ export const DesktopTimePicker: React.FC<Props> = ({
   return (
     <>
       <div
-        style={{ paddingTop: "12px" }}
+        style={{ paddingTop: "12px", paddingBottom: "12px"  }}
         className={`
           ${style.flex} 
           ${style.justify_center} 

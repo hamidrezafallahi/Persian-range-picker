@@ -1,14 +1,25 @@
-import React, { useEffect, useRef, useState } from "react";
-import style from "../../main.module.css";
-import moment from "moment-jalaali";
+import React, {
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
+import { createPortal } from 'react-dom';
 
-import MainContent from "../core/mainContent";
-import NavigateButton from "../core/navigateButton";
-import type { IRangeProps, ISubmittedData } from "../core/type";
-import { useRenderPosition } from "../exportComponents/useRenderPosition";
-import { DownTriangle } from "../icons/DownTriangle";
-import { createPortal } from "react-dom";
-import { getTimestamp, toPersianDigits } from "../core/helper";
+import moment from 'moment-jalaali';
+
+import style from '../../main.module.css';
+import {
+  getTimestamp,
+  toPersianDigits,
+} from '../core/helper';
+import MainContent from '../core/mainContent';
+import NavigateButton from '../core/navigateButton';
+import type {
+  IRangeProps,
+  ISubmittedData,
+} from '../core/type';
+import { useRenderPosition } from '../exportComponents/useRenderPosition';
+import { DownTriangle } from '../icons/DownTriangle';
 
 export function DesktopRangePicker(props: IRangeProps) {
   const userAgent = navigator.userAgent;
@@ -68,8 +79,8 @@ export function DesktopRangePicker(props: IRangeProps) {
   const buttonRef = useRef<HTMLElement>(null);
   const popupRef = useRef<HTMLDivElement>(null);
 
-  const fromTimestamp = getTimestamp(date.from) ?? 0;
-  const toTimestamp = getTimestamp(date.to) ?? 0;
+  const fromTimestamp = getTimestamp(date!.from) ?? 0;
+  const toTimestamp = getTimestamp(date!.to) ?? 0;
 
   const DateFrom =
     fromTimestamp > 0
@@ -125,15 +136,15 @@ export function DesktopRangePicker(props: IRangeProps) {
           handleSubmit({ type, Data: { customData } });
         }
       }
-      setShowDate({ date, compareDate, Data: customData });
+      setShowDate({ date:date!, compareDate, Data: customData });
       setOpen?.(false);
     }
   };
   const handleCancel = () => {
     setOpen?.(false);
-    setDate(showDate?.date);
-    setStep(366);
-    setCompareDate(showDate.compareDate);
+    setDate?.(showDate?.date);
+    setStep?.(366);
+    setCompareDate?.(showDate.compareDate);
     if (handleReject) {
       handleReject();
     }
@@ -195,7 +206,7 @@ export function DesktopRangePicker(props: IRangeProps) {
   }, [customData]);
   useEffect(() => {
     setShowDate({
-      date,
+      date:date!,
       compareDate,
       Data: null,
     });
@@ -248,7 +259,7 @@ export function DesktopRangePicker(props: IRangeProps) {
           <DownTriangle />
         </button>
         {zone !== "manual" && isShowNavigationButton && (
-          <NavigateButton {...props} locale={locale} />
+          <NavigateButton {...props}  locale={locale} />
         )}
       </div>
       {open &&
@@ -299,7 +310,7 @@ export function DesktopRangePicker(props: IRangeProps) {
               >
                 <button
                   style={{ color: primaryColor }}
-                  className={`${style.p_2} ${style.px_3} ${style.rounded_md}`}
+                  className={`${style.p_2} ${style.px_3} ${style.rounded_md} ${style.border_none}`}
                   onClick={handleCancel}
                 >
                   {locale == "fa" ? "لغو" : "Cancel"}

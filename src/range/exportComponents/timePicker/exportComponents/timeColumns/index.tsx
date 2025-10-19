@@ -1,5 +1,7 @@
-import React, { useRef } from "react";
-import style from "../../../../../main.module.css";
+import React, { useRef } from 'react';
+
+import style from '../../../../../main.module.css';
+
 type Props = {
   renderHeight?: string;
   renderOptions: (
@@ -18,18 +20,24 @@ const TimeColumn: React.FC<{
   unit: "hour" | "minute" | "second";
   renderHeight?: string;
   renderOptions: Props["renderOptions"];
-}> = ({ count, unit, renderHeight, renderOptions }) => {
+  tertiaryColor?: string;
+  highlightColor?: string;
+}> = ({ ...props }) => {
+  const {
+    count,
+    unit,
+    renderHeight,
+    renderOptions,
+    tertiaryColor = "#939393",
+    highlightColor = "#f4f4f4",
+  } = props;
   const title = unit == "hour" ? "HH" : unit == "minute" ? "MM" : "SS";
   const ref = useRef(null);
   return (
     <div className={`${style.flex} ${style.flex_col} ${style.gap_4}`}>
       <div
-        className={`${style.flex} ${style.justify_center}`}
-        style={{
-          // position: "sticky",
-          // top: 0,
-          color: "#939393",
-        }}
+        className={`${style.flex} ${style.justify_center} `}
+        style={{ color: tertiaryColor, fontSize: "14px" }}
       >
         {title}
       </div>
@@ -42,6 +50,7 @@ const TimeColumn: React.FC<{
   ${style.px_2}
   ${style.overflow_x_hidden}
   ${style.overflow_y_auto}
+  ${style.rprp_scrollbar}
 `}
         style={{ maxHeight: renderHeight, scrollBehavior: "smooth" }}
         id={unit}
@@ -57,13 +66,15 @@ export const TimeColumns: React.FC<Props> = ({
   renderOptions,
   showSecond,
   TimeColumnsClassName,
+
 }) => {
   return (
     <div
       className={`
       ${style.flex}
+      ${style.w_full}
       ${style.justify_evenly}
-      ${style.gap_4}
+      ${style.gap_4}   
       ${TimeColumnsClassName}
     `}
       dir="ltr"

@@ -1,14 +1,26 @@
-import { useEffect, useRef, useState } from "react";
-import style from "../../main.module.css";
-import moment from "moment-jalaali";
-import { createPortal } from "react-dom";
-import { Footer } from "../core/footer";
-import { getTimestamp, toPersianDigits } from "../core/helper";
-import type { IDate, IDateProps, TUnit } from "../core/type";
-import { TimeColumns } from "../exportComponents/timePicker/exportComponents";
-import { CalenderIcon } from "../icons/CalenderIcon";
-import { DatePicker } from "../persianDatePicker";
-import { MenuArrowBack } from "../icons/MenuArrowBack";
+import {
+  useEffect,
+  useState,
+} from 'react';
+import { createPortal } from 'react-dom';
+
+import moment from 'moment-jalaali';
+
+import style from '../../main.module.css';
+import { Footer } from '../core/footer';
+import {
+  getTimestamp,
+  toPersianDigits,
+} from '../core/helper';
+import type {
+  IDate,
+  IDateProps,
+  TUnit,
+} from '../core/type';
+import { TimeColumns } from '../exportComponents/timePicker/exportComponents';
+import { CalenderIcon } from '../icons/CalenderIcon';
+import { MenuArrowBack } from '../icons/MenuArrowBack';
+import { DatePicker } from '../persianDatePicker';
 
 export function MobileDate({ ...props }: IDateProps) {
   const {
@@ -106,6 +118,8 @@ export function MobileDate({ ...props }: IDateProps) {
             ${style.rounded_md}
             ${style.w_6}
             ${style.aspect_square}
+            ${style.border_none}
+
             ${
               active === val
                 ? `${style.pointer_events_auto} ${style.opacity_100} ${style.text_gray123}`
@@ -154,8 +168,10 @@ export function MobileDate({ ...props }: IDateProps) {
           ${style.gap_2}
           ${style.px_1}
           ${style.h_9}
-          ${style.rounded_md}
-          ${style.w_full}
+           ${style.rounded_md}
+           ${style.border_none}
+          
+          ${style.w_full}      
           ${disabled ? style.cursor_not_allowed : ""}
           ${className}
         `}
@@ -182,7 +198,7 @@ export function MobileDate({ ...props }: IDateProps) {
               overflow: "auto",
             }}
           >
-            <div className={style.p_2}>
+            <div style={{ padding: "8px" }}>
               {content == "Date" ? (
                 <DatePicker
                   {...props}
@@ -229,6 +245,8 @@ export function MobileDate({ ...props }: IDateProps) {
                         ${style.items_center}
                         ${style.rounded}
                         ${style.w_10}
+                                  ${style.border_none}
+
                         ${style.aspect_square}
                       `}
                       style={{ background: "#ecedf2" }}
@@ -270,7 +288,6 @@ export function MobileDate({ ...props }: IDateProps) {
               className={`
                 ${style.bottom_0}
                 ${style.fixed}
-                ${style.p_2}
                 ${style.w_full}
               `}
             >

@@ -1,9 +1,13 @@
-import { useState } from "react";
-import style from "../../main.module.css";
-import moment from "moment-jalaali";
+import { useState } from 'react';
 
-import type { IDate, TLocale } from "./type";
-import { getTimestamp } from "./helper";
+import moment from 'moment-jalaali';
+
+import style from '../../main.module.css';
+import { getTimestamp } from './helper';
+import type {
+  IDate,
+  TLocale,
+} from './type';
 
 interface IMonthPickerType {
   dateFromOutside: IDate;
@@ -26,7 +30,7 @@ const MonthPicker = ({
   locale,
   backgroundColor = "#fff", //رنگ پس‌زمینه کلی یا نواحی بزرگ
   tertiaryColor = "#939393", //رنگ سوم، معمولاً برای جزئیات یا عناصر کم‌اهمیت‌تر   -  رنگ متن
-  highlightColor = "#f4f4f4", //رنگ برجسته‌کننده برای هاور، نوتیف یا نقاط توجه
+  highlightColor = "#cacaca", //رنگ برجسته‌کننده برای هاور، نوتیف یا نقاط توجه
   primaryColor = "#000",
 }: IMonthPickerType) => {
   const [state, setState] = useState<{
@@ -130,7 +134,7 @@ const MonthPicker = ({
       });
     }
   };
-
+ 
   return (
     <div
       dir={locale == "fa" ? "rtl" : "ltr"}
@@ -183,7 +187,6 @@ const MonthPicker = ({
           state.selectedMonth &&
           chosenMonth <= state.hoveredMonth &&
           chosenMonth > state.selectedMonth;
-
         return (
           <div
             key={index}
@@ -217,6 +220,7 @@ const MonthPicker = ({
                 handleHoveredMonth(index);
               }}
               style={{
+                border: "none",
                 color:
                   isStartMonth || isEndMonth ? backgroundColor : tertiaryColor,
 

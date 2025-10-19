@@ -158,20 +158,20 @@ export interface IRangeOptions extends IColorProps, IClassNameProps {
 }
 
 export interface IBaseProps extends IRangeOptions, IDeviceLocale {
-  step: ESteps;
-  counter: number;
-  zone: ITimeZone;
-  date: IDate;
-  tabKey: ITime | string;
-  compareDate: IDate | null;
-  activeCompareStep: ESteps | null;
-  setStep: Dispatch<SetStateAction<ESteps>>;
-  setCounter: Dispatch<SetStateAction<number>>;
-  setCompareDate: Dispatch<SetStateAction<IDate | null>>;
-  setDate: Dispatch<SetStateAction<IDate>>;
-  setActiveCompareStep: Dispatch<SetStateAction<ESteps | null>>;
-  setTabKey: Dispatch<SetStateAction<ITime | string>>;
-  setZone: Dispatch<SetStateAction<ITimeZone>>;
+  step?: ESteps;
+  counter?: number;
+  zone?: ITimeZone;
+  date?: IDate;
+  tabKey?: ITime | string;
+  compareDate?: IDate | null;
+  activeCompareStep?: ESteps | null;
+  setStep?: Dispatch<SetStateAction<ESteps>>;
+  setCounter?: Dispatch<SetStateAction<number>>;
+  setCompareDate?: Dispatch<SetStateAction<IDate | null>>;
+  setDate?: Dispatch<SetStateAction<IDate>>;
+  setActiveCompareStep?: Dispatch<SetStateAction<ESteps | null>>;
+  setTabKey?: Dispatch<SetStateAction<ITime | string>>;
+  setZone?: Dispatch<SetStateAction<ITimeZone>>;
   onNavigateChange?: (date: IDate, compareDate: IDate | null) => void;
   componentStep?: ESteps;
   open?: boolean;

@@ -1,16 +1,24 @@
-import React, { useEffect, useRef, useState } from "react";
-import moment from "moment-jalaali";
+import React, {
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
+import { createPortal } from 'react-dom';
+
+import moment from 'moment-jalaali';
+
+import style from '../../../main.module.css';
 import {
   getTimestamp,
-  getTimestampByFallBack,
   toPersianDigits,
-} from "../../core/helper";
-import type { ITimePickerProps, TUnit } from "../../core/type";
-import { CalenderIcon } from "../../icons/CalenderIcon";
-import { useRenderPosition } from "../useRenderPosition";
-import { TimeColumns } from "./exportComponents";
-import style from "../../../main.module.css";
-import { createPortal } from "react-dom";
+} from '../../core/helper';
+import type {
+  ITimePickerProps,
+  TUnit,
+} from '../../core/type';
+import { CalenderIcon } from '../../icons/CalenderIcon';
+import { useRenderPosition } from '../useRenderPosition';
+import { TimeColumns } from './exportComponents';
 
 export const TimePicker: React.FC<ITimePickerProps> = ({
   ...props
@@ -53,10 +61,13 @@ export const TimePicker: React.FC<ITimePickerProps> = ({
 
   const locale = calendarType == "shamsi" ? "fa" : "en";
   const dynamicFormat = showSecond ? format : "HH:mm";
+
   const renderHeight =
-    displayButtonCount * (buttonRefs.current[0]?.offsetHeight ?? 24) +
+    device ===  "desktop"?displayButtonCount * (buttonRefs.current[0]?.offsetHeight ?? 24) +
     20 +
-    (displayButtonCount - 1) * 16;
+    (displayButtonCount - 1) * 16:10 * (buttonRefs.current[0]?.offsetHeight ?? 24) +
+    20 +
+    (10 - 1) * 16;
 
   useRenderPosition({
     buttonRef: buttonRef as React.RefObject<HTMLElement>,
@@ -133,19 +144,18 @@ export const TimePicker: React.FC<ITimePickerProps> = ({
           type="button"
           className={`
             ${style.flex}
-            ${style.justify_center}
+            ${style.flex_col}
+            ${style.justify_evenly}
             ${style.items_center}
             ${style.rounded_md}
             ${style.w_6}
             ${style.aspect_square}
+            ${style.text_center}
+            ${style.cursor_pointer}
+              ${style.border_none}
             ${
               active === val
-                ? `
-              ${style.pointer_events_auto}
-              ${style.opacity_100}
-              ${style.text_main_white}
-              ${style.bg_main_black}
-            `
+                ? `${style.pointer_events_auto} ${style.opacity_100} ${style.text_gray123} ${style.text_sm}`
                 : ""
             }
           `}
@@ -169,8 +179,6 @@ export const TimePicker: React.FC<ITimePickerProps> = ({
     <>
       <button
         disabled={disabled}
-        popoverTarget="mobileTimeModal"
-        ref={buttonRef as React.RefObject<HTMLButtonElement>}
         onClick={() => setOpen((prev) => !prev)}
         type="button"
         className={`
@@ -181,6 +189,7 @@ export const TimePicker: React.FC<ITimePickerProps> = ({
               ${style.gap_2}
               ${style.px_2}
               ${style.rounded_md}
+              ${style.border_none}
               ${style.w_full}
               ${style.xs_w_40}
               ${style.h_9}
@@ -206,7 +215,6 @@ export const TimePicker: React.FC<ITimePickerProps> = ({
           <>
             {device === "desktop" ? (
               <div
-                ref={popupRef}
                 style={{
                   position: "absolute",
                   background: "#fff",
@@ -222,6 +230,7 @@ export const TimePicker: React.FC<ITimePickerProps> = ({
                 ${style.border}
                 ${style.border_gray_300}
                 ${style.rounded_lg}
+
                 ${containerClassName}
               `}
               >
@@ -283,47 +292,28 @@ export const TimePicker: React.FC<ITimePickerProps> = ({
               </div>
             ) : (
               <div
-                popover="auto"
-                id="mobileTimeModal"
-                ref={popoverRef}
-                // style={{
-                //   position: "absolute",
-                //   // width: 190,
-                //   zIndex: 10,
-                // }}
+                style={{
+                  position: "absolute",
+                  background: "#fff",
+                  inset: 0,
+                  zIndex: 1050,
+                }}
                 className={`
                 ${style.relative}
                 ${style.flex}
+                ${style.flex_col}
                 ${style.justify_between}
                 ${style.items_center}
                 ${style.gap_2}
                 ${style.px_2}
                 ${style.rounded_md}
-                ${style.w_full}
-                ${style.h_9}
                 ${disabled ? style.cursor_not_allowed : ""}
                 ${timeButtonClassName}
+
               `}
               >
-                <div
-                  className={`${style.flex} ${style.justify_center} ${style.items_center} ${style.border_b} ${style.h_9}`}
-                  style={{
-                    height: "34px",
-                    fontSize: "14px",
-                    color: tertiaryColor,
-                  }}
-                >
-                  {time
-                    ? locale === "fa"
-                      ? toPersianDigits(
-                          moment(time).locale(locale).format(dynamicFormat)
-                        )
-                      : moment(time).locale(locale).format(dynamicFormat)
-                    : locale == "fa"
-                    ? "زمان را انتخاب کنید"
-                    : "Choose time"}
-                </div>
                 <TimeColumns
+                TimeColumnsClassName={`${style.h_full}`}
                   renderHeight={`${renderHeight}px`}
                   renderOptions={(count, unit) =>
                     renderOptions(
@@ -343,10 +333,7 @@ export const TimePicker: React.FC<ITimePickerProps> = ({
                 />
                 <div
                   className={`
-  ${style.right_0} 
-  ${style.bottom_0} 
-  ${style.left_0} 
-  ${style.fixed} 
+
   ${style.p_2} 
   ${style.w_full}
 `}

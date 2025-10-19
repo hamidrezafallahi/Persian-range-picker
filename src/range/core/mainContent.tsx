@@ -4,11 +4,16 @@ import React, {
   type ReactNode,
   type SetStateAction,
   useState,
-} from "react";
-import style from "../../main.module.css";
-import Manual from "./manual";
-import PeriodList from "./periodList";
-import { ESteps, type IBaseProps, type ITime } from "./type";
+} from 'react';
+
+import style from '../../main.module.css';
+import Manual from './manual';
+import PeriodList from './periodList';
+import {
+  ESteps,
+  type IBaseProps,
+  type ITime,
+} from './type';
 
 interface IProps extends IBaseProps {
   setCustomData: Dispatch<SetStateAction<unknown>>;
@@ -39,17 +44,17 @@ const MainContent = ({ ...props }: IProps) => {
   const [activeTab, setActiveTab] = useState<string>(activeTable);
   const handleTabChange = (key: ITab["key"]) => {
     setActiveTab(key);
-    setTabKey(key);
+    setTabKey?.(key);
   };
   const handleChange = (key: ITab["key"], value: unknown) => {
     const defaultKeys = ["day", "week", "month", "season", "year", "manual"];
     if (!defaultKeys.includes(key.toLowerCase())) {
-      setActiveCompareStep(null);
-      setCompareDate(null);
-      setCounter(0);
-      setStep(ESteps[key as keyof typeof ESteps]);
-      setZone(key);
-      setStep(ESteps.custom);
+      setActiveCompareStep?.(null);
+      setCompareDate?.(null);
+      setCounter?.(0);
+      setStep?.(ESteps[key as keyof typeof ESteps]);
+      setZone?.(key);
+      setStep?.(ESteps.custom);
       setCustomData(value);
       setType?.(key);
     }
@@ -86,16 +91,19 @@ const MainContent = ({ ...props }: IProps) => {
   return (
     <div
       dir={locale == "fa" ? "rtl" : "ltr"}
-      className={`${style.flex} ${style.flex_col} ${style.xs_flex_row} ${style.p_1} ${style.xs_h_full}`}
+ 
+      className={`${style.flex} ${style.flex_col} ${style.xs_flex_row} ${style.gap_2} ${style.p_2} ${style["xs_h-[calc(100%-52px)]"]} `}
     >
       <div
         className={`${style.flex} ${style.xs_flex_col} ${style.border_b} ${
           style.xs_w_28
         }
- ${style.w_full} ${style.xs_overflow_y_auto}
+ ${style.w_full} ${style.xs_overflow_y_auto} 
+   ${style.rprp_scrollbar}
         ${style.xs_h_full} ${style.justify_around} ${style.gap_2} ${style.p_2}  
         ${style.overflow_x_auto} 
               ${locale !== "fa" ? style.xs_border_r : style.xs_border_l}
+                  ${style["xs_h-[calc(100%-52px)]"]}
       ${tabClassName}
         `}
         style={{ maxWidth: "430px" }}
@@ -110,6 +118,9 @@ const MainContent = ({ ...props }: IProps) => {
             onClick={() => handleTabChange(tab.key)}
             type="button"
             className={`
+              ${style.border_none}
+              ${style.py_1}
+              ${style.rounded_md}
               ${periodListClassName} 
               ${style.font_medium} ${style.text_right} ${style.text_nowrap} ${
               style.text_sm
@@ -135,12 +146,13 @@ const MainContent = ({ ...props }: IProps) => {
         className={`
   ${style.flex} 
   ${style.flex_col} 
-  ${style.gap_4} 
-  ${style.p_2} 
+  ${style.gap_4}
+  ${style.xs_p_2} 
   ${style.w_full} 
   ${style.overflow_y_auto}
+  ${style.rprp_scrollbar}
 `}
-        style={{ height: "calc(100% - 52px)" }}
+        style={{ height: "calc(100% - 60px)" }}
       >
         {currentTab &&
           (() => {

@@ -1,22 +1,29 @@
-import { type ReactNode, useState } from "react";
+import {
+  type ReactNode,
+  useState,
+} from 'react';
 
-import dateP from "../assets/images/dateP.png";
-import maskP from "../assets/images/maskP.png";
-import rangePic from "../assets/images/rangeP.png";
-import timeP from "../assets/images/timeP.png";
-import useR from "../assets/images/useR.png";
-import useR1 from "../assets/images/useR1.png";
-import useR2 from "../assets/images/useR2.png";
-import dateVid from "../assets/video/Date.mp4";
-import dateVidE from "../assets/video/dateE.mp4";
-import MaskVid from "../assets/video/mask.mp4";
-import rangeVid from "../assets/video/range1.mp4";
-import rangeVidE from "../assets/video/rangeE.mp4";
-import Time from "../assets/video/time.mp4";
-import timeVidE from "../assets/video/timeE.mp4";
-import { DatePicker, RangePicker, TimePicker } from "../range";
-import { Mask } from "../range/exportComponents/mask";
-import { TickIcon } from "../range/icons/TickIcon";
+import dateP from '../assets/images/dateP.png';
+import maskP from '../assets/images/maskP.png';
+import rangePic from '../assets/images/rangeP.png';
+import timeP from '../assets/images/timeP.png';
+import useR from '../assets/images/useR.png';
+import useR1 from '../assets/images/useR1.png';
+import useR2 from '../assets/images/useR2.png';
+import dateVid from '../assets/video/Date.mp4';
+import dateVidE from '../assets/video/dateE.mp4';
+import MaskVid from '../assets/video/mask.mp4';
+import rangeVid from '../assets/video/range1.mp4';
+import rangeVidE from '../assets/video/rangeE.mp4';
+import Time from '../assets/video/time.mp4';
+import timeVidE from '../assets/video/timeE.mp4';
+import {
+  DatePicker,
+  RangePicker,
+  TimePicker,
+} from '../range';
+import { Mask } from '../range/exportComponents/mask';
+import { TickIcon } from '../range/icons/TickIcon';
 
 const SECTION_KEYS = [
   "QuickStart",
@@ -435,6 +442,7 @@ export function InitialComponent() {
       >
         <button
           onClick={handleLangToggle}
+          className=""
           type="button"
           style={{
             padding: "0.5rem",

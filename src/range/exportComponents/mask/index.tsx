@@ -708,8 +708,8 @@ export function Mask({ ...props }: IMaskProps) {
   ${style.items_center}
   ${style.gap_2}
   ${style.rounded_md}
-  ${style.xs_w_40}
   ${style.w_full}
+  ${style.xs_w_40}
   ${style.px_2}
   ${maskClassName}
   ${errorTarget.length > 0 ? ErrorClass : ""}

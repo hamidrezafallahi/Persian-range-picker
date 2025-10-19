@@ -1,8 +1,13 @@
-import type { Dispatch, ReactNode, SetStateAction } from "react";
-import style from "../../main.module.css";
-import moment from "moment-jalaali";
+import type {
+  Dispatch,
+  ReactNode,
+  SetStateAction,
+} from 'react';
 
-import type { IRangeProps } from "./type";
+import moment from 'moment-jalaali';
+
+import style from '../../main.module.css';
+import type { IRangeProps } from './type';
 
 interface IFooter {
   setShowDate: Dispatch<SetStateAction<number>>;
@@ -84,10 +89,10 @@ export const Footer = ({ ...props }: IFooter) => {
   };
 
   return (
-    <div className={`${style.flex} ${style.gap_2} ${style.mb_2} ${style.px_2}`}>
+    <div className={`${style.flex} ${style.gap_2} ${style.mb_2} `}>
       {showTime ? (
         <div
-          className={`${style.flex} ${style.justify_between} ${style.w_full} `}
+          className={`${style.flex} ${style.justify_between} ${style.w_full} ${style.px_2} `}
         >
           <NowButton handleSelect={handleSelect} />
           <SubmitTimeButton handleSelect={handleSelect} />
@@ -97,7 +102,7 @@ export const Footer = ({ ...props }: IFooter) => {
           onClick={() => handleSelect("today")}
           type="button"
           style={{ backgroundColor: highlightColor, color: primaryColor }}
-          className={`${style.w_full} ${style.h_10} ${style.text_center} ${chooseTodayClassName} `}
+          className={`${style.w_full} ${style.h_10} ${style.text_center} ${chooseTodayClassName} ${style.border_none}  ${style.px_2} `}
         >
           {locale === "fa" ? "انتخاب امروز" : "Choose today"}
         </button>

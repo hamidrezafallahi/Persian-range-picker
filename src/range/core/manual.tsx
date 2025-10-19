@@ -46,11 +46,11 @@ const Manual = (props: IBaseProps) => {
       <MonthPicker
         {...props}
         monthPickerClassName={monthPickerClassName}
-        dateFromOutside={date}
+        dateFromOutside={date!}
         onDateChange={(e: IDate) => {
-          setDate(e);
-          setZone("manual");
-          setStep(ESteps.manual);
+          setDate?.(e);
+          setZone?.("manual");
+          setStep?.(ESteps.manual);
         }}
         locale={locale}
       />
@@ -61,20 +61,20 @@ const Manual = (props: IBaseProps) => {
         // dangerColor={dangerColor}
         // InputHandleChange={InputHandleChangeFrom}
         // dateFromOutside={date}
-        date={date}
-        setDate={setDate}
+        date={date!}
+        setDate={setDate!}
       />
       <DatePicker
         {...props}
         name="custom range"
-        dateFromOutside={date}
+        dateFromOutside={date!}
         onDateChange={(e: IDate) => {
-          setDate({
+          setDate?.({
             from: e.from,
             to: moment(e.to).locale("fa").clone().endOf("day").valueOf(),
           });
-          setZone("manual");
-          setStep(ESteps.manual);
+          setZone?.("manual");
+          setStep?.(ESteps.manual);
         }}
         model={model}
         locale={locale}

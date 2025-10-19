@@ -1,17 +1,29 @@
-import React, { useEffect, useRef, useState } from "react";
-import style from "../../main.module.css";
-import moment from "moment-jalaali";
+import React, {
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
+import { createPortal } from 'react-dom';
 
-import { Footer } from "../core/footer";
-import { getTimestamp, toPersianDigits } from "../core/helper";
-import type { IDate, IDateProps } from "../core/type";
-import { useRenderPosition } from "../exportComponents/useRenderPosition";
-import { CalenderIcon } from "../icons/CalenderIcon";
-import { DatePicker } from "../persianDatePicker";
-import { DesktopTimePicker } from "./desktopTimePicker";
-import { Mask } from "../exportComponents/mask";
-import { createPortal } from "react-dom";
-import styles from "../../main.module.css";
+import moment from 'moment-jalaali';
+
+import style from '../../main.module.css';
+import styles from '../../main.module.css';
+import { Footer } from '../core/footer';
+import {
+  getTimestamp,
+  toPersianDigits,
+} from '../core/helper';
+import type {
+  IDate,
+  IDateProps,
+} from '../core/type';
+import { Mask } from '../exportComponents/mask';
+import { useRenderPosition } from '../exportComponents/useRenderPosition';
+import { CalenderIcon } from '../icons/CalenderIcon';
+import { DatePicker } from '../persianDatePicker';
+import { DesktopTimePicker } from './desktopTimePicker';
+
 export function DesktopDatePicker({ ...props }: IDateProps) {
   const {
     locale = "fa",
@@ -127,7 +139,7 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
         ref={buttonRef as React.RefObject<HTMLButtonElement>}
         onClick={handleDropdown}
         type="button"
-        className={`${styles.flex} ${styles.justify_between} ${styles.items_center} ${styles.gap_1} ${styles.px_2}   ${styles.rounded_md} ${styles.h_9}   ${style.xs_w_40}
+        className={`${styles.flex} ${styles.justify_between} ${styles.items_center} ${styles.gap_1} ${styles.px_2}   ${styles.rounded_md} ${styles.h_9}   ${style.xs_w_40} ${showTime && style.xs_w_52} ${style.overflow_hidden} ${style.border_none} 
   ${style.w_full}  ${className}`}
         style={{
           ...Style,

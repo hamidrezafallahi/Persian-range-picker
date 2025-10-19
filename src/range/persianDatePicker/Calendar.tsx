@@ -1,19 +1,28 @@
-import type { FC, ReactNode, RefObject } from "react";
-import { memo, useCallback, useState } from "react";
-import style from "../../main.module.css";
-import jmoment from "moment-jalaali";
+import type {
+  FC,
+  ReactNode,
+  RefObject,
+} from 'react';
+import {
+  memo,
+  useCallback,
+  useState,
+} from 'react';
 
-import type { TLocale } from "../core/type";
-import DataPickerBody from "./dataPickerBody";
-import DatePickerHeader from "./datePickerHeader";
-import { CalendarViews } from "./enum";
+import jmoment from 'moment-jalaali';
+
+import style from '../../main.module.css';
+import type { TLocale } from '../core/type';
+import DataPickerBody from './dataPickerBody';
+import DatePickerHeader from './datePickerHeader';
+import { CalendarViews } from './enum';
 import {
   getFirstDayIndexInMonth,
   getNumberOfDays,
   isEqualDays,
-} from "./helper";
-import MonthPicker from "./monthPicker";
-import YearPicker from "./yearPicker";
+} from './helper';
+import MonthPicker from './monthPicker';
+import YearPicker from './yearPicker';
 
 const todayTimestamp = new Date().setHours(0, 0, 0, 0);
 const today = jmoment();
@@ -63,7 +72,7 @@ const Calendar: FC<Props> = ({
   primaryColor = "#000",
   backgroundColor = "#fff ",
   tertiaryColor = "#939393",
-  highlightColor = "#f4f4f4",
+  highlightColor = "#cacaca",
   secondaryColor = "#585858",
   datePickerBodyClassName = "",
   yearPickerClassName = "",
@@ -363,7 +372,7 @@ const Calendar: FC<Props> = ({
                   ? backgroundColor
                   : tertiaryColor,
               borderColor: isToday ? secondaryColor : "",
-              borderWidth: isToday ? "2px" : "",
+              borderWidth: isToday ? "2px" : "0",
 
               background:
                 isToDate || isFromDate
@@ -417,7 +426,6 @@ const Calendar: FC<Props> = ({
           ${style.grid_cols_7}
           ${style.justify_between}
           ${style.gap_x_2}
-          ${style.w_full}
           ${style.p_2}
         `}
           dir={locale === "fa" ? "rtl" : "ltr"}

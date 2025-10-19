@@ -96,12 +96,12 @@ function PeriodList({ ...props }: IBaseProps) {
     },
   ];
   const timeHandler = (item: ITimeSections) => {
-    setStep(item.step);
-    setDate(item.value);
-    setZone(item.timeZone);
-    setActiveCompareStep(null);
-    setCompareDate(null);
-    setCounter(0);
+    setStep?.(item.step);
+    setDate?.(item.value);
+    setZone?.(item.timeZone);
+    setActiveCompareStep?.(null);
+    setCompareDate?.(null);
+    setCounter?.(0);
     onChange?.({ type: "date", Data: item.value });
   };
   const filteredPeriod = period.filter(
@@ -110,17 +110,17 @@ function PeriodList({ ...props }: IBaseProps) {
       (item.step == ESteps.season && componentStep == ESteps.month)
   );
   const switchHandler = () => {
-    setStep(filteredPeriod[0].step);
-    setDate(filteredPeriod[0].value);
-    setZone(filteredPeriod[0].timeZone);
-    setActiveCompareStep(null);
-    setCounter(0);
+    setStep?.(filteredPeriod[0].step);
+    setDate?.(filteredPeriod[0].value);
+    setZone?.(filteredPeriod[0].timeZone);
+    setActiveCompareStep?.(null);
+    setCounter?.(0);
   };
 
   return (
     <>
       {filteredPeriod.map((item, index) => {
-        const active = date.from == item.value.from && date.to == item.value.to;
+        const active = date!.from == item.value.from && date!.to == item.value.to;
         const stringDateFrom = new Date(item.value.from).toLocaleDateString(
           `${locale == "fa" ? "fa-IR" : "en-UK"}`,
           {
@@ -142,8 +142,12 @@ function PeriodList({ ...props }: IBaseProps) {
             key={index}
             onClick={() => timeHandler(item)}
             type="button"
+ 
             className={`
+              ${style.border_none}
+              ${style.py_2}
               ${style.relative}
+              ${style.rounded_md}
               ${style.flex}
               ${style.flex_col}
               ${style.items_start}
@@ -158,6 +162,7 @@ function PeriodList({ ...props }: IBaseProps) {
             </div>
             <div
               style={{
+               
                 color: active ? neutralColor : tertiaryColor,
                 fontSize: "0.75rem",
               }}

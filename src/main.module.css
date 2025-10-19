@@ -52,36 +52,22 @@
   border-radius: 50%;
 }
 
+/* ==================== SCROLLBAR ==================== */
+.rprp_scrollbar::-webkit-scrollbar {
+  width: 5px !important;
+  height: 5px !important;
+}
 
-/* ==================== BUTTONS & INPUTS ==================== */
-button,
-[role="button"],
-select {
-  text-transform: none;
-  cursor: pointer;
+.rprp_scrollbar::-webkit-scrollbar-track {
+  background-color: #ecedf2 !important;
+  border-radius: 10px !important;
 }
-button,
-input[type="button"],
-input[type="reset"],
-input[type="submit"] {
-  -webkit-appearance: button;
-  background-color: transparent;
-  background-image: none;
+
+.rprp_scrollbar::-webkit-scrollbar-thumb {
+  background: #d9d9d9 !important;
+  border-radius: 10px !important;
 }
-button {
-  background: none;
-  border: none;
-}
-input {
-  outline: none;
-  box-shadow: none;
-  border: none;
-}
-input:focus {
-  outline: none;
-  box-shadow: none;
-  border: none;
-}
+
 
 /* ==================== BACKGROUND COLORS ==================== */
 .bg_red_100 {
@@ -226,6 +212,9 @@ input:focus {
 .top_0 {
   top: 0;
 }
+.top_3 {
+  top: 0.75rem;
+}
 .right_0 {
   right: 0;
 }
@@ -348,7 +337,7 @@ input:focus {
   width: 2rem;
 }
 .w_20 {
-  width: 5rem;
+  width: 5rem !important;
 }
 .w_28 {
   width: 7rem;
@@ -804,19 +793,7 @@ input:focus {
   direction: rtl;
 }
 
-/* ==================== SCROLLBAR ==================== */
-*::-webkit-scrollbar {
-  width: 5px !important;
-  height: 5px !important;
-}
-*::-webkit-scrollbar-track {
-  background-color: #ecedf2 !important;
-  border-radius: 10px !important;
-}
-*::-webkit-scrollbar-thumb {
-  background: #d9d9d9 !important;
-  border-radius: 10px !important;
-}
+
 
 /* ==================== MISC ==================== */
 
@@ -848,11 +825,13 @@ input:focus {
   .xs_w_40 {
     width: 160px;
   }
+  .xs_w_52 {
+    width: 208px;
+  }
 
   .xs_w_fit {
     width: fit-content !important;
   }
-
   .\!border_b {
     border-bottom: 1px solid #eee !important;
   }
@@ -944,16 +923,22 @@ input:focus {
   .xs_gap_3 {
     gap: 0.75rem;
   }
+  .xs_p_2 {
+    padding:0.5rem
+  }
+  .xs_block {
+    display:block
+  }
+
 }
 
 /* ==================== GLOBAL ==================== */
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
+
 .w_500 {
   width: 500px;
+}
+.hidden {
+  display:none;
 }
 .cursor_not_allowed {
   cursor: not-allowed;
@@ -974,9 +959,7 @@ input:focus {
   color: #fff !important;
 }
 /* /////////// Landing page style ////////// */
-* {
-  margin: 0;
-}
+
 .boxsRender {
   margin-top: 14rem;
   background-color: red;

@@ -1,7 +1,10 @@
-import { period } from "../core/helper";
-import type { IBaseProps, ITimeSections } from "../core/type";
-import { TickIcon } from "../icons/TickIcon";
-import style from "../../main.module.css";
+import style from '../../main.module.css';
+import { period } from '../core/helper';
+import type {
+  IBaseProps,
+  ITimeSections,
+} from '../core/type';
+import { TickIcon } from '../icons/TickIcon';
 
 const CompareList = ({ ...props }: IBaseProps) => {
   const {
@@ -18,10 +21,10 @@ const CompareList = ({ ...props }: IBaseProps) => {
   } = props;
 
   const timeHandler = (item: ITimeSections) => {
-    setCompareDate(item.value);
-    setActiveCompareStep(item.step);
+    setCompareDate?.(item.value);
+    setActiveCompareStep?.(item.step);
   };
-  const templatePeriods = period(date, locale, zone);
+  const templatePeriods = period(date!, locale, zone!);
 
   const filteredPeriod = templatePeriods.filter(
     (item) =>
@@ -69,9 +72,11 @@ const CompareList = ({ ...props }: IBaseProps) => {
         return (
           <button
             key={index}
+
             type="button"
             onClick={() => timeHandler(item)}
-            className={`${style.relative} ${style.flex} ${style.flex_col}  ${
+            // style={{backgroundColor:"red"}}
+            className={`${style.relative} ${style.flex} ${style.flex_col} ${style.border_none} ${style.rounded_md} ${
               style.items_start
             }
             ${style.gap_y_2} ${style.pb_2} ${style.w_full} ${style.h_fit}

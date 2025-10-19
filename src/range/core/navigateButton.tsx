@@ -18,20 +18,20 @@ import type {
 import { ESteps } from './type';
 
 interface INavigationProps {
-  step: IBaseProps["step"];
-  zone: IBaseProps["zone"];
-  setDate: IBaseProps["setDate"];
-  counter: IBaseProps["counter"];
-  setCounter: IBaseProps["setCounter"];
-  setCompareDate: IBaseProps["setCompareDate"];
-  date: IBaseProps["date"];
-  compareDate: IBaseProps["compareDate"];
-  setActiveCompareStep: IBaseProps["setActiveCompareStep"];
-  activeCompareStep: IBaseProps["activeCompareStep"];
-  setTabKey: IBaseProps["setTabKey"];
-  setStep: IBaseProps["setStep"];
-  setZone: IBaseProps["setZone"];
-  locale: IBaseProps["locale"];
+  step?: IBaseProps["step"];
+  zone?: IBaseProps["zone"];
+  setDate?: IBaseProps["setDate"];
+  counter?: IBaseProps["counter"];
+  setCounter?: IBaseProps["setCounter"];
+  setCompareDate?: IBaseProps["setCompareDate"];
+  date?: IBaseProps["date"];
+  compareDate?: IBaseProps["compareDate"];
+  setActiveCompareStep?: IBaseProps["setActiveCompareStep"];
+  activeCompareStep?: IBaseProps["activeCompareStep"];
+  setTabKey?: IBaseProps["setTabKey"];
+  setStep?: IBaseProps["setStep"];
+  setZone?: IBaseProps["setZone"];
+  locale?: IBaseProps["locale"];
 }
 function NavigateButton({ ...props }: INavigationProps) {
   const {
@@ -49,14 +49,14 @@ function NavigateButton({ ...props }: INavigationProps) {
   const [dir, setDir] = useState<"ltr" | "rtl">("ltr");
   const stepChangeHandler = (phase: "increment" | "decrement") => {
     if (phase == "increment") {
-      if (counter < 0) {
-        const { from, to } = calculateDate(step, zone, counter + 1, locale);
-        setDate({ from, to });
-        setCounter((prev) => (prev += 1));
+      if (counter! < 0) {
+        const { from, to } = calculateDate(step!, zone!, counter! + 1, locale);
+        setDate?.({ from, to });
+        setCounter?.((prev) => (prev += 1));
         const templatePeriods = period(
-          calculateDate(step, zone, counter + 1, locale),
+          calculateDate(step!, zone!, counter! + 1, locale),
           locale,
-          zone
+          zone!
         );
         templatePeriods.map((item) => {
           const active = item.step == activeCompareStep;
@@ -66,17 +66,17 @@ function NavigateButton({ ...props }: INavigationProps) {
             compareDate.from !== item.value.from &&
             compareDate.to !== item.value.to
           ) {
-            setCompareDate(item.value);
+            setCompareDate?.(item.value);
           }
         });
       }
     } else if (phase == "decrement") {
-      setDate(calculateDate(step, zone, counter - 1, locale));
+      setDate?.(calculateDate(step!, zone!, counter! - 1, locale));
 
       const templatePeriods = period(
-        calculateDate(step, zone, counter - 1, locale),
+        calculateDate(step!, zone!, counter! - 1, locale),
         locale,
-        zone
+        zone!
       );
       templatePeriods.map((item) => {
         const active = item.step == activeCompareStep;
@@ -86,15 +86,15 @@ function NavigateButton({ ...props }: INavigationProps) {
           compareDate.from !== item.value.from &&
           compareDate.to !== item.value.to
         ) {
-          setCompareDate(item.value);
+          setCompareDate?.(item.value);
         }
       });
 
-      setCounter((prev) => (prev -= 1));
+      setCounter?.((prev) => (prev -= 1));
     }
   };
   useEffect(() => {
-    setCounter(0);
+    setCounter?.(0);
   }, [zone]);
 
   useEffect(() => {
@@ -108,7 +108,7 @@ function NavigateButton({ ...props }: INavigationProps) {
     
     >
       <button
-        className={`${style.px_1} ${style.xs_border} ${style.rounded_md} ${style.bg_white}`}
+        className={`${style.px_1} ${style.border_none} ${style.xs_border} ${style.rounded_md} ${style.bg_white}`}
         disabled={step == ESteps.manual}
         type="button"
         onClick={() => {
@@ -118,7 +118,7 @@ function NavigateButton({ ...props }: INavigationProps) {
          <LeftChevron />
       </button>
       <button
-        className={`${style.px_1} ${style.xs_border} ${style.rounded_md} ${style.bg_white}`}
+        className={`${style.px_1} ${style.border_none} ${style.xs_border} ${style.rounded_md} ${style.bg_white} `}
         disabled={step == ESteps.manual}
         type="button"
         onClick={() => {

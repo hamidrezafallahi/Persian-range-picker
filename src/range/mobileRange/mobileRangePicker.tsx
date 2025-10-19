@@ -36,6 +36,8 @@ export function MobileRangePicker(props: IRangeProps) {
     className,
     device,
     disabled,
+     tertiaryColor = "#939393",
+    highlightColor = "#f4f4f4"
   } = props;
 
   const locale = calendarType == "shamsi" ? "fa" : "en";
@@ -91,13 +93,23 @@ export function MobileRangePicker(props: IRangeProps) {
         onClick={() => setOpen(true)}
         className={`
           ${style.flex}
-          ${style.justify_center}
+          ${style.justify_between}
           ${style.items_center}
           ${style.gap_2}
-          ${style.w_full}
-          ${style.sm_w_fit}
+          ${style.px_1}
+          ${style.h_9}
+           ${style.rounded_md}
+           ${style.border_none}
+          
+          ${style.w_full}      
           ${disabled ? style.cursor_not_allowed : ""}
+          ${className}
         `}
+        style={{
+          color: tertiaryColor,
+          backgroundColor: highlightColor,
+          width: "100%",
+        }}
       >
         <CalenderIcon />
         <div
@@ -166,6 +178,8 @@ export function MobileRangePicker(props: IRangeProps) {
                   ${style.justify_center}
                   ${style.items_center}
                   ${style.gap_2}
+                  ${style.border_none}
+                  ${style.rounded_md}
                   ${style.font_IRANSans}
                   ${style.font_extrabold}
                   ${style.text_base}

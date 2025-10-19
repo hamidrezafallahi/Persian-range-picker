@@ -1,13 +1,20 @@
-import { useEffect, useState } from "react";
-import style from "../../main.module.css";
+import {
+  useEffect,
+  useState,
+} from 'react';
 
+import style from '../../main.module.css';
 // import { CustomSwitch } from "@components/atoms/defaultElements";
-import { stepToTimeIndex, time } from "../core/helper";
-import type { IBaseProps } from "../core/type";
-import { ESteps } from "../core/type";
-import CompareList from "./CompareList";
-import CustomSwitch from "./customSwitch/customSwitch";
-import ManualCompare from "./manualCompare";
+import {
+  stepToTimeIndex,
+  time,
+} from '../core/helper';
+import type { IBaseProps } from '../core/type';
+import { ESteps } from '../core/type';
+import CompareList from './CompareList';
+import CustomSwitch from './customSwitch/customSwitch';
+import ManualCompare from './manualCompare';
+
 interface IProps extends IBaseProps {
   switchHandler: () => void;
 }
@@ -26,7 +33,7 @@ function Comparison({ ...props }: IProps) {
     setShowCompare(!showCompare);
 
     if (showCompare) {
-      setActiveCompareStep(366);
+      setActiveCompareStep?.(366);
     } else {
       switchHandler();
     }
@@ -35,7 +42,7 @@ function Comparison({ ...props }: IProps) {
   useEffect(() => {
     const flag =
       time[stepToTimeIndex[componentStep]].toLowerCase() ==
-      time[stepToTimeIndex[step]].toLowerCase();
+      time[stepToTimeIndex[step!]].toLowerCase();
     setShowCompare(flag);
   }, [step, componentStep]);
 

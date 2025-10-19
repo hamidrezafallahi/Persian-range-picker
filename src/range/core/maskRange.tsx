@@ -57,6 +57,7 @@ function MaskRange({ ...props }: IProps) {
         onMaskChange={(e) => handleChange(e as number, "from")}
         defaultValue={date.from}
         maskClassName={`
+          ${style.w_20}  
           ${style.xs_w_28} 
           ${error === "from" ? style.border_red_100 : ""}
         `}
@@ -64,13 +65,15 @@ function MaskRange({ ...props }: IProps) {
         suffix={false}
         exportType="timeStamp"
       />
-      {"_"}
+      <div className={`${style.hidden} ${style.xs_block}`}>
+        {"_"}
+        </div>
       <Mask
         {...props}
         onMaskChange={(e) => handleChange(e as number, "to")}
         defaultValue={date.to}
         maskClassName={`
- 
+          ${style.w_20} 
           ${style.xs_w_28} 
           ${error === "from" ? style.border_red_100 : ""}
         `}
