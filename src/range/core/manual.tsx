@@ -24,12 +24,16 @@ const Manual = (props: IBaseProps) => {
     showComparison = true,
     monthPickerClassName,
     model,
+ 
     // secondaryColor,
     // tertiaryColor,
     // dangerColor,
     // InputHandleChange,
   } = props;
+ 
+
   const switchHandler = () => {};
+ 
 
   return (
     <div
@@ -78,6 +82,7 @@ const Manual = (props: IBaseProps) => {
         }}
         model={model}
         locale={locale}
+
       />
 
       {showComparison && (

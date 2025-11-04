@@ -1,8 +1,13 @@
-import type { AcceptableDateValue, IDateProps } from "../../core/type";
-import { DesktopDatePicker } from "../../desktopDate/desktopDatePicker";
-import { MobileDate } from "../../mobileDate/mobileDatePicker";
-import moment from "moment-jalaali";
-import { getTimestamp } from "../../core/helper";
+import moment from 'moment-jalaali';
+
+import { getTimestamp } from '../../core/helper';
+import type {
+  AcceptableDateValue,
+  IDateProps,
+} from '../../core/type';
+import { DesktopDatePicker } from '../../desktopDate/desktopDatePicker';
+import { MobileDate } from '../../mobileDate/mobileDatePicker';
+
 type CustomDateProps = Omit<IDateProps, "defaultValue" | "locale"> & {
   defaultValue?: AcceptableDateValue;
 };
@@ -17,6 +22,7 @@ export function DatePicker({ ...props }: CustomDateProps) {
   const { calendarType = "shamsi", defaultValue } = props;
   const locale = calendarType == "shamsi" ? "fa" : "en";
   const changeHandler = (e: number | string) => {
+    console.log(e,exportType)
     if (!e) return;
     onChange?.(
       exportType == "timeStamp"
@@ -26,6 +32,7 @@ export function DatePicker({ ...props }: CustomDateProps) {
         : moment.utc(e).format("YYYY-MM-DDTHH:mm:ss.SSSZ")
     );
   };
+  
   return (
     <>
       {deviceType == "desktop" ? (
@@ -34,11 +41,13 @@ export function DatePicker({ ...props }: CustomDateProps) {
           locale={locale}
           onChange={changeHandler}
           defaultValue={getTimestamp(defaultValue)}
+ 
         />
       ) : (
         <MobileDate
           {...props}
           locale={locale}
+          onChange={changeHandler}
           defaultValue={getTimestamp(defaultValue)}
         />
       )}

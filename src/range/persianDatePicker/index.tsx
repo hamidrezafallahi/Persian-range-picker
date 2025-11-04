@@ -1,13 +1,20 @@
-import { useEffect, useMemo, useState } from "react";
+import {
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 
-import moment from "moment-jalaali";
+import moment from 'moment-jalaali';
 
-import type { IDate } from "../core/type";
-import Calendar from "./Calendar";
-import type { IProps } from "./type";
+import type { IDate } from '../core/type';
+import Calendar from './Calendar';
+import type { IProps } from './type';
 
 export const DatePicker = ({ ...props }: IProps) => {
   const { locale = "fa", dateFromOutside, onDateChange } = props;
+  
+
+
 
   const initDate: IDate = useMemo(() => {
     return {
@@ -37,6 +44,7 @@ export const DatePicker = ({ ...props }: IProps) => {
         .startOf("day")
         .valueOf()}
       endDate={moment(date?.to).locale(locale).clone().startOf("day").valueOf()}
+      
     />
   );
 };

@@ -43,7 +43,9 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
     disabled = false,
     Style,
     exportType = "IsoString",
+    
   } = props;
+ 
   const dynamicFormat = showSecond ? showTimeFormat : "HH:mm";
   const [showDate, setShowDate] = useState<number>(0);
   const [isOpen, setIsOpen] = useState(isOpenDropdown);
@@ -217,6 +219,7 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
                 defaultValue={
                   defaultValue ? { from: defaultValue, to: 0 } : undefined
                 }
+
               />
               {showTime && (
                 <div

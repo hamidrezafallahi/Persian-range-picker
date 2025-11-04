@@ -136,7 +136,7 @@ export function DesktopRangePicker(props: IRangeProps) {
           handleSubmit({ type, Data: { customData } });
         }
       }
-      setShowDate({ date:date!, compareDate, Data: customData });
+      setShowDate({ date: date!, compareDate, Data: customData });
       setOpen?.(false);
     }
   };
@@ -206,7 +206,7 @@ export function DesktopRangePicker(props: IRangeProps) {
   }, [customData]);
   useEffect(() => {
     setShowDate({
-      date:date!,
+      date: date!,
       compareDate,
       Data: null,
     });
@@ -259,7 +259,7 @@ export function DesktopRangePicker(props: IRangeProps) {
           <DownTriangle />
         </button>
         {zone !== "manual" && isShowNavigationButton && (
-          <NavigateButton {...props}  locale={locale} />
+          <NavigateButton {...props} locale={locale} />
         )}
       </div>
       {open &&

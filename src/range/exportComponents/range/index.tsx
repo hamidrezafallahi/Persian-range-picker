@@ -1,23 +1,32 @@
-import { useEffect, useState } from "react";
-import moment from "moment-jalaali";
+import {
+  useEffect,
+  useState,
+} from 'react';
+
+import moment from 'moment-jalaali';
+
+import {
+  getTimestamp,
+  getTimestampByFallBack,
+} from '../../core/helper';
 import type {
+  AcceptableDateValue,
   ESteps,
   IDate,
+  IRangePickerProps,
   ITime,
   ITimeZone,
-  IRangePickerProps,
-  AcceptableDateValue,
-} from "../../core/type";
-import { DatePicker } from "../datePicker";
-import { Range } from "./range";
-import { getTimestamp, getTimestampByFallBack } from "../../core/helper";
+} from '../../core/type';
+import { DatePicker } from '../datePicker';
+import { RangePicker } from './rangePicker';
+
 type CustomRangePickerProps = Omit<
   IRangePickerProps,
   "defaultValue" | "locale"
 > & {
   defaultValue?: { from: AcceptableDateValue; to: AcceptableDateValue };
 };
-export function RangePicker({ ...props }: CustomRangePickerProps) {
+export function Range({ ...props }: CustomRangePickerProps) {
   const {
     model = "range",
     additionalElement,
@@ -26,6 +35,8 @@ export function RangePicker({ ...props }: CustomRangePickerProps) {
     // isOpenDropdown = false,
     onChange,
   } = props;
+ 
+
   const locale = calendarType == "shamsi" ? "fa" : "en";
   const [date, setDate] = useState<IDate>({
     from:
@@ -77,7 +88,7 @@ export function RangePicker({ ...props }: CustomRangePickerProps) {
           onChange={handleChangeDateToRange}
         />
       ) : (
-        <Range
+        <RangePicker
           {...props}
           step={step}
           counter={counter}

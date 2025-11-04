@@ -39,4 +39,5 @@ export interface IProps {
   secondaryColor?: string;
   neutralColor?: string;
   calendarBaseWidth?: number;
+ 
 }

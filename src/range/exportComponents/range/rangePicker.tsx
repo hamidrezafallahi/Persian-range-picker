@@ -1,18 +1,19 @@
-import { useState } from "react";
+import { useState } from 'react';
 
-import moment from "moment-jalaali";
+import moment from 'moment-jalaali';
 
 import type {
   ESteps,
-  IRangeProps,
   IDate,
+  IRangeProps,
   ITime,
   ITimeZone,
-} from "../../core/type";
-import { DesktopRangePicker } from "../../desktopRange/desktopRangePicker";
-import { MobileRangePicker } from "../../mobileRange/mobileRangePicker";
+} from '../../core/type';
+import { DesktopRangePicker } from '../../desktopRange/desktopRangePicker';
+import { MobileRangePicker } from '../../mobileRange/mobileRangePicker';
 
-export function Range({ ...props }: IRangeProps) {
+export function RangePicker({ ...props }: IRangeProps) {
+
   const deviceType =
     /Mobile|Android|iPhone|iPad|iPod|Opera Mini|BlackBerry|IEMobile/i.test(
       navigator.userAgent
@@ -24,6 +25,8 @@ export function Range({ ...props }: IRangeProps) {
     additionalElement,
     calendarType = "shamsi",
   } = props;
+
+
   const locale = calendarType == "shamsi" ? "fa" : "en";
   const [date, setDate] = useState<IDate>({
     from:

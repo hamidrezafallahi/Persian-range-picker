@@ -12,7 +12,7 @@ import {
 } from '../../core/type';
 import { DatePicker } from '../../persianDatePicker';
 
-function Calendar({
+export function Calendar({
     locale = "fa",
     model= "date",
     ...props}:CalendarProps) {
@@ -69,4 +69,4 @@ const defaultDate: IDate = (() => {
   )
 }
 
-export default Calendar
+ 

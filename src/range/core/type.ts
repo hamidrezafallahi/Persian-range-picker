@@ -68,11 +68,11 @@ export type AcceptableDateValue = number | Date | string;
 
 export interface IDateProps
   extends IColorProps,
-    IClassNameProps,
-    ITimeSettings,
-    ITimePickerProps,
-    IMaskProps,
-    IDeviceLocale {
+  IClassNameProps,
+  ITimeSettings,
+  ITimePickerProps,
+  IMaskProps,
+  IDeviceLocale {
   calendarType?: "shamsi" | "gregorian";
   defaultValue?: number | Date;
   showMask?: boolean;
@@ -84,6 +84,16 @@ export interface IDateProps
   isOpenDropdown?: boolean;
   disabled?: boolean;
   Style?: React.CSSProperties;
+  disablePreviousDays?: boolean
+   specialDays?: number[];
+  disabledDays?: number[];
+  renderDayContent?: (info: {
+    day: moment.Moment;
+    timestamp: number;
+    isSpecial: boolean;
+    locale: TLocale;
+  }) => ReactNode;
+
 }
 
 export interface IColorProps {
@@ -130,10 +140,10 @@ export interface IDeviceLocale {
 
 export interface RangeProps
   extends IRangeOptions,
-    Omit<
-      IRangeProps,
-      "defaultValue" | "onChange" | "calendarType" | "device" | "isOpenDropdown"
-    > {
+  Omit<
+    IRangeProps,
+    "defaultValue" | "onChange" | "calendarType" | "device" | "isOpenDropdown"
+  > {
   defaultValue?: IDate;
   onChange?: (e: HandleParams) => void;
   calendarType?: "shamsi" | "gregorian";
@@ -182,6 +192,7 @@ export interface IBaseProps extends IRangeOptions, IDeviceLocale {
   setType?: Dispatch<SetStateAction<string>>;
   activeTable?: "Day" | "Week" | "Month" | "Year" | "manual";
   disabled?: boolean;
+  disablePreviousDays?: boolean
 }
 
 export interface ITimeSections {
@@ -202,8 +213,8 @@ export interface IRangeProps extends IBaseProps, IDeviceLocale {
 
 export interface IMobileProps
   extends IColorProps,
-    ITimeSettings,
-    IDeviceLocale {
+  ITimeSettings,
+  IDeviceLocale {
   onChange?: (e: HandleParams) => void;
   defaultValue?: IDate;
   chooseTodayClassName?: string;
@@ -211,7 +222,7 @@ export interface IMobileProps
 
 export interface IMaskProps
   extends Pick<IColorProps, "tertiaryColor" | "highlightColor">,
-    Pick<IClassNameProps, "maskClassName" | "className"> {
+  Pick<IClassNameProps, "maskClassName" | "className"> {
   defaultValue?: IDate["from"];
   onError?: (e: string) => void;
   onMaskChange?: (e: IDate["from"] | number | string | null) => void;
@@ -232,7 +243,7 @@ export interface IMaskProps
   isTodaySelectPreset?: boolean;
   exportType?: ExportType;
   Style?: React.CSSProperties;
- 
+
 }
 
 export interface ITimePickerProps extends IClassNameProps {
@@ -266,8 +277,8 @@ export interface ISubmittedData {
 }
 export interface IRangePickerProps
   extends Omit<IRangeOptions, "defaultValue" | "onChange">,
-    Omit<IDateProps, "defaultValue" | "onChange">,
-    IDeviceLocale {
+  Omit<IDateProps, "defaultValue" | "onChange">,
+  IDeviceLocale {
   handleSubmit?: RangeProps["handleSubmit"];
   handleReject?: RangeProps["handleReject"];
   label?: boolean | ReactNode | string;
@@ -284,12 +295,20 @@ export interface IRangePickerProps
   defaultValue?: IDate;
   onChange?: (e: HandleParams) => void;
 }
-export interface IDatePickerProps extends Omit<IDateProps, "locale"> {}
+export interface IDatePickerProps extends Omit<IDateProps, "locale"> { }
 
 
 
 
-export interface CalendarProps extends Omit<IProps, "dateFromOutside"|"locale"> {
+export interface CalendarProps extends Omit<IProps, "dateFromOutside" | "locale"> {
   dateFromOutside?: IDate;
-  locale?:TLocale
+  locale?: TLocale
+  specialDays?: number[];
+  disabledDays?: number[];
+  renderDayContent?: (info: {
+    day: moment.Moment;
+    timestamp: number;
+    isSpecial: boolean;
+    locale: TLocale;
+  }) => ReactNode;
 }

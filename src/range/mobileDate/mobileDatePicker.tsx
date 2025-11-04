@@ -24,6 +24,8 @@ import { DatePicker } from '../persianDatePicker';
 
 export function MobileDate({ ...props }: IDateProps) {
   const {
+
+    exportType = "IsoString",
     onChange,
     defaultValue,
     locale = "fa",
@@ -78,13 +80,27 @@ export function MobileDate({ ...props }: IDateProps) {
       setContent("Time");
     } else {
       setShowDate(getTimestamp(e.from) ?? 0);
+ if (exportType == "IsoString") {
+      onChange?.(new Date(getTimestamp(e.from) ?? 0).toISOString());
+    } else {
       onChange?.(getTimestamp(e.from) ?? 0);
+    }
+     
+
+
+
+
       setOpen(false);
     }
   };
 
   const handleSubmit = () => {
-    onChange?.(showDate);
+ if (exportType == "IsoString") {
+      onChange?.(new Date(showDate).toISOString());
+    } else {
+      onChange?.(showDate);
+    }
+
     setContent("Date");
     setOpen(false);
   };

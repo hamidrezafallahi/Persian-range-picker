@@ -1,10 +1,8 @@
-import type {
+import {
   FC,
+  memo,
   ReactNode,
   RefObject,
-} from 'react';
-import {
-  memo,
   useCallback,
   useState,
 } from 'react';
@@ -26,37 +24,49 @@ import YearPicker from './yearPicker';
 
 const todayTimestamp = new Date().setHours(0, 0, 0, 0);
 const today = jmoment();
+
 interface Props {
   manualContainerRef?: RefObject<HTMLDivElement | null>;
-  primaryColor?: string;
-  backgroundColor?: string;
-  highlightColor?: string;
-  secondaryColor?: string;
-  accentColor?: string;
-  tertiaryColor?: string;
-  onChange: (startDate: number | null, endDate: number | null) => void;
+  onChange: (start: number | null, end: number | null) => void;
+  // Display & behavior
   model?: "range" | "date";
-  startDate?: number;
-  endDate?: number;
   locale?: TLocale;
   disablePreviousDays?: boolean;
+  // Custom render
   renderDayFn?: (
     day: { timestamp: number; currentMonth: boolean },
     index: number
   ) => ReactNode;
+  renderDayContent?: (info: {
+    day: jmoment.Moment;
+    timestamp: number;
+    isSpecial: boolean;
+    locale: TLocale;
+  }) => ReactNode;
+
+  // State
+  startDate?: number;
+  endDate?: number;
+  specialDays?: number[];
+  disabledDays?: number[];
+
+  // Styles
+  primaryColor?: string;
+  backgroundColor?: string;
+  highlightColor?: string;
+  secondaryColor?: string;
+  tertiaryColor?: string;
   calendarBaseWidth?: number;
   containerClassName?: string;
-  calenderClassName?: string;
+  datePickerHeaderClassName?: string;
   datePickerBodyClassName?: string;
   yearPickerClassName?: string;
-  datePickerHeaderClassName?: string;
-  chooseTodayClassName?: string;
 }
 
 interface State {
   year: number;
   month: number;
-  hoveredDay: null | number;
+  hoveredDay: number | null;
 }
 
 const Calendar: FC<Props> = ({
@@ -67,463 +77,339 @@ const Calendar: FC<Props> = ({
   locale = "en",
   disablePreviousDays = false,
   renderDayFn,
+  renderDayContent,
+  specialDays = [],
+  disabledDays = [],
   calendarBaseWidth,
-  containerClassName,
-  primaryColor = "#000",
-  backgroundColor = "#fff ",
-  tertiaryColor = "#939393",
-  highlightColor = "#cacaca",
-  secondaryColor = "#585858",
+  containerClassName = "",
+  datePickerHeaderClassName = "",
   datePickerBodyClassName = "",
   yearPickerClassName = "",
-  datePickerHeaderClassName = "",
+  primaryColor = "#000",
+  backgroundColor = "#fff",
+  highlightColor = "#cacaca",
+  secondaryColor = "#585858",
+  tertiaryColor = "#939393",
 }) => {
+  // -------------------------------
+  // STATE & VIEW MANAGEMENT
+  // -------------------------------
   const [state, setState] = useState<State>({
     year: locale === "fa" ? today.jYear() : today.year(),
     month: locale === "fa" ? today.jMonth() : today.month(),
     hoveredDay: null,
   });
+
   const [view, setView] = useState<CalendarViews>(CalendarViews.DAY);
-  const changeYearHandler = (year: number) => {
-    setState((prev) => ({ ...prev, year: year }));
+
+  // -------------------------------
+  // NAVIGATION HANDLERS
+  // -------------------------------
+  const changeView = useCallback((v: CalendarViews) => setView(v), []);
+  const changeYear = useCallback((y: number) => {
+    setState((prev) => ({ ...prev, year: y }));
     setView(CalendarViews.MONTH);
-  };
+  }, []);
 
-  const changeMonthHandler = (month: number) => {
-    setState((prev) => ({ ...prev, month }));
+  const changeMonth = useCallback((m: number) => {
+    setState((prev) => ({ ...prev, month: m }));
     setView(CalendarViews.DAY);
-  };
+  }, []);
 
-  const setMonth = (offset: 1 | -1): void => {
-    let year = state.year;
-    let month = state.month + offset;
-    if (month === -1) {
+  const shiftMonth = (offset: 1 | -1) => {
+    let { year, month } = state;
+    month += offset;
+
+    if (month < 0) {
       month = 11;
-      year = year - 1;
-    } else if (month === 12) {
+      year--;
+    } else if (month > 11) {
       month = 0;
-      year = year + 1;
+      year++;
     }
-    setState((prev) => {
-      return {
-        ...prev,
-        year,
-        month,
-      };
-    });
+    setState({ ...state, year, month });
   };
 
-  const setYear = (offset: 1 | -1) => {
+  const shiftYear = (offset: 1 | -1) =>
     setState((prev) => ({ ...prev, year: prev.year + offset }));
-  };
-  const setRange = (selectedDay: number): void => {
-    if (
-      startDate &&
-      endDate &&
-      startDate === endDate &&
-      startDate === selectedDay
-    ) {
-      setState((prev) => {
-        return {
-          ...prev,
-          hoveredDay: null,
-        };
-      });
-      onChange(null, null);
-      return;
-    }
-    if (startDate && endDate) {
-      setState((prev) => {
-        return {
-          ...prev,
-          selectedDay,
-          hoveredDay: selectedDay,
-        };
-      });
-      onChange(selectedDay, null);
-      return;
-    }
 
-    if (!startDate) {
-      setState((prev) => {
-        return {
-          ...prev,
-          hoveredDay: selectedDay,
-        };
-      });
-      onChange(selectedDay, null);
-    } else {
-      if (selectedDay > startDate) {
-        if (
-          endDate &&
-          Math.abs(selectedDay - startDate) < Math.abs(endDate - selectedDay)
-        ) {
-          setState((prev) => {
-            return {
-              ...prev,
-              selectedDay,
-              hoveredDay: selectedDay,
-            };
-          });
-          onChange(selectedDay, endDate);
-        } else if (startDate === selectedDay) {
-          setState((prev) => {
-            return {
-              ...prev,
-              selectedDay,
-              hoveredDay: selectedDay,
-            };
-          });
-          onChange(selectedDay, selectedDay);
-        } else {
-          setState((prev) => {
-            return {
-              ...prev,
-              hoveredDay: selectedDay,
-            };
-          });
-          onChange(startDate, selectedDay);
-        }
-      } else if (startDate > selectedDay) {
-        setState((prev) => {
-          return {
-            ...prev,
-            selectedDay,
-            hoveredDay: selectedDay,
-          };
-        });
-        onChange(selectedDay, 0);
-      } else if (startDate === selectedDay) {
-        setState((prev) => {
-          return {
-            ...prev,
-            selectedDay,
-            from: selectedDay,
-            to: selectedDay,
-            hoveredDay: selectedDay,
-          };
-        });
-        onChange(selectedDay, selectedDay);
+  // -------------------------------
+  // RANGE HANDLING
+  // -------------------------------
+  const handleRangeSelection = useCallback(
+    (day: number) => {
+      if (startDate && endDate && startDate === endDate && startDate === day) {
+        onChange(null, null);
+        setState((s) => ({ ...s, hoveredDay: null }));
+        return;
       }
-    }
-  };
-  const onDateClick = useCallback(
-    (timestamp: number) => {
-      if (model === "range") {
-        setRange(timestamp);
-      } else {
-        setState((prev) => {
-          return {
-            ...prev,
-            selectedDay: timestamp,
-            from: timestamp,
-            to: timestamp,
-            hoveredDay: timestamp,
-          };
-        });
-        onChange(timestamp, null);
+
+      if (!startDate) {
+        onChange(day, null);
+        setState((s) => ({ ...s, hoveredDay: day }));
+        return;
       }
+
+      if (startDate && !endDate) {
+        if (day > startDate) onChange(startDate, day);
+        else onChange(day, startDate);
+        setState((s) => ({ ...s, hoveredDay: day }));
+        return;
+      }
+
+      // Restart selection
+      onChange(day, null);
+      setState((s) => ({ ...s, hoveredDay: day }));
     },
-    [model, onChange, endDate, startDate]
+    [startDate, endDate, onChange]
   );
-  const changeViewHandler = (viewName: CalendarViews) => {
-    setView(viewName);
-  };
 
-  const getCalendarBlockDetails = (year: number, month: number) => {
-    const currentMonthDaysCount = getNumberOfDays(year, month, locale);
+  // -------------------------------
+  // DATE CLICK HANDLER
+  // -------------------------------
+  const handleDateClick = useCallback(
+    (timestamp: number) => {
+      if (model === "range") handleRangeSelection(timestamp);
+      else onChange(timestamp, null);
+    },
+    [model, handleRangeSelection, onChange]
+  );
 
-    const monthBlockArray: { timestamp: number; currentMonth: boolean }[] = [];
-    const offsetFromPrevMonth = getFirstDayIndexInMonth(year, month, locale);
-    const offsetFromNextMonth =
-      42 - currentMonthDaysCount - offsetFromPrevMonth;
-    if (offsetFromPrevMonth > 0) {
-      const prevMonthDaysCount =
-        month === 1
-          ? getNumberOfDays(year - 1, 12, locale)
-          : getNumberOfDays(year, month - 1, locale);
+  // -------------------------------
+  // CALENDAR DAYS GENERATOR
+  // -------------------------------
+  const getCalendarDays = (year: number, month: number) => {
+    const daysInMonth = getNumberOfDays(year, month, locale);
+    const days: { timestamp: number; currentMonth: boolean }[] = [];
 
-      for (let offset = 0; offset < offsetFromPrevMonth; offset++) {
-        const dateString = `${month === 0 ? year - 1 : year}/${
-          (month === 0 ? 11 : month - 1) + 1
-        }/${prevMonthDaysCount - offset}`;
+    const prevOffset = getFirstDayIndexInMonth(year, month, locale);
+    const nextOffset = 42 - daysInMonth - prevOffset;
 
+    // Previous month
+    if (prevOffset > 0) {
+      const prevMonth = month === 0 ? 11 : month - 1;
+      const prevYear = month === 0 ? year - 1 : year;
+      const prevDays = getNumberOfDays(prevYear, prevMonth, locale);
+
+      for (let i = prevOffset; i > 0; i--) {
         const date = new Date(
           locale === "fa"
-            ? jmoment(dateString, "jYYYY-jMM-jDD").format()
-            : dateString
+            ? jmoment(
+                `${prevYear}/${prevMonth + 1}/${prevDays - i + 1}`,
+                "jYYYY/jM/jD"
+              ).format()
+            : `${prevYear}/${prevMonth + 1}/${prevDays - i + 1}`
         );
-        monthBlockArray.push({
+        days.push({
           timestamp: date.setHours(0, 0, 0, 0),
           currentMonth: false,
         });
       }
     }
 
-    for (let day = 1; day <= currentMonthDaysCount; day++) {
-      const dateString = `${year}/${month + 1}/${day}`;
+    // Current month
+    for (let i = 1; i <= daysInMonth; i++) {
       const date = new Date(
         locale === "fa"
-          ? jmoment(dateString, "jYYYY-jMM-jDD").format()
-          : dateString
+          ? jmoment(`${year}/${month + 1}/${i}`, "jYYYY/jM/jD").format()
+          : `${year}/${month + 1}/${i}`
       );
-      monthBlockArray.push({
-        timestamp: date.setHours(0, 0, 0, 0),
-        currentMonth: true,
-      });
+      days.push({ timestamp: date.setHours(0, 0, 0, 0), currentMonth: true });
     }
 
-    //adding offset from next month to the current block
-    if (offsetFromNextMonth > 0) {
-      for (let offset = 1; offset <= offsetFromNextMonth; offset++) {
-        const dateString = `${month === 11 ? year + 1 : year}/${
-          month === 11 ? 12 : month + 1
-        }/${offset}`;
-        const date = new Date(
-          locale === "fa"
-            ? jmoment(dateString, "jYYYY-jMM-jDD").format()
-            : dateString
-        );
-        monthBlockArray.push({
-          timestamp: date.setHours(0, 0, 0, 0),
-          currentMonth: false,
-        });
-      }
+    // Next month
+    for (let i = 1; i <= nextOffset; i++) {
+      const nextMonth = month === 11 ? 0 : month + 1;
+      const nextYear = month === 11 ? year + 1 : year;
+      const date = new Date(
+        locale === "fa"
+          ? jmoment(`${nextYear}/${nextMonth + 1}/${i}`, "jYYYY/jM/jD").format()
+          : `${nextYear}/${nextMonth + 1}/${i}`
+      );
+      days.push({ timestamp: date.setHours(0, 0, 0, 0), currentMonth: false });
     }
 
-    return monthBlockArray;
+    return days;
   };
 
+  // -------------------------------
+  // RENDER DAY BUTTON
+  // -------------------------------
   const renderDay = useCallback(
-    (
-      day: { currentMonth: boolean; timestamp: number },
-      index: number
-    ): ReactNode => {
+    (day: { currentMonth: boolean; timestamp: number }, index: number) => {
       const currentDay = jmoment(day.timestamp);
+      const isSpecial = specialDays.includes(day.timestamp);
+      const isHoliday = disabledDays?.includes(day.timestamp);
       const isDisabled =
-        day.timestamp < todayTimestamp &&
-        disablePreviousDays &&
-        model == "date";
+        model === "date" &&
+        ((disablePreviousDays && day.timestamp < todayTimestamp) || isHoliday);  
+
       const isToday = isEqualDays(day.timestamp, todayTimestamp);
-      const isSelectedSingleDate =
-        isEqualDays(day.timestamp, startDate) && model === "date";
-      const isHoveredDay =
+      const isSelected =
+        model === "date" && isEqualDays(day.timestamp, startDate || 0);
+      const isFrom = model === "range" && isEqualDays(day.timestamp, startDate);
+      const isTo = model === "range" && isEqualDays(day.timestamp, endDate);
+      const isInRange =
         model === "range" &&
         startDate &&
-        !endDate &&
-        (state.hoveredDay as number) >= day.timestamp &&
-        day.timestamp > startDate;
-      const isFromDate =
-        isEqualDays(day.timestamp, startDate) && model === "range";
-      const isToDate = isEqualDays(day.timestamp, endDate);
-      const isInrange =
         endDate &&
-        startDate &&
         day.timestamp > startDate &&
         day.timestamp < endDate;
+
       return (
         <div
-          className={`
-          ${style.flex}
-          ${style.justify_center}
-          ${style.items_center}
-          ${style.w_full}
-          ${style.h_full}
-        `}
           key={index}
+          className={`${style.flex} ${style.justify_center} ${style.items_center} ${style.w_full} ${style.h_full}`}
         >
           <button
-            disabled={isDisabled}
-            key={index}
             type="button"
-            onMouseOver={() => {
-              if (!endDate && state.hoveredDay) {
-                setState((prev) => {
-                  return {
-                    ...prev,
-                    hoveredDay: day.timestamp,
-                  };
-                });
-              } else if (endDate && state.hoveredDay) {
-                setState((prev) => {
-                  return {
-                    ...prev,
-                    hoveredDay: day.timestamp,
-                  };
-                });
-              }
-            }}
-            className={`
-              ${style.flex}
-              ${style.flex_col}
-              ${style.justify_evenly}
-              ${style.items_center}
-              ${style.rounded_md}
-              ${style.w_6}
-              ${style.aspect_square}
-              ${style.text_center}
-              ${style.cursor_pointer}
-            `}
+            disabled={isDisabled}
+            onClick={() => day.currentMonth && handleDateClick(day.timestamp)}
+            className={`${style.flex} ${style.flex_col} ${style.justify_evenly} ${style.items_center} ${style.rounded_md} ${style.w_6} ${style.aspect_square} ${style.text_center} ${style.cursor_pointer}`}
             style={{
+              position: "relative",
               pointerEvents: isDisabled ? "none" : "auto",
               opacity: isDisabled ? 0.5 : day.currentMonth ? 1 : 0,
               color:
-                isToDate || isFromDate || isSelectedSingleDate
-                  ? backgroundColor
-                  : tertiaryColor,
-              borderColor: isToday ? secondaryColor : "",
-              borderWidth: isToday ? "2px" : "0",
-
+                isTo || isFrom || isSelected ? backgroundColor : tertiaryColor,
+              border: isToday ? `2px solid ${secondaryColor}` : "none",
               background:
-                isToDate || isFromDate
+                isTo || isFrom
                   ? primaryColor
-                  : isSelectedSingleDate
+                  : isSelected
                   ? tertiaryColor
-                  : isInrange || isHoveredDay
+                  : isInRange
                   ? highlightColor
                   : "",
               fontSize: "14px",
             }}
-            onClick={() => {
-              if (!day.currentMonth) return;
-              onDateClick(day.timestamp);
-            }}
           >
-            <span>
-              {locale === "fa"
+            <>
+              {renderDayContent
+                ? renderDayContent({
+                    day: currentDay,
+                    timestamp: day.timestamp,
+                    isSpecial,
+                    locale,
+                  })
+                : locale === "fa"
                 ? currentDay.jDate().toLocaleString("fa")
                 : currentDay.date()}
-            </span>
+            </>
           </button>
         </div>
       );
     },
     [
+      model,
+      locale,
       startDate,
       endDate,
-      state.hoveredDay,
-      model,
+      specialDays,
+      disabledDays,
       disablePreviousDays,
-      locale,
-      onDateClick,
+      handleDateClick,
+      primaryColor,
+      backgroundColor,
+      tertiaryColor,
+      highlightColor,
+      secondaryColor,
+      renderDayContent,
     ]
   );
-  const renderCalendar = (year: number, month: number) => {
-    const monthD = getCalendarBlockDetails(year, month);
 
-    const days = monthD.map((day, index) =>
-      renderDayFn ? renderDayFn(day, index) : renderDay(day, index)
-    );
-    const weekNameList =
-      locale === "en"
-        ? ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"]
-        : ["ش", "ی", "د", "س", "چ", "پ", "ج"];
+  // -------------------------------
+  // RENDER CALENDAR BODY
+  // -------------------------------
+  const renderCalendar = (year: number, month: number) => {
+    const days = getCalendarDays(year, month);
+    const weekNames =
+      locale === "fa"
+        ? ["ش", "ی", "د", "س", "چ", "پ", "ج"]
+        : ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
+
     return (
       <>
+        {/* Week header */}
         <div
-          className={`
-          ${style.grid}
-          ${style.grid_cols_7}
-          ${style.justify_between}
-          ${style.gap_x_2}
-          ${style.p_2}
-        `}
+          className={`${style.grid} ${style.grid_cols_7} ${style.justify_between} ${style.gap_x_2} ${style.p_2}`}
           dir={locale === "fa" ? "rtl" : "ltr"}
         >
-          {weekNameList.map((dName, i) => (
+          {weekNames.map((name, i) => (
             <span
               key={i}
-              className={`
-                ${style.font_normal}
-                ${style.text_center}
-              `}
+              className={`${style.font_normal} ${style.text_center}`}
               style={{ fontSize: "14px", color: secondaryColor }}
             >
-              {dName}
+              {name}
             </span>
           ))}
         </div>
+
+        {/* Days */}
         <div
-          className={`
-  ${style.w_full}
-  ${style.grid}
-  ${style.grid_cols_7}
-  ${style.justify_between}
-  ${style.gap_y_2}
-`}
+          className={`${style.w_full} ${style.grid} ${style.grid_cols_7} ${style.justify_between} ${style.gap_y_2}`}
           style={{ minWidth: "24px" }}
           dir={locale === "fa" ? "rtl" : "ltr"}
         >
-          {days}
+          {days.map((d, i) =>
+            renderDayFn ? renderDayFn(d, i) : renderDay(d, i)
+          )}
         </div>
       </>
     );
   };
 
+  // -------------------------------
+  // MAIN RENDER
+  // -------------------------------
   return (
     <div
+      className={`${style.flex} ${style.flex_col} ${style.items_center} ${style.w_full} ${style.h_fit} ${containerClassName}`}
       style={{ width: calendarBaseWidth }}
-      className={`
-        ${style.flex}
-        ${style.flex_col}
-        ${style.items_center}
-        ${style.w_full}
-        ${style.h_fit}
-        ${containerClassName}
-      `}
     >
-      {view === CalendarViews.DAY ? (
-        <div
-          className={`
-          ${style.flex}
-          ${style.flex_col}
-          ${style.items_center}
-          ${style.w_full}
-        `}
-        >
+      {view === CalendarViews.DAY && (
+        <>
           <DatePickerHeader
             datePickerHeaderClassName={datePickerHeaderClassName}
             year={state.year}
             month={state.month}
-            setMonth={setMonth}
+            setMonth={shiftMonth}
             locale={locale}
-            onViewChange={changeViewHandler}
+            onViewChange={changeView}
             highlightColor={highlightColor}
             tertiaryColor={tertiaryColor}
             secondaryColor={secondaryColor}
           />
-          <hr
-            className={`
-  ${style.mt_2}
-  ${style.border}
-  ${style.w_full}
-`}
-          />
+          <hr className={`${style.mt_2} ${style.border} ${style.w_full}`} />
           <DataPickerBody
             year={state.year}
             month={state.month}
             renderMonthBody={renderCalendar}
             locale={locale}
             datePickerBodyClassName={datePickerBodyClassName}
-            onDateClick={onDateClick}
           />
-        </div>
-      ) : view === CalendarViews.MONTH ? (
+        </>
+      )}
+
+      {view === CalendarViews.MONTH && (
         <MonthPicker
           currentMonth={state.month}
           locale={locale}
-          onSelectMonth={changeMonthHandler}
-          onChangeYear={setYear}
+          onSelectMonth={changeMonth}
+          onChangeYear={shiftYear}
           currentYear={state.year}
           tertiaryColor={tertiaryColor}
           secondaryColor={secondaryColor}
           backgroundColor={backgroundColor}
         />
-      ) : (
+      )}
+
+      {view === CalendarViews.YEAR && (
         <YearPicker
           currentYear={state.year}
           primaryColor={primaryColor}
-          onSelectYear={changeYearHandler}
+          onSelectYear={changeYear}
           yearPickerClassName={yearPickerClassName}
           secondaryColor={secondaryColor}
           backgroundColor={backgroundColor}
@@ -532,4 +418,5 @@ const Calendar: FC<Props> = ({
     </div>
   );
 };
+
 export default memo(Calendar);

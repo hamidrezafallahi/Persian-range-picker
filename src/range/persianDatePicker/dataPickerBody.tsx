@@ -1,7 +1,10 @@
-import type { FC, ReactNode } from "react";
-import style from "../../main.module.css";
+import type {
+  FC,
+  ReactNode,
+} from 'react';
 
-import type { TLocale } from "../core/type";
+import style from '../../main.module.css';
+import type { TLocale } from '../core/type';
 
 interface Props {
   datePickerBodyClassName?: string;
@@ -9,7 +12,7 @@ interface Props {
   month: number;
   renderMonthBody: (year: number, month: number) => ReactNode;
   locale: TLocale;
-  onDateClick: (timestamp: number) => void;
+ 
 }
 
 const DataPickerBody: FC<Props> = ({
