@@ -85,7 +85,7 @@ export interface IDateProps
   disabled?: boolean;
   Style?: React.CSSProperties;
   disablePreviousDays?: boolean
-   specialDays?: number[];
+  specialDays?: number[];
   disabledDays?: number[];
   renderDayContent?: (info: {
     day: moment.Moment;
@@ -193,6 +193,7 @@ export interface IBaseProps extends IRangeOptions, IDeviceLocale {
   activeTable?: "Day" | "Week" | "Month" | "Year" | "manual";
   disabled?: boolean;
   disablePreviousDays?: boolean
+  exportType?: ExportType;
 }
 
 export interface ITimeSections {
