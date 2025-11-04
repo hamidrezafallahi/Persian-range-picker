@@ -2,6 +2,7 @@ import {
   DatePicker,
   TimePicker,
 } from '../range';
+import Calendar from '../range/exportComponents/Calendar';
 import { Range } from '../range/exportComponents/rangePicker/range';
 
 export default function DemoComponent() {
@@ -10,6 +11,8 @@ export default function DemoComponent() {
  <div className=''>
 
  </div>
+  <Calendar/>
+
  <Range
  />
    <DatePicker

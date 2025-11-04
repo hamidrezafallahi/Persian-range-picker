@@ -4,6 +4,8 @@ import type {
   SetStateAction,
 } from 'react';
 
+import { IProps } from '../persianDatePicker/type';
+
 export type ExportType = "timeStamp" | "IsoString";
 type TDeviceType = "desktop" | "mobile";
 export type HandleParams = {
@@ -283,3 +285,11 @@ export interface IRangePickerProps
   onChange?: (e: HandleParams) => void;
 }
 export interface IDatePickerProps extends Omit<IDateProps, "locale"> {}
+
+
+
+
+export interface CalendarProps extends Omit<IProps, "dateFromOutside"|"locale"> {
+  dateFromOutside?: IDate;
+  locale?:TLocale
+}
