@@ -7,22 +7,18 @@ import type {
 } from '../../core/type';
 import { DesktopDatePicker } from '../../desktopDate/desktopDatePicker';
 import { MobileDate } from '../../mobileDate/mobileDatePicker';
+import { useMediaQuery } from '../useMediaQuery';
 
 type CustomDateProps = Omit<IDateProps, "defaultValue" | "locale"> & {
   defaultValue?: AcceptableDateValue;
 };
 export function DatePicker({ ...props }: CustomDateProps) {
   const { onChange, exportType = "IsoString" } = props;
-  const deviceType =
-    /Mobile|Android|iPhone|iPad|iPod|Opera Mini|BlackBerry|IEMobile/i.test(
-      navigator.userAgent
-    )
-      ? "mobile"
-      : "desktop";
+const {match}=useMediaQuery("XSUP")
+
   const { calendarType = "shamsi", defaultValue } = props;
   const locale = calendarType == "shamsi" ? "fa" : "en";
   const changeHandler = (e: number | string) => {
-    console.log(e,exportType)
     if (!e) return;
     onChange?.(
       exportType == "timeStamp"
@@ -32,10 +28,10 @@ export function DatePicker({ ...props }: CustomDateProps) {
         : moment.utc(e).format("YYYY-MM-DDTHH:mm:ss.SSSZ")
     );
   };
-  
+ 
   return (
     <>
-      {deviceType == "desktop" ? (
+      {match ? (
         <DesktopDatePicker
           {...props}
           locale={locale}

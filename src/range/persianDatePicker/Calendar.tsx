@@ -38,10 +38,9 @@ interface Props {
     index: number
   ) => ReactNode;
   renderDayContent?: (info: {
-    day: jmoment.Moment;
+    day:string|number;
     timestamp: number;
     isSpecial: boolean;
-    locale: TLocale;
   }) => ReactNode;
 
   // State
@@ -49,7 +48,6 @@ interface Props {
   endDate?: number;
   specialDays?: number[];
   disabledDays?: number[];
-
   // Styles
   primaryColor?: string;
   backgroundColor?: string;
@@ -287,10 +285,9 @@ const Calendar: FC<Props> = ({
             <>
               {renderDayContent
                 ? renderDayContent({
-                    day: currentDay,
+                    day: locale === "fa" ? currentDay.jDate().toLocaleString("fa") : currentDay.date(),
                     timestamp: day.timestamp,
-                    isSpecial,
-                    locale,
+                    isSpecial
                   })
                 : locale === "fa"
                 ? currentDay.jDate().toLocaleString("fa")

@@ -18,13 +18,13 @@ import type {
   TUnit,
 } from '../core/type';
 import { TimeColumns } from '../exportComponents/timePicker/exportComponents';
+import { useMediaQuery } from '../exportComponents/useMediaQuery';
 import { CalenderIcon } from '../icons/CalenderIcon';
 import { MenuArrowBack } from '../icons/MenuArrowBack';
 import { DatePicker } from '../persianDatePicker';
 
 export function MobileDate({ ...props }: IDateProps) {
   const {
-
     exportType = "IsoString",
     onChange,
     defaultValue,
@@ -47,12 +47,7 @@ export function MobileDate({ ...props }: IDateProps) {
   const [content, setContent] = useState<"Date" | "Time">("Date");
   const [open, setOpen] = useState(false);
 
-  const device: "mobile" | "desktop" =
-    /Mobile|Android|iPhone|iPad|iPod|Opera Mini|BlackBerry|IEMobile/i.test(
-      navigator.userAgent
-    )
-      ? "mobile"
-      : "desktop";
+  const { match } = useMediaQuery("XSUP");
 
   const dynamicFormat = showSecond ? showTimeFormat : "HH:mm";
 
@@ -80,22 +75,18 @@ export function MobileDate({ ...props }: IDateProps) {
       setContent("Time");
     } else {
       setShowDate(getTimestamp(e.from) ?? 0);
- if (exportType == "IsoString") {
-      onChange?.(new Date(getTimestamp(e.from) ?? 0).toISOString());
-    } else {
-      onChange?.(getTimestamp(e.from) ?? 0);
-    }
-     
-
-
-
+      if (exportType == "IsoString") {
+        onChange?.(new Date(getTimestamp(e.from) ?? 0).toISOString());
+      } else {
+        onChange?.(getTimestamp(e.from) ?? 0);
+      }
 
       setOpen(false);
     }
   };
 
   const handleSubmit = () => {
- if (exportType == "IsoString") {
+    if (exportType == "IsoString") {
       onChange?.(new Date(showDate).toISOString());
     } else {
       onChange?.(showDate);
@@ -168,37 +159,35 @@ export function MobileDate({ ...props }: IDateProps) {
   }, [defaultValue]);
 
   return (
-    <div
-      style={{
-        width: device == "desktop" ? "fit-content" : "100%",
-      }}
-    >
+    <>
       <button
         disabled={disabled}
+        onClick={() => setOpen((prev) => !prev)}
         type="button"
-        onClick={() => setOpen(true)}
         className={`
-          ${style.flex}
-          ${style.justify_between}
-          ${style.items_center}
-          ${style.gap_2}
-          ${style.px_1}
-          ${style.h_9}
-           ${style.rounded_md}
-           ${style.border_none}
-          
-          ${style.w_full}      
-          ${disabled ? style.cursor_not_allowed : ""}
-          ${className}
-        `}
+              ${style.relative}
+              ${style.flex}
+              ${style.justify_between}
+              ${style.items_center}
+              ${style.gap_2}
+              ${style.px_1}
+              ${style.rounded_md}
+              ${style.border_none}
+              ${style.w_full}
+              ${style.xs_w_40}
+              ${style.h_9}
+              ${disabled ? style.cursor_not_allowed : ""}
+              ${className}
+            `}
         style={{
           color: tertiaryColor,
           backgroundColor: highlightColor,
-          width: "100%",
+
+          ...props.Style,
         }}
       >
         <CalenderIcon />
-        <div className={style.w_full} dir="ltr">
+        <div dir="ltr">
           {title}
         </div>
       </button>
@@ -323,6 +312,6 @@ export function MobileDate({ ...props }: IDateProps) {
           </div>,
           document.body
         )}
-    </div>
+    </>
   );
 }

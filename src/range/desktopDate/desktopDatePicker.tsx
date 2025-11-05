@@ -1,4 +1,6 @@
 import React, {
+  Dispatch,
+  SetStateAction,
   useEffect,
   useRef,
   useState,
@@ -21,6 +23,7 @@ import type {
 import { Mask } from '../exportComponents/mask';
 import { useRenderPosition } from '../exportComponents/useRenderPosition';
 import { CalenderIcon } from '../icons/CalenderIcon';
+import { ClearIcon } from '../icons/ClearIcon';
 import { DatePicker } from '../persianDatePicker';
 import { DesktopTimePicker } from './desktopTimePicker';
 
@@ -43,11 +46,12 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
     disabled = false,
     Style,
     exportType = "IsoString",
-    
+    allowClear,
+    onClear
   } = props;
  
   const dynamicFormat = showSecond ? showTimeFormat : "HH:mm";
-  const [showDate, setShowDate] = useState<number>(0);
+  const [showDate, setShowDate] = useState<number|null>(0);
   const [isOpen, setIsOpen] = useState(isOpenDropdown);
   const buttonRef = useRef<HTMLElement>(null);
   const popupRef = useRef<HTMLDivElement>(null);
@@ -62,7 +66,7 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
   const handleDropdown = () => setIsOpen((prev) => !prev);
 
   const handleSubmit = () => {
-    const finalDate = showTime ? showDate : moment(showDate).valueOf();
+    const finalDate = showTime ? showDate??0 : moment(showDate).valueOf();
     if (exportType == "IsoString") {
       onChange?.(new Date(finalDate).toISOString());
     } else {
@@ -90,7 +94,7 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
   };
 
   const persian =
-    showDate > 0
+    showDate&&showDate > 0
       ? toPersianDigits(
           moment(showDate).format(
             showTime ? `jYYYY/jMM/jDD\u2003${dynamicFormat}` : `jYYYY/jMM/jDD`
@@ -99,7 +103,7 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
       : "انتخاب تاریخ";
 
   const gregorian =
-    showDate > 0
+    showDate&&showDate > 0
       ? moment(showDate).format(
           showTime ? `YYYY/MM/DD\u2003${dynamicFormat}` : `YYYY/MM/DD`
         )
@@ -117,6 +121,12 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
     setShowDate(e);
     onChange?.(e);
   };
+const handleClear =(e : any)=>{
+  e.stopPropagation()
+  setShowDate(null)
+  onClear?.()
+}
+
 
   useEffect(() => {
     let temp: number = 0; // Initialize temp as a number
@@ -150,6 +160,22 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
           fontSize: "14px",
         }}
       >
+         {allowClear ? (
+          <span
+            onClick={handleClear}
+            className={`
+  ${style.flex}
+  ${style.justify_center}
+  ${style.items_center}
+  ${style.p_1}
+  ${style.m_0}
+  ${style.rounded_full}
+  ${style.border_none}
+  ${style.items_center}
+  `}
+          >
+            <ClearIcon />
+          </span>):<CalenderIcon />}
         {showMask ? (
           <div
             onClick={(e) => {
@@ -159,8 +185,9 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
           >
             <Mask
               {...props}
+              allowClear={false}
               exportType="timeStamp"
-              defaultValue={showDate}
+              defaultValue={showDate??undefined}
               onMaskChange={(e) => {
                 setShowDate(e as number);
                 onChange?.(e as number);
@@ -178,7 +205,7 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
             {title}
           </div>
         )}
-        <CalenderIcon />
+       
       </button>
       {isOpen &&
         createPortal(
@@ -214,7 +241,7 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
                 model="date"
                 locale={locale}
                 onDateChange={handleDateChange}
-                dateFromOutside={{ from: showDate, to: 0 }}
+                dateFromOutside={{ from: showDate??0, to: 0 }}
                 calendarBaseWidth={calendarBaseWidth}
                 defaultValue={
                   defaultValue ? { from: defaultValue, to: 0 } : undefined
@@ -251,8 +278,8 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
                   <DesktopTimePicker
                     {...props}
                     displayButtonCount={5}
-                    defaultValue={showDate}
-                    setShowDate={setShowDate}
+                    defaultValue={showDate??undefined}
+                    setShowDate={setShowDate as Dispatch<SetStateAction<number>>}
                     onGetValue={handleSetTime}
                   />
                 </div>
@@ -261,8 +288,8 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
 
             <Footer
               setIsOpen={setIsOpen}
-              setShowDate={setShowDate}
-              showDate={showDate}
+              setShowDate={setShowDate as Dispatch<SetStateAction<number>>}
+              showDate={showDate??0}
               locale={locale}
               primaryColor={primaryColor}
               highlightColor={highlightColor}

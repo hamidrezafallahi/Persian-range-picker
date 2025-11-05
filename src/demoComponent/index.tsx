@@ -12,12 +12,13 @@ export default function DemoComponent() {
     <>
       <div className=""></div>
       <Calendar
-        onDateChange={(e) => {
+        onChange={(e) => {
           console.log(e);
         }}
+        exportType="timeStamp"
         specialDays={[1762288200000, 1763411400000]}
         disabledDays={[1763325000000, 1763497800000]}
-        renderDayContent={({ day, isSpecial, locale }) => (
+        renderDayContent={({ day, isSpecial }) => (
           <>
             <span
               style={{
@@ -25,20 +26,28 @@ export default function DemoComponent() {
                 fontWeight: isSpecial ? "bold" : "normal",
               }}
             >
-              {locale === "fa" ? day.jDate().toLocaleString("fa") : day.date()}
+              {day}
             </span>
           </>
         )}
       />
 
-      <Range />
+      <Range
+              onChange={(e) => {
+          console.log(e);
+        }}
+                onCompareDateChange={(e) => {
+          console.log(e);
+        }}
+      />
       <DatePicker
+
         onChange={(e) => {
           console.log(e);
         }}
         specialDays={[1762288200000, 1763411400000]}
         disabledDays={[1763325000000, 1763497800000]}
-        renderDayContent={({ day, isSpecial, locale }) => (
+        renderDayContent={({ day, isSpecial }) => (
           <>
             <span
               style={{
@@ -46,14 +55,27 @@ export default function DemoComponent() {
                 fontWeight: isSpecial ? "bold" : "normal",
               }}
             >
-              {locale === "fa" ? day.jDate().toLocaleString("fa") : day.date()}
+              {day}
             </span>
           </>
         )}
       />
-      <TimePicker />
-      <RangePicker />
-      <Mask />
+      <TimePicker 
+              onChange={(e) => {
+          console.log(e);
+        }} />
+      <RangePicker
+              onChange={(e) => {
+          console.log(e);
+        }}
+      />
+      <Mask
+      allowClear
+      // calendarType='gregorian'
+              onMaskChange={(e) => {
+          console.log(e);
+        }}
+      />
     </>
   );
 }

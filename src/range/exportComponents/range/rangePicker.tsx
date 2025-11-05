@@ -11,15 +11,12 @@ import type {
 } from '../../core/type';
 import { DesktopRangePicker } from '../../desktopRange/desktopRangePicker';
 import { MobileRangePicker } from '../../mobileRange/mobileRangePicker';
+import { useMediaQuery } from '../useMediaQuery';
 
 export function RangePicker({ ...props }: IRangeProps) {
 
-  const deviceType =
-    /Mobile|Android|iPhone|iPad|iPod|Opera Mini|BlackBerry|IEMobile/i.test(
-      navigator.userAgent
-    )
-      ? "mobile"
-      : "desktop";
+const {match}=useMediaQuery("XSUP")
+
   const {
     isOpenDropdown = false,
     additionalElement,
@@ -46,10 +43,9 @@ export function RangePicker({ ...props }: IRangeProps) {
   const [open, setOpen] = useState(isOpenDropdown);
   return (
     <>
-      {deviceType == "desktop" ? (
+      {match ? (
         <DesktopRangePicker
           {...props}
-          device={deviceType}
           step={step}
           counter={counter}
           zone={zone}
@@ -88,7 +84,6 @@ export function RangePicker({ ...props }: IRangeProps) {
           setStep={setStep}
           setZone={setZone}
           additionalElement={additionalElement}
-          device={deviceType}
           locale={locale}
           activeTable="manual"
         />

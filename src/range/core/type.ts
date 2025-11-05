@@ -7,7 +7,7 @@ import type {
 import { IProps } from '../persianDatePicker/type';
 
 export type ExportType = "timeStamp" | "IsoString";
-type TDeviceType = "desktop" | "mobile";
+
 export type HandleParams = {
   type: string;
   Data?: { date: IDate; compareDate: IDate } | Record<string, unknown>;
@@ -71,13 +71,13 @@ export interface IDateProps
   IClassNameProps,
   ITimeSettings,
   ITimePickerProps,
-  IMaskProps,
-  IDeviceLocale {
+  IMaskProps {
   calendarType?: "shamsi" | "gregorian";
   defaultValue?: number | Date;
   showMask?: boolean;
   onChange?: (e: number | string) => void;
   calendarBaseWidth?: number;
+  locale?: TLocale;
   dropdownWidth?: number;
   dropdownHeight?: number;
   exportType?: ExportType;
@@ -88,10 +88,9 @@ export interface IDateProps
   specialDays?: number[];
   disabledDays?: number[];
   renderDayContent?: (info: {
-    day: moment.Moment;
+    day: string | number;
     timestamp: number;
     isSpecial: boolean;
-    locale: TLocale;
   }) => ReactNode;
 
 }
@@ -133,10 +132,6 @@ export interface ITimeSettings {
   secondStep?: number;
 }
 
-export interface IDeviceLocale {
-  device?: TDeviceType;
-  locale?: TLocale;
-}
 
 export interface RangeProps
   extends IRangeOptions,
@@ -148,7 +143,6 @@ export interface RangeProps
   onChange?: (e: HandleParams) => void;
   calendarType?: "shamsi" | "gregorian";
   isOpenDropdown?: boolean;
-  device?: TDeviceType;
   handleReject?: () => void;
   handleSubmit?: (params: HandleParams) => void;
   onNavigateChange?: (date: IDate, compareDate: IDate | null) => void;
@@ -166,14 +160,14 @@ export interface IRangeOptions extends IColorProps, IClassNameProps {
   onChange?: (e: HandleParams) => void;
   onCompareDateChange?: (e: HandleParams) => void;
   isOpenDropdown?: boolean;
-  device?: TDeviceType;
 }
 
-export interface IBaseProps extends IRangeOptions, IDeviceLocale {
+export interface IBaseProps extends IRangeOptions {
   step?: ESteps;
   counter?: number;
   zone?: ITimeZone;
   date?: IDate;
+  locale?: TLocale;
   tabKey?: ITime | string;
   compareDate?: IDate | null;
   activeCompareStep?: ESteps | null;
@@ -203,22 +197,23 @@ export interface ITimeSections {
   step: ESteps;
 }
 
-export interface IRangeProps extends IBaseProps, IDeviceLocale {
+export interface IRangeProps extends IBaseProps {
   handleSubmit?: RangeProps["handleSubmit"];
   handleReject?: RangeProps["handleReject"];
   label?: boolean | ReactNode | string;
   dropdownWidth?: number;
   dropdownHeight?: number;
   disabled?: boolean;
+  locale?: TLocale;
 }
 
 export interface IMobileProps
   extends IColorProps,
-  ITimeSettings,
-  IDeviceLocale {
+  ITimeSettings {
   onChange?: (e: HandleParams) => void;
   defaultValue?: IDate;
   chooseTodayClassName?: string;
+  locale?: TLocale;
 }
 
 export interface IMaskProps
@@ -237,6 +232,8 @@ export interface IMaskProps
     "fontFamily" | "fontSize" | "color"
   >;
   ErrorClass?: string;
+  allowClear?: boolean;
+  onClear?: () => void
   dir?: "ltr" | "rtl";
   autoComplete?: "on" | "off";
   disabled?: boolean;
@@ -278,13 +275,13 @@ export interface ISubmittedData {
 }
 export interface IRangePickerProps
   extends Omit<IRangeOptions, "defaultValue" | "onChange">,
-  Omit<IDateProps, "defaultValue" | "onChange">,
-  IDeviceLocale {
+  Omit<IDateProps, "defaultValue" | "onChange"> {
   handleSubmit?: RangeProps["handleSubmit"];
   handleReject?: RangeProps["handleReject"];
   label?: boolean | ReactNode | string;
   dropdownWidth?: number;
   dropdownHeight?: number;
+  locale?: TLocale;
   disabled?: boolean;
   onNavigateChange?: (date: IDate, compareDate: IDate | null) => void;
   componentStep?: ESteps;
@@ -301,15 +298,16 @@ export interface IDatePickerProps extends Omit<IDateProps, "locale"> { }
 
 
 
-export interface CalendarProps extends Omit<IProps, "dateFromOutside" | "locale"> {
+export interface CalendarProps extends Omit<IProps, "dateFromOutside" | "locale" | "onDateChange"> {
   dateFromOutside?: IDate;
   locale?: TLocale
+  onChange?: (e: string | number) => void;
   specialDays?: number[];
   disabledDays?: number[];
+  exportType?: ExportType;
   renderDayContent?: (info: {
-    day: moment.Moment;
+    day: string | number;
     timestamp: number;
     isSpecial: boolean;
-    locale: TLocale;
   }) => ReactNode;
 }

@@ -40,9 +40,7 @@ const MainContent = ({ ...props }: IProps) => {
     setCustomData,
     setType,
     activeTable = "manual",
-  
   } = props;
- 
 
   const [activeTab, setActiveTab] = useState<string>(activeTable);
   const handleTabChange = (key: ITab["key"]) => {
@@ -94,7 +92,6 @@ const MainContent = ({ ...props }: IProps) => {
   return (
     <div
       dir={locale == "fa" ? "rtl" : "ltr"}
- 
       className={`${style.flex} ${style.flex_col} ${style.xs_flex_row} ${style.gap_2} ${style.p_2} ${style["xs_h-[calc(100%-52px)]"]} `}
     >
       <div

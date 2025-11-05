@@ -22,13 +22,9 @@ import { useRenderPosition } from '../exportComponents/useRenderPosition';
 import { DownTriangle } from '../icons/DownTriangle';
 
 export function DesktopRangePicker(props: IRangeProps) {
-  const userAgent = navigator.userAgent;
-  const deviceType =
-    /Mobile|Android|iPhone|iPad|iPod|Opera Mini|BlackBerry|IEMobile/i.test(
-      userAgent
-    )
-      ? "mobile"
-      : "desktop";
+
+
+
 
   const {
     setDate,
@@ -56,7 +52,6 @@ export function DesktopRangePicker(props: IRangeProps) {
     buttonClassName,
     dropdownWidth = 460,
     dropdownHeight = 460,
-    device = deviceType,
     label = props.locale == "en" ? "Date" : "تاریخ",
   } = props;
   const isInitialRender = useRef(true);
@@ -292,7 +287,6 @@ export function DesktopRangePicker(props: IRangeProps) {
                 {...props}
                 model="range"
                 locale={locale}
-                device={device}
                 setCustomData={setCustomData}
                 setType={setType}
               />

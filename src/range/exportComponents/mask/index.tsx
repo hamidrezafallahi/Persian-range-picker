@@ -8,12 +8,16 @@ import React, {
 import moment from 'moment-jalaali';
 
 import style from '../../../main.module.css';
-import { getTimestamp } from '../../core/helper';
+import {
+  getTimestamp,
+  toPersianDigits,
+} from '../../core/helper';
 import type {
   IDate,
   IMaskProps,
   TLocale,
 } from '../../core/type';
+import { ClearIcon } from '../../icons/ClearIcon';
 
 type TimeZone = "year" | "month" | "day";
 const defaultErrorClass = `${style.border_red_700}`;
@@ -32,6 +36,8 @@ export function Mask({ ...props }: IMaskProps) {
     onMaskChange,
     maskHeight = 36,
     suffix,
+    allowClear,
+    onClear,
     prefix,
     ErrorClass = defaultErrorClass,
     autoComplete = "off",
@@ -44,6 +50,14 @@ export function Mask({ ...props }: IMaskProps) {
     MaskFontStyle = { fontSize: "14px", fontFamily: "unset" },
   } = props;
   const locale = calendarType == "shamsi" ? "fa" : "en";
+  const myFont = MaskFontStyle?.fontFamily
+    ? MaskFontStyle?.fontFamily
+    : calendarType == "shamsi"
+    ? "IRANSans"
+    : calendarType == "gregorian"
+    ? "unset"
+    : "IRANSans";
+
   const initialTemp = timestampToDateNumbers(
     locale,
     getTimestamp(defaultValue)
@@ -108,8 +122,6 @@ export function Mask({ ...props }: IMaskProps) {
           ? moment(defaultTimestamp).format("YYYY-MM-DDTHH:mm:ss.SSSZ")
           : moment.utc(defaultTimestamp).format("YYYY-MM-DDTHH:mm:ss.SSSZ")
       );
-    } else {
-      onMaskChange?.(null);
     }
   };
 
@@ -506,7 +518,11 @@ export function Mask({ ...props }: IMaskProps) {
       prev.focus();
     }
   }
-
+  const handleClearMask = () => {
+    setIsEdit(0);
+    setBaseValue(null);
+    onClear?.();
+  };
   const handleClick = (e: React.MouseEvent<HTMLElement>) => {
     const target = e.target as HTMLInputElement;
     if (target.name !== "full") {
@@ -703,16 +719,16 @@ export function Mask({ ...props }: IMaskProps) {
     <div style={{ cursor: disabled ? "not-allowed" : "auto" }}>
       <div
         className={`
-  ${style.flex}
-  ${style.justify_center}
-  ${style.items_center}
-  ${style.gap_2}
-  ${style.rounded_md}
-  ${style.w_full}
-  ${style.xs_w_40}
-  ${style.px_2}
-  ${maskClassName}
-  ${errorTarget.length > 0 ? ErrorClass : ""}
+          ${style.flex}
+          ${style.justify_center}
+          ${style.items_center}
+          ${style.gap_2}
+          ${style.rounded_md}
+          ${style.w_full}
+          ${style.xs_w_40}
+          ${style.px_1}
+          ${maskClassName}
+          ${errorTarget.length > 0 ? ErrorClass : ""}
 `}
         style={{
           height: `${maskHeight}px`,
@@ -723,7 +739,25 @@ export function Mask({ ...props }: IMaskProps) {
           ...props.Style,
         }}
       >
-        <div>{suffix && suffix}</div>
+        {allowClear ? (
+          <button
+            onClick={handleClearMask}
+            className={`
+  ${style.flex}
+  ${style.justify_center}
+  ${style.items_center}
+  ${style.p_1}
+  ${style.m_0}
+  ${style.rounded_full}
+  ${style.border_none}
+  ${style.items_center}
+  `}
+          >
+            <ClearIcon />
+          </button>
+        ) : (
+          suffix && <div>{suffix}</div>
+        )}
         {isEdit !== 2 ? (
           <div
             ref={focusRef}
@@ -745,11 +779,23 @@ export function Mask({ ...props }: IMaskProps) {
                   <div>{maskPlaceHolder ?? "____/__/__"}</div>
                 ) : (
                   <>
-                    <div>{separatedValue[0] || "____"}</div>
+                    <div>
+                      {locale == "fa"
+                        ? toPersianDigits(separatedValue[0])
+                        : separatedValue[0] || "____"}
+                    </div>
                     <div>{"/"}</div>
-                    <div>{separatedValue[1] || "__"}</div>
+                    <div>
+                      {locale == "fa"
+                        ? toPersianDigits(separatedValue[1])
+                        : separatedValue[1] || "__"}
+                    </div>
                     <div>{"/"}</div>
-                    <div>{separatedValue[2] || "__"}</div>
+                    <div>
+                      {locale == "fa"
+                        ? toPersianDigits(separatedValue[2])
+                        : separatedValue[2] || "__"}
+                    </div>
                   </>
                 )}
               </div>
@@ -775,12 +821,12 @@ export function Mask({ ...props }: IMaskProps) {
                   onKeyDown={handleKeyDown}
                   maxLength={4}
                   minLength={4}
-                  className={` ${inputClassName}`}
+                  className={`${locale === "fa" && style.font_Number_Farsi} ${inputClassName}`}
                   style={{
                     width: (4 * fontSize) / 2 + 8,
                     fontSize: fontSize,
                     color: MaskFontStyle.color,
-                    fontFamily: MaskFontStyle.fontFamily,
+                    fontFamily:MaskFontStyle?.fontFamily,
                     border: "none",
                     outline: "none",
                     background: "transparent",
@@ -814,7 +860,7 @@ export function Mask({ ...props }: IMaskProps) {
                   onKeyDown={handleKeyDown}
                   maxLength={2}
                   minLength={2}
-                  className={inputClassName}
+                  className={`${locale === "fa" && style.font_Number_Farsi} ${inputClassName}`}
                   style={{
                     width: (2 * fontSize) / 2 + 6, ////////////////////////////////////////////here
                     border: "none",
@@ -822,7 +868,8 @@ export function Mask({ ...props }: IMaskProps) {
                     background: "transparent",
                     fontSize: fontSize,
                     color: MaskFontStyle.color,
-                    fontFamily: MaskFontStyle.fontFamily,
+                    fontFamily:MaskFontStyle?.fontFamily,
+
                   }}
                   placeholder="__"
                 />
@@ -853,11 +900,11 @@ export function Mask({ ...props }: IMaskProps) {
                   onKeyDown={handleKeyDown}
                   maxLength={2}
                   minLength={2}
-                  className={inputClassName}
+                  className={`${locale === "fa" && style.font_Number_Farsi} ${inputClassName}`}
                   style={{
                     fontSize: fontSize,
                     color: MaskFontStyle.color,
-                    fontFamily: MaskFontStyle.fontFamily,
+                    fontFamily:MaskFontStyle?.fontFamily,
                     width: (2 * fontSize) / 2 + 6,
                     border: "none",
                     outline: "none",
@@ -959,7 +1006,7 @@ export function Mask({ ...props }: IMaskProps) {
                             ${errorTarget.includes(index) ? ErrorClass : ""}
                           `}
                         >
-                          {item}
+                          {locale == "fa" ? toPersianDigits(item) : item}
                         </span>
                       </span>
                       {index !== 2 && (

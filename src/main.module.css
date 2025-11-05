@@ -1,3 +1,14 @@
+ @font-face {
+    font-family: "IRANSans";
+    src: url("./assets/fonts/IRANSansWeb\(FaNum\).eot") format("eot"),
+      url("./assets/fonts/IRANSansWeb(FaNum).woff") format("woff"),
+      url("./assets/fonts/IRANSansWeb(FaNum).ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+  }
+.font_Number_Farsi{
+  font-family:"IRANSans" !important;
+}  
 .switch {
   position: relative;
   display: inline-block;

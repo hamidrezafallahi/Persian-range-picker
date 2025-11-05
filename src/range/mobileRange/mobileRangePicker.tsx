@@ -8,6 +8,7 @@ import { createPortal } from 'react-dom';
 import moment from 'moment-jalaali';
 
 import style from '../../main.module.css';
+import { toPersianDigits } from '../core/helper';
 import MainContent from '../core/mainContent';
 import NavigateButton from '../core/navigateButton';
 import type { IRangeProps } from '../core/type';
@@ -34,7 +35,7 @@ export function MobileRangePicker(props: IRangeProps) {
     isShowNavigationButton = true,
     calendarType = "shamsi",
     className,
-    device,
+
     disabled,
      tertiaryColor = "#939393",
     highlightColor = "#f4f4f4"
@@ -84,6 +85,25 @@ export function MobileRangePicker(props: IRangeProps) {
     }
   }, [customData]);
 
+
+    const DateFrom =
+      date?.from && date?.from as number > 0
+        ? locale === "fa"
+          ? toPersianDigits(moment(date?.from).format("jYYYY/jMM/jDD"))
+          : moment(date?.from).format("YYYY/MM/DD")
+        : locale === "fa"
+        ? "انتخاب تاریخ"
+        : "Choose date";
+  
+    const DateTo =
+      date?.to && date?.to as number > 0
+        ? locale === "fa"
+          ? toPersianDigits(moment(date?.to).format("jYYYY/jMM/jDD"))
+          : moment(date?.to).format("YYYY/MM/DD")
+        : locale === "fa"
+        ? "انتخاب تاریخ"
+        : "Choose date";
+
   return (
     <div className={`${style.flex} ${className}`}>
       {/* دکمه باز کردن مودال */}
@@ -119,7 +139,7 @@ export function MobileRangePicker(props: IRangeProps) {
             ${style.text_center}
           `}
         >
-          {date && moment(date.from as number).format("jYYYY/jMM/jDD")}
+          {DateFrom}
         </div>
         <div className={`${style.text_gray_gray8} ${style.text_center}`}>
           {"-"}
@@ -131,7 +151,7 @@ export function MobileRangePicker(props: IRangeProps) {
             ${style.text_center}
           `}
         >
-          {date && moment(date.to as number).format("jYYYY/jMM/jDD")}
+          {DateTo}
         </div>
       </button>
 
@@ -195,7 +215,6 @@ export function MobileRangePicker(props: IRangeProps) {
               {...props}
               model="range"
               locale={locale}
-              device={device}
               setCustomData={setCustomData}
               setType={setType}
             />

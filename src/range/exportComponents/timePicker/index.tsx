@@ -1,14 +1,25 @@
-import React, { useEffect, useRef, useState } from "react";
-import { createPortal } from "react-dom";
+import React, {
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
+import { createPortal } from 'react-dom';
 
-import moment from "moment-jalaali";
+import moment from 'moment-jalaali';
 
-import style from "../../../main.module.css";
-import { getTimestamp, toPersianDigits } from "../../core/helper";
-import type { ITimePickerProps, TUnit } from "../../core/type";
-import { CalenderIcon } from "../../icons/CalenderIcon";
-import { useRenderPosition } from "../useRenderPosition";
-import { TimeColumns } from "./exportComponents";
+import style from '../../../main.module.css';
+import {
+  getTimestamp,
+  toPersianDigits,
+} from '../../core/helper';
+import type {
+  ITimePickerProps,
+  TUnit,
+} from '../../core/type';
+import { CalenderIcon } from '../../icons/CalenderIcon';
+import { useMediaQuery } from '../useMediaQuery';
+import { useRenderPosition } from '../useRenderPosition';
+import { TimeColumns } from './exportComponents';
 
 export const TimePicker: React.FC<ITimePickerProps> = ({
   ...props
@@ -40,12 +51,8 @@ export const TimePicker: React.FC<ITimePickerProps> = ({
   const [time, setTime] = useState<number | null>(
     getTimestamp(defaultValue) ?? null
   );
-  const device: "mobile" | "desktop" =
-    /Mobile|Android|iPhone|iPad|iPod|Opera Mini|BlackBerry|IEMobile/i.test(
-      navigator.userAgent
-    )
-      ? "mobile"
-      : "desktop";
+const {match}=useMediaQuery("XSUP")
+
   const buttonRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const popoverRef = useRef<HTMLDivElement>(null);
 
@@ -53,8 +60,7 @@ export const TimePicker: React.FC<ITimePickerProps> = ({
   const dynamicFormat = showSecond ? format : "HH:mm";
 
   const renderHeight =
-    device === "desktop"
-      ? displayButtonCount * (buttonRefs.current[0]?.offsetHeight ?? 24) +
+   match? displayButtonCount * (buttonRefs.current[0]?.offsetHeight ?? 24) +
         20 +
         (displayButtonCount - 1) * 16
       : 10 * (buttonRefs.current[0]?.offsetHeight ?? 24) + 20 + (10 - 1) * 16;
@@ -165,6 +171,7 @@ export const TimePicker: React.FC<ITimePickerProps> = ({
       setTime(getTimestamp(defaultValue) ?? null);
     }
   }, [defaultValue]);
+  
   return (
     <>
       <button
@@ -178,7 +185,7 @@ export const TimePicker: React.FC<ITimePickerProps> = ({
               ${style.justify_between}
               ${style.items_center}
               ${style.gap_2}
-              ${style.px_2}
+              ${style.px_1}
               ${style.rounded_md}
               ${style.border_none}
               ${style.w_full}
@@ -195,16 +202,19 @@ export const TimePicker: React.FC<ITimePickerProps> = ({
           ...props.Style,
         }}
       >
-        {time
-          ? moment(time).locale(locale).format(dynamicFormat)
-          : "انتخاب زمان"}
         <span className={style.text_lg}>{icon}</span>
+        {time
+          ? locale === "fa"
+          ? toPersianDigits(moment(time).format(dynamicFormat))
+          : moment(time).format(dynamicFormat) 
+          : "انتخاب زمان"}
+        
       </button>
 
       {open &&
         createPortal(
           <>
-            {device === "desktop" ? (
+            {match ? (
               <div
                 ref={popupRef}
                 style={{
