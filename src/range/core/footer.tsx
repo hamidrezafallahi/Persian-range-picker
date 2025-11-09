@@ -7,10 +7,13 @@ import type {
 import moment from 'moment-jalaali';
 
 import style from '../../main.module.css';
-import type { IRangeProps } from './type';
+import type {
+  IDate,
+  IRangeProps,
+} from './type';
 
 interface IFooter {
-  setShowDate: Dispatch<SetStateAction<number|null>>;
+  setShowDate: Dispatch<SetStateAction<IDate>>;
   showDate: number|null;
   setIsOpen?: Dispatch<SetStateAction<boolean>>;
   locale: IRangeProps["locale"];
@@ -45,7 +48,7 @@ export const Footer = ({ ...props }: IFooter) => {
     const todayStart = moment().locale(locale).startOf("day").valueOf();
 
     if (key === "today") {
-      setShowDate(todayStart);
+      setShowDate({from:todayStart,to:NaN});
       onChange?.(todayStart);
       onTodayButton?.();
       setIsOpen?.(false);
@@ -68,7 +71,7 @@ export const Footer = ({ ...props }: IFooter) => {
         .set("minute", now.minute())
         .set("second", now.second());
 
-      setShowDate(updated.valueOf());
+      setShowDate({from:updated.valueOf(),to:NaN});
       const hourDiv = document.getElementById("hour");
       if (hourDiv) {
         hourDiv.scrollTop = now.hour() * 40;

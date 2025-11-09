@@ -3,13 +3,15 @@ import { useState } from 'react';
 import {
   Calendar,
   Mask,
+  RangePicker,
+  TimePicker,
 } from '../range';
 import { DesktopDatePicker } from '../range/desktopDate/desktopDatePicker';
 import { MobileDate } from '../range/mobileDate/mobileDatePicker';
 
 export default function DemoComponent() {
   const [val, setVal] = useState<any>(undefined);
-  const time = new Date().setDate(3);
+  const time = new Date(1764444444444).valueOf();
   return (
     <>
       <button
@@ -31,7 +33,7 @@ export default function DemoComponent() {
       <DesktopDatePicker
         onChange={(e) => {
           setVal(e);
-          console.log(e);
+          console.log(e,"e");
         }}
         defaultValue={time}
         value={val}
@@ -45,7 +47,6 @@ export default function DemoComponent() {
           console.log(e);
           setVal(e);
         }}
-        exportType="timeStamp"
         specialDays={[1762288200000, 1763411400000]}
         disabledDays={[1763325000000, 1763497800000]}
         renderDayContent={({ day, isSpecial }) => (
@@ -69,6 +70,8 @@ export default function DemoComponent() {
                 onCompareDateChange={(e) => {
           console.log(e);
         }}
+        value={val}
+        defaultValue={{from:time,to:NaN}}
       />
       <DatePicker
 
@@ -89,16 +92,21 @@ export default function DemoComponent() {
             </span>
           </>
         )}
-      />
+      />*/}
       <TimePicker 
-              onChange={(e) => {
-          console.log(e);
-        }} />
+           onChange={(e) => {
+          setVal(e);
+          console.log(e,"TimePicker");
+        }}
+        defaultValue={time}
+        value={val}
+        
+        />
       <RangePicker
               onChange={(e) => {
           console.log(e);
         }}
-      />*/}
+      />
       <Mask
         defaultValue={time}
         value={val}

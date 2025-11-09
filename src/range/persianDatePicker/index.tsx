@@ -38,7 +38,7 @@ export const DatePicker = ({ ...props }: IProps) => {
   useEffect(() => {
     if (value !== undefined) {
       if (isDate(value.from) && isDate(value.to)) {
-        setDate({from:new Date(value.from),to:new Date(value.to)});
+        setDate({from:new Date(value.from).valueOf(),to:new Date(value.to).valueOf()});
       } else if (typeof value.from === "number" && typeof value.to === "number") {
         setDate({from:value.from,to:value.to});
       }

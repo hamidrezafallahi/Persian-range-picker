@@ -55,8 +55,8 @@ export enum ESteps {
 }
 
 export interface IDate {
-  from: number | Date;
-  to: number | Date;
+  from: number | string;
+  to: number | string;
 }
 
 export interface IAdditionalElementType {
@@ -64,7 +64,7 @@ export interface IAdditionalElementType {
   label: string;
   content: ReactNode;
 }
-export type AcceptableDateValue = number | Date | string;
+export type AcceptableDateValue = number | string;
 
 export interface IDateProps
   extends IColorProps,
@@ -73,9 +73,9 @@ export interface IDateProps
   ITimePickerProps,
   IMaskProps {
   calendarType?: "shamsi" | "gregorian";
-  defaultValue?: number | Date;
+  defaultValue?: number | string;
   showMask?: boolean;
-  onChange?: (e: number | string | Date) => void;
+  onChange?: (e: number | string) => void;
   calendarBaseWidth?: number;
   locale?: TLocale;
   dropdownWidth?: number;
@@ -92,7 +92,7 @@ export interface IDateProps
     timestamp: number;
     isSpecial: boolean;
   }) => ReactNode;
- 
+
 }
 
 export interface IColorProps {
@@ -246,7 +246,8 @@ export interface IMaskProps
 }
 
 export interface ITimePickerProps extends IClassNameProps {
-  defaultValue?: number | Date;
+  defaultValue?: number | string;
+  value?: number | string;
   Style?: React.CSSProperties;
   calendarType?: "shamsi" | "gregorian";
   onChange?: (e: number | string) => void;

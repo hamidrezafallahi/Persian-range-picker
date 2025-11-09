@@ -29,6 +29,7 @@ const convertPersianToEnglishNumbers = (input: string): string => {
 export function Mask({ ...props }: IMaskProps) {
   const {
     defaultValue,
+    value,
     calendarType = "shamsi",
     onError,
     inputClassName,
@@ -57,7 +58,6 @@ export function Mask({ ...props }: IMaskProps) {
     : calendarType == "gregorian"
     ? "unset"
     : "IRANSans";
-    
 
   const initialTemp = timestampToDateNumbers(
     locale,
@@ -69,14 +69,13 @@ export function Mask({ ...props }: IMaskProps) {
     locale == "fa"
       ? moment().startOf("day").valueOf()
       : moment().utc().startOf("day").valueOf();
-  const initValue = defaultValue
-    ? typeof defaultValue == "number"
-      ? defaultValue
-      : new Date(defaultValue).valueOf()
-    : 0;
 
   const [baseValue, setBaseValue] = useState<IDate["from"] | null>(
-    isTodaySelectPreset ? today : null
+    defaultValue
+      ? getTimestamp(defaultValue) ?? 0
+      : isTodaySelectPreset
+      ? today
+      : null
   );
 
   const [fullValue, setFullValue] = useState<string>(
@@ -108,30 +107,6 @@ export function Mask({ ...props }: IMaskProps) {
   errors.current = errorTarget;
   separatedValueRef.current = separatedValue;
   editModeRef.current = isEdit;
-
-  const reset = () => {
-    setSeparatedValue(initialTemp);
-    const full = `${initialTemp[0]}${initialTemp[1]}${initialTemp[2]}`;
-    setFullValue(full);
-    fullValueRef.current = full;
-
-    // گرفتن مقدار timestamp امن
-    const defaultTimestamp = getTimestamp(defaultValue) ?? null;
-
-    setBaseValue(defaultTimestamp);
-
-    setErrorTarget([]);
-
-    if (defaultTimestamp !== null) {
-      onMaskChange?.(
-        exportType === "timeStamp"
-          ? defaultTimestamp
-          : locale === "fa"
-          ? moment(defaultTimestamp).format("YYYY-MM-DDTHH:mm:ss.SSSZ")
-          : moment.utc(defaultTimestamp).format("YYYY-MM-DDTHH:mm:ss.SSSZ")
-      );
-    }
-  };
 
   const formatFullValueToTimeStamp = (FullValue: string) => {
     let changeToTimestamp = null;
@@ -459,6 +434,11 @@ export function Mask({ ...props }: IMaskProps) {
           checkDateByRegex(formatFullValueToTimeStamp(fullValue), locale)
         ) {
           setBaseValue(changeToTimestamp(fullValue, locale));
+           onMaskChange?.(
+          locale == "fa"
+            ? moment(changeToTimestamp(fullValue, locale)).format("YYYY-MM-DDTHH:mm:ss.SSSZ")
+            : moment.utc(changeToTimestamp(fullValue, locale)).format("YYYY-MM-DDTHH:mm:ss.SSSZ")
+        );
           setIsEdit(0);
         } else {
           onMaskChange?.(null);
@@ -489,6 +469,11 @@ export function Mask({ ...props }: IMaskProps) {
             monthInputRef.current!.value.toString() +
             dayInputRef.current!.value.toString();
           setBaseValue(changeToTimestamp(temp, locale));
+           onMaskChange?.(
+          locale == "fa"
+            ? moment(changeToTimestamp(temp, locale)).format("YYYY-MM-DDTHH:mm:ss.SSSZ")
+            : moment.utc(changeToTimestamp(temp, locale)).format("YYYY-MM-DDTHH:mm:ss.SSSZ")
+        );
           setIsEdit(0);
         } else {
           onMaskChange?.(null);
@@ -530,6 +515,7 @@ export function Mask({ ...props }: IMaskProps) {
     setIsEdit(0);
     setBaseValue(null);
     onClear?.();
+    //  onMaskChange?.(null);
   };
   const handleClick = (e: React.MouseEvent<HTMLElement>) => {
     const target = e.target as HTMLInputElement;
@@ -599,6 +585,11 @@ export function Mask({ ...props }: IMaskProps) {
             );
             setSeparatedValue([year, month, day]);
             setBaseValue(changeToTimestamp(fullValueRef.current, locale));
+             onMaskChange?.(
+          locale == "fa"
+            ? moment(changeToTimestamp(fullValueRef.current, locale)).format("YYYY-MM-DDTHH:mm:ss.SSSZ")
+            : moment.utc(changeToTimestamp(fullValueRef.current, locale)).format("YYYY-MM-DDTHH:mm:ss.SSSZ")
+        );
           } else {
             setErrorTarget((prev) => [...prev.filter((item) => item !== 3), 3]);
             const year = convertPersianToEnglishNumbers(
@@ -643,6 +634,11 @@ export function Mask({ ...props }: IMaskProps) {
             )
           ) {
             setBaseValue(changeToTimestamp(temp, locale));
+             onMaskChange?.(
+          locale == "fa"
+            ? moment(changeToTimestamp(temp, locale)).format("YYYY-MM-DDTHH:mm:ss.SSSZ")
+            : moment.utc(changeToTimestamp(temp, locale)).format("YYYY-MM-DDTHH:mm:ss.SSSZ")
+        );
           } else {
             onMaskChange?.(null);
             onError?.(message);
@@ -669,26 +665,23 @@ export function Mask({ ...props }: IMaskProps) {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [isEdit]);
-  useEffect(() => {
-    console.log(baseValue)
-    if (!baseValue || baseValue == getTimestamp(defaultValue)) {
-      return;
-    }
-    const dateValues = timestampToDateNumbers(locale, getTimestamp(baseValue));
-    const [year, month, day] = dateValues;
-    const temp = `${year}${month}${day}`.substring(0, 8);
-    setFullValue(temp);
-    fullValueRef.current = temp;
+  // console.log(defaultValue,new Date(value).valueOf(),baseValue)
 
-    setSeparatedValue([year.toString(), month.toString(), day.toString()]);
-    onMaskChange?.(
-      exportType == "timeStamp"
-        ? baseValue.valueOf()
-        : locale == "fa"
-        ? moment(baseValue).format("YYYY-MM-DDTHH:mm:ss.SSSZ")
-        : moment.utc(baseValue).format("YYYY-MM-DDTHH:mm:ss.SSSZ")
-    );
-  }, [baseValue]);
+  // useEffect(() => {
+  //   if (value && (new Date(baseValue).valueOf() !== new Date(value).valueOf())) {
+  //     if (exportType == "IsoString") {
+  //       onMaskChange?.(
+  //         locale == "fa"
+  //           ? moment(baseValue).format("YYYY-MM-DDTHH:mm:ss.SSSZ")
+  //           : moment.utc(baseValue).format("YYYY-MM-DDTHH:mm:ss.SSSZ")
+  //       );
+  //     } else {
+  //       locale == "fa"
+  //         ? moment(baseValue).valueOf()
+  //         : moment.utc(baseValue).valueOf();
+  //     }
+  //   }
+  // }, [baseValue]);
   useEffect(() => {
     const [year, month, day] = separatedValue;
     const temp = `${year}${month}${day}`.substring(0, 8);
@@ -696,13 +689,10 @@ export function Mask({ ...props }: IMaskProps) {
     fullValueRef.current = temp;
   }, [separatedValue]);
   useEffect(() => {
-    if (defaultValue === null || defaultValue === undefined) {
-      reset();
-    } else if (defaultValue && getTimestamp(defaultValue) !== baseValue) {
-      const dateValues = timestampToDateNumbers(
-        locale,
-        getTimestamp(defaultValue)
-      );
+    if (value === null) {
+      handleClearMask();
+    } else if (value && getTimestamp(value) !== baseValue) {
+      const dateValues = timestampToDateNumbers(locale, getTimestamp(value));
       const [year, month, day] = dateValues;
       const temp = `${convertPersianToEnglishNumbers(
         year
@@ -716,10 +706,10 @@ export function Mask({ ...props }: IMaskProps) {
         convertPersianToEnglishNumbers(month).toString(),
         convertPersianToEnglishNumbers(day).toString(),
       ]);
-      setBaseValue(getTimestamp(defaultValue) ?? 0);
+      setBaseValue(getTimestamp(value)!);
+      
     }
-  }, [defaultValue]);
-
+  }, [value]);
   const fontSize = useMemo(() => {
     const raw = MaskFontStyle?.fontSize;
     return typeof raw === "string" ? parseFloat(raw) : raw ?? 14;
@@ -830,12 +820,14 @@ export function Mask({ ...props }: IMaskProps) {
                   onKeyDown={handleKeyDown}
                   maxLength={4}
                   minLength={4}
-                  className={`${locale === "fa" && style.font_Number_Farsi} ${inputClassName}`}
+                  className={`${
+                    locale === "fa" && style.font_Number_Farsi
+                  } ${inputClassName}`}
                   style={{
                     width: (4 * fontSize) / 2 + 8,
                     fontSize: fontSize,
                     color: MaskFontStyle.color,
-                    fontFamily:MaskFontStyle?.fontFamily,
+                    fontFamily: MaskFontStyle?.fontFamily,
                     border: "none",
                     outline: "none",
                     background: "transparent",
@@ -869,7 +861,9 @@ export function Mask({ ...props }: IMaskProps) {
                   onKeyDown={handleKeyDown}
                   maxLength={2}
                   minLength={2}
-                  className={`${locale === "fa" && style.font_Number_Farsi} ${inputClassName}`}
+                  className={`${
+                    locale === "fa" && style.font_Number_Farsi
+                  } ${inputClassName}`}
                   style={{
                     width: (2 * fontSize) / 2 + 6, ////////////////////////////////////////////here
                     border: "none",
@@ -877,8 +871,7 @@ export function Mask({ ...props }: IMaskProps) {
                     background: "transparent",
                     fontSize: fontSize,
                     color: MaskFontStyle.color,
-                    fontFamily:MaskFontStyle?.fontFamily,
-
+                    fontFamily: MaskFontStyle?.fontFamily,
                   }}
                   placeholder="__"
                 />
@@ -909,11 +902,13 @@ export function Mask({ ...props }: IMaskProps) {
                   onKeyDown={handleKeyDown}
                   maxLength={2}
                   minLength={2}
-                  className={`${locale === "fa" && style.font_Number_Farsi} ${inputClassName}`}
+                  className={`${
+                    locale === "fa" && style.font_Number_Farsi
+                  } ${inputClassName}`}
                   style={{
                     fontSize: fontSize,
                     color: MaskFontStyle.color,
-                    fontFamily:MaskFontStyle?.fontFamily,
+                    fontFamily: MaskFontStyle?.fontFamily,
                     width: (2 * fontSize) / 2 + 6,
                     border: "none",
                     outline: "none",

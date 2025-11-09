@@ -39,27 +39,45 @@ export function MobileDate({ ...props }: IDateProps) {
     disabled = false,
     value,
   } = props;
-  const initValue = defaultValue
-    ? typeof defaultValue == "number"
-      ? defaultValue
-      : new Date(defaultValue).valueOf()
-    : 0;
-  const [showDate, setShowDate] = useState<number | null>(initValue);
+  const isFa = locale === "fa";
+   const initValue: IDate = (() => {
+     if (defaultValue !== undefined) {
+         return {
+           from: isFa
+             ? moment(defaultValue).locale("fa").startOf("day").valueOf()
+             : moment(defaultValue).utc().startOf("day").valueOf(),
+           to: isFa
+             ? moment(defaultValue).locale("fa").endOf("day").valueOf()
+             : moment(defaultValue).utc().endOf("day").valueOf(),
+         };
+       
+     } else {
+         return {
+           from: isFa
+             ? moment().locale("fa").startOf("day").valueOf()
+             : moment().utc().startOf("day").valueOf(),
+           to: isFa
+             ? moment().locale("fa").endOf("day").valueOf()
+             : moment().utc().endOf("day").valueOf(),
+         };
+     }
+   })();
+   const [showDate, setShowDate] = useState<IDate>(initValue);
   const [content, setContent] = useState<"Date" | "Time">("Date");
   const [open, setOpen] = useState(false);
   const dynamicFormat = showSecond ? showTimeFormat : "HH:mm";
   const persian =
-    showDate && showDate > 0
+    showDate.from && new Date (showDate.from).valueOf() > 0
       ? toPersianDigits(
-          moment(showDate).format(
+          moment(showDate.from).format(
             showTime ? `jYYYY/jMM/jDD\u2003${dynamicFormat}` : `jYYYY/jMM/jDD`
           )
         )
       : "انتخاب تاریخ";
 
   const gregorian =
-    showDate && showDate > 0
-      ? moment(showDate).format(
+    showDate.from && new Date (showDate.from).valueOf() > 0
+      ? moment(showDate.from).format(
           showTime ? `YYYY/MM/DD\u2003${dynamicFormat}` : `YYYY/MM/DD`
         )
       : "Choose date";
@@ -68,15 +86,20 @@ export function MobileDate({ ...props }: IDateProps) {
 
   const handleDateChange = (e: IDate) => {
     if (showTime) {
-      setShowDate(new Date(e.from).valueOf());
+      setShowDate({from:new Date(e.from).valueOf(),to:NaN});
       setContent("Time");
     } else {
-      setShowDate(new Date(e.from).valueOf());
-      if (exportType === "IsoString") {
-        onChange?.(new Date(e.from).valueOf());
-      } else {
-        onChange?.(new Date(e.from).valueOf());
-      }
+      setShowDate({from:new Date(e.from).valueOf(),to:NaN});
+     if (exportType == "IsoString") {
+       onChange?.(
+        locale == "fa"
+          ? moment(e.from).format("YYYY-MM-DDTHH:mm:ss.SSSZ")
+          : moment.utc(e.from).format("YYYY-MM-DDTHH:mm:ss.SSSZ"));
+    } else {
+      locale == "fa"
+          ? moment(e.from).valueOf()
+          : moment.utc(e.from).valueOf()
+    }
 
       setOpen(false);
     }
@@ -84,11 +107,16 @@ export function MobileDate({ ...props }: IDateProps) {
 
   const handleSubmit = () => {
     if (showDate !== null) {
-      if (exportType == "IsoString") {
-        onChange?.(new Date(showDate).toISOString());
-      } else {
-        onChange?.(new Date(showDate).valueOf());
-      }
+       if (exportType == "IsoString") {
+       onChange?.(
+        locale == "fa"
+          ? moment(showDate.from).format("YYYY-MM-DDTHH:mm:ss.SSSZ")
+          : moment.utc(showDate.from).format("YYYY-MM-DDTHH:mm:ss.SSSZ"));
+    } else {
+      locale == "fa"
+          ? moment(showDate.from).valueOf()
+          : moment.utc(showDate.from).valueOf()
+    }
     }
 
     setContent("Date");
@@ -97,9 +125,9 @@ export function MobileDate({ ...props }: IDateProps) {
 
   const handleTimeChange = (unit: TUnit, value: number) => {
     const updated = showDate
-      ? moment(showDate).locale(locale).set(unit, value)
+      ? moment(showDate.from).locale(locale).set(unit, value)
       : moment().locale(locale).set(unit, value);
-    setShowDate(updated.valueOf());
+    setShowDate({from:updated.valueOf(),to:NaN});
     const targetDiv = document.getElementById(unit);
     if (targetDiv) {
       targetDiv.scrollTop = value * 40;
@@ -108,7 +136,7 @@ export function MobileDate({ ...props }: IDateProps) {
 
   const renderOptions = (count: number, unit: TUnit, step = 1) => {
     const pad = (num: number) => num.toString().padStart(2, "0");
-    const active = moment(showDate).locale(locale).get(unit);
+    const active = moment(showDate.from).locale(locale).get(unit);
 
     return Array.from({ length: Math.ceil(count / step) }, (_, i) => {
       const val = i * step;
@@ -130,7 +158,7 @@ export function MobileDate({ ...props }: IDateProps) {
               active === val
                 ? `${style.pointer_events_auto} ${style.opacity_100} ${style.text_gray123}`
                 : ""
-            }
+            } /api/inv/select/getbatchesbyvouchertypeIdInvouchers
           `}
           style={{ color: tertiaryColor, fontSize: "14px" }}
         >
@@ -142,13 +170,12 @@ export function MobileDate({ ...props }: IDateProps) {
   useEffect(() => {
     if (value !== undefined) {
       if (typeof value === "string") {
-        setShowDate(new Date(value).valueOf());
+        setShowDate({from:new Date(value).valueOf(),to:NaN});
       } else if (typeof value === "number" || value === null) {
-        setShowDate(value);
+        setShowDate({from:value,to:NaN});
       }
     }
   }, [value]);
-
   return (
     <>
       <button
@@ -203,7 +230,7 @@ export function MobileDate({ ...props }: IDateProps) {
                   model="date"
                   onDateChange={handleDateChange}
                   value={{
-                    from: showDate ?? new Date().valueOf(),
+                    from: showDate.from ?? new Date().valueOf(),
                     to: 0,
                   }}
                 />
@@ -226,9 +253,9 @@ export function MobileDate({ ...props }: IDateProps) {
                   >
                     {locale === "fa"
                       ? toPersianDigits(
-                          moment(showDate).locale(locale).format(dynamicFormat)
+                          moment(showDate.from).locale(locale).format(dynamicFormat)
                         )
-                      : moment(showDate).locale(locale).format(dynamicFormat)}
+                      : moment(showDate.from).locale(locale).format(dynamicFormat)}
                     <button
                       className={`
                         ${style.top_0}
@@ -287,7 +314,7 @@ export function MobileDate({ ...props }: IDateProps) {
             >
               <Footer
                 setShowDate={setShowDate}
-                showDate={showDate}
+                showDate={new Date(showDate.from).valueOf()}
                 locale={locale}
                 primaryColor={primaryColor}
                 highlightColor={highlightColor}

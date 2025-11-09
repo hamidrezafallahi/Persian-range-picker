@@ -1,6 +1,4 @@
 import React, {
-  type Dispatch,
-  type SetStateAction,
   useEffect,
   useRef,
   useState,
@@ -27,7 +25,6 @@ interface Props {
   secondStep?: number;
   onGetValue?: (e: number) => void;
   onChange?: (e: number) => void;
-  setShowDate: Dispatch<SetStateAction<number>>;
   showSecond?: boolean;
 }
 

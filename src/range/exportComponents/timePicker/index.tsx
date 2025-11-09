@@ -8,10 +8,7 @@ import { createPortal } from 'react-dom';
 import moment from 'moment-jalaali';
 
 import style from '../../../main.module.css';
-import {
-  getTimestamp,
-  toPersianDigits,
-} from '../../core/helper';
+import { toPersianDigits } from '../../core/helper';
 import type {
   ITimePickerProps,
   TUnit,
@@ -21,11 +18,10 @@ import { useMediaQuery } from '../useMediaQuery';
 import { useRenderPosition } from '../useRenderPosition';
 import { TimeColumns } from './exportComponents';
 
-export const TimePicker: React.FC<ITimePickerProps> = ({
-  ...props
-}: ITimePickerProps) => {
+export const TimePicker = ({ ...props }: ITimePickerProps) => {
   const {
     defaultValue,
+    value,
     onChange,
     calendarType = "shamsi",
     containerClassName,
@@ -48,22 +44,33 @@ export const TimePicker: React.FC<ITimePickerProps> = ({
   const buttonRef = useRef<HTMLButtonElement>(null);
   const popupRef = useRef<HTMLDivElement>(null);
   const [open, setOpen] = useState(false);
-  const [time, setTime] = useState<number | null>(
-    getTimestamp(defaultValue) ?? null
-  );
-const {match}=useMediaQuery("XSUP")
+  const locale = calendarType == "shamsi" ? "fa" : "en";
+  const isFa = locale === "fa";
+
+  const initValue: number | null = (() => {
+    if (defaultValue !== undefined) {
+      return isFa
+        ? moment(defaultValue).locale("fa").valueOf()
+        : moment(defaultValue).utc().valueOf();
+    } else {
+      return isFa
+        ? moment().locale("fa").valueOf()
+        : moment().utc().valueOf();
+    }
+  })();
+  const [time, setTime] = useState<number | null>(initValue);
+  const { match } = useMediaQuery("XSUP");
 
   const buttonRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const popoverRef = useRef<HTMLDivElement>(null);
 
-  const locale = calendarType == "shamsi" ? "fa" : "en";
   const dynamicFormat = showSecond ? format : "HH:mm";
 
-  const renderHeight =
-   match? displayButtonCount * (buttonRefs.current[0]?.offsetHeight ?? 24) +
-        20 +
-        (displayButtonCount - 1) * 16
-      : 10 * (buttonRefs.current[0]?.offsetHeight ?? 24) + 20 + (10 - 1) * 16;
+  const renderHeight = match
+    ? displayButtonCount * (buttonRefs.current[0]?.offsetHeight ?? 24) +
+      20 +
+      (displayButtonCount - 1) * 16
+    : 10 * (buttonRefs.current[0]?.offsetHeight ?? 24) + 20 + (10 - 1) * 16;
 
   useRenderPosition({
     buttonRef: buttonRef as React.RefObject<HTMLElement>,
@@ -84,13 +91,15 @@ const {match}=useMediaQuery("XSUP")
 
   const handleSubmit = () => {
     if (time && time > 0) {
-      const value =
-        exportType === "timeStamp"
-          ? time
-          : calendarType === "shamsi"
-          ? moment(time).format("YYYY-MM-DDTHH:mm:ss.SSSZ")
-          : moment.utc(time).format("YYYY-MM-DDTHH:mm:ss.SSSZ");
-      onChange?.(value);
+      if (exportType == "IsoString") {
+        onChange?.(
+          locale == "fa"
+            ? moment(time).format("YYYY-MM-DDTHH:mm:ss.SSSZ")
+            : moment.utc(time).format("YYYY-MM-DDTHH:mm:ss.SSSZ")
+        );
+      } else {
+        locale == "fa" ? moment(time).valueOf() : moment.utc(time).valueOf();
+      }
     }
     setOpen(false);
     popoverRef.current?.hidePopover();
@@ -167,11 +176,14 @@ const {match}=useMediaQuery("XSUP")
   };
 
   useEffect(() => {
-    if (defaultValue) {
-      setTime(getTimestamp(defaultValue) ?? null);
+    if (value!== undefined) {
+        setTime(isFa
+            ? moment(value).locale("fa").startOf("day").valueOf()
+            : moment(value).utc().startOf("day").valueOf());
+     
     }
-  }, [defaultValue]);
-  
+  }, [value]);
+
   return (
     <>
       <button
@@ -205,10 +217,9 @@ const {match}=useMediaQuery("XSUP")
         <span className={style.text_lg}>{icon}</span>
         {time
           ? locale === "fa"
-          ? toPersianDigits(moment(time).format(dynamicFormat))
-          : moment(time).format(dynamicFormat) 
+            ? toPersianDigits(moment(time).format(dynamicFormat))
+            : moment(time).format(dynamicFormat)
           : "انتخاب زمان"}
-        
       </button>
 
       {open &&

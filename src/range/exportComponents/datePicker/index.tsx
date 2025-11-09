@@ -20,13 +20,16 @@ const {match}=useMediaQuery("XSUP")
   const locale = calendarType == "shamsi" ? "fa" : "en";
   const changeHandler = (e: number | string) => {
     if (!e) return;
-    onChange?.(
-      exportType == "timeStamp"
-        ? e
-        : locale == "fa"
-        ? moment(e).format("YYYY-MM-DDTHH:mm:ss.SSSZ")
-        : moment.utc(e).format("YYYY-MM-DDTHH:mm:ss.SSSZ")
-    );
+   if (exportType == "IsoString") {
+          onChange?.(
+           locale == "fa"
+             ? moment(e).format("YYYY-MM-DDTHH:mm:ss.SSSZ")
+             : moment.utc(e).format("YYYY-MM-DDTHH:mm:ss.SSSZ"));
+       } else {
+         locale == "fa"
+             ? moment(e).valueOf()
+             : moment.utc(e).valueOf()
+       }
   };
  
   return (
