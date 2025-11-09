@@ -37,7 +37,6 @@ const {match}=useMediaQuery("XSUP")
           locale={locale}
           onChange={changeHandler}
           defaultValue={getTimestamp(defaultValue)}
- 
         />
       ) : (
         <MobileDate

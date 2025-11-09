@@ -57,6 +57,7 @@ export function Mask({ ...props }: IMaskProps) {
     : calendarType == "gregorian"
     ? "unset"
     : "IRANSans";
+    
 
   const initialTemp = timestampToDateNumbers(
     locale,
@@ -65,12 +66,19 @@ export function Mask({ ...props }: IMaskProps) {
 
   const [separatedValue, setSeparatedValue] = useState(initialTemp);
   const today =
-    locale !== "fa"
-      ? moment().startOf("D").valueOf()
+    locale == "fa"
+      ? moment().startOf("day").valueOf()
       : moment().utc().startOf("day").valueOf();
+  const initValue = defaultValue
+    ? typeof defaultValue == "number"
+      ? defaultValue
+      : new Date(defaultValue).valueOf()
+    : 0;
+
   const [baseValue, setBaseValue] = useState<IDate["from"] | null>(
     isTodaySelectPreset ? today : null
   );
+
   const [fullValue, setFullValue] = useState<string>(
     `${initialTemp[0]}${initialTemp[1]}${initialTemp[2]}`
   );
@@ -662,6 +670,7 @@ export function Mask({ ...props }: IMaskProps) {
     };
   }, [isEdit]);
   useEffect(() => {
+    console.log(baseValue)
     if (!baseValue || baseValue == getTimestamp(defaultValue)) {
       return;
     }

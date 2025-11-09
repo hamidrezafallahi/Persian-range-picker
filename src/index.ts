@@ -1,6 +1,6 @@
-export { Mask, RangePicker } from './range';
+export { Mask, Range, RangePicker } from './range';
 export { DatePicker } from './range/exportComponents/datePicker';
-export { DatePicker as DateComponent } from './range/persianDatePicker/index';
+export { Calendar } from './range/exportComponents/Calendar';
 export { TimePicker } from './range/exportComponents/timePicker';
 export { useRenderPosition } from './range/exportComponents/useRenderPosition';
 export { useMediaQuery } from './range/exportComponents/useMediaQuery';

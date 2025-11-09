@@ -6,17 +6,15 @@ import type {
 } from '../core/type';
 
 export interface IProps {
-  dateFromOutside: IDate;
   onDateChange?: (e: IDate) => void;
   tabIndex?: number;
   value?: IDate;
-  defaultValue?: string | IDate;
+  defaultValue?: IDate;
   inputClassName?: string;
   model?: "range" | "date";
   mode?: "modal" | "dropdown";
   name?: string;
   doubleMonth?: boolean;
-  defaultVal?: string;
   disablePreviousDays?: boolean;
   calenderClassName?: string;
   renderDayFn?: (
@@ -28,7 +26,6 @@ export interface IProps {
   onClear?: () => void;
   padding?: string;
   disabled?: boolean;
-  setDateToOutside?: IDate;
   datePickerBodyClassName?: string;
   chooseTodayClassName?: string;
   primaryColor?: string;

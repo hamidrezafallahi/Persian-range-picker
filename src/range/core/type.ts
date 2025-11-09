@@ -75,7 +75,7 @@ export interface IDateProps
   calendarType?: "shamsi" | "gregorian";
   defaultValue?: number | Date;
   showMask?: boolean;
-  onChange?: (e: number | string) => void;
+  onChange?: (e: number | string | Date) => void;
   calendarBaseWidth?: number;
   locale?: TLocale;
   dropdownWidth?: number;
@@ -92,7 +92,7 @@ export interface IDateProps
     timestamp: number;
     isSpecial: boolean;
   }) => ReactNode;
-
+ 
 }
 
 export interface IColorProps {
@@ -220,6 +220,7 @@ export interface IMaskProps
   extends Pick<IColorProps, "tertiaryColor" | "highlightColor">,
   Pick<IClassNameProps, "maskClassName" | "className"> {
   defaultValue?: IDate["from"];
+  value?: IDate["from"];
   onError?: (e: string) => void;
   onMaskChange?: (e: IDate["from"] | number | string | null) => void;
   calendarType?: "shamsi" | "gregorian";
@@ -299,7 +300,7 @@ export interface IDatePickerProps extends Omit<IDateProps, "locale"> { }
 
 
 export interface CalendarProps extends Omit<IProps, "dateFromOutside" | "locale" | "onDateChange"> {
-  dateFromOutside?: IDate;
+  value?: IDate;
   locale?: TLocale
   onChange?: (e: string | number) => void;
   specialDays?: number[];

@@ -1,19 +1,49 @@
+import { useState } from 'react';
+
 import {
-  DatePicker,
+  Calendar,
   Mask,
-  Range,
-  TimePicker,
 } from '../range';
-import { Calendar } from '../range/exportComponents/Calendar';
-import { RangePicker } from '../range/exportComponents/range/rangePicker';
+import { DesktopDatePicker } from '../range/desktopDate/desktopDatePicker';
+import { MobileDate } from '../range/mobileDate/mobileDatePicker';
 
 export default function DemoComponent() {
+  const [val, setVal] = useState<any>(undefined);
+  const time = new Date().setDate(3);
   return (
     <>
-      <div className=""></div>
+      <button
+        onClick={() => {
+          setVal(null);
+        }}
+      >
+        set null
+      </button>
+      <MobileDate
+      showTime
+        onChange={(e) => {
+          setVal(e);
+          console.log(e);
+        }}
+        defaultValue={time}
+        value={val}
+      />
+      <DesktopDatePicker
+        onChange={(e) => {
+          setVal(e);
+          console.log(e);
+        }}
+        defaultValue={time}
+        value={val}
+        showMask
+      />
       <Calendar
+        //  model='range'
+        defaultValue={{ from: time, to: 0 }}
+        value={{ from: val, to: 0 }}
         onChange={(e) => {
           console.log(e);
+          setVal(e);
         }}
         exportType="timeStamp"
         specialDays={[1762288200000, 1763411400000]}
@@ -32,7 +62,7 @@ export default function DemoComponent() {
         )}
       />
 
-      <Range
+      {/*<Range
               onChange={(e) => {
           console.log(e);
         }}
@@ -68,14 +98,18 @@ export default function DemoComponent() {
               onChange={(e) => {
           console.log(e);
         }}
-      />
+      />*/}
       <Mask
+        defaultValue={time}
+        value={val}
+      
       allowClear
       // calendarType='gregorian'
               onMaskChange={(e) => {
+                setVal(e);
           console.log(e);
         }}
-      />
+      /> 
     </>
   );
 }

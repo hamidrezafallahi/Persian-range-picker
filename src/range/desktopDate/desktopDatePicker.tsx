@@ -47,11 +47,17 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
     Style,
     exportType = "IsoString",
     allowClear,
-    onClear
+    onClear,
+    value,
   } = props;
- 
+
   const dynamicFormat = showSecond ? showTimeFormat : "HH:mm";
-  const [showDate, setShowDate] = useState<number|null>(0);
+  const initValue = defaultValue
+    ? typeof defaultValue == "number"
+      ? defaultValue
+      : new Date(defaultValue).valueOf()
+    : 0;
+  const [showDate, setShowDate] = useState<number | null>(initValue);
   const [isOpen, setIsOpen] = useState(isOpenDropdown);
   const buttonRef = useRef<HTMLElement>(null);
   const popupRef = useRef<HTMLDivElement>(null);
@@ -66,7 +72,7 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
   const handleDropdown = () => setIsOpen((prev) => !prev);
 
   const handleSubmit = () => {
-    const finalDate = showTime ? showDate??0 : moment(showDate).valueOf();
+    const finalDate = showTime ? showDate ?? 0 : moment(showDate).valueOf();
     if (exportType == "IsoString") {
       onChange?.(new Date(finalDate).toISOString());
     } else {
@@ -94,7 +100,7 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
   };
 
   const persian =
-    showDate&&showDate > 0
+    showDate && showDate > 0
       ? toPersianDigits(
           moment(showDate).format(
             showTime ? `jYYYY/jMM/jDD\u2003${dynamicFormat}` : `jYYYY/jMM/jDD`
@@ -103,7 +109,7 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
       : "انتخاب تاریخ";
 
   const gregorian =
-    showDate&&showDate > 0
+    showDate && showDate > 0
       ? moment(showDate).format(
           showTime ? `YYYY/MM/DD\u2003${dynamicFormat}` : `YYYY/MM/DD`
         )
@@ -113,36 +119,31 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
   const handleSetTime = (timestamp: number) => {
     setShowDate(timestamp);
   };
-  function isDate(value: Date | number | undefined): value is Date {
-    return value instanceof Date;
-  }
+
   const changeHandler = (e: number) => {
     if (!e) return;
     setShowDate(e);
-    onChange?.(e);
+    if (exportType == "IsoString") {
+      onChange?.(new Date(e).toISOString());
+    } else {
+      onChange?.(e);
+    }
   };
-const handleClear =(e : any)=>{
-  e.stopPropagation()
-  setShowDate(null)
-  onClear?.()
-}
-
+  const handleClear = (e: any) => {
+    e.stopPropagation();
+    setShowDate(null);
+    onClear?.();
+  };
 
   useEffect(() => {
-    let temp: number = 0; // Initialize temp as a number
-    const temp2: Date | number | undefined = defaultValue; // Specify a union type
-
-    if (temp2 !== undefined) {
-      // Check if temp2 is not undefined
-      if (isDate(temp2)) {
-        temp = temp2.valueOf();
-      } else if (typeof temp2 === "number") {
-        temp = temp2; // Use the number directly
+    if (value !== undefined) {
+      if (typeof value === "string") {
+        setShowDate(new Date(value).valueOf());
+      } else if (typeof value === "number" || value === null) {
+        setShowDate(value);
       }
     }
-
-    setShowDate(temp);
-  }, [defaultValue]);
+  }, [value]);
 
   return (
     <>
@@ -151,7 +152,13 @@ const handleClear =(e : any)=>{
         ref={buttonRef as React.RefObject<HTMLButtonElement>}
         onClick={handleDropdown}
         type="button"
-        className={`${styles.flex} ${styles.justify_between} ${styles.items_center} ${styles.gap_1} ${styles.px_2}   ${styles.rounded_md} ${styles.h_9}   ${style.xs_w_40} ${showTime && style.xs_w_52} ${style.overflow_hidden} ${style.border_none} 
+        className={`${styles.flex} ${styles.justify_between} ${
+          styles.items_center
+        } ${styles.gap_1} ${styles.px_2}   ${styles.rounded_md} ${
+          styles.h_9
+        }   ${style.xs_w_40} ${showTime && style.xs_w_52} ${
+          style.overflow_hidden
+        } ${style.border_none} 
   ${style.w_full}  ${className}`}
         style={{
           ...Style,
@@ -160,7 +167,7 @@ const handleClear =(e : any)=>{
           fontSize: "14px",
         }}
       >
-         {allowClear ? (
+        {allowClear ? (
           <span
             onClick={handleClear}
             className={`
@@ -175,7 +182,10 @@ const handleClear =(e : any)=>{
   `}
           >
             <ClearIcon />
-          </span>):<CalenderIcon />}
+          </span>
+        ) : (
+          <CalenderIcon />
+        )}
         {showMask ? (
           <div
             onClick={(e) => {
@@ -187,7 +197,7 @@ const handleClear =(e : any)=>{
               {...props}
               allowClear={false}
               exportType="timeStamp"
-              defaultValue={showDate??undefined}
+              defaultValue={showDate ?? undefined}
               onMaskChange={(e) => {
                 setShowDate(e as number);
                 onChange?.(e as number);
@@ -205,7 +215,6 @@ const handleClear =(e : any)=>{
             {title}
           </div>
         )}
-       
       </button>
       {isOpen &&
         createPortal(
@@ -241,12 +250,11 @@ const handleClear =(e : any)=>{
                 model="date"
                 locale={locale}
                 onDateChange={handleDateChange}
-                dateFromOutside={{ from: showDate??0, to: 0 }}
+                value={{ from: value ?? 0, to: 0 }}
                 calendarBaseWidth={calendarBaseWidth}
                 defaultValue={
                   defaultValue ? { from: defaultValue, to: 0 } : undefined
                 }
-
               />
               {showTime && (
                 <div
@@ -278,8 +286,10 @@ const handleClear =(e : any)=>{
                   <DesktopTimePicker
                     {...props}
                     displayButtonCount={5}
-                    defaultValue={showDate??undefined}
-                    setShowDate={setShowDate as Dispatch<SetStateAction<number>>}
+                    defaultValue={showDate ?? undefined}
+                    setShowDate={
+                      setShowDate as Dispatch<SetStateAction<number>>
+                    }
                     onGetValue={handleSetTime}
                   />
                 </div>
@@ -288,8 +298,10 @@ const handleClear =(e : any)=>{
 
             <Footer
               setIsOpen={setIsOpen}
-              setShowDate={setShowDate as Dispatch<SetStateAction<number>>}
-              showDate={showDate??0}
+              setShowDate={
+                setShowDate as Dispatch<SetStateAction<number | null>>
+              }
+              showDate={showDate ?? 0}
               locale={locale}
               primaryColor={primaryColor}
               highlightColor={highlightColor}

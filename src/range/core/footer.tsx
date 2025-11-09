@@ -10,8 +10,8 @@ import style from '../../main.module.css';
 import type { IRangeProps } from './type';
 
 interface IFooter {
-  setShowDate: Dispatch<SetStateAction<number>>;
-  showDate: number;
+  setShowDate: Dispatch<SetStateAction<number|null>>;
+  showDate: number|null;
   setIsOpen?: Dispatch<SetStateAction<boolean>>;
   locale: IRangeProps["locale"];
   elements?: ReactNode[] | null;

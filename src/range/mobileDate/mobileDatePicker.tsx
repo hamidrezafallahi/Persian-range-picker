@@ -8,17 +8,13 @@ import moment from 'moment-jalaali';
 
 import style from '../../main.module.css';
 import { Footer } from '../core/footer';
-import {
-  getTimestamp,
-  toPersianDigits,
-} from '../core/helper';
+import { toPersianDigits } from '../core/helper';
 import type {
   IDate,
   IDateProps,
   TUnit,
 } from '../core/type';
 import { TimeColumns } from '../exportComponents/timePicker/exportComponents';
-import { useMediaQuery } from '../exportComponents/useMediaQuery';
 import { CalenderIcon } from '../icons/CalenderIcon';
 import { MenuArrowBack } from '../icons/MenuArrowBack';
 import { DatePicker } from '../persianDatePicker';
@@ -41,18 +37,19 @@ export function MobileDate({ ...props }: IDateProps) {
     showSecond = true,
     className,
     disabled = false,
+    value,
   } = props;
-
-  const [showDate, setShowDate] = useState<number>(0);
+  const initValue = defaultValue
+    ? typeof defaultValue == "number"
+      ? defaultValue
+      : new Date(defaultValue).valueOf()
+    : 0;
+  const [showDate, setShowDate] = useState<number | null>(initValue);
   const [content, setContent] = useState<"Date" | "Time">("Date");
   const [open, setOpen] = useState(false);
-
-  const { match } = useMediaQuery("XSUP");
-
   const dynamicFormat = showSecond ? showTimeFormat : "HH:mm";
-
   const persian =
-    showDate > 0
+    showDate && showDate > 0
       ? toPersianDigits(
           moment(showDate).format(
             showTime ? `jYYYY/jMM/jDD\u2003${dynamicFormat}` : `jYYYY/jMM/jDD`
@@ -61,7 +58,7 @@ export function MobileDate({ ...props }: IDateProps) {
       : "انتخاب تاریخ";
 
   const gregorian =
-    showDate > 0
+    showDate && showDate > 0
       ? moment(showDate).format(
           showTime ? `YYYY/MM/DD\u2003${dynamicFormat}` : `YYYY/MM/DD`
         )
@@ -71,14 +68,14 @@ export function MobileDate({ ...props }: IDateProps) {
 
   const handleDateChange = (e: IDate) => {
     if (showTime) {
-      setShowDate(getTimestamp(e.from) ?? 0);
+      setShowDate(new Date(e.from).valueOf());
       setContent("Time");
     } else {
-      setShowDate(getTimestamp(e.from) ?? 0);
-      if (exportType == "IsoString") {
-        onChange?.(new Date(getTimestamp(e.from) ?? 0).toISOString());
+      setShowDate(new Date(e.from).valueOf());
+      if (exportType === "IsoString") {
+        onChange?.(new Date(e.from).valueOf());
       } else {
-        onChange?.(getTimestamp(e.from) ?? 0);
+        onChange?.(new Date(e.from).valueOf());
       }
 
       setOpen(false);
@@ -86,10 +83,12 @@ export function MobileDate({ ...props }: IDateProps) {
   };
 
   const handleSubmit = () => {
-    if (exportType == "IsoString") {
-      onChange?.(new Date(showDate).toISOString());
-    } else {
-      onChange?.(showDate);
+    if (showDate !== null) {
+      if (exportType == "IsoString") {
+        onChange?.(new Date(showDate).toISOString());
+      } else {
+        onChange?.(new Date(showDate).valueOf());
+      }
     }
 
     setContent("Date");
@@ -140,23 +139,15 @@ export function MobileDate({ ...props }: IDateProps) {
       );
     });
   };
-
-  function isDate(value: Date | number | undefined): value is Date {
-    return value instanceof Date;
-  }
-
   useEffect(() => {
-    let temp: number = 0;
-    const temp2: Date | number | undefined = defaultValue;
-    if (temp2 !== undefined) {
-      if (isDate(temp2)) {
-        temp = temp2.valueOf();
-      } else if (typeof temp2 === "number") {
-        temp = temp2;
+    if (value !== undefined) {
+      if (typeof value === "string") {
+        setShowDate(new Date(value).valueOf());
+      } else if (typeof value === "number" || value === null) {
+        setShowDate(value);
       }
     }
-    setShowDate(temp);
-  }, [defaultValue]);
+  }, [value]);
 
   return (
     <>
@@ -187,9 +178,7 @@ export function MobileDate({ ...props }: IDateProps) {
         }}
       >
         <CalenderIcon />
-        <div dir="ltr">
-          {title}
-        </div>
+        <div dir="ltr">{title}</div>
       </button>
 
       {open &&
@@ -213,7 +202,7 @@ export function MobileDate({ ...props }: IDateProps) {
                   locale={locale}
                   model="date"
                   onDateChange={handleDateChange}
-                  dateFromOutside={{
+                  value={{
                     from: showDate ?? new Date().valueOf(),
                     to: 0,
                   }}
