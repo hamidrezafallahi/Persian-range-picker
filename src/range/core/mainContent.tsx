@@ -103,7 +103,7 @@ const MainContent = ({ ...props }: IProps) => {
         ${style.xs_h_full} ${style.justify_around} ${style.gap_2} ${style.p_2}  
         ${style.overflow_x_auto} 
               ${locale !== "fa" ? style.xs_border_r : style.xs_border_l}
-                  ${style["xs_h-[calc(100%-52px)]"]}
+                  
       ${tabClassName}
         `}
         style={{ maxWidth: "430px" }}
@@ -152,7 +152,7 @@ const MainContent = ({ ...props }: IProps) => {
   ${style.overflow_y_auto}
   ${style.rprp_scrollbar}
 `}
-        style={{ height: "calc(100% - 60px)" }}
+
       >
         {currentTab &&
           (() => {

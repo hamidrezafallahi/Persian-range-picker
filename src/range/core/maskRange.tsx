@@ -21,6 +21,7 @@ function MaskRange({ ...props }: IProps) {
   const [error, setError] = useState<"from" | "to" | null>(null);
   const { date, setDate, locale } = props;
   const handleChange = (e: IDate["from"], name: "from" | "to") => {
+    
     if (name === "from") {
       if (date.to && e > date.to) {
         setError("from");
@@ -43,38 +44,37 @@ function MaskRange({ ...props }: IProps) {
       setDate?.({ from: date.from, to: endOfDate });
     }
   };
-
   return (
     <div
       className={`
+      ${style.w_full}
       ${style.flex}
       ${style.items_center}
+      ${style.justify_around}
       ${style.gap_2}
     `}
     >
       <Mask
         {...props}
         onMaskChange={(e) => handleChange(e as number, "from")}
-        defaultValue={date.from}
+        value={date.from}
         maskClassName={`
-          ${style.w_20}  
-          ${style.xs_w_28} 
+          ${style.w_32}  
           ${error === "from" ? style.border_red_100 : ""}
         `}
         prefix={false}
         suffix={false}
         exportType="timeStamp"
       />
-      <div className={`${style.hidden} ${style.xs_block}`}>
+      <div  >
         {"_"}
         </div>
       <Mask
         {...props}
         onMaskChange={(e) => handleChange(e as number, "to")}
-        defaultValue={date.to}
+        value={date.to}
         maskClassName={`
-          ${style.w_20} 
-          ${style.xs_w_28} 
+          ${style.w_32} 
           ${error === "from" ? style.border_red_100 : ""}
         `}
         prefix={false}

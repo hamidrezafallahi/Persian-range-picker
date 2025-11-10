@@ -1,4 +1,6 @@
 import React, {
+  Dispatch,
+  SetStateAction,
   useEffect,
   useRef,
   useState,
@@ -22,10 +24,6 @@ import { useRenderPosition } from '../exportComponents/useRenderPosition';
 import { DownTriangle } from '../icons/DownTriangle';
 
 export function DesktopRangePicker(props: IRangeProps) {
-
-
-
-
   const {
     setDate,
     date,
@@ -53,6 +51,7 @@ export function DesktopRangePicker(props: IRangeProps) {
     dropdownWidth = 460,
     dropdownHeight = 460,
     label = props.locale == "en" ? "Date" : "تاریخ",
+    value
   } = props;
   const isInitialRender = useRef(true);
   const prevDate = useRef(date);
@@ -69,7 +68,7 @@ export function DesktopRangePicker(props: IRangeProps) {
     Data: null, // or any default value you want for Data
   });
 
-  const [type, setType] = useState<string>("date");
+  const [type, setType] = useState<"range"|"compareRange">("range");
   const [customData, setCustomData] = useState<unknown>(null);
   const buttonRef = useRef<HTMLElement>(null);
   const popupRef = useRef<HTMLDivElement>(null);
@@ -99,7 +98,7 @@ export function DesktopRangePicker(props: IRangeProps) {
     if (date) {
       if (date.from && date.to && date.from < date.to) {
         if (handleSubmit) {
-          if (type == "date") {
+          if (type == "range") {
             handleSubmit({ type, Data: { date, compareDate } });
           } else {
             handleSubmit({ type, Data: { customData } });
@@ -125,7 +124,7 @@ export function DesktopRangePicker(props: IRangeProps) {
       }
     } else {
       if (handleSubmit) {
-        if (type == "date") {
+        if (type == "range") {
           handleSubmit({ type, Data: { date, compareDate } });
         } else {
           handleSubmit({ type, Data: { customData } });
@@ -168,14 +167,13 @@ export function DesktopRangePicker(props: IRangeProps) {
       compareDate?.from !== prevCompareDate.current?.from ||
       compareDate?.to !== prevCompareDate.current?.to;
     if (onCompareDateChange && compareDate && hasCompareDateChanged) {
-      onCompareDateChange({ type: "date", Data: { date, compareDate } });
+      onCompareDateChange({ type: "compareRange", Data: { date, compareDate } });
       setShowDate((prev) => ({
         ...prev,
         compareDate,
       }));
     }
     prevCompareDate.current = compareDate;
-
     const hasDateChanged =
       date?.from !== prevDate.current?.from ||
       date?.to !== prevDate.current?.to;
@@ -186,12 +184,15 @@ export function DesktopRangePicker(props: IRangeProps) {
       const isEmpty = !date && !compareDate;
       const isInvalidDateTo = date?.to == null || Number.isNaN(date?.to);
       const isInvalid = date?.from && isInvalidDateTo;
-
       if (!(isEmpty || isInvalid)) {
-        onChange({ type, Data: { date, compareDate } });
+        if(!Number.isNaN(date?.from)){
+          const dateFromValue = !((new Date(date?.from!).valueOf() == new Date(value?.from!).valueOf())||(new Date(date?.to!).valueOf() == new Date(value?.to!).valueOf()))
+          if(dateFromValue && new Date(date?.to as number).valueOf()>0){
+            onChange({ type, Data: { date, compareDate } });
+          }
+        }
       }
     }
-
     prevDate.current = date;
   }, [date, compareDate]);
   useEffect(() => {
@@ -288,7 +289,7 @@ export function DesktopRangePicker(props: IRangeProps) {
                 model="range"
                 locale={locale}
                 setCustomData={setCustomData}
-                setType={setType}
+                setType={setType as Dispatch<SetStateAction<string>>}
               />
               <div
                 className={`

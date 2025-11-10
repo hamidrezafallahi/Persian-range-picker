@@ -353,6 +353,9 @@
 .w_28 {
   width: 7rem;
 }
+.w_32 {
+  width: 8rem !important;
+}
 .w_40 {
   width: 10rem;
 }

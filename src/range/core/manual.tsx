@@ -43,8 +43,10 @@ const Manual = (props: IBaseProps) => {
       ${style.justify_center}
       ${style.items_center}
       ${style.gap_2}
-      ${style.mx_auto}
+      ${style.mx_4}
       ${style.xs_w_60}
+      
+ 
     `}
     >
       <MonthPicker
@@ -59,19 +61,13 @@ const Manual = (props: IBaseProps) => {
         locale={locale}
       />
       <MaskRange
-        locale={locale}
-        // secondaryColor={secondaryColor}
-        // tertiaryColor={tertiaryColor}
-        // dangerColor={dangerColor}
+        {...props}
         // InputHandleChange={InputHandleChangeFrom}
-        // dateFromOutside={date}
-        date={date!}
-        setDate={setDate!}
       />
       <DatePicker
         {...props}
         name="custom range"
-        dateFromOutside={date!}
+        value={date!}
         onDateChange={(e: IDate) => {
           setDate?.({
             from: e.from,

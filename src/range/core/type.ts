@@ -182,7 +182,7 @@ export interface IBaseProps extends IRangeOptions {
   componentStep?: ESteps;
   open?: boolean;
   setOpen?: Dispatch<SetStateAction<boolean>>;
-  type?: string;
+  type?: "range"|"compareRange";
   setType?: Dispatch<SetStateAction<string>>;
   activeTable?: "Day" | "Week" | "Month" | "Year" | "manual";
   disabled?: boolean;
@@ -205,6 +205,7 @@ export interface IRangeProps extends IBaseProps {
   dropdownHeight?: number;
   disabled?: boolean;
   locale?: TLocale;
+  value?:IDate;
 }
 
 export interface IMobileProps

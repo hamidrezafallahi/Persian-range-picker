@@ -434,11 +434,19 @@ export function Mask({ ...props }: IMaskProps) {
           checkDateByRegex(formatFullValueToTimeStamp(fullValue), locale)
         ) {
           setBaseValue(changeToTimestamp(fullValue, locale));
-           onMaskChange?.(
-          locale == "fa"
-            ? moment(changeToTimestamp(fullValue, locale)).format("YYYY-MM-DDTHH:mm:ss.SSSZ")
-            : moment.utc(changeToTimestamp(fullValue, locale)).format("YYYY-MM-DDTHH:mm:ss.SSSZ")
-        );
+          onMaskChange?.(
+            exportType == "IsoString"
+              ? locale == "fa"
+                ? moment(changeToTimestamp(fullValue, locale)).format(
+                    "YYYY-MM-DDTHH:mm:ss.SSSZ"
+                  )
+                : moment
+                    .utc(changeToTimestamp(fullValue, locale))
+                    .format("YYYY-MM-DDTHH:mm:ss.SSSZ")
+              : locale == "fa"
+              ? moment(changeToTimestamp(fullValue, locale)).valueOf()
+              : moment.utc(changeToTimestamp(fullValue, locale)).valueOf()
+          );
           setIsEdit(0);
         } else {
           onMaskChange?.(null);
@@ -469,11 +477,19 @@ export function Mask({ ...props }: IMaskProps) {
             monthInputRef.current!.value.toString() +
             dayInputRef.current!.value.toString();
           setBaseValue(changeToTimestamp(temp, locale));
-           onMaskChange?.(
-          locale == "fa"
-            ? moment(changeToTimestamp(temp, locale)).format("YYYY-MM-DDTHH:mm:ss.SSSZ")
-            : moment.utc(changeToTimestamp(temp, locale)).format("YYYY-MM-DDTHH:mm:ss.SSSZ")
-        );
+          onMaskChange?.(
+            exportType == "IsoString"
+              ? locale == "fa"
+                ? moment(changeToTimestamp(temp, locale)).format(
+                    "YYYY-MM-DDTHH:mm:ss.SSSZ"
+                  )
+                : moment
+                    .utc(changeToTimestamp(temp, locale))
+                    .format("YYYY-MM-DDTHH:mm:ss.SSSZ")
+              : locale == "fa"
+              ? moment(changeToTimestamp(temp, locale)).valueOf()
+              : moment.utc(changeToTimestamp(temp, locale)).valueOf()
+          );
           setIsEdit(0);
         } else {
           onMaskChange?.(null);
@@ -585,11 +601,23 @@ export function Mask({ ...props }: IMaskProps) {
             );
             setSeparatedValue([year, month, day]);
             setBaseValue(changeToTimestamp(fullValueRef.current, locale));
-             onMaskChange?.(
-          locale == "fa"
-            ? moment(changeToTimestamp(fullValueRef.current, locale)).format("YYYY-MM-DDTHH:mm:ss.SSSZ")
-            : moment.utc(changeToTimestamp(fullValueRef.current, locale)).format("YYYY-MM-DDTHH:mm:ss.SSSZ")
-        );
+            onMaskChange?.(
+              exportType == "IsoString"?
+              locale == "fa"
+                ? moment(
+                    changeToTimestamp(fullValueRef.current, locale)
+                  ).format("YYYY-MM-DDTHH:mm:ss.SSSZ")
+                : moment
+                    .utc(changeToTimestamp(fullValueRef.current, locale))
+                    .format("YYYY-MM-DDTHH:mm:ss.SSSZ"):
+                     locale == "fa"
+                ? moment(
+                    changeToTimestamp(fullValueRef.current, locale)
+                  ).valueOf()
+                : moment
+                    .utc(changeToTimestamp(fullValueRef.current, locale))
+                    .valueOf()
+            );
           } else {
             setErrorTarget((prev) => [...prev.filter((item) => item !== 3), 3]);
             const year = convertPersianToEnglishNumbers(
@@ -634,11 +662,21 @@ export function Mask({ ...props }: IMaskProps) {
             )
           ) {
             setBaseValue(changeToTimestamp(temp, locale));
-             onMaskChange?.(
-          locale == "fa"
-            ? moment(changeToTimestamp(temp, locale)).format("YYYY-MM-DDTHH:mm:ss.SSSZ")
-            : moment.utc(changeToTimestamp(temp, locale)).format("YYYY-MM-DDTHH:mm:ss.SSSZ")
-        );
+            onMaskChange?.(
+              exportType == "IsoString"?
+              locale == "fa"
+                ? moment(changeToTimestamp(temp, locale)).format(
+                    "YYYY-MM-DDTHH:mm:ss.SSSZ"
+                  )
+                : moment
+                    .utc(changeToTimestamp(temp, locale))
+                    .format("YYYY-MM-DDTHH:mm:ss.SSSZ"):
+                    locale == "fa"
+                ? moment(changeToTimestamp(temp, locale)).valueOf()
+                : moment
+                    .utc(changeToTimestamp(temp, locale))
+                    .valueOf()
+            );
           } else {
             onMaskChange?.(null);
             onError?.(message);
@@ -707,7 +745,6 @@ export function Mask({ ...props }: IMaskProps) {
         convertPersianToEnglishNumbers(day).toString(),
       ]);
       setBaseValue(getTimestamp(value)!);
-      
     }
   }, [value]);
   const fontSize = useMemo(() => {

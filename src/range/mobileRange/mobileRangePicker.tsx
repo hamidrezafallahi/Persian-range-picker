@@ -1,4 +1,6 @@
 import {
+  Dispatch,
+  SetStateAction,
   useEffect,
   useRef,
   useState,
@@ -35,15 +37,15 @@ export function MobileRangePicker(props: IRangeProps) {
     isShowNavigationButton = true,
     calendarType = "shamsi",
     className,
-
     disabled,
-     tertiaryColor = "#939393",
-    highlightColor = "#f4f4f4"
+    value,
+    tertiaryColor = "#939393",
+    highlightColor = "#f4f4f4",
   } = props;
 
   const locale = calendarType == "shamsi" ? "fa" : "en";
 
-  const [type, setType] = useState<string>("date");
+  const [type, setType] = useState<"range" | "compareRange">("range");
   const [customData, setCustomData] = useState<unknown>(null);
   const [open, setOpen] = useState(false);
 
@@ -56,7 +58,10 @@ export function MobileRangePicker(props: IRangeProps) {
       compareDate?.from !== prevCompareDate.current?.from ||
       compareDate?.to !== prevCompareDate.current?.to;
     if (onCompareDateChange && compareDate && hasCompareDateChanged) {
-      onCompareDateChange({ type: "date", Data: { date, compareDate } });
+      onCompareDateChange({
+        type: "compareRange",
+        Data: { date, compareDate },
+      });
     }
     prevCompareDate.current = compareDate;
 
@@ -70,9 +75,17 @@ export function MobileRangePicker(props: IRangeProps) {
       const isEmpty = !date && !compareDate;
       const isInvalidDateTo = date?.to == null || Number.isNaN(date?.to);
       const isInvalid = date?.from && isInvalidDateTo;
-
       if (!(isEmpty || isInvalid)) {
-        onChange({ type, Data: { date, compareDate } });
+        if (!Number.isNaN(date?.from)) {
+          const dateFromValue = !(
+            new Date(date?.from!).valueOf() ==
+              new Date(value?.from!).valueOf() ||
+            new Date(date?.to!).valueOf() == new Date(value?.to!).valueOf()
+          );
+          if (dateFromValue && new Date(date?.to as number).valueOf() > 0) {
+            onChange({ type, Data: { date, compareDate } });
+          }
+        }
       }
     }
 
@@ -85,24 +98,23 @@ export function MobileRangePicker(props: IRangeProps) {
     }
   }, [customData]);
 
+  const DateFrom =
+    date?.from && (date?.from as number) > 0
+      ? locale === "fa"
+        ? toPersianDigits(moment(date?.from).format("jYYYY/jMM/jDD"))
+        : moment(date?.from).format("YYYY/MM/DD")
+      : locale === "fa"
+      ? "انتخاب تاریخ"
+      : "Choose date";
 
-    const DateFrom =
-      date?.from && date?.from as number > 0
-        ? locale === "fa"
-          ? toPersianDigits(moment(date?.from).format("jYYYY/jMM/jDD"))
-          : moment(date?.from).format("YYYY/MM/DD")
-        : locale === "fa"
-        ? "انتخاب تاریخ"
-        : "Choose date";
-  
-    const DateTo =
-      date?.to && date?.to as number > 0
-        ? locale === "fa"
-          ? toPersianDigits(moment(date?.to).format("jYYYY/jMM/jDD"))
-          : moment(date?.to).format("YYYY/MM/DD")
-        : locale === "fa"
-        ? "انتخاب تاریخ"
-        : "Choose date";
+  const DateTo =
+    date?.to && (date?.to as number) > 0
+      ? locale === "fa"
+        ? toPersianDigits(moment(date?.to).format("jYYYY/jMM/jDD"))
+        : moment(date?.to).format("YYYY/MM/DD")
+      : locale === "fa"
+      ? "انتخاب تاریخ"
+      : "Choose date";
 
   return (
     <div className={`${style.flex} ${className}`}>
@@ -216,7 +228,7 @@ export function MobileRangePicker(props: IRangeProps) {
               model="range"
               locale={locale}
               setCustomData={setCustomData}
-              setType={setType}
+              setType={setType as Dispatch<SetStateAction<string>>}
             />
           </div>,
           document.body

@@ -19,9 +19,9 @@ function ManualCompare({ ...props }: IBaseProps) {
     step,
     setCompareDate,
     locale,
-    accentColor = "#2563eb", // تأکیدی (برای جلب توجه، مثلاً نوتیفیکیشن‌ها یا CTAها)- آبی
+   accentColor = "#2563eb", // تأکیدی (برای جلب توجه، مثلاً نوتیفیکیشن‌ها یا CTAها)- آبی
     tertiaryColor = "#939393", //رنگ سوم، معمولاً برای جزئیات یا عناصر کم‌اهمیت‌تر   -  رنگ متن
-    neutralColor = "#cacaca", //رنگ خنثی، اغلب برای پس‌زمینه یا متن - آبی کمرنگ
+    neutralColor = "#9cc5f1", //رنگ خنثی، اغلب برای پس‌زمینه یا متن - آبی کمرنگ
   } = props;
   const [compare, setCompare] = useState(date);
   const [oneYearCompareDate, setOneYearCompareDate] = useState(date);
@@ -109,10 +109,7 @@ function ManualCompare({ ...props }: IBaseProps) {
         key="manual"
         onClick={() => timeHandler("manual")}
         type="button"
-        style={{
-          backgroundColor: active !== "manual" ? "transparent" : neutralColor,
-          color: active !== "manual" ? neutralColor : tertiaryColor,
-        }}
+        style={{backgroundColor: "#f0f0f0"}}
         className={`${style.flex} ${style.flex_col} ${style.relative} ${style.items_start} ${style.gap_2} ${style.w_full} ${style.h_fit} ${style.rounded_md} ${style.border_none} `}
       >
         <div
@@ -121,7 +118,7 @@ function ManualCompare({ ...props }: IBaseProps) {
           {locale == "fa" ? "یک بازه عقبتر" : "One step before"}
         </div>
         <div
-          style={{ color: active !== "manual" ? neutralColor : tertiaryColor }}
+          style={{ color: active == "manual" ? accentColor : tertiaryColor }}
           className={`${style.text_xs}`}
         >
           {stringDateFrom}
@@ -144,21 +141,18 @@ function ManualCompare({ ...props }: IBaseProps) {
         onClick={() => timeHandler("collapse")}
         type="button"
         className={`${style.flex} ${style.flex_col} ${style.relative} ${style.items_start} ${style.gap_2} ${style.w_full} ${style.h_fit} ${style.rounded_md} ${style.border_none} `}
-        style={{
-          backgroundColor: active == "manual" ? "transparent" : neutralColor,
-          color: active == "manual" ? neutralColor : tertiaryColor,
-        }}
+        style={{backgroundColor: "#f0f0f0"}}
+
       >
         <div
-         style={{ color: active !== "manual" ? accentColor : tertiaryColor }}
+         style={{ color: active == "collapse" ? accentColor : tertiaryColor }}
         >
           {locale == "fa"
             ? "همین بازه یک سال پیش"
             : "Same duration noe year ago"}
         </div>
         <div
-         style={{ color: active == "manual" ? neutralColor : tertiaryColor }}
-        >
+          style={{ color: active == "collapse" ? accentColor : tertiaryColor }}        >
           {stringDateOneYearFrom}
           {" - "}
           {stringDateOneYearTo}

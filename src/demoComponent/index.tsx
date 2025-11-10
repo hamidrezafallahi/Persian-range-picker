@@ -2,26 +2,30 @@ import { useState } from 'react';
 
 import {
   Calendar,
-  Mask,
   RangePicker,
-  TimePicker,
 } from '../range';
-import { DesktopDatePicker } from '../range/desktopDate/desktopDatePicker';
-import { MobileDate } from '../range/mobileDate/mobileDatePicker';
+import { IDate } from '../range/core/type';
 
 export default function DemoComponent() {
-  const [val, setVal] = useState<any>(undefined);
-  const time = new Date(1764444444444).valueOf();
+  const [val, setVal] = useState<IDate>();
+  const time = { from: 1761337800000, to: 1763584199999 };
   return (
     <>
       <button
         onClick={() => {
-          setVal(null);
+          setVal({ from: NaN, to: NaN });
         }}
       >
         set null
       </button>
-      <MobileDate
+      <button
+        onClick={() => {
+          setVal({ from: 1762201800000, to: 1762892999999 });
+        }}
+      >
+        set rand
+      </button>
+      {/* <MobileDate
       showTime
         onChange={(e) => {
           setVal(e);
@@ -38,7 +42,7 @@ export default function DemoComponent() {
         defaultValue={time}
         value={val}
         showMask
-      />
+      />*/}
       <Calendar
         //  model='range'
         defaultValue={{ from: time, to: 0 }}
@@ -61,7 +65,7 @@ export default function DemoComponent() {
             </span>
           </>
         )}
-      />
+      /> 
 
       {/*<Range
               onChange={(e) => {
@@ -93,7 +97,7 @@ export default function DemoComponent() {
           </>
         )}
       />*/}
-      <TimePicker 
+      {/* <TimePicker 
            onChange={(e) => {
           setVal(e);
           console.log(e,"TimePicker");
@@ -101,13 +105,18 @@ export default function DemoComponent() {
         defaultValue={time}
         value={val}
         
-        />
+        /> */}
       <RangePicker
-              onChange={(e) => {
+        defaultValue={time}
+        value={val}
+        onChange={(e) => {
+          console.log(e);
+        }}
+        onCompareDateChange={(e) => {
           console.log(e);
         }}
       />
-      <Mask
+      {/* <Mask
         defaultValue={time}
         value={val}
       
@@ -117,7 +126,7 @@ export default function DemoComponent() {
                 setVal(e);
           console.log(e);
         }}
-      /> 
+      />  */}
     </>
   );
 }
