@@ -107,7 +107,6 @@ export function Mask({ ...props }: IMaskProps) {
   errors.current = errorTarget;
   separatedValueRef.current = separatedValue;
   editModeRef.current = isEdit;
-
   const formatFullValueToTimeStamp = (FullValue: string) => {
     let changeToTimestamp = null;
     if (locale == "en") {
@@ -767,6 +766,7 @@ export function Mask({ ...props }: IMaskProps) {
           ${errorTarget.length > 0 ? ErrorClass : ""}
 `}
         style={{
+          border: errorTarget.length > 0 ? "1px solid red" : undefined,
           height: `${maskHeight}px`,
           color: tertiaryColor,
           backgroundColor: highlightColor,
@@ -774,6 +774,8 @@ export function Mask({ ...props }: IMaskProps) {
           userSelect: disabled ? "none" : "auto",
           ...props.Style,
         }}
+ 
+
       >
         {allowClear ? (
           <button

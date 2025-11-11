@@ -23,8 +23,8 @@ export const DatePicker = ({ ...props }: IProps) => {
     }
       : 
       {
-      from:new Date(defaultValue.from).valueOf() ,
-      to: new Date(defaultValue.to).valueOf(),
+      from:new Date(defaultValue.from as string).valueOf() ,
+      to: new Date(defaultValue.to as string).valueOf(),
     }:{
       from: 0,
       to:0,
@@ -36,7 +36,7 @@ export const DatePicker = ({ ...props }: IProps) => {
     onDateChange?.({ from, to });
   };
   useEffect(() => {
-    if (value !== undefined) {
+    if (value?.from !== undefined) {
       if (isDate(value.from) && isDate(value.to)) {
         setDate({from:new Date(value.from).valueOf(),to:new Date(value.to).valueOf()});
       } else if (typeof value.from === "number" && typeof value.to === "number") {
@@ -51,11 +51,7 @@ export const DatePicker = ({ ...props }: IProps) => {
         onChange({ from, to } as IDate);
         setDate({ from, to } as IDate);
       }}
-      startDate={moment(date?.from)
-        .locale(locale)
-        .clone()
-        .startOf("day")
-        .valueOf()}
+      startDate={date?.from as number}
       endDate={moment(date?.to).locale(locale).clone().startOf("day").valueOf()}
       
     />

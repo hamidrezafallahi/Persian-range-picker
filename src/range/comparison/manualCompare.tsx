@@ -27,14 +27,14 @@ function ManualCompare({ ...props }: IBaseProps) {
   const [oneYearCompareDate, setOneYearCompareDate] = useState(date);
   const [active, setActive] = useState<string>("");
   const [disableButton, setDisableButton] = useState("");
-  const stringDateFrom = new Date(compare!.from).toLocaleDateString("fa-IR", {
+  const stringDateFrom = new Date(compare!.from as any).toLocaleDateString("fa-IR", {
     weekday: "long",
     month: "long",
     day: "numeric",
     // hour: "numeric",
     // minute: "numeric",
   });
-  const stringDateTo = new Date(compare!.to).toLocaleDateString("fa-IR", {
+  const stringDateTo = new Date(compare!.to as any).toLocaleDateString("fa-IR", {
     weekday: "long",
     month: "long",
     day: "numeric",
@@ -42,7 +42,7 @@ function ManualCompare({ ...props }: IBaseProps) {
     // minute: "numeric",
   });
   const stringDateOneYearFrom = new Date(
-    oneYearCompareDate!.from
+    oneYearCompareDate!.from as any
   ).toLocaleDateString("fa-IR", {
     weekday: "long",
     month: "long",
@@ -51,7 +51,7 @@ function ManualCompare({ ...props }: IBaseProps) {
     // minute: "numeric",
   });
   const stringDateOneYearTo = new Date(
-    oneYearCompareDate!.to
+    oneYearCompareDate!.to as any
   ).toLocaleDateString("fa-IR", {
     weekday: "long",
     month: "long",

@@ -37,6 +37,16 @@ interface Props {
     day: { timestamp: number; currentMonth: boolean },
     index: number
   ) => ReactNode;
+  renderDayStyle?: (args: {
+    timestamp?: number;
+    isSpecial?: boolean;
+    isSelected?: boolean;
+    isDisabled?: boolean;
+    isToday?: boolean;
+    isInRange?: boolean;
+    isFrom?: boolean;
+    isTo?: boolean;
+  }) => React.CSSProperties;
   renderDayContent?: (info: {
     day: string | number;
     timestamp: number;
@@ -76,6 +86,7 @@ const Calendar: FC<Props> = ({
   disablePreviousDays = false,
   renderDayFn,
   renderDayContent,
+  renderDayStyle,
   specialDays = [],
   disabledDays = [],
   calendarBaseWidth,
@@ -97,6 +108,7 @@ const Calendar: FC<Props> = ({
     month: locale === "fa" ? today.jMonth() : today.month(),
     hoveredDay: null,
   });
+
   const [view, setView] = useState<CalendarViews>(CalendarViews.DAY);
 
   // -------------------------------
@@ -135,22 +147,20 @@ const Calendar: FC<Props> = ({
   // -------------------------------
   const handleRangeSelection = useCallback(
     (day: number) => {
-      console.log("here",day > startDate,day , startDate)
-      if (startDate && endDate && startDate === endDate && startDate === day) {  
+      if (startDate && endDate && startDate === endDate && startDate === day) {
         onChange(null, null);
         setState((s) => ({ ...s, hoveredDay: null }));
         return;
       }
       if (!startDate) {
-       console.log("here")
         onChange(day, null);
         setState((s) => ({ ...s, hoveredDay: day }));
         return;
       }
       if (startDate && !endDate) {
-              console.log("here")
-        if (day > startDate) onChange(startDate, day);
-        else onChange(day, startDate);
+        if (day > startDate) {
+          onChange(startDate, day);
+        } else onChange(day, startDate);
         setState((s) => ({ ...s, hoveredDay: day }));
         return;
       }
@@ -239,8 +249,8 @@ const Calendar: FC<Props> = ({
       const isSpecial = specialDays.includes(day.timestamp);
       const isHoliday = disabledDays?.includes(day.timestamp);
       const isDisabled =
-        model === "date" &&
-        ((disablePreviousDays && day.timestamp < todayTimestamp) || isHoliday);
+        
+        (model === "date" &&(disablePreviousDays && day.timestamp < todayTimestamp) )|| isHoliday;
 
       const isToday = isEqualDays(day.timestamp, todayTimestamp);
       const isSelected =
@@ -252,7 +262,6 @@ const Calendar: FC<Props> = ({
         (state.hoveredDay as number) >= day.timestamp &&
         day.timestamp > startDate;
 
- 
       const isFrom = model === "range" && isEqualDays(day.timestamp, startDate);
       const isTo = model === "range" && isEqualDays(day.timestamp, endDate);
       const isInRange =
@@ -278,7 +287,6 @@ const Calendar: FC<Props> = ({
                     hoveredDay: day.timestamp,
                   };
                 });
-              
               }
             }}
             className={`
@@ -304,22 +312,32 @@ const Calendar: FC<Props> = ({
                   ? highlightColor
                   : "",
               fontSize: "14px",
-            }}
-          >
-            <>
-              {renderDayContent
-                ? renderDayContent({
-                    day:
-                      locale === "fa"
-                        ? currentDay.jDate().toLocaleString("fa")
-                        : currentDay.date(),
+              ...(renderDayStyle
+                ? renderDayStyle({
                     timestamp: day.timestamp,
                     isSpecial,
+                    isSelected,
+                    isDisabled,
+                    isToday,
+                    isInRange: !!isInRange, // 👈 اینجا
+                    isFrom,
+                    isTo,
                   })
-                : locale === "fa"
-                ? currentDay.jDate().toLocaleString("fa")
-                : currentDay.date()}
-            </>
+                : {}),
+            }}
+          >
+            {renderDayContent
+              ? renderDayContent({
+                  day:
+                    locale === "fa"
+                      ? currentDay.jDate().toLocaleString("fa")
+                      : currentDay.date(),
+                  timestamp: day.timestamp,
+                  isSpecial,
+                })
+              : locale === "fa"
+              ? currentDay.jDate().toLocaleString("fa")
+              : currentDay.date()}
           </button>
         </div>
       );
@@ -340,6 +358,7 @@ const Calendar: FC<Props> = ({
       highlightColor,
       secondaryColor,
       renderDayContent,
+      renderDayStyle,
     ]
   );
 

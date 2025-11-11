@@ -13,24 +13,24 @@ import type {
 } from './type';
 
 interface IProps {
-  date: IDate;
-  setDate: Dispatch<React.SetStateAction<IDate>>;
-  locale: TLocale;
+  date?: IDate;
+  setDate?: Dispatch<React.SetStateAction<IDate>>;
+  locale?: TLocale;
 }
 function MaskRange({ ...props }: IProps) {
   const [error, setError] = useState<"from" | "to" | null>(null);
+
   const { date, setDate, locale } = props;
   const handleChange = (e: IDate["from"], name: "from" | "to") => {
-    
     if (name === "from") {
-      if (date.to && e > date.to) {
+      if (date?.to && e && e > date.to) {
         setError("from");
         return;
       }
       setError(null);
-      setDate?.({ from: e, to: date.to });
+      setDate?.({ from: e, to: date?.to });
     } else if (name === "to") {
-      if (date.from && e < date.from) {
+      if (date?.from && e && e < date.from) {
         setError("to");
         return;
       }
@@ -41,7 +41,7 @@ function MaskRange({ ...props }: IProps) {
       } else {
         endOfDate = moment(e).utc().endOf("day").valueOf();
       }
-      setDate?.({ from: date.from, to: endOfDate });
+      setDate?.({ from: date?.from, to: endOfDate });
     }
   };
   return (
@@ -56,29 +56,29 @@ function MaskRange({ ...props }: IProps) {
     >
       <Mask
         {...props}
-        onMaskChange={(e) => handleChange(e as number, "from")}
-        value={date.from}
-        maskClassName={`
-          ${style.w_32}  
-          ${error === "from" ? style.border_red_100 : ""}
-        `}
+        onMaskChange={(e) => handleChange(e as number, "to")}
+        value={date?.to}
+        maskClassName={`${style.w_32}`}
+        Style={{ border: error === "to" ? "1px solid red" : undefined }}
         prefix={false}
         suffix={false}
+        onError={() => {
+          setError("to");
+        }}
         exportType="timeStamp"
       />
-      <div  >
-        {"_"}
-        </div>
+      <div>{"_"}</div>
       <Mask
         {...props}
-        onMaskChange={(e) => handleChange(e as number, "to")}
-        value={date.to}
-        maskClassName={`
-          ${style.w_32} 
-          ${error === "from" ? style.border_red_100 : ""}
-        `}
+        onMaskChange={(e) => handleChange(e as number, "from")}
+        value={date?.from}
+        maskClassName={`${style.w_32}`}
+        Style={{ border: error === "from" ? "1px solid red" : undefined }}
         prefix={false}
         suffix={false}
+        onError={() => {
+          setError("from");
+        }}
         exportType="timeStamp"
       />
     </div>

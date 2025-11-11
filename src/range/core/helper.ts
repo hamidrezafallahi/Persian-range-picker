@@ -1,13 +1,13 @@
-import moment from "moment-jalaali";
+import moment from 'moment-jalaali';
 
 import type {
-  AcceptableDateValue,
   IDate,
   ITimeSections,
   ITimeZone,
   TLocale,
-} from "./type";
-import { ESteps } from "./type";
+} from './type';
+import { ESteps } from './type';
+
 export const toPersianDigits = (str: string) => {
   return str.replace(/\d/g, (d) => "۰۱۲۳۴۵۶۷۸۹"[parseInt(d)]);
 };
@@ -558,26 +558,19 @@ export function getLabel(
   }
 }
 
-export function getTimestamp(value?: AcceptableDateValue): number | undefined {
+export function getTimestamp(value?: IDate["from"]): number | undefined {
   if (value === undefined || value === null) return undefined;
 
-  if (typeof value === "number") {
-    return value;
-  }
-
-  if (value instanceof Date && !isNaN(value.getTime())) {
-    return value.getTime();
-  }
+  if (typeof value === "number") return value;
 
   if (typeof value === "string") {
     const parsed = new Date(value);
-    if (!isNaN(parsed.getTime())) {
-      return parsed.getTime();
-    }
+    return isNaN(parsed.getTime()) ? undefined : parsed.getTime();
   }
 
   return undefined;
 }
+
 export const getTimestampByFallBack = (
   val: number | Date | undefined,
   fallback: number

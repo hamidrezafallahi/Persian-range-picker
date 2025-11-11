@@ -8,8 +8,8 @@ import type {
 export interface IProps {
   onDateChange?: (e: IDate) => void;
   tabIndex?: number;
-  value?: IDate;
-  defaultValue?: IDate;
+ value?: IDate | null;        // اضافه کردن null
+  defaultValue?: IDate | null;
   inputClassName?: string;
   model?: "range" | "date";
   mode?: "modal" | "dropdown";

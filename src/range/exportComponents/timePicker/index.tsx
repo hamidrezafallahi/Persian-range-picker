@@ -53,17 +53,13 @@ export const TimePicker = ({ ...props }: ITimePickerProps) => {
         ? moment(defaultValue).locale("fa").valueOf()
         : moment(defaultValue).utc().valueOf();
     } else {
-      return isFa
-        ? moment().locale("fa").valueOf()
-        : moment().utc().valueOf();
+      return isFa ? moment().locale("fa").valueOf() : moment().utc().valueOf();
     }
   })();
   const [time, setTime] = useState<number | null>(initValue);
   const { match } = useMediaQuery("XSUP");
 
   const buttonRefs = useRef<(HTMLButtonElement | null)[]>([]);
-  const popoverRef = useRef<HTMLDivElement>(null);
-
   const dynamicFormat = showSecond ? format : "HH:mm";
 
   const renderHeight = match
@@ -98,11 +94,12 @@ export const TimePicker = ({ ...props }: ITimePickerProps) => {
             : moment.utc(time).format("YYYY-MM-DDTHH:mm:ss.SSSZ")
         );
       } else {
-        locale == "fa" ? moment(time).valueOf() : moment.utc(time).valueOf();
+        onChange?.(
+          locale == "fa" ? moment(time).valueOf() : moment.utc(time).valueOf()
+        );
       }
     }
     setOpen(false);
-    popoverRef.current?.hidePopover();
   };
 
   const handleNow = () => {
@@ -175,12 +172,13 @@ export const TimePicker = ({ ...props }: ITimePickerProps) => {
     });
   };
 
-  useEffect(() => {
-    if (value!== undefined) {
-        setTime(isFa
-            ? moment(value).locale("fa").startOf("day").valueOf()
-            : moment(value).utc().startOf("day").valueOf());
-     
+  useEffect(() => {    
+    if (value !== undefined && moment(value).valueOf() !== moment(time).valueOf()) {
+      setTime(
+        isFa
+          ? moment(value).locale("fa").valueOf()
+          : moment(value).utc().valueOf()
+      );
     }
   }, [value]);
 

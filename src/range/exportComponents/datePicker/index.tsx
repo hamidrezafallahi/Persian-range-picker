@@ -2,7 +2,7 @@ import moment from 'moment-jalaali';
 
 import { getTimestamp } from '../../core/helper';
 import type {
-  AcceptableDateValue,
+  IDate,
   IDateProps,
 } from '../../core/type';
 import { DesktopDatePicker } from '../../desktopDate/desktopDatePicker';
@@ -10,7 +10,7 @@ import { MobileDate } from '../../mobileDate/mobileDatePicker';
 import { useMediaQuery } from '../useMediaQuery';
 
 type CustomDateProps = Omit<IDateProps, "defaultValue" | "locale"> & {
-  defaultValue?: AcceptableDateValue;
+  defaultValue?: IDate["from"];
 };
 export function DatePicker({ ...props }: CustomDateProps) {
   const { onChange, exportType = "IsoString" } = props;

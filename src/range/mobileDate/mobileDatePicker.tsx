@@ -86,10 +86,10 @@ export function MobileDate({ ...props }: IDateProps) {
 
   const handleDateChange = (e: IDate) => {
     if (showTime) {
-      setShowDate({from:new Date(e.from).valueOf(),to:NaN});
+      setShowDate({from:new Date(e.from as any).valueOf(),to:NaN});
       setContent("Time");
     } else {
-      setShowDate({from:new Date(e.from).valueOf(),to:NaN});
+      setShowDate({from:new Date(e.from as any).valueOf(),to:NaN});
      if (exportType == "IsoString") {
        onChange?.(
         locale == "fa"
@@ -314,7 +314,7 @@ export function MobileDate({ ...props }: IDateProps) {
             >
               <Footer
                 setShowDate={setShowDate}
-                showDate={new Date(showDate.from).valueOf()}
+                showDate={new Date(showDate.from as any).valueOf()}
                 locale={locale}
                 primaryColor={primaryColor}
                 highlightColor={highlightColor}

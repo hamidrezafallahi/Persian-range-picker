@@ -55,8 +55,8 @@ export enum ESteps {
 }
 
 export interface IDate {
-  from: number | string;
-  to: number | string;
+  from: number| string|null|undefined;
+  to: number | string|null|undefined;
 }
 
 export interface IAdditionalElementType {
@@ -64,7 +64,6 @@ export interface IAdditionalElementType {
   label: string;
   content: ReactNode;
 }
-export type AcceptableDateValue = number | string;
 
 export interface IDateProps
   extends IColorProps,
@@ -87,12 +86,21 @@ export interface IDateProps
   disablePreviousDays?: boolean
   specialDays?: number[];
   disabledDays?: number[];
+ renderDayStyle?: (args: {
+    timestamp?: number;
+    isSpecial?: boolean;
+    isSelected?: boolean;
+    isDisabled?: boolean;
+    isToday?: boolean;
+    isInRange?: boolean;
+    isFrom?: boolean;
+    isTo?: boolean;
+  }) => React.CSSProperties;
   renderDayContent?: (info: {
     day: string | number;
     timestamp: number;
     isSpecial: boolean;
   }) => ReactNode;
-
 }
 
 export interface IColorProps {
@@ -247,8 +255,8 @@ export interface IMaskProps
 }
 
 export interface ITimePickerProps extends IClassNameProps {
-  defaultValue?: number | string;
-  value?: number | string;
+  defaultValue?:IDate["from"];
+  value?:IDate["from"];
   Style?: React.CSSProperties;
   calendarType?: "shamsi" | "gregorian";
   onChange?: (e: number | string) => void;
@@ -298,19 +306,44 @@ export interface IRangePickerProps
 }
 export interface IDatePickerProps extends Omit<IDateProps, "locale"> { }
 
-
-
-
-export interface CalendarProps extends Omit<IProps, "dateFromOutside" | "locale" | "onDateChange"> {
-  value?: IDate;
-  locale?: TLocale
-  onChange?: (e: string | number) => void;
+interface BaseCalendarProps
+  extends Omit<IProps, "dateFromOutside" | "locale" | "onDateChange"|"defaultValue"|"value"> {
+    model?: "date"|"range"
+  locale?: TLocale;
   specialDays?: number[];
   disabledDays?: number[];
   exportType?: ExportType;
+ renderDayStyle?: (args: {
+    timestamp?: number;
+    isSpecial?: boolean;
+    isSelected?: boolean;
+    isDisabled?: boolean;
+    isToday?: boolean;
+    isInRange?: boolean;
+    isFrom?: boolean;
+    isTo?: boolean;
+  }) => React.CSSProperties;
   renderDayContent?: (info: {
     day: string | number;
     timestamp: number;
     isSpecial: boolean;
   }) => ReactNode;
 }
+
+/** مدل date */
+export interface CalendarDateProps extends BaseCalendarProps {
+  value?: IDate["from"];
+  defaultValue?: IDate["from"];
+  onChange?: (e: IDate["from"]) => void;
+}
+
+/** مدل range */
+export interface CalendarRangeProps extends BaseCalendarProps {
+
+  value?: IDate;
+  defaultValue?: IDate;
+  onChange?: (e: IDate) => void;
+}
+
+/** نوع نهایی با union (TypeScript خودش تشخیص می‌دهد کدام حالت فعال است) */
+export type CalendarProps = CalendarDateProps | CalendarRangeProps;

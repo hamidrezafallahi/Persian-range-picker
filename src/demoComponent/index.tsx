@@ -7,20 +7,21 @@ import {
 import { IDate } from '../range/core/type';
 
 export default function DemoComponent() {
-  const [val, setVal] = useState<IDate>();
-  const time = { from: 1761337800000, to: 1763584199999 };
+  const [val, setVal] = useState<any>();
+  const time =  {from: 1761597000000, to: 1762893000000}
   return (
     <>
       <button
         onClick={() => {
-          setVal({ from: NaN, to: NaN });
+          setVal({from: null, to: null});
         }}
       >
         set null
       </button>
       <button
         onClick={() => {
-          setVal({ from: 1762201800000, to: 1762892999999 });
+          setVal( 
+{from: 1762633800000, to: 1763584199999});
         }}
       >
         set rand
@@ -42,22 +43,45 @@ export default function DemoComponent() {
         defaultValue={time}
         value={val}
         showMask
-      />*/}
+      />
+       <TimePicker 
+      //  exportType='timeStamp'
+           onChange={(e) => {
+          setVal(e);
+          console.log(e,"TimePicker");
+        }}
+        defaultValue={time}
+        value={val}
+        
+        />
+         <Mask
+        defaultValue={time}
+        value={val}
+      
+      allowClear
+      // calendarType='gregorian'
+              onMaskChange={(e) => {
+                setVal(e);
+          console.log(e);
+        }}
+      />  */}
       <Calendar
-        //  model='range'
-        defaultValue={{ from: time, to: 0 }}
-        value={{ from: val, to: 0 }}
-        onChange={(e) => {
+        model="range"
+        // disablePreviousDays
+        defaultValue={time}
+        value={val}
+        onChange={(e: any) => {
           console.log(e);
           setVal(e);
         }}
+        exportType="timeStamp"
         specialDays={[1762288200000, 1763411400000]}
         disabledDays={[1763325000000, 1763497800000]}
         renderDayContent={({ day, isSpecial }) => (
           <>
             <span
               style={{
-                color: isSpecial ? "red" : "black",
+                color: isSpecial ? "red" : undefined,
                 fontWeight: isSpecial ? "bold" : "normal",
               }}
             >
@@ -65,7 +89,41 @@ export default function DemoComponent() {
             </span>
           </>
         )}
-      /> 
+      />
+      {/* <Calendar
+        model="range"
+        // disablePreviousDays
+        defaultValue={time}
+        value={val}
+        onChange={(e: any) => {
+          console.log(e);
+          setVal(e);
+        }}
+        exportType="timeStamp"
+ 
+        specialDays={[1762288200000, 1763411400000]}
+        disabledDays={[1763325000000, 1763497800000]}
+               renderDayStyle={({ isSpecial, isSelected ,isInRange,isToday,isDisabled,}) => ({
+          background: isSpecial ? "rgba(255,0,0,0.1)" : isSelected ? "#0af" :isInRange ? "rgba(33,150,243,0.2)": isToday ? "rgba(22, 187, 36, 0.98)":  isDisabled ? "rgba(255, 0, 0, 1)": "",
+          borderRadius: "8px",
+          width: "48px",
+          height: "48px",
+        })}
+              renderDayContent={({ day, isSpecial }) => (
+                <>
+                  <span
+                    style={{
+                      color: isSpecial? "red":undefined,
+                      fontWeight: isSpecial ? "bold" : "normal",
+                      background: isSpecial ? "rgba(32, 170, 73, 1)":""
+
+                    }}
+                  >
+                    {day}
+                  </span>
+                </>
+              )}
+      /> */}
 
       {/*<Range
               onChange={(e) => {
@@ -97,36 +155,21 @@ export default function DemoComponent() {
           </>
         )}
       />*/}
-      {/* <TimePicker 
-           onChange={(e) => {
-          setVal(e);
-          console.log(e,"TimePicker");
-        }}
-        defaultValue={time}
-        value={val}
-        
-        /> */}
+
       <RangePicker
         defaultValue={time}
-        value={val}
+        value={val as IDate}
+        onError={(e) => {
+          console.log(e);
+        }}
         onChange={(e) => {
           console.log(e);
+          setVal(e.Data?.date as IDate);
         }}
         onCompareDateChange={(e) => {
           console.log(e);
         }}
       />
-      {/* <Mask
-        defaultValue={time}
-        value={val}
-      
-      allowClear
-      // calendarType='gregorian'
-              onMaskChange={(e) => {
-                setVal(e);
-          console.log(e);
-        }}
-      />  */}
     </>
   );
 }

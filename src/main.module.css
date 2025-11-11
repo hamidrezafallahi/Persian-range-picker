@@ -159,7 +159,7 @@
   border-color: rgb(209, 213, 219);
 }
 .border_state_error1 {
-  border-color: #dc3545;
+  border-color: #dc3545 !important;
 }
 .border_gray_gray6 {
   border-color: #cecece;
@@ -176,8 +176,11 @@
 .\!border_2 {
   border-width: 2px !important;
 }
-.\!border_red_400 {
+.border_red_400 {
   border-color: #f87171 !important;
+}
+.border_red_700 {
+  border-color: #d32f2f !important;
 }
 .border_red_700 {
   border-color: #d32f2f !important;

@@ -1,4 +1,3 @@
-export { Range } from './exportComponents/range';
 export { RangePicker } from './exportComponents/range/rangePicker';
 export { Calendar } from './exportComponents/Calendar';
 export { DatePicker } from './exportComponents/datePicker';

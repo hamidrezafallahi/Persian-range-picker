@@ -22,88 +22,93 @@ export function Calendar({
 }: CalendarProps) {
   const isFa = locale === "fa";
   const isDateModel = model === "date";
+  const getMomentValue = (val: string | number | null | undefined) => {
+    if (val === null || val === undefined || isNaN(Number(moment(val).valueOf()))) return NaN;
+    return isFa
+      ? moment(val).locale("fa").startOf("day").valueOf()
+      : moment(val).utc().startOf("day").valueOf();
+  };
   const initValue: IDate = (() => {
-    if (defaultValue !== undefined) {
-      if (isDateModel) {
-        return {
-          from: isFa
-            ? moment(defaultValue.from).locale("fa").startOf("day").valueOf()
-            : moment(defaultValue.from).utc().startOf("day").valueOf(),
-          to: isFa
-            ? moment(defaultValue.to).locale("fa").endOf("day").valueOf()
-            : moment(defaultValue.to).utc().endOf("day").valueOf(),
-        };
-      } else {
-        return {
-          from: isFa
-            ? moment(defaultValue.from).locale("fa").startOf("jYear").valueOf()
-            : moment(defaultValue.from).utc().startOf("year").valueOf(),
-          to: isFa
-            ? moment(defaultValue.to).locale("fa").endOf("day").valueOf()
-            : moment(defaultValue.to).utc().endOf("day").valueOf(),
-        };
-      }
+    if (isDateModel) {
+      const fromValue =
+      typeof defaultValue === "object"
+      ? getMomentValue(defaultValue?.from)
+      : getMomentValue(defaultValue as string | number);
+      return { from: fromValue, to: NaN };
     } else {
-      if (isDateModel) {
-        return {
-          from: isFa
-            ? moment().locale("fa").startOf("day").valueOf()
-            : moment().utc().startOf("day").valueOf(),
-          to: isFa
-            ? moment().locale("fa").endOf("day").valueOf()
-            : moment().utc().endOf("day").valueOf(),
-        };
-      } else {
-        return {
-          from: isFa
-            ? moment().locale("fa").startOf("jYear").valueOf()
-            : moment().utc().startOf("year").valueOf(),
-          to: isFa
-            ? moment().locale("fa").endOf("day").valueOf()
-            : moment().utc().endOf("day").valueOf(),
-        };
-      }
+      const from = getMomentValue(
+        typeof defaultValue === "object" ? defaultValue?.from : undefined
+      );
+      const to = getMomentValue(
+        typeof defaultValue === "object" ? defaultValue?.to : undefined
+      );
+      return { from, to };
     }
   })();
-  const [showDate, setShowDate] = useState<IDate>(initValue);
 
+  const [showDate, setShowDate] = useState<IDate>(initValue);
   const handleDateChange = (e: IDate) => {
-    if (exportType == "IsoString") {
-      onChange?.(
-        locale == "fa"
-          ? moment(e.from).format("YYYY-MM-DDTHH:mm:ss.SSSZ")
-          : moment.utc(e.from).format("YYYY-MM-DDTHH:mm:ss.SSSZ")
-      );
-    } else {
-      onChange?.(
-        locale == "fa"
+    if (isDateModel) {
+      const val: IDate["from"] =
+        exportType === "IsoString"
+          ? locale === "fa"
+            ? moment(e.from).format("YYYY-MM-DDTHH:mm:ss.SSSZ")
+            : moment.utc(e.from).format("YYYY-MM-DDTHH:mm:ss.SSSZ")
+          : locale === "fa"
           ? moment(e.from).valueOf()
-          : moment.utc(e.from).valueOf()
-      );
+          : moment.utc(e.from).valueOf();
+
+      onChange?.(val as any);
+    } else {
+      if (e.to) {
+        const val: IDate =
+          exportType === "IsoString"
+            ? {
+                from:
+                  locale === "fa"
+                    ? moment(e.from).format("YYYY-MM-DDTHH:mm:ss.SSSZ")
+                    : moment.utc(e.from).format("YYYY-MM-DDTHH:mm:ss.SSSZ"),
+                to:
+                  locale === "fa"
+                    ? moment(e.to).format("YYYY-MM-DDTHH:mm:ss.SSSZ")
+                    : moment.utc(e.to).format("YYYY-MM-DDTHH:mm:ss.SSSZ"),
+              }
+            : {
+                from:
+                  locale === "fa"
+                    ? moment(e.from).valueOf()
+                    : moment.utc(e.from).valueOf(),
+                to:
+                  locale === "fa"
+                    ? moment(e.to).valueOf()
+                    : moment.utc(e.to).valueOf(),
+              };
+        onChange?.(val as any);
+      }
     }
   };
 
   useEffect(() => {
-    if (value?.from !== undefined) {
-      if (isDateModel) {
+    if (isDateModel) {
+      if (typeof value === "string" || typeof value === "number") {
         setShowDate({
-          from: isFa
-            ? moment(value.from).locale("fa").startOf("day").valueOf()
-            : moment(value.from).utc().startOf("day").valueOf(),
+          from: getMomentValue(value),
           to: isFa
-            ? moment(value.from).locale("fa").endOf("day").valueOf()
-            : moment(value.from).utc().endOf("day").valueOf(),
+          ? moment(value).locale("fa").endOf("day").valueOf()
+          : moment(value).utc().endOf("day").valueOf(),
         });
-      } else {
-        setShowDate({
-          from: isFa
-            ? moment(value.from).locale("fa").startOf("jYear").valueOf()
-            : moment(value.from).utc().startOf("year").valueOf(),
-          to: isFa
-            ? moment(value.to).locale("fa").endOf("day").valueOf()
-            : moment(value.to).utc().endOf("day").valueOf(),
+      }else if(value === null){
+         setShowDate({
+          from:NaN  ,
+          to: NaN,
         });
       }
+    } else if (typeof value === "object" && value?.from !== undefined) {
+ 
+      setShowDate({
+        from: getMomentValue(value.from),
+        to: getMomentValue(value.to),
+      });
     }
   }, [value]);
   return (
@@ -112,7 +117,7 @@ export function Calendar({
       model={model}
       locale={locale}
       onDateChange={handleDateChange}
-      defaultValue={defaultValue}
+      defaultValue={defaultValue as any}
       value={showDate}
     />
   );

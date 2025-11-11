@@ -97,9 +97,12 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
           : moment.utc(finalDate).format("YYYY-MM-DDTHH:mm:ss.SSSZ")
       );
     } else {
-      locale == "fa"
+      onChange?.(
+        locale == "fa"
         ? moment(finalDate).valueOf()
-        : moment.utc(finalDate).valueOf();
+        : moment.utc(finalDate).valueOf()
+      );
+      
     }
   };
 
@@ -117,9 +120,12 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
             : moment.utc(finalDate).format("YYYY-MM-DDTHH:mm:ss.SSSZ")
         );
       } else {
-        locale == "fa"
+         onChange?.(
+          locale == "fa"
           ? moment(finalDate).valueOf()
-          : moment.utc(finalDate).valueOf();
+          : moment.utc(finalDate).valueOf()
+        );
+        
       }
       setIsOpen(false);
     }
@@ -148,7 +154,7 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
 
   const changeHandler = (e: number) => {
     if (!e) return;
-    setShowDate({from:e,to:0});
+    setShowDate({from:e,to:NaN});
     if (exportType == "IsoString") {
       onChange?.(
         locale == "fa"
@@ -156,7 +162,8 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
           : moment.utc(e).format("YYYY-MM-DDTHH:mm:ss.SSSZ")
       );
     } else {
-      locale == "fa" ? moment(e).valueOf() : moment.utc(e).valueOf();
+       onChange?.(locale == "fa" ? moment(e).valueOf() : moment.utc(e).valueOf()
+);
     }
   };
   const handleClear = (e: any) => {
@@ -231,10 +238,7 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
               allowClear={false}
               exportType="timeStamp"
               defaultValue={showDate.from ?? undefined}
-              onMaskChange={(e) => {
-                setShowDate({from:e as number,to:0});
-                onChange?.(e as number);
-              }}
+              onMaskChange={changeHandler as (e:any)=>void}
               Style={{ width: "112px" }}
             />
           </div>
@@ -321,7 +325,7 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
                   <DesktopTimePicker
                     {...props}
                     displayButtonCount={5}
-                    defaultValue={new Date(showDate?.from).valueOf()}
+                    defaultValue={new Date(showDate?.from as any).valueOf()}
                    
                     onGetValue={handleSetTime}
                   />
@@ -334,7 +338,7 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
               setShowDate={
                 setShowDate as Dispatch<SetStateAction<IDate>>
               }
-              showDate={new Date(showDate?.from).valueOf()}
+              showDate={new Date(showDate?.from as any).valueOf()}
               locale={locale}
               primaryColor={primaryColor}
               highlightColor={highlightColor}

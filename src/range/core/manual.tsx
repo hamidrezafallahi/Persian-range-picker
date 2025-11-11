@@ -44,7 +44,7 @@ const Manual = (props: IBaseProps) => {
       ${style.items_center}
       ${style.gap_2}
       ${style.mx_4}
-      ${style.xs_w_60}
+
       
  
     `}
@@ -62,6 +62,7 @@ const Manual = (props: IBaseProps) => {
       />
       <MaskRange
         {...props}
+        
         // InputHandleChange={InputHandleChangeFrom}
       />
       <DatePicker

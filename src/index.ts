@@ -1,4 +1,4 @@
-export { Mask, Range, RangePicker } from './range';
+export { Mask, RangePicker } from './range';
 export { DatePicker } from './range/exportComponents/datePicker';
 export { Calendar } from './range/exportComponents/Calendar';
 export { TimePicker } from './range/exportComponents/timePicker';
