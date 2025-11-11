@@ -245,7 +245,7 @@ export interface IMaskProps
   allowClear?: boolean;
   onClear?: () => void
   dir?: "ltr" | "rtl";
-  autoComplete?: "on" | "off";
+
   disabled?: boolean;
   maskPlaceHolder?: string;
   isTodaySelectPreset?: boolean;
@@ -254,7 +254,9 @@ export interface IMaskProps
 
 }
 
-export interface ITimePickerProps extends IClassNameProps {
+
+export interface ITimePickerProps  {
+
   defaultValue?:IDate["from"];
   value?:IDate["from"];
   Style?: React.CSSProperties;
@@ -264,8 +266,6 @@ export interface ITimePickerProps extends IClassNameProps {
   okButtonClassName?: string;
   nowButtonClassName?: string;
   timeButtonClassName?: string;
-  width?: number;
-  height?: number;
   displayButtonCount?: number;
   icon?: ReactNode | null;
   tertiaryColor?: string;
@@ -278,6 +278,7 @@ export interface ITimePickerProps extends IClassNameProps {
   secondStep?: number;
   disabled?: boolean;
   exportType?: ExportType;
+  placeHolder?:string|ReactNode|boolean
 }
 export interface ISubmittedData {
   date: IDate;

@@ -54,24 +54,19 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
   const dynamicFormat = showSecond ? showTimeFormat : "HH:mm";
   const initValue: IDate = (() => {
     if (defaultValue !== undefined) {
-        return {
-          from: isFa
-            ? moment(defaultValue).locale("fa").startOf("day").valueOf()
-            : moment(defaultValue).utc().startOf("day").valueOf(),
-          to: isFa
-            ? moment(defaultValue).locale("fa").endOf("day").valueOf()
-            : moment(defaultValue).utc().endOf("day").valueOf(),
-        };
-      
+      return {
+        from: isFa
+          ? moment(defaultValue).locale("fa").startOf("day").valueOf()
+          : moment(defaultValue).utc().startOf("day").valueOf(),
+        to: isFa
+          ? moment(defaultValue).locale("fa").endOf("day").valueOf()
+          : moment(defaultValue).utc().endOf("day").valueOf(),
+      };
     } else {
-        return {
-          from: isFa
-            ? moment().locale("fa").startOf("day").valueOf()
-            : moment().utc().startOf("day").valueOf(),
-          to: isFa
-            ? moment().locale("fa").endOf("day").valueOf()
-            : moment().utc().endOf("day").valueOf(),
-        };
+      return {
+        from: NaN,
+        to: NaN,
+      };
     }
   })();
   const [showDate, setShowDate] = useState<IDate>(initValue);
@@ -89,7 +84,9 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
   const handleDropdown = () => setIsOpen((prev) => !prev);
 
   const handleSubmit = () => {
-    const finalDate = showTime ? showDate.from ?? 0 : moment(showDate.from).valueOf();
+    const finalDate = showTime
+      ? showDate.from ?? 0
+      : moment(showDate.from).valueOf();
     if (exportType == "IsoString") {
       onChange?.(
         locale == "fa"
@@ -99,10 +96,9 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
     } else {
       onChange?.(
         locale == "fa"
-        ? moment(finalDate).valueOf()
-        : moment.utc(finalDate).valueOf()
+          ? moment(finalDate).valueOf()
+          : moment.utc(finalDate).valueOf()
       );
-      
     }
   };
 
@@ -111,7 +107,7 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
     const finalDate = showTime
       ? rawTimestamp
       : moment(rawTimestamp).startOf("day").valueOf();
-    setShowDate({from:finalDate,to:0});
+    setShowDate({ from: finalDate, to: 0 });
     if (!showTime) {
       if (exportType === "IsoString") {
         onChange?.(
@@ -120,41 +116,40 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
             : moment.utc(finalDate).format("YYYY-MM-DDTHH:mm:ss.SSSZ")
         );
       } else {
-         onChange?.(
+        onChange?.(
           locale == "fa"
-          ? moment(finalDate).valueOf()
-          : moment.utc(finalDate).valueOf()
+            ? moment(finalDate).valueOf()
+            : moment.utc(finalDate).valueOf()
         );
-        
       }
       setIsOpen(false);
     }
   };
 
   const persian =
-    showDate.from && new Date (showDate.from).valueOf() > 0
+    showDate.from && new Date(showDate.from).valueOf() > 0
       ? toPersianDigits(
-          moment(new Date (showDate.from).valueOf()).format(
+          moment(new Date(showDate.from).valueOf()).format(
             showTime ? `jYYYY/jMM/jDD\u2003${dynamicFormat}` : `jYYYY/jMM/jDD`
           )
         )
       : "انتخاب تاریخ";
 
   const gregorian =
-    showDate.from && new Date (showDate.from).valueOf() > 0
-      ? moment(new Date (showDate.from).valueOf()).format(
+    showDate.from && new Date(showDate.from).valueOf() > 0
+      ? moment(new Date(showDate.from).valueOf()).format(
           showTime ? `YYYY/MM/DD\u2003${dynamicFormat}` : `YYYY/MM/DD`
         )
       : "Choose date";
 
   const title = locale === "fa" ? persian : gregorian;
   const handleSetTime = (timestamp: number) => {
-    setShowDate({from:timestamp,to:NaN});
+    setShowDate({ from: timestamp, to: NaN });
   };
 
   const changeHandler = (e: number) => {
     if (!e) return;
-    setShowDate({from:e,to:NaN});
+    setShowDate({ from: e, to: NaN });
     if (exportType == "IsoString") {
       onChange?.(
         locale == "fa"
@@ -162,27 +157,27 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
           : moment.utc(e).format("YYYY-MM-DDTHH:mm:ss.SSSZ")
       );
     } else {
-       onChange?.(locale == "fa" ? moment(e).valueOf() : moment.utc(e).valueOf()
-);
+      onChange?.(
+        locale == "fa" ? moment(e).valueOf() : moment.utc(e).valueOf()
+      );
     }
   };
   const handleClear = (e: any) => {
     e.stopPropagation();
-    setShowDate({from: NaN, to: NaN});
+    setShowDate({ from: NaN, to: NaN });
     onClear?.();
   };
 
   useEffect(() => {
-    if (value!== undefined) {
-        setShowDate({
-          from: isFa
-            ? moment(value).locale("fa").startOf("day").valueOf()
-            : moment(value).utc().startOf("day").valueOf(),
-          to: isFa
-            ? moment(value).locale("fa").endOf("day").valueOf()
-            : moment(value).utc().endOf("day").valueOf(),
-        });
-     
+    if (value !== undefined) {
+      setShowDate({
+        from: isFa
+          ? moment(value).locale("fa").startOf("day").valueOf()
+          : moment(value).utc().startOf("day").valueOf(),
+        to: isFa
+          ? moment(value).locale("fa").endOf("day").valueOf()
+          : moment(value).utc().endOf("day").valueOf(),
+      });
     }
   }, [value]);
   return (
@@ -238,7 +233,7 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
               allowClear={false}
               exportType="timeStamp"
               defaultValue={showDate.from ?? undefined}
-              onMaskChange={changeHandler as (e:any)=>void}
+              onMaskChange={changeHandler as (e: any) => void}
               Style={{ width: "112px" }}
             />
           </div>
@@ -318,15 +313,18 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
                   >
                     {locale === "fa"
                       ? toPersianDigits(
-                          moment(showDate?.from).locale(locale).format(dynamicFormat)
+                          moment(showDate?.from)
+                            .locale(locale)
+                            .format(dynamicFormat)
                         )
-                      : moment(showDate?.from).locale(locale).format(dynamicFormat)}
+                      : moment(showDate?.from)
+                          .locale(locale)
+                          .format(dynamicFormat)}
                   </div>
                   <DesktopTimePicker
                     {...props}
                     displayButtonCount={5}
                     defaultValue={new Date(showDate?.from as any).valueOf()}
-                   
                     onGetValue={handleSetTime}
                   />
                 </div>
@@ -335,9 +333,7 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
 
             <Footer
               setIsOpen={setIsOpen}
-              setShowDate={
-                setShowDate as Dispatch<SetStateAction<IDate>>
-              }
+              setShowDate={setShowDate as Dispatch<SetStateAction<IDate>>}
               showDate={new Date(showDate?.from as any).valueOf()}
               locale={locale}
               primaryColor={primaryColor}

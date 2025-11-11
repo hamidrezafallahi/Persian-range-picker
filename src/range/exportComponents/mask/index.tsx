@@ -41,7 +41,7 @@ export function Mask({ ...props }: IMaskProps) {
     onClear,
     prefix,
     ErrorClass = defaultErrorClass,
-    autoComplete = "off",
+ 
     tertiaryColor = "#939393",
     highlightColor = "#f4f4f4",
     disabled = false,
@@ -851,7 +851,7 @@ export function Mask({ ...props }: IMaskProps) {
                   type="text"
                   name="year"
                   tabIndex={0}
-                  autoComplete={autoComplete}
+                  autoComplete="off"
                   ref={yearInputRef}
                   value={separatedValue[0]}
                   onChange={handleChange}
@@ -892,7 +892,8 @@ export function Mask({ ...props }: IMaskProps) {
                   type="text"
                   name="month"
                   tabIndex={1}
-                  autoComplete={autoComplete}
+                                    autoComplete="off"
+
                   ref={monthInputRef}
                   value={separatedValue[1]}
                   onChange={handleChange}
@@ -935,7 +936,8 @@ export function Mask({ ...props }: IMaskProps) {
                   tabIndex={2}
                   ref={dayInputRef}
                   value={separatedValue[2]}
-                  autoComplete={autoComplete}
+                                   autoComplete="off"
+
                   onChange={handleChange}
                   onClick={handleClick}
                   onKeyDown={handleKeyDown}
@@ -980,7 +982,8 @@ export function Mask({ ...props }: IMaskProps) {
               onFocus={() => {
                 handleFocusFullInput();
               }}
-              autoComplete={autoComplete}
+                               autoComplete="off"
+
               value={fullValue}
               onChange={handleChange}
               onKeyDown={handleKeyDown}
@@ -1081,6 +1084,7 @@ export function Mask({ ...props }: IMaskProps) {
 }
 
 function timestampToDateNumbers(locale: TLocale, timestamp?: number) {
+  console.log(timestamp)
   if (timestamp == undefined || timestamp == 0) {
     const year =
       locale == "fa" ? moment().format("jYYYY") : moment().format("YYYY");

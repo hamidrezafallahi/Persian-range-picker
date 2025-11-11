@@ -1,14 +1,15 @@
 import { useState } from 'react';
 
 import {
-  Calendar,
-  RangePicker,
+  Mask,
+  TimePicker,
 } from '../range';
-import { IDate } from '../range/core/type';
+import { DesktopDatePicker } from '../range/desktopDate/desktopDatePicker';
+import { MobileDate } from '../range/mobileDate/mobileDatePicker';
 
 export default function DemoComponent() {
   const [val, setVal] = useState<any>();
-  const time =  {from: 1761597000000, to: 1762893000000}
+  const time =  1762893000000
   return (
     <>
       <button
@@ -20,13 +21,12 @@ export default function DemoComponent() {
       </button>
       <button
         onClick={() => {
-          setVal( 
-{from: 1762633800000, to: 1763584199999});
+          setVal( 1762633800000);
         }}
       >
         set rand
       </button>
-      {/* <MobileDate
+      <MobileDate
       showTime
         onChange={(e) => {
           setVal(e);
@@ -42,10 +42,11 @@ export default function DemoComponent() {
         }}
         defaultValue={time}
         value={val}
-        showMask
+        // showMask
       />
        <TimePicker 
       //  exportType='timeStamp'
+      placeHolder="عباس"
            onChange={(e) => {
           setVal(e);
           console.log(e,"TimePicker");
@@ -64,8 +65,8 @@ export default function DemoComponent() {
                 setVal(e);
           console.log(e);
         }}
-      />  */}
-      <Calendar
+      /> 
+      {/* <Calendar
         model="range"
         // disablePreviousDays
         defaultValue={time}
@@ -89,7 +90,7 @@ export default function DemoComponent() {
             </span>
           </>
         )}
-      />
+      /> */}
       {/* <Calendar
         model="range"
         // disablePreviousDays
@@ -156,7 +157,7 @@ export default function DemoComponent() {
         )}
       />*/}
 
-      <RangePicker
+      {/* <RangePicker
         defaultValue={time}
         value={val as IDate}
         onError={(e) => {
@@ -169,7 +170,7 @@ export default function DemoComponent() {
         onCompareDateChange={(e) => {
           console.log(e);
         }}
-      />
+      /> */}
     </>
   );
 }

@@ -30,6 +30,7 @@ export const TimePicker = ({ ...props }: ITimePickerProps) => {
     timeButtonClassName,
     displayButtonCount = 5,
     icon = <CalenderIcon />,
+    placeHolder = "انتخاب زمان",
     tertiaryColor = "#939393",
     highlightColor = "#f4f4f4",
     format = "HH:mm:ss",
@@ -53,10 +54,11 @@ export const TimePicker = ({ ...props }: ITimePickerProps) => {
         ? moment(defaultValue).locale("fa").valueOf()
         : moment(defaultValue).utc().valueOf();
     } else {
-      return isFa ? moment().locale("fa").valueOf() : moment().utc().valueOf();
+      return null// isFa ? moment().locale("fa").valueOf() : moment().utc().valueOf();
     }
   })();
   const [time, setTime] = useState<number | null>(initValue);
+  console.log(initValue)
   const { match } = useMediaQuery("XSUP");
 
   const buttonRefs = useRef<(HTMLButtonElement | null)[]>([]);
@@ -212,12 +214,12 @@ export const TimePicker = ({ ...props }: ITimePickerProps) => {
           ...props.Style,
         }}
       >
-        <span className={style.text_lg}>{icon}</span>
+        {icon && <span className={style.text_lg}>{icon}</span>}
         {time
           ? locale === "fa"
             ? toPersianDigits(moment(time).format(dynamicFormat))
             : moment(time).format(dynamicFormat)
-          : "انتخاب زمان"}
+          :placeHolder}
       </button>
 
       {open &&
