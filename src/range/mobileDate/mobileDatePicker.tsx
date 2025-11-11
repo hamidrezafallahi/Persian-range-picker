@@ -25,6 +25,7 @@ export function MobileDate({ ...props }: IDateProps) {
     onChange,
     defaultValue,
     locale = "fa",
+    icon = <CalenderIcon />,
     tertiaryColor = "#939393",
     highlightColor = "#f4f4f4",
     primaryColor = "#000",
@@ -37,6 +38,7 @@ export function MobileDate({ ...props }: IDateProps) {
     showSecond = true,
     className,
     disabled = false,
+    placeHolder = props.locale === "en" ? "Choose date" : "انتخاب تاریخ",
     value,
   } = props;
   const isFa = locale === "fa";
@@ -68,14 +70,14 @@ export function MobileDate({ ...props }: IDateProps) {
             showTime ? `jYYYY/jMM/jDD\u2003${dynamicFormat}` : `jYYYY/jMM/jDD`
           )
         )
-      : "انتخاب تاریخ";
+      : placeHolder;
 
   const gregorian =
     showDate.from && new Date(showDate.from).valueOf() > 0
       ? moment(showDate.from).format(
           showTime ? `YYYY/MM/DD\u2003${dynamicFormat}` : `YYYY/MM/DD`
         )
-      : "Choose date";
+      : placeHolder;
 
   const title = locale === "fa" ? persian : gregorian;
 
@@ -201,8 +203,20 @@ export function MobileDate({ ...props }: IDateProps) {
           ...props.Style,
         }}
       >
-        <CalenderIcon />
-        <div dir="ltr">{title}</div>
+        <>
+          {icon && <span>{icon}</span>}
+
+          {title && (
+            <div
+              className={` ${style.text_start} ${style.text_gray_gray7} `}
+              style={{
+                color: tertiaryColor,
+              }}
+            >
+              {title}
+            </div>
+          )}
+        </>
       </button>
 
       {open &&

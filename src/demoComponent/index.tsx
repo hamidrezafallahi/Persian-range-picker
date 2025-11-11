@@ -32,17 +32,25 @@ export default function DemoComponent() {
           setVal(e);
           console.log(e);
         }}
-        defaultValue={time}
-        value={val}
+        // defaultValue={time}
+        // value={val}
+        // placeHolder={false}
+        // icon ={false}
       />
       <DesktopDatePicker
+
+// locale='en'
         onChange={(e) => {
           setVal(e);
           console.log(e,"e");
         }}
-        defaultValue={time}
-        value={val}
+              // placeHolder={false}
+        // icon ={false}
+        // defaultValue={time}
+        // value={val}
         // showMask
+                // placeHolder={false}
+
       />
        <TimePicker 
       //  exportType='timeStamp'

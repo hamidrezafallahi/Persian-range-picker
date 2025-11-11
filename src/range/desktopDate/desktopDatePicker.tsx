@@ -32,6 +32,7 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
     locale = "fa",
     defaultValue,
     onChange,
+    icon = <CalenderIcon />,
     primaryColor = "#000",
     tertiaryColor = "#939393",
     highlightColor = "#f4f4f4",
@@ -44,6 +45,7 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
     showSecond = false,
     showMask = false,
     disabled = false,
+    placeHolder = props.locale === "en" ? "Choose date" : "انتخاب تاریخ",
     Style,
     exportType = "IsoString",
     allowClear,
@@ -133,14 +135,14 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
             showTime ? `jYYYY/jMM/jDD\u2003${dynamicFormat}` : `jYYYY/jMM/jDD`
           )
         )
-      : "انتخاب تاریخ";
+      : placeHolder;
 
   const gregorian =
     showDate.from && new Date(showDate.from).valueOf() > 0
       ? moment(new Date(showDate.from).valueOf()).format(
           showTime ? `YYYY/MM/DD\u2003${dynamicFormat}` : `YYYY/MM/DD`
         )
-      : "Choose date";
+      : placeHolder;
 
   const title = locale === "fa" ? persian : gregorian;
   const handleSetTime = (timestamp: number) => {
@@ -218,8 +220,10 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
           >
             <ClearIcon />
           </span>
-        ) : (
-          <CalenderIcon />
+        ) : (<>
+                  {icon && <span>{icon}</span>}
+        </>
+
         )}
         {showMask ? (
           <div
@@ -238,14 +242,18 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
             />
           </div>
         ) : (
-          <div
-            className={` ${style.text_start} ${style.text_gray_gray7} `}
-            style={{
-              color: tertiaryColor,
-            }}
-          >
-            {title}
-          </div>
+          <>
+            {title && (
+              <div
+                className={` ${style.text_start} ${style.text_gray_gray7} `}
+                style={{
+                  color: tertiaryColor,
+                }}
+              >
+                {title}
+              </div>
+            )}
+          </>
         )}
       </button>
       {isOpen &&

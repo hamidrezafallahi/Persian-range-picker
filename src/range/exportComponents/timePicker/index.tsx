@@ -214,7 +214,7 @@ export const TimePicker = ({ ...props }: ITimePickerProps) => {
           ...props.Style,
         }}
       >
-        {icon && <span className={style.text_lg}>{icon}</span>}
+        {icon && <span>{icon}</span>}
         {time
           ? locale === "fa"
             ? toPersianDigits(moment(time).format(dynamicFormat))
