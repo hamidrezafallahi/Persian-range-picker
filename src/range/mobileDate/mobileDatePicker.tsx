@@ -38,7 +38,7 @@ export function MobileDate({ ...props }: IDateProps) {
     showSecond = true,
     className,
     disabled = false,
-    placeHolder = props.locale === "en" ? "Choose date" : "انتخاب تاریخ",
+    placeholder = props.locale === "en" ? "Choose date" : "انتخاب تاریخ",
     value,
   } = props;
   const isFa = locale === "fa";
@@ -70,14 +70,14 @@ export function MobileDate({ ...props }: IDateProps) {
             showTime ? `jYYYY/jMM/jDD\u2003${dynamicFormat}` : `jYYYY/jMM/jDD`
           )
         )
-      : placeHolder;
+      : placeholder;
 
   const gregorian =
     showDate.from && new Date(showDate.from).valueOf() > 0
       ? moment(showDate.from).format(
           showTime ? `YYYY/MM/DD\u2003${dynamicFormat}` : `YYYY/MM/DD`
         )
-      : placeHolder;
+      : placeholder;
 
   const title = locale === "fa" ? persian : gregorian;
 

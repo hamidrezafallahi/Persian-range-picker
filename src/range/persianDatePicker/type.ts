@@ -8,13 +8,11 @@ import type {
 export interface IProps {
   onDateChange?: (e: IDate) => void;
   tabIndex?: number;
- value?: IDate | null;        // اضافه کردن null
+ value?: IDate | null;     
   defaultValue?: IDate | null;
   inputClassName?: string;
   model?: "range" | "date";
-  mode?: "modal" | "dropdown";
   name?: string;
-  doubleMonth?: boolean;
   disablePreviousDays?: boolean;
   calenderClassName?: string;
   renderDayFn?: (

@@ -278,7 +278,7 @@ export interface ITimePickerProps  {
   secondStep?: number;
   disabled?: boolean;
   exportType?: ExportType;
-  placeHolder?:string|ReactNode|boolean
+  placeholder?:string|ReactNode|boolean
 }
 export interface ISubmittedData {
   date: IDate;

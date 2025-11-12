@@ -14,7 +14,7 @@ export default function DemoComponent() {
     <>
       <button
         onClick={() => {
-          setVal({from: null, to: null});
+          setVal(1762893000000);
         }}
       >
         set null
@@ -32,8 +32,8 @@ export default function DemoComponent() {
           setVal(e);
           console.log(e);
         }}
-        // defaultValue={time}
-        // value={val}
+        defaultValue={time}
+        value={val}
         // placeHolder={false}
         // icon ={false}
       />
@@ -46,20 +46,21 @@ export default function DemoComponent() {
         }}
               // placeHolder={false}
         // icon ={false}
-        // defaultValue={time}
-        // value={val}
-        // showMask
-                // placeHolder={false}
+        defaultValue={time}
+        value={val}
+        showMask
+                // placeholder={false}
 
       />
        <TimePicker 
       //  exportType='timeStamp'
-      placeHolder="عباس"
+      placeholder="عباس"
            onChange={(e) => {
           setVal(e);
           console.log(e,"TimePicker");
         }}
         defaultValue={time}
+
         value={val}
         
         />

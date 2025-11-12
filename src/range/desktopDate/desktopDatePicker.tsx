@@ -45,7 +45,7 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
     showSecond = false,
     showMask = false,
     disabled = false,
-    placeHolder = props.locale === "en" ? "Choose date" : "انتخاب تاریخ",
+    placeholder = props.locale === "en" ? "Choose date" : "انتخاب تاریخ",
     Style,
     exportType = "IsoString",
     allowClear,
@@ -135,14 +135,14 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
             showTime ? `jYYYY/jMM/jDD\u2003${dynamicFormat}` : `jYYYY/jMM/jDD`
           )
         )
-      : placeHolder;
+      : placeholder;
 
   const gregorian =
     showDate.from && new Date(showDate.from).valueOf() > 0
       ? moment(new Date(showDate.from).valueOf()).format(
           showTime ? `YYYY/MM/DD\u2003${dynamicFormat}` : `YYYY/MM/DD`
         )
-      : placeHolder;
+      : placeholder;
 
   const title = locale === "fa" ? persian : gregorian;
   const handleSetTime = (timestamp: number) => {
@@ -196,7 +196,7 @@ export function DesktopDatePicker({ ...props }: IDateProps) {
         }   ${style.xs_w_40} ${showTime && style.xs_w_52} ${
           style.overflow_hidden
         } ${style.border_none} 
-  ${style.w_full}  ${className}`}
+        ${style.w_full}  ${className}`}
         style={{
           ...Style,
           backgroundColor: highlightColor,
