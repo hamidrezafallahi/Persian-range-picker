@@ -20,6 +20,7 @@ import { TimeColumns } from './exportComponents';
 
 export const TimePicker = ({ ...props }: ITimePickerProps) => {
   const {
+    className,
     defaultValue,
     value,
     onChange,
@@ -27,7 +28,6 @@ export const TimePicker = ({ ...props }: ITimePickerProps) => {
     containerClassName,
     okButtonClassName,
     nowButtonClassName,
-    timeButtonClassName,
     displayButtonCount = 5,
     icon = <CalenderIcon />,
     placeHolder = "انتخاب زمان",
@@ -202,7 +202,7 @@ export const TimePicker = ({ ...props }: ITimePickerProps) => {
               ${style.xs_w_40}
               ${style.h_9}
             
-              ${timeButtonClassName}
+              ${className}
             `}
         style={{
           color: tertiaryColor,
@@ -319,7 +319,7 @@ export const TimePicker = ({ ...props }: ITimePickerProps) => {
                 ${style.px_2}
                 ${style.rounded_md}
                 ${disabled ? style.cursor_not_allowed : ""}
-                ${timeButtonClassName}
+                ${className}
 
               `}
               >

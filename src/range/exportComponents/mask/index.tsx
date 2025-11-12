@@ -41,7 +41,6 @@ export function Mask({ ...props }: IMaskProps) {
     onClear,
     prefix,
     ErrorClass = defaultErrorClass,
- 
     tertiaryColor = "#939393",
     highlightColor = "#f4f4f4",
     disabled = false,

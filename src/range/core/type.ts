@@ -256,7 +256,7 @@ export interface IMaskProps
 
 
 export interface ITimePickerProps  {
-
+  className?:string
   defaultValue?:IDate["from"];
   value?:IDate["from"];
   Style?: React.CSSProperties;
