@@ -58,7 +58,6 @@ export const TimePicker = ({ ...props }: ITimePickerProps) => {
     }
   })();
   const [time, setTime] = useState<number | null>(initValue);
-  console.log(initValue)
   const { match } = useMediaQuery("XSUP");
 
   const buttonRefs = useRef<(HTMLButtonElement | null)[]>([]);
@@ -183,7 +182,6 @@ export const TimePicker = ({ ...props }: ITimePickerProps) => {
       );
     }
   }, [value]);
-
   return (
     <>
       <button

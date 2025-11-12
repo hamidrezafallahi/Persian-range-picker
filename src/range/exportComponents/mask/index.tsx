@@ -1084,7 +1084,6 @@ export function Mask({ ...props }: IMaskProps) {
 }
 
 function timestampToDateNumbers(locale: TLocale, timestamp?: number) {
-  console.log(timestamp)
   if (timestamp == undefined || timestamp == 0) {
     const year =
       locale == "fa" ? moment().format("jYYYY") : moment().format("YYYY");
