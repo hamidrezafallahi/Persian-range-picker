@@ -1078,3 +1078,6 @@
 .ltr {
   direction: ltr !important;
 }
+.bg_none{
+  background-color: transparent;
+}

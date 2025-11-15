@@ -55,8 +55,8 @@ export enum ESteps {
 }
 
 export interface IDate {
-  from: number| string|null|undefined;
-  to: number | string|null|undefined;
+  from: number | string | null | undefined;
+  to: number | string | null | undefined;
 }
 
 export interface IAdditionalElementType {
@@ -86,7 +86,11 @@ export interface IDateProps
   disablePreviousDays?: boolean
   specialDays?: number[];
   disabledDays?: number[];
- renderDayStyle?: (args: {
+  renderDayFn?: (
+    day: { timestamp: number; currentMonth: boolean },
+    index: number
+  ) => ReactNode;
+  renderDayStyle?: (args: {
     timestamp?: number;
     isSpecial?: boolean;
     isSelected?: boolean;
@@ -96,11 +100,24 @@ export interface IDateProps
     isFrom?: boolean;
     isTo?: boolean;
   }) => React.CSSProperties;
+  renderColStyle?: (args: {
+    isSelectedCol: boolean;
+    name: string;
+    index: number;
+  }) => React.CSSProperties;
   renderDayContent?: (info: {
     day: string | number;
     timestamp: number;
     isSpecial: boolean;
+    isColSelected: boolean;
   }) => ReactNode;
+  renderColContent?: (info: {
+    isSelectedCol: boolean;
+    name: string;
+  }) => ReactNode;
+  onWeekdaySelect?: (e: WeekDaySelectResponse[]) => void;
+  WeekHeaderClassName?: string;
+  WeekHeaderStyle?: React.CSSProperties;
 }
 
 export interface IColorProps {
@@ -190,12 +207,44 @@ export interface IBaseProps extends IRangeOptions {
   componentStep?: ESteps;
   open?: boolean;
   setOpen?: Dispatch<SetStateAction<boolean>>;
-  type?: "range"|"compareRange";
+  type?: "range" | "compareRange";
   setType?: Dispatch<SetStateAction<string>>;
   activeTable?: "Day" | "Week" | "Month" | "Year" | "manual";
   disabled?: boolean;
   disablePreviousDays?: boolean
   exportType?: ExportType;
+  renderDayFn?: (
+    day: { timestamp: number; currentMonth: boolean },
+    index: number
+  ) => ReactNode;
+  renderDayStyle?: (args: {
+    timestamp?: number;
+    isSpecial?: boolean;
+    isSelected?: boolean;
+    isDisabled?: boolean;
+    isToday?: boolean;
+    isInRange?: boolean;
+    isFrom?: boolean;
+    isTo?: boolean;
+  }) => React.CSSProperties;
+  renderColStyle?: (args: {
+    isSelectedCol: boolean;
+    name: string;
+    index: number;
+  }) => React.CSSProperties;
+  renderDayContent?: (info: {
+    day: string | number;
+    timestamp: number;
+    isSpecial: boolean;
+    isColSelected: boolean;
+  }) => ReactNode;
+  renderColContent?: (info: {
+    isSelectedCol: boolean;
+    name: string;
+  }) => ReactNode;
+  onWeekdaySelect?: (e: WeekDaySelectResponse[]) => void;
+  WeekHeaderClassName?: string;
+  WeekHeaderStyle?: React.CSSProperties;
 }
 
 export interface ITimeSections {
@@ -213,7 +262,7 @@ export interface IRangeProps extends IBaseProps {
   dropdownHeight?: number;
   disabled?: boolean;
   locale?: TLocale;
-  value?:IDate;
+  value?: IDate;
 }
 
 export interface IMobileProps
@@ -255,10 +304,10 @@ export interface IMaskProps
 }
 
 
-export interface ITimePickerProps  {
-  className?:string
-  defaultValue?:IDate["from"];
-  value?:IDate["from"];
+export interface ITimePickerProps {
+  className?: string
+  defaultValue?: IDate["from"];
+  value?: IDate["from"];
   Style?: React.CSSProperties;
   calendarType?: "shamsi" | "gregorian";
   onChange?: (e: number | string) => void;
@@ -278,7 +327,7 @@ export interface ITimePickerProps  {
   secondStep?: number;
   disabled?: boolean;
   exportType?: ExportType;
-  placeholder?:string|ReactNode|boolean
+  placeholder?: string | ReactNode | boolean
 }
 export interface ISubmittedData {
   date: IDate;
@@ -306,15 +355,28 @@ export interface IRangePickerProps
   onChange?: (e: HandleParams) => void;
 }
 export interface IDatePickerProps extends Omit<IDateProps, "locale"> { }
-
+interface WeekDaySelectResponse {
+  indexOfDay: number;
+  month: number;
+  year: number;
+  timestamp: number;
+  gregorian: string;
+  jalali: string;
+  isoGregorian: string;
+  isoJalali: string;
+}
 interface BaseCalendarProps
-  extends Omit<IProps, "dateFromOutside" | "locale" | "onDateChange"|"defaultValue"|"value"> {
-    model?: "date"|"range"
+  extends Omit<IProps, "dateFromOutside" | "locale" | "onDateChange" | "defaultValue" | "value"> {
+  model?: "date" | "range"
   locale?: TLocale;
   specialDays?: number[];
   disabledDays?: number[];
   exportType?: ExportType;
- renderDayStyle?: (args: {
+  renderDayFn?: (
+    day: { timestamp: number; currentMonth: boolean },
+    index: number
+  ) => ReactNode;
+  renderDayStyle?: (args: {
     timestamp?: number;
     isSpecial?: boolean;
     isSelected?: boolean;
@@ -324,11 +386,24 @@ interface BaseCalendarProps
     isFrom?: boolean;
     isTo?: boolean;
   }) => React.CSSProperties;
+  renderColStyle?: (args: {
+    isSelectedCol: boolean;
+    name: string;
+    index: number;
+  }) => React.CSSProperties;
   renderDayContent?: (info: {
     day: string | number;
     timestamp: number;
     isSpecial: boolean;
+    isColSelected: boolean;
   }) => ReactNode;
+  renderColContent?: (info: {
+    isSelectedCol: boolean;
+    name: string;
+  }) => ReactNode;
+  onWeekdaySelect?: (e: WeekDaySelectResponse[]) => void;
+  WeekHeaderClassName?: string;
+  WeekHeaderStyle?: React.CSSProperties;
 }
 
 /** مدل date */

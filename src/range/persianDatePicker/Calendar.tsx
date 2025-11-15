@@ -24,7 +24,16 @@ import YearPicker from './yearPicker';
 
 const todayTimestamp = new Date().setHours(0, 0, 0, 0);
 const today = jmoment();
-
+interface WeekDaySelectResponse {
+  indexOfDay: number;
+  month: number;
+  year: number;
+  timestamp: number;
+  gregorian: string;
+  jalali: string;
+  isoGregorian: string;
+  isoJalali: string;
+}
 interface Props {
   manualContainerRef?: RefObject<HTMLDivElement | null>;
   onChange: (start: number | null, end: number | null) => void;
@@ -47,12 +56,24 @@ interface Props {
     isFrom?: boolean;
     isTo?: boolean;
   }) => React.CSSProperties;
+  renderColStyle?: (args: {
+    isSelectedCol: boolean;
+    name: string;
+    index: number;
+  }) => React.CSSProperties;
   renderDayContent?: (info: {
     day: string | number;
     timestamp: number;
     isSpecial: boolean;
+    isColSelected: boolean;
   }) => ReactNode;
-
+  renderColContent?: (info: {
+    isSelectedCol: boolean;
+    name: string;
+  }) => ReactNode;
+  onWeekdaySelect?: (e: WeekDaySelectResponse[]) => void;
+  WeekHeaderClassName?: string;
+  WeekHeaderStyle?: React.CSSProperties;
   // State
   startDate?: number;
   endDate?: number;
@@ -82,11 +103,12 @@ const Calendar: FC<Props> = ({
   model = "date",
   startDate,
   endDate,
-  locale = "en",
+  locale = "fa",
   disablePreviousDays = false,
   renderDayFn,
   renderDayContent,
   renderDayStyle,
+  renderColStyle,
   specialDays = [],
   disabledDays = [],
   calendarBaseWidth,
@@ -99,6 +121,10 @@ const Calendar: FC<Props> = ({
   highlightColor = "#cacaca",
   secondaryColor = "#585858",
   tertiaryColor = "#939393",
+  onWeekdaySelect,
+  WeekHeaderClassName,
+  WeekHeaderStyle,
+  renderColContent,
 }) => {
   // -------------------------------
   // STATE & VIEW MANAGEMENT
@@ -108,6 +134,7 @@ const Calendar: FC<Props> = ({
     month: locale === "fa" ? today.jMonth() : today.month(),
     hoveredDay: null,
   });
+  const [colSelected, setColSelected] = useState<number[]>([]);
 
   const [view, setView] = useState<CalendarViews>(CalendarViews.DAY);
 
@@ -249,8 +276,10 @@ const Calendar: FC<Props> = ({
       const isSpecial = specialDays.includes(day.timestamp);
       const isHoliday = disabledDays?.includes(day.timestamp);
       const isDisabled =
-        
-        (model === "date" &&(disablePreviousDays && day.timestamp < todayTimestamp) )|| isHoliday;
+        (model === "date" &&
+          disablePreviousDays &&
+          day.timestamp < todayTimestamp) ||
+        isHoliday;
 
       const isToday = isEqualDays(day.timestamp, todayTimestamp);
       const isSelected =
@@ -261,7 +290,7 @@ const Calendar: FC<Props> = ({
         !endDate &&
         (state.hoveredDay as number) >= day.timestamp &&
         day.timestamp > startDate;
-
+      const isColSelected = colSelected.includes(day.timestamp);
       const isFrom = model === "range" && isEqualDays(day.timestamp, startDate);
       const isTo = model === "range" && isEqualDays(day.timestamp, endDate);
       const isInRange =
@@ -301,10 +330,12 @@ const Calendar: FC<Props> = ({
               pointerEvents: isDisabled ? "none" : "auto",
               opacity: isDisabled ? 0.5 : day.currentMonth ? 1 : 0,
               color:
-                isTo || isFrom || isSelected ? backgroundColor : tertiaryColor,
+                isTo || isFrom || isSelected || isColSelected
+                  ? backgroundColor
+                  : tertiaryColor,
               border: isToday ? `2px solid ${secondaryColor}` : "none",
               background:
-                isTo || isFrom
+                isTo || isFrom || isColSelected
                   ? secondaryColor
                   : isSelected
                   ? tertiaryColor
@@ -317,6 +348,7 @@ const Calendar: FC<Props> = ({
                     timestamp: day.timestamp,
                     isSpecial,
                     isSelected,
+                    // isColSelected,
                     isDisabled,
                     isToday,
                     isInRange: !!isInRange, // 👈 اینجا
@@ -334,6 +366,7 @@ const Calendar: FC<Props> = ({
                       : currentDay.date(),
                   timestamp: day.timestamp,
                   isSpecial,
+                  isColSelected,
                 })
               : locale === "fa"
               ? currentDay.jDate().toLocaleString("fa")
@@ -359,18 +392,69 @@ const Calendar: FC<Props> = ({
       secondaryColor,
       renderDayContent,
       renderDayStyle,
+      renderColStyle,
+      colSelected,
     ]
   );
 
   // -------------------------------
   // RENDER CALENDAR BODY
   // -------------------------------
+
+  const jalaliMap: Record<0 | 1 | 2 | 3 | 4 | 5 | 6, number> = {
+    1: 0, // شنبه
+    2: 1, // یکشنبه
+    3: 2, // دوشنبه
+    4: 3, // سه شنبه
+    5: 4, // چهارشنبه
+    6: 5, // پنجشنبه
+    0: 6, // جمعه
+  };
+
   const renderCalendar = (year: number, month: number) => {
     const days = getCalendarDays(year, month);
     const weekNames =
       locale === "fa"
         ? ["ش", "ی", "د", "س", "چ", "پ", "ج"]
         : ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
+    const handleWeekDaySelect = (weekdayIndex: number) => {
+      const filtered = days.filter((d) => {
+        if (!d.currentMonth) return false;
+
+        const date = new Date(d.timestamp);
+        if (locale === "en") {
+          return date.getDay() === weekdayIndex;
+        }
+
+        const jDay = jmoment(date).day();
+        const expected = jalaliMap[weekdayIndex as 0 | 1 | 2 | 3 | 4 | 5 | 6];
+
+        return jDay === expected;
+      });
+
+      const output = filtered.map((d) => {
+        const date = new Date(d.timestamp);
+
+        return {
+          indexOfDay: weekdayIndex,
+          month: month,
+          year: year,
+          timestamp: d.timestamp,
+          gregorian: jmoment(date).utc().startOf("day").format("YYYY/MM/DD"),
+          jalali: jmoment(date).format("jYYYY/jMM/jDD"),
+          isoGregorian: jmoment(date).utc().startOf("day").toISOString(),
+          isoJalali: jmoment(date)
+            .locale("fa")
+            .startOf("day")
+            .format("YYYY-MM-DDTHH:mm:ss.SSSZ"),
+        };
+      });
+      const col = output.map((day) => day.timestamp);
+      const isEqual = (arr1: number[], arr2: number[]) =>
+        arr1.length === arr2.length && arr1.every((v, i) => v === arr2[i]);
+      setColSelected(isEqual(col, colSelected) ? [] : col);
+      onWeekdaySelect?.(output);
+    };
 
     return (
       <>
@@ -379,15 +463,60 @@ const Calendar: FC<Props> = ({
           className={`${style.grid} ${style.grid_cols_7} ${style.justify_between} ${style.gap_x_2} ${style.p_2}`}
           dir={locale === "fa" ? "rtl" : "ltr"}
         >
-          {weekNames.map((name, i) => (
-            <span
-              key={i}
-              className={`${style.font_normal} ${style.text_center}`}
-              style={{ fontSize: "14px", color: secondaryColor }}
-            >
-              {name}
-            </span>
-          ))}
+          {weekNames.map((name, i) => {
+            const isSelectedCol =
+              colSelected.length > 0
+                ? locale == "fa"
+                  ? jmoment(colSelected[0]).day() ==
+                    jalaliMap[i as 0 | 1 | 2 | 3 | 4 | 5 | 6]
+                  : new Date(colSelected[0]).getDay() == i
+                : false;
+            return (
+              <button
+                key={i}
+                className={`              ${style.flex} 
+ 
+         ${style.justify_center} 
+              ${style.items_center}  ${style.w_full} ${style.border_none} ${style.bg_none} ${WeekHeaderClassName}`}
+                style={{
+                  fontSize: "14px",
+                  cursor: "pointer",
+                  // color: isSelectedCol ? backgroundColor : tertiaryColor,
+                  // background: isSelectedCol ? secondaryColor : undefined,
+                  ...(renderColStyle
+                    ? renderColStyle({ isSelectedCol, name, index: i })
+                    : {}),
+                  ...WeekHeaderStyle,
+                }}
+                onClick={() => handleWeekDaySelect(i)}
+              >
+                {renderColContent ? (
+                  renderColContent({
+                    isSelectedCol,
+                    name,
+                  })
+                ) : (
+                  <span
+                    className={`
+              ${style.flex} 
+              ${style.justify_center} 
+              ${style.items_center} 
+              ${style.rounded_md} 
+              ${style.w_6} ${style.aspect_square} ${style.text_center} ${style.cursor_pointer}`}
+                    style={{
+                      position: "relative",
+                      color: isSelectedCol ? backgroundColor : tertiaryColor,
+                      border: "none",
+                      background: isSelectedCol ? secondaryColor : "",
+                      fontSize: "14px",
+                    }}
+                  >
+                    {name}
+                  </span>
+                )}
+              </button>
+            );
+          })}
         </div>
 
         {/* Days */}

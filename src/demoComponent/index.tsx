@@ -1,15 +1,10 @@
 import { useState } from 'react';
 
-import {
-  Mask,
-  TimePicker,
-} from '../range';
-import { DesktopDatePicker } from '../range/desktopDate/desktopDatePicker';
-import { MobileDate } from '../range/mobileDate/mobileDatePicker';
+import { Calendar } from '../range';
 
 export default function DemoComponent() {
   const [val, setVal] = useState<any>();
-  const time =  1762893000000
+  const time = 1762893000000;
   return (
     <>
       <button
@@ -21,12 +16,12 @@ export default function DemoComponent() {
       </button>
       <button
         onClick={() => {
-          setVal( 1762633800000);
+          setVal(1762633800000);
         }}
       >
         set rand
       </button>
-      <MobileDate
+      {/* <MobileDate
       showTime
         onChange={(e) => {
           setVal(e);
@@ -36,8 +31,8 @@ export default function DemoComponent() {
         value={val}
         // placeHolder={false}
         // icon ={false}
-      />
-      <DesktopDatePicker
+      /> */}
+      {/* <DesktopDatePicker
 
 // locale='en'
         onChange={(e) => {
@@ -51,8 +46,8 @@ export default function DemoComponent() {
         showMask
                 // placeholder={false}
 
-      />
-       <TimePicker 
+      /> */}
+      {/* <TimePicker 
       //  exportType='timeStamp'
       placeholder="عباس"
            onChange={(e) => {
@@ -63,8 +58,8 @@ export default function DemoComponent() {
 
         value={val}
         
-        />
-         <Mask
+        /> */}
+      {/* <Mask
         defaultValue={time}
         value={val}
       
@@ -73,12 +68,14 @@ export default function DemoComponent() {
               onMaskChange={(e) => {
                 setVal(e);
           console.log(e);
-        }}
-      /> 
-      {/* <Calendar
+        }} 
+      /> */}
+      <Calendar
         model="range"
         // disablePreviousDays
+
         defaultValue={time}
+        locale="fa"
         value={val}
         onChange={(e: any) => {
           console.log(e);
@@ -87,11 +84,14 @@ export default function DemoComponent() {
         exportType="timeStamp"
         specialDays={[1762288200000, 1763411400000]}
         disabledDays={[1763325000000, 1763497800000]}
-        renderDayContent={({ day, isSpecial }) => (
+        onWeekdaySelect={(e) => {
+          console.log(e);
+        }}
+        renderDayContent={({ day, isSpecial, isColSelected }) => (
           <>
             <span
               style={{
-                color: isSpecial ? "red" : undefined,
+                color: isSpecial ? "red" : isColSelected ? "green" : undefined,
                 fontWeight: isSpecial ? "bold" : "normal",
               }}
             >
@@ -99,7 +99,23 @@ export default function DemoComponent() {
             </span>
           </>
         )}
-      /> */}
+        renderColContent={({ name, isSelectedCol }) => (
+          <span
+            style={{
+              color: isSelectedCol ? "green" : undefined,
+              background: isSelectedCol ? "#767676" : undefined,
+              width: "24px",
+              height: "24px",
+              borderRadius: "8px",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            {name}
+          </span>
+        )}
+      />
       {/* <Calendar
         model="range"
         // disablePreviousDays
