@@ -52,6 +52,11 @@ A lightweight & customizable Persian (Jalali) date **range picker** for React
 یک کامپوننت انتخاب بازه تاریخ شمسی (Jalali) برای React — ساخته شده با ❤️ توسط  
 [Hamidreza Fallahi](https://github.com/hamidrezafallahi)
 
+<p align="center">
+  <a href="https://github.com/hamidrezafallahi/persian-range-picker" target="_blank">
+    <img src="https://img.shields.io/github/stars/hamidrezafallahi/persian-range-picker?style=social" alt="GitHub Stars"/>
+  </a>
+</p>
 
 ![npm version](https://img.shields.io/npm/v/react-persian-range-picker)
 ![npm downloads](https://img.shields.io/npm/dm/react-persian-range-picker)
