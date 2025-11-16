@@ -70,26 +70,26 @@ A lightweight & customizable Persian (Jalali) date **range picker** for React
 ## 🌐 Demo & Preview
 
 <p align="center">
-  <img src="./public/assets/calendar-range-picker.png" width="700" alt="Persian Range Picker Desktop Preview"/>
+  <img src="https://raw.githubusercontent.com/hamidrezafallahi/Persian-range-picker/refs/heads/main/public/assets/calendar-range-picker.PNG" width="700" alt="Persian Range Picker Desktop Preview"/>
 </p>
 
 <p align="center">
-  <img src="./public/assets/desktop-gregorian.png" width="700" alt="Desktop Gregorian Picker"/>
+  <img src="https://raw.githubusercontent.com/hamidrezafallahi/Persian-range-picker/refs/heads/main/public/assets/desktop-gregorian.PNG" width="700" alt="Desktop Gregorian Picker"/>
 </p>
 
 <p align="center">
-  <img src="./public/assets/mobile-range-picker.png" width="320" alt="Mobile Range Picker"/>
-  <img src="./public/assets/mobile-compare-range.png" width="320" alt="Mobile Compare Range"/>
+  <img src="https://raw.githubusercontent.com/hamidrezafallahi/Persian-range-picker/refs/heads/main/public/assets/mobile-range-picker.PNG" width="320" alt="Mobile Range Picker"/>
+  <img src="https://raw.githubusercontent.com/hamidrezafallahi/Persian-range-picker/refs/heads/main/public/assets/mobile-compare-range.PNG" width="320" alt="Mobile Compare Range"/>
 </p>
 
 <p align="center">
-  <img src="./public/assets/range-mask-error.png" width="320" alt="Mask Error"/>
-  <img src="./public/assets/calendar-new-design.png" width="320" alt="New Calendar Design"/>
+  <img src="https://raw.githubusercontent.com/hamidrezafallahi/Persian-range-picker/refs/heads/main/public/assets/range-mask-error.PNG" width="320" alt="Mask Error"/>
+  <img src="https://raw.githubusercontent.com/hamidrezafallahi/Persian-range-picker/refs/heads/main/public/assets/calendar-new-design.PNG" width="320" alt="New Calendar Design"/>
 </p>
 
 <p align="center">
-  <img src="./public/assets/mask.png" width="300" alt="Date Mask"/>
-  <img src="./public/assets/time-picker.png" width="300" alt="Time Picker"/>
+  <img src="https://raw.githubusercontent.com/hamidrezafallahi/Persian-range-picker/refs/heads/main/public/assets/mask.PNG" width="300" alt="Date Mask"/>
+  <img src="https://raw.githubusercontent.com/hamidrezafallahi/Persian-range-picker/refs/heads/main/public/assets/time-picker.PNG" width="300" alt="Time Picker"/>
 </p>
 
 
