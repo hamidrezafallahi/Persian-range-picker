@@ -417,7 +417,8 @@ const Calendar: FC<Props> = ({
       locale === "fa"
         ? ["ش", "ی", "د", "س", "چ", "پ", "ج"]
         : ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
-    const handleWeekDaySelect = (weekdayIndex: number) => {
+    const handleWeekDaySelect = (e:any,weekdayIndex: number) => {
+      e.preventDefault()
       const filtered = days.filter((d) => {
         if (!d.currentMonth) return false;
 
@@ -486,7 +487,7 @@ const Calendar: FC<Props> = ({
                     : {}),
                   ...WeekHeaderStyle,
                 }}
-                onClick={() => handleWeekDaySelect(i)}
+                onClick={(e) => handleWeekDaySelect(e,i)}
               >
                 {renderColContent ? (
                   renderColContent({
