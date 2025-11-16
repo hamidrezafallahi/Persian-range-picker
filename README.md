@@ -1,5 +1,5 @@
-# 📆 Persian Range Picker
-
+<!-- # 📆 Persian Range Picker
+A lightweight, customizable, Persian range picker for React
 یک کامپوننت انتخاب بازه‌ی تاریخ شمسی (Jalali) برای React — ساخته شده با ❤️ توسط [Hamidreza Fallahi](https://github.com/hamidrezafallahi)
 
 ---
@@ -39,4 +39,82 @@ npm i react-persian-range-picker
 
 
 
-```
+``` -->
+
+
+
+
+
+
+# 📆 Persian Range Picker
+
+A lightweight & customizable Persian (Jalali) date **range picker** for React  
+یک کامپوننت انتخاب بازه تاریخ شمسی (Jalali) برای React — ساخته شده با ❤️ توسط  
+[Hamidreza Fallahi](https://github.com/hamidrezafallahi)
+
+
+![npm version](https://img.shields.io/npm/v/react-persian-range-picker)
+![npm downloads](https://img.shields.io/npm/dm/react-persian-range-picker)
+![license](https://img.shields.io/npm/l/react-persian-range-picker)
+
+---
+
+
+
+ 
+## 🌐 Demo & Preview
+
+<p align="center">
+  <img src="./public/assets/calendar-range-picker.png" width="700" alt="Persian Range Picker Desktop Preview"/>
+</p>
+
+<p align="center">
+  <img src="./public/assets/desktop-gregorian.png" width="700" alt="Desktop Gregorian Picker"/>
+</p>
+
+<p align="center">
+  <img src="./public/assets/mobile-range-picker.png" width="320" alt="Mobile Range Picker"/>
+  <img src="./public/assets/mobile-compare-range.png" width="320" alt="Mobile Compare Range"/>
+</p>
+
+<p align="center">
+  <img src="./public/assets/range-mask-error.png" width="320" alt="Mask Error"/>
+  <img src="./public/assets/calendar-new-design.png" width="320" alt="New Calendar Design"/>
+</p>
+
+<p align="center">
+  <img src="./public/assets/mask.png" width="300" alt="Date Mask"/>
+  <img src="./public/assets/time-picker.png" width="300" alt="Time Picker"/>
+</p>
+
+
+---
+
+## ✨ ویژگی‌ها
+
+- تنها وابستگی: `moment-jalaali` (و تایپ‌های آن)
+- انتخاب بازه زمانی به‌صورت واکنش‌گرا (Responsive)
+- پشتیبانی کامل از React 18 و 19
+- طراحی سبک، تمیز و قابل کاستوم‌سازی
+- مناسب برای پروژه‌های تجاری و متن‌باز
+- **امکان مقایسه دو بازه زمانی متفاوت**
+- دارای **کامپوننت ماسک ورودی تاریخ** بدون نیاز به پکیج اضافی
+- دارای هوک `useRenderPosition` برای نمایش Popup در موقعیت امن
+- دارای هوک `useMediaQuery` برای پیاده سازی منطق در ابعاد متفاوت تصویر. تمایز بین موبایل و دسکتاپ 
+- شامل شش کامپوننت:
+  - RangePicker
+  - MobileDate
+  - DesktopDatePicker
+  - Calendar
+  - Mask
+  - TimePicker
+
+---
+
+## 🚀 نصب
+
+```bash
+npm i react-persian-range-picker
+
+# یا:
+# yarn add react-persian-range-picker

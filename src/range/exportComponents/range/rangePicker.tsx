@@ -16,37 +16,37 @@ import { DesktopRangePicker } from '../../desktopRange/desktopRangePicker';
 import { MobileRangePicker } from '../../mobileRange/mobileRangePicker';
 import { useMediaQuery } from '../useMediaQuery';
 
-export function RangePicker({ ...props }: Omit<IRangeProps,"locale">) {
-  const {match}=useMediaQuery("XSUP")
+export function RangePicker({ ...props }: Omit<IRangeProps, "locale">) {
+  const { match } = useMediaQuery("XSUP");
   const {
     isOpenDropdown = false,
     additionalElement,
     calendarType = "shamsi",
     defaultValue,
-    value
+    value,
+    onError
   } = props;
   const locale = calendarType == "shamsi" ? "fa" : "en";
   const isFa = locale === "fa";
- const initValue: IDate = (() => {
+  const initValue: IDate = (() => {
     if (defaultValue !== undefined) {
-        return {
-          from: isFa
-            ? moment(defaultValue.from).locale("fa").startOf("day").valueOf()
-            : moment(defaultValue.from).utc().startOf("day").valueOf(),
-          to: isFa
-            ? moment(defaultValue.to).locale("fa").endOf("day").valueOf()
-            : moment(defaultValue.to).utc().endOf("day").valueOf(),
-        };
-      
+      return {
+        from: isFa
+          ? moment(defaultValue.from).locale("fa").startOf("day").valueOf()
+          : moment(defaultValue.from).utc().startOf("day").valueOf(),
+        to: isFa
+          ? moment(defaultValue.to).locale("fa").endOf("day").valueOf()
+          : moment(defaultValue.to).utc().endOf("day").valueOf(),
+      };
     } else {
-        return {
-          from: isFa
-            ? moment().locale("fa").startOf("jYear").valueOf()
-            : moment().utc().startOf("year").valueOf(),
-          to: isFa
-            ? moment().locale("fa").endOf("day").valueOf()
-            : moment().utc().endOf("day").valueOf(),
-        };
+      return {
+        from: isFa
+          ? moment().locale("fa").startOf("jYear").valueOf()
+          : moment().utc().startOf("year").valueOf(),
+        to: isFa
+          ? moment().locale("fa").endOf("day").valueOf()
+          : moment().utc().endOf("day").valueOf(),
+      };
     }
   })();
 
@@ -61,23 +61,18 @@ export function RangePicker({ ...props }: Omit<IRangeProps,"locale">) {
   const [tabKey, setTabKey] = useState<ITime | string>("manual");
   const [open, setOpen] = useState(isOpenDropdown);
 
-
-
-
-
-    useEffect(() => {
-      if (value!== undefined) {
-          setRange({
-            from: isFa
-              ? moment(value.from).locale("fa").startOf("day").valueOf()
-              : moment(value.from).utc().startOf("day").valueOf(),
-            to: isFa
-              ? moment(value.to).locale("fa").endOf("day").valueOf()
-              : moment(value.to).utc().endOf("day").valueOf(),
-          });
-       
-      }
-    }, [value]);
+  useEffect(() => {
+    if (value !== undefined) {
+      setRange({
+        from: isFa
+          ? moment(value.from).locale("fa").startOf("day").valueOf()
+          : moment(value.from).utc().startOf("day").valueOf(),
+        to: isFa
+          ? moment(value.to).locale("fa").endOf("day").valueOf()
+          : moment(value.to).utc().endOf("day").valueOf(),
+      });
+    }
+  }, [value]);
   return (
     <>
       {match ? (
@@ -102,10 +97,12 @@ export function RangePicker({ ...props }: Omit<IRangeProps,"locale">) {
           additionalElement={additionalElement}
           activeTable="manual"
           locale={locale}
+          onError={onError}
         />
       ) : (
         <MobileRangePicker
           {...props}
+          onError={onError}
           step={step}
           counter={counter}
           zone={zone}

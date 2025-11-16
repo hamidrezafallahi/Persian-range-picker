@@ -39,6 +39,7 @@ export function MobileRangePicker(props: IRangeProps) {
     className,
     disabled,
     value,
+    onError,
     tertiaryColor = "#939393",
     highlightColor = "#f4f4f4",
   } = props;
@@ -229,6 +230,7 @@ export function MobileRangePicker(props: IRangeProps) {
               locale={locale}
               setCustomData={setCustomData}
               setType={setType as Dispatch<SetStateAction<string>>}
+              onError={onError}
             />
           </div>,
           document.body

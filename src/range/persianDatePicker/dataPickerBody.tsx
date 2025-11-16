@@ -39,7 +39,7 @@ const DataPickerBody: FC<Props> = ({
     >
       <div
         className={`
-  ${style.w_full}
+  ${style.w_full} ${style.p_2}
 `}
       >
         {renderMonthBody(year, month)}

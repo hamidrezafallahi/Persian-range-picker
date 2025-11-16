@@ -217,6 +217,8 @@ export interface IBaseProps extends IRangeOptions {
     day: { timestamp: number; currentMonth: boolean },
     index: number
   ) => ReactNode;
+    specialDays?: number[];
+  disabledDays?: number[];
   renderDayStyle?: (args: {
     timestamp?: number;
     isSpecial?: boolean;

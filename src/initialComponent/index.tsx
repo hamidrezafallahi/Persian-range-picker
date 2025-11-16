@@ -401,7 +401,7 @@ Key features include:
 export function InitialComponent() {
   const [lang, setLang] = useState<"fa" | "en">("fa");
   const [activeSection, setActiveSection] = useState<SectionKey | null>(
-    "Range"
+    "QuickStart"
   );
   const sections = TEXT[lang].sections;
 
@@ -421,7 +421,9 @@ export function InitialComponent() {
       id="container"
       style={{
         width: "100dvw",
-        height: "100dvh",
+        height: "95vh",
+        padding:0,
+        margin:0,
         display: "flex",
         direction: lang === "fa" ? "rtl" : "ltr",
         fontFamily: "sans-serif",

@@ -27,6 +27,7 @@ interface ITab {
 const MainContent = ({ ...props }: IProps) => {
   const {
     setTabKey,
+    onError,
     additionalElement = [],
     periodListClassName,
     tabClassName,
@@ -84,7 +85,9 @@ const MainContent = ({ ...props }: IProps) => {
     {
       key: "manual",
       label: locale == "fa" ? "دستی" : "manual",
-      content: <Manual {...props} componentStep={ESteps.manual} />,
+      content: (
+        <Manual {...props} onError={onError} componentStep={ESteps.manual} />
+      ),
     },
     ...additionalElement,
   ];
@@ -152,7 +155,6 @@ const MainContent = ({ ...props }: IProps) => {
   ${style.overflow_y_auto}
   ${style.rprp_scrollbar}
 `}
-
       >
         {currentTab &&
           (() => {

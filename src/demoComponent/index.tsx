@@ -1,13 +1,15 @@
 import { useState } from 'react';
 
-import { Calendar } from '../range';
+import { TimePicker } from '../range';
+import { DesktopDatePicker } from '../range/desktopDate/desktopDatePicker';
+import { MobileDate } from '../range/mobileDate/mobileDatePicker';
 
 export default function DemoComponent() {
   const [val, setVal] = useState<any>();
   const time = 1762893000000;
   return (
     <>
-      <button
+      {/* <button
         onClick={() => {
           setVal(1762893000000);
         }}
@@ -20,20 +22,89 @@ export default function DemoComponent() {
         }}
       >
         set rand
-      </button>
-      {/* <MobileDate
-      showTime
-        onChange={(e) => {
-          setVal(e);
+      </button> */}
+      <div
+      // style={{padding:"12px"}}
+      >
+
+        <MobileDate
+      onChange={(e) => {
+        setVal(e);
+        console.log(e);
+      }}
+      defaultValue={time}
+      value={val}
+      specialDays={[1762288200000, 1763411400000]}
+      disabledDays={[1763325000000, 1763497800000]}
+        onWeekdaySelect={(e) => {
           console.log(e);
         }}
-        defaultValue={time}
-        value={val}
+        renderDayContent={({ day, isSpecial, isColSelected }) => (
+          <>
+            <span
+              style={{
+                color: isSpecial ? "red" : isColSelected ? "#fff" : undefined,
+                fontWeight: isSpecial ? "bold" : "normal",
+              }}
+              >
+              {day}
+            </span>
+          </>
+        )}
+        renderColContent={({ name, isSelectedCol }) => (
+          <span
+          style={{
+            color: isSelectedCol ? "#fff" : undefined,
+            background: isSelectedCol ? "#767676ff" : undefined,
+            minWidth: "24px",
+            height: "24px",
+            borderRadius: "8px",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+          >
+            {name}
+          </span>
+        )}
         // placeHolder={false}
         // icon ={false}
-      /> */}
-      {/* <DesktopDatePicker
-
+        /> 
+        </div>  
+      <DesktopDatePicker
+      specialDays={[1762288200000, 1763411400000]}
+      disabledDays={[1763325000000, 1763497800000]}
+        onWeekdaySelect={(e) => {
+          console.log(e);
+        }}
+        renderDayContent={({ day, isSpecial, isColSelected }) => (
+          <>
+            <span
+              style={{
+                color: isSpecial ? "red" : isColSelected ? "#fff" : undefined,
+                fontWeight: isSpecial ? "bold" : "normal",
+              }}
+            >
+              {day}
+            </span>
+          </>
+        )}
+        renderColContent={({ name, isSelectedCol }) => (
+          <span
+            style={{
+              color: isSelectedCol ? "#fff" : undefined,
+              background: isSelectedCol ? "#767676ff" : undefined,
+              minWidth: "24px",
+              height: "24px",
+              borderRadius: "8px",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            {name}
+          </span>
+        )}
 // locale='en'
         onChange={(e) => {
           setVal(e);
@@ -46,20 +117,19 @@ export default function DemoComponent() {
         showMask
                 // placeholder={false}
 
-      /> */}
-      {/* <TimePicker 
-      //  exportType='timeStamp'
-      placeholder="عباس"
-           onChange={(e) => {
+      />
+      <TimePicker 
+       exportType='timeStamp'
+        onChange={(e) => {
           setVal(e);
           console.log(e,"TimePicker");
         }}
+        showSecond
         defaultValue={time}
-
         value={val}
         
-        /> */}
-      {/* <Mask
+        /> 
+        {/* <Mask
         defaultValue={time}
         value={val}
       
@@ -70,10 +140,13 @@ export default function DemoComponent() {
           console.log(e);
         }} 
       /> */}
+      {/* <div
+      style={{padding:"12px"}}
+      >
+
       <Calendar
         model="range"
         // disablePreviousDays
-
         defaultValue={time}
         locale="fa"
         value={val}
@@ -91,31 +164,44 @@ export default function DemoComponent() {
           <>
             <span
               style={{
-                color: isSpecial ? "red" : isColSelected ? "green" : undefined,
+                color: isSpecial ? "red" : isColSelected ? "#fff" : undefined,
                 fontWeight: isSpecial ? "bold" : "normal",
               }}
-            >
+              >
               {day}
             </span>
           </>
         )}
+        renderDayStyle={({ isSpecial, isSelected ,isInRange,isToday,isDisabled,}) => ({
+          background: isSpecial ? "rgba(255,0,0,0.1)" : isSelected ? "#0af" :isInRange ? "rgba(33,150,243,0.2)": isToday ? "rgba(22, 187, 36, 0.98)":  isDisabled ? "rgba(255, 0, 0, 1)": "",
+          borderRadius: "8px",
+          width: "48px",
+          height: "48px",
+        })}
+        renderColStyle={({  isSelectedCol}) => ({
+          background: isSelectedCol ? "rgba(255,0,0,0.1)"  :"",
+          borderRadius: "8px",
+          width: "48px",
+          height: "48px",
+        })}
         renderColContent={({ name, isSelectedCol }) => (
           <span
-            style={{
-              color: isSelectedCol ? "green" : undefined,
-              background: isSelectedCol ? "#767676" : undefined,
-              width: "24px",
-              height: "24px",
-              borderRadius: "8px",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
+          style={{
+            color: isSelectedCol ? "#fff" : undefined,
+            background: isSelectedCol ? "#767676ff" : undefined,
+            width: "24px",
+            height: "24px",
+            borderRadius: "8px",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
           >
             {name}
           </span>
         )}
-      />
+        /> 
+        </div> */}
       {/* <Calendar
         model="range"
         // disablePreviousDays
@@ -151,28 +237,22 @@ export default function DemoComponent() {
               )}
       /> */}
 
-      {/*<Range
-              onChange={(e) => {
-          console.log(e);
-        }}
-                onCompareDateChange={(e) => {
-          console.log(e);
-        }}
-        value={val}
-        defaultValue={{from:time,to:NaN}}
-      />
-      <DatePicker
+     
 
-        onChange={(e) => {
+      {/* <RangePicker
+        // defaultValue={time}
+        // value={val as IDate}
+        specialDays={[1762288200000, 1763411400000]}
+      disabledDays={[1763325000000, 1763497800000]}
+       calendarType='gregorian'
+        onWeekdaySelect={(e) => {
           console.log(e);
         }}
-        specialDays={[1762288200000, 1763411400000]}
-        disabledDays={[1763325000000, 1763497800000]}
-        renderDayContent={({ day, isSpecial }) => (
+        renderDayContent={({ day, isSpecial, isColSelected }) => (
           <>
             <span
               style={{
-                color: isSpecial ? "red" : "black",
+                color: isSpecial ? "red" : isColSelected ? "#fff" : undefined,
                 fontWeight: isSpecial ? "bold" : "normal",
               }}
             >
@@ -180,17 +260,28 @@ export default function DemoComponent() {
             </span>
           </>
         )}
-      />*/}
-
-      {/* <RangePicker
-        defaultValue={time}
-        value={val as IDate}
+        renderColContent={({ name, isSelectedCol }) => (
+          <span
+            style={{
+              color: isSelectedCol ? "#fff" : undefined,
+              background: isSelectedCol ? "#767676ff" : undefined,
+              minWidth: "24px",
+              height: "24px",
+              borderRadius: "8px",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            {name}
+          </span>
+        )}
         onError={(e) => {
           console.log(e);
         }}
         onChange={(e) => {
           console.log(e);
-          setVal(e.Data?.date as IDate);
+          // setVal(e.Data?.date as IDate);
         }}
         onCompareDateChange={(e) => {
           console.log(e);

@@ -302,7 +302,7 @@ const Calendar: FC<Props> = ({
       return (
         <div
           key={index}
-          className={`${style.flex} ${style.justify_center} ${style.items_center} ${style.w_full} ${style.h_full}`}
+          className={`${style.flex} ${style.justify_center} ${style.items_center} ${style.w_full} ${style.h_full}  `}
         >
           <button
             type="button"
@@ -460,7 +460,7 @@ const Calendar: FC<Props> = ({
       <>
         {/* Week header */}
         <div
-          className={`${style.grid} ${style.grid_cols_7} ${style.justify_between} ${style.gap_x_2} ${style.p_2}`}
+          className={`${style.grid} ${style.grid_cols_7} ${style.justify_between} ${style.gap_x_2} ${style.py_2}`}
           dir={locale === "fa" ? "rtl" : "ltr"}
         >
           {weekNames.map((name, i) => {
@@ -474,10 +474,8 @@ const Calendar: FC<Props> = ({
             return (
               <button
                 key={i}
-                className={`              ${style.flex} 
- 
-         ${style.justify_center} 
-              ${style.items_center}  ${style.w_full} ${style.border_none} ${style.bg_none} ${WeekHeaderClassName}`}
+                className={`${style.flex} ${style.justify_center} 
+              ${style.items_center}  ${style.w_full} ${style.border_none} ${WeekHeaderClassName} ${style.bg_none}`}
                 style={{
                   fontSize: "14px",
                   cursor: "pointer",
@@ -521,7 +519,7 @@ const Calendar: FC<Props> = ({
 
         {/* Days */}
         <div
-          className={`${style.w_full} ${style.grid} ${style.grid_cols_7} ${style.justify_between} ${style.gap_y_2}`}
+          className={`${style.w_full} ${style.grid} ${style.grid_cols_7} ${style.justify_between} ${style.gap_2}`}
           style={{ minWidth: "24px" }}
           dir={locale === "fa" ? "rtl" : "ltr"}
         >

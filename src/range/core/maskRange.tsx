@@ -1,5 +1,6 @@
 import React, {
   type Dispatch,
+  useEffect,
   useState,
 } from 'react';
 
@@ -16,8 +17,11 @@ interface IProps {
   date?: IDate;
   setDate?: Dispatch<React.SetStateAction<IDate>>;
   locale?: TLocale;
+  onError?: (e:string)=>void;
+
 }
 function MaskRange({ ...props }: IProps) {
+  const {onError}=props
   const [error, setError] = useState<"from" | "to" | null>(null);
 
   const { date, setDate, locale } = props;
@@ -44,6 +48,17 @@ function MaskRange({ ...props }: IProps) {
       setDate?.({ from: date?.from, to: endOfDate });
     }
   };
+  useEffect(()=>{
+    if(error !==null){
+      if(error==="from"){
+        onError?.(
+          locale == "fa"? "ناریخ شروع نمیتواند بعد از تاریخ پایان باشد":"The start date cannot be after the end date."
+        )
+      }else {
+        locale == "fa"? "تاریخ پایان نمیتواند قبل از تاریخ شروع ست شود":"End date cannot be set before start date."
+      }
+    }
+  },[error])
   return (
     <div
       className={`
