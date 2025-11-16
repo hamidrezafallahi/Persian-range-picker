@@ -420,7 +420,7 @@ export function InitialComponent() {
     <div
       id="container"
       style={{
-        width: "100dvw",
+        width: "99dvw",
         height: "95vh",
         padding:0,
         margin:0,

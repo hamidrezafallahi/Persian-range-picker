@@ -37,7 +37,7 @@ const {match}=useMediaQuery("XSUP")
       {match ? (
         <DesktopDatePicker
           {...props}
-          locale={locale}
+          calendarType={locale == "fa"?'shamsi':"gregorian"}
           onChange={changeHandler}
           defaultValue={getTimestamp(defaultValue)}
         />

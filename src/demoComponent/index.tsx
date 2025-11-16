@@ -1,17 +1,16 @@
 import { useState } from 'react';
 
-import { TimePicker } from '../range';
+import { Mask } from '../range';
 import { DesktopDatePicker } from '../range/desktopDate/desktopDatePicker';
-import { MobileDate } from '../range/mobileDate/mobileDatePicker';
 
 export default function DemoComponent() {
   const [val, setVal] = useState<any>();
   const time = 1762893000000;
   return (
     <>
-      {/* <button
+      <button
         onClick={() => {
-          setVal(1762893000000);
+          setVal(null);
         }}
       >
         set null
@@ -22,12 +21,12 @@ export default function DemoComponent() {
         }}
       >
         set rand
-      </button> */}
+      </button>
       <div
       // style={{padding:"12px"}}
       >
 
-        <MobileDate
+        {/* <MobileDate
       onChange={(e) => {
         setVal(e);
         console.log(e);
@@ -69,56 +68,57 @@ export default function DemoComponent() {
         )}
         // placeHolder={false}
         // icon ={false}
-        /> 
+        />  */}
         </div>  
       <DesktopDatePicker
-      specialDays={[1762288200000, 1763411400000]}
-      disabledDays={[1763325000000, 1763497800000]}
-        onWeekdaySelect={(e) => {
-          console.log(e);
-        }}
-        renderDayContent={({ day, isSpecial, isColSelected }) => (
-          <>
-            <span
-              style={{
-                color: isSpecial ? "red" : isColSelected ? "#fff" : undefined,
-                fontWeight: isSpecial ? "bold" : "normal",
-              }}
-            >
-              {day}
-            </span>
-          </>
-        )}
-        renderColContent={({ name, isSelectedCol }) => (
-          <span
-            style={{
-              color: isSelectedCol ? "#fff" : undefined,
-              background: isSelectedCol ? "#767676ff" : undefined,
-              minWidth: "24px",
-              height: "24px",
-              borderRadius: "8px",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            {name}
-          </span>
-        )}
-// locale='en'
+      calendarType='gregorian'
+      // specialDays={[1762288200000, 1763411400000]}
+      // disabledDays={[1763325000000, 1763497800000]}
+        // onWeekdaySelect={(e) => {
+        //   console.log(e);
+        // }}
+        // renderDayContent={({ day, isSpecial, isColSelected }) => (
+        //   <>
+        //     <span
+        //       style={{
+        //         color: isSpecial ? "red" : isColSelected ? "#fff" : undefined,
+        //         fontWeight: isSpecial ? "bold" : "normal",
+        //       }}
+        //     >
+        //       {day}
+        //     </span>
+        //   </>
+        // )}
+        // renderColContent={({ name, isSelectedCol }) => (
+        //   <span
+        //     style={{
+        //       color: isSelectedCol ? "#fff" : undefined,
+        //       background: isSelectedCol ? "#767676ff" : undefined,
+        //       minWidth: "24px",
+        //       height: "24px",
+        //       borderRadius: "8px",
+        //       display: "flex",
+        //       justifyContent: "center",
+        //       alignItems: "center",
+        //     }}
+        //   >
+        //     {name}
+        //   </span>
+        // )}
+        // locale='en'
         onChange={(e) => {
           setVal(e);
           console.log(e,"e");
         }}
               // placeHolder={false}
         // icon ={false}
-        defaultValue={time}
-        value={val}
+        // defaultValue={time}
+        // value={val}
         showMask
                 // placeholder={false}
 
       />
-      <TimePicker 
+      {/* <TimePicker 
        exportType='timeStamp'
         onChange={(e) => {
           setVal(e);
@@ -128,10 +128,10 @@ export default function DemoComponent() {
         defaultValue={time}
         value={val}
         
-        /> 
-        {/* <Mask
-        defaultValue={time}
-        value={val}
+        />  */}
+        <Mask
+        // defaultValue={time}
+        // value={val}
       
       allowClear
       // calendarType='gregorian'
@@ -139,7 +139,7 @@ export default function DemoComponent() {
                 setVal(e);
           console.log(e);
         }} 
-      /> */}
+      />
       {/* <div
       style={{padding:"12px"}}
       >
