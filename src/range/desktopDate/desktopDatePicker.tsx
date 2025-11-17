@@ -14,6 +14,7 @@ import styles from '../../main.module.css';
 import { Footer } from '../core/footer';
 import {
   getTimestamp,
+  getWeekDayName,
   toPersianDigits,
 } from '../core/helper';
 import type {
@@ -25,10 +26,11 @@ import { useRenderPosition } from '../exportComponents/useRenderPosition';
 import { CalenderIcon } from '../icons/CalenderIcon';
 import { ClearIcon } from '../icons/ClearIcon';
 import { DatePicker } from '../persianDatePicker';
+import { WeekDaySelectResponse } from '../persianDatePicker/Calendar';
 import { DesktopTimePicker } from './desktopTimePicker';
 
-interface IProps extends Omit<IDateProps,"locale">{}
-export function DesktopDatePicker({ ...props }:IProps ) {
+interface IProps extends Omit<IDateProps, "locale"> {}
+export function DesktopDatePicker({ ...props }: IProps) {
   const {
     defaultValue,
     onChange,
@@ -45,13 +47,16 @@ export function DesktopDatePicker({ ...props }:IProps ) {
     showSecond = false,
     showMask = false,
     disabled = false,
-    placeholder = props.calendarType === "gregorian" ? "Choose date" : "انتخاب تاریخ",
+    placeholder = props.calendarType === "gregorian"
+      ? "Choose date"
+      : "انتخاب تاریخ",
     Style,
     exportType = "IsoString",
     allowClear,
     onClear,
     value,
-    calendarType="shamsi"
+    onWeekdaySelect,
+    calendarType = "shamsi",
   } = props;
   const isFa = calendarType === "shamsi";
   const dynamicFormat = showSecond ? showTimeFormat : "HH:mm";
@@ -74,6 +79,7 @@ export function DesktopDatePicker({ ...props }:IProps ) {
   })();
   const [showDate, setShowDate] = useState<IDate>(initValue);
   const [isOpen, setIsOpen] = useState(isOpenDropdown);
+  const [title, setTitle] = useState(placeholder);
   const buttonRef = useRef<HTMLElement>(null);
   const popupRef = useRef<HTMLDivElement>(null);
 
@@ -91,88 +97,117 @@ export function DesktopDatePicker({ ...props }:IProps ) {
       ? showDate.from ?? 0
       : moment(showDate.from).valueOf();
     if (exportType == "IsoString") {
-      onChange?.(isFa? moment(finalDate).format("YYYY-MM-DDTHH:mm:ss.SSSZ")
+      onChange?.(
+        isFa
+          ? moment(finalDate).format("YYYY-MM-DDTHH:mm:ss.SSSZ")
           : moment.utc(finalDate).format("YYYY-MM-DDTHH:mm:ss.SSSZ")
       );
     } else {
-      onChange?.(isFa? moment(finalDate).valueOf()
-          : moment.utc(finalDate).valueOf()
+      onChange?.(
+        isFa ? moment(finalDate).valueOf() : moment.utc(finalDate).valueOf()
       );
     }
   };
 
   const handleDateChange = (date: IDate) => {
-    const rawTimestamp = getTimestamp(date.from) ?? 0;
-    const finalDate = showTime
-      ? rawTimestamp
-      : moment(rawTimestamp).startOf("day").valueOf();
-    setShowDate({ from: finalDate, to: 0 });
-    if (!showTime) {
-      if (exportType === "IsoString") {
-        onChange?.(isFa? moment(finalDate).format("YYYY-MM-DDTHH:mm:ss.SSSZ")
-            : moment.utc(finalDate).format("YYYY-MM-DDTHH:mm:ss.SSSZ")
-        );
-      } else {
-        onChange?.(isFa? moment(finalDate).valueOf()
-            : moment.utc(finalDate).valueOf()
-        );
+    const rawTimestamp = getTimestamp(date.from) ?? NaN;
+
+    if (!isNaN(rawTimestamp)) {
+      const finalDate = showTime
+        ? rawTimestamp
+        : moment(rawTimestamp).startOf("day").valueOf();
+      setShowDate({ from: finalDate, to: NaN });
+      if (!showTime) {
+        if (exportType === "IsoString") {
+          onChange?.(
+            isFa
+              ? moment(finalDate).format("YYYY-MM-DDTHH:mm:ss.SSSZ")
+              : moment.utc(finalDate).format("YYYY-MM-DDTHH:mm:ss.SSSZ")
+          );
+        } else {
+          onChange?.(
+            isFa ? moment(finalDate).valueOf() : moment.utc(finalDate).valueOf()
+          );
+        }
       }
       setIsOpen(false);
+    } else {
+      setShowDate({ from: null, to: null });
     }
   };
 
-  const persian =
-    showDate.from && new Date(showDate.from).valueOf() > 0
-      ? toPersianDigits(
-          moment(new Date(showDate.from).valueOf()).format(
-            showTime ? `jYYYY/jMM/jDD\u2003${dynamicFormat}` : `jYYYY/jMM/jDD`
-          )
-        )
-      : placeholder;
-
-  const gregorian =
-    showDate.from && new Date(showDate.from).valueOf() > 0
-      ? moment(new Date(showDate.from).valueOf()).format(
-          showTime ? `YYYY/MM/DD\u2003${dynamicFormat}` : `YYYY/MM/DD`
-        )
-      : placeholder;
-
-  const title = isFa? persian : gregorian;
   const handleSetTime = (timestamp: number) => {
     setShowDate({ from: timestamp, to: NaN });
+  };
+  const handleWeekDaySelect = (e: WeekDaySelectResponse[]) => {
+    if (e.length > 0) {
+      setTitle(getWeekDayName(e[0].indexOfDay, isFa));
+    }else if(e?.length == 0 ){
+      setTitle(placeholder)
+    }
+onWeekdaySelect?.(e)
   };
 
   const changeHandler = (e: number) => {
     if (!e) return;
     setShowDate({ from: e, to: NaN });
     if (exportType == "IsoString") {
-      onChange?.(isFa? moment(e).format("YYYY-MM-DDTHH:mm:ss.SSSZ")
+      onChange?.(
+        isFa
+          ? moment(e).format("YYYY-MM-DDTHH:mm:ss.SSSZ")
           : moment.utc(e).format("YYYY-MM-DDTHH:mm:ss.SSSZ")
       );
     } else {
-      onChange?.(isFa? moment(e).valueOf() : moment.utc(e).valueOf()
-      );
+      onChange?.(isFa ? moment(e).valueOf() : moment.utc(e).valueOf());
     }
   };
   const handleClear = (e: any) => {
     e.stopPropagation();
-    setShowDate({ from: NaN, to: NaN });
+    setShowDate({ from: null, to: null });
     onClear?.();
+    setTitle(placeholder)
   };
 
   useEffect(() => {
     if (value !== undefined) {
-      setShowDate({
-        from: isFa
-          ? moment(value).locale("fa").startOf("day").valueOf()
-          : moment(value).utc().startOf("day").valueOf(),
-        to: isFa
-          ? moment(value).locale("fa").endOf("day").valueOf()
-          : moment(value).utc().endOf("day").valueOf(),
-      });
+      if (value == null) {
+        setShowDate({ from: null, to: null });
+      } else {
+        setShowDate({
+          from: isFa
+            ? moment(value).locale("fa").startOf("day").valueOf()
+            : moment(value).utc().startOf("day").valueOf(),
+          to: isFa
+            ? moment(value).locale("fa").endOf("day").valueOf()
+            : moment(value).utc().endOf("day").valueOf(),
+        });
+      }
     }
   }, [value]);
- 
+
+  useEffect(() => {
+    if (showDate.from && showDate.from !== null) {
+      const persian =
+        showDate.from && new Date(showDate.from).valueOf() > 0
+          ? toPersianDigits(
+              moment(new Date(showDate.from).valueOf()).format(
+                showTime
+                  ? `jYYYY/jMM/jDD\u2003${dynamicFormat}`
+                  : `jYYYY/jMM/jDD`
+              )
+            )
+          : placeholder;
+
+      const gregorian =
+        showDate.from && new Date(showDate.from).valueOf() > 0
+          ? moment(new Date(showDate.from).valueOf()).format(
+              showTime ? `YYYY/MM/DD\u2003${dynamicFormat}` : `YYYY/MM/DD`
+            )
+          : placeholder;
+
+      setTitle(isFa ? persian : gregorian);
+    }
+  }, [showDate, dynamicFormat, showTime, placeholder]);
   return (
     <>
       <button
@@ -211,10 +246,8 @@ export function DesktopDatePicker({ ...props }:IProps ) {
           >
             <ClearIcon />
           </span>
-        ) : (<>
-                  {icon && <span>{icon}</span>}
-        </>
-
+        ) : (
+          <>{icon && <span>{icon}</span>}</>
         )}
         {showMask ? (
           <div
@@ -227,9 +260,13 @@ export function DesktopDatePicker({ ...props }:IProps ) {
               {...props}
               allowClear={false}
               exportType="timeStamp"
-              defaultValue={showDate.from &&  !isNaN(showDate.from as number) ? showDate.from:undefined}
+              defaultValue={
+                showDate.from && !isNaN(showDate.from as number)
+                  ? showDate.from
+                  : undefined
+              }
+              value={showDate.from}
               onMaskChange={changeHandler as (e: any) => void}
-              
               Style={{ width: "112px" }}
             />
           </div>
@@ -281,7 +318,8 @@ export function DesktopDatePicker({ ...props }:IProps ) {
                 defaultValue={
                   defaultValue ? { from: defaultValue, to: 0 } : undefined
                 }
-                locale={isFa?"fa":"en"}
+                onWeekdaySelect={handleWeekDaySelect}
+                locale={isFa ? "fa" : "en"}
                 model="date"
                 calendarBaseWidth={calendarBaseWidth}
                 onDateChange={handleDateChange}
@@ -311,13 +349,14 @@ export function DesktopDatePicker({ ...props }:IProps ) {
                       color: tertiaryColor,
                     }}
                   >
-                    {isFa? toPersianDigits(
+                    {isFa
+                      ? toPersianDigits(
                           moment(showDate?.from)
-                            .locale(isFa?"fa":"en")
+                            .locale(isFa ? "fa" : "en")
                             .format(dynamicFormat)
                         )
                       : moment(showDate?.from)
-                          .locale(isFa?"fa":"en")
+                          .locale(isFa ? "fa" : "en")
                           .format(dynamicFormat)}
                   </div>
                   <DesktopTimePicker
@@ -334,7 +373,7 @@ export function DesktopDatePicker({ ...props }:IProps ) {
               setIsOpen={setIsOpen}
               setShowDate={setShowDate as Dispatch<SetStateAction<IDate>>}
               showDate={new Date(showDate?.from as any).valueOf()}
-              locale={isFa?"fa":"en"}
+              locale={isFa ? "fa" : "en"}
               primaryColor={primaryColor}
               highlightColor={highlightColor}
               chooseTodayClassName={chooseTodayClassName}

@@ -111,6 +111,7 @@ export interface IDateProps
     isSpecial: boolean;
     isColSelected: boolean;
   }) => ReactNode;
+    selectableCols?:boolean
   renderColContent?: (info: {
     isSelectedCol: boolean;
     name: string;
@@ -240,6 +241,7 @@ export interface IBaseProps extends IRangeOptions {
     isSpecial: boolean;
     isColSelected: boolean;
   }) => ReactNode;
+    selectableCols?:boolean
   renderColContent?: (info: {
     isSelectedCol: boolean;
     name: string;
@@ -399,6 +401,7 @@ interface BaseCalendarProps
     isSpecial: boolean;
     isColSelected: boolean;
   }) => ReactNode;
+    selectableCols?:boolean
   renderColContent?: (info: {
     isSelectedCol: boolean;
     name: string;

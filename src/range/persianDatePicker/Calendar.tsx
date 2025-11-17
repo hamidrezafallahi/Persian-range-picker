@@ -24,7 +24,7 @@ import YearPicker from './yearPicker';
 
 const todayTimestamp = new Date().setHours(0, 0, 0, 0);
 const today = jmoment();
-interface WeekDaySelectResponse {
+export interface WeekDaySelectResponse {
   indexOfDay: number;
   month: number;
   year: number;
@@ -67,6 +67,7 @@ interface Props {
     isSpecial: boolean;
     isColSelected: boolean;
   }) => ReactNode;
+  selectableCols?:boolean
   renderColContent?: (info: {
     isSelectedCol: boolean;
     name: string;
@@ -122,6 +123,7 @@ const Calendar: FC<Props> = ({
   secondaryColor = "#585858",
   tertiaryColor = "#939393",
   onWeekdaySelect,
+  selectableCols=false,
   WeekHeaderClassName,
   WeekHeaderStyle,
   renderColContent,
@@ -204,6 +206,7 @@ const Calendar: FC<Props> = ({
   // -------------------------------
   const handleDateClick = useCallback(
     (timestamp: number) => {
+      setColSelected([]);
       if (model === "range") handleRangeSelection(timestamp);
       else onChange(timestamp, null);
     },
@@ -417,8 +420,10 @@ const Calendar: FC<Props> = ({
       locale === "fa"
         ? ["ش", "ی", "د", "س", "چ", "پ", "ج"]
         : ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
-    const handleWeekDaySelect = (e:any,weekdayIndex: number) => {
-      e.preventDefault()
+    const handleWeekDaySelect = (e: any, weekdayIndex: number) => {
+      e.preventDefault();
+      onChange(null, null);
+      setState((s) => ({ ...s, hoveredDay: null }));
       const filtered = days.filter((d) => {
         if (!d.currentMonth) return false;
 
@@ -454,7 +459,7 @@ const Calendar: FC<Props> = ({
       const isEqual = (arr1: number[], arr2: number[]) =>
         arr1.length === arr2.length && arr1.every((v, i) => v === arr2[i]);
       setColSelected(isEqual(col, colSelected) ? [] : col);
-      onWeekdaySelect?.(output);
+      onWeekdaySelect?.(isEqual(col, colSelected) ? [] :output);
     };
 
     return (
@@ -475,19 +480,20 @@ const Calendar: FC<Props> = ({
             return (
               <button
                 key={i}
+                disabled={!selectableCols}
                 className={`${style.flex} ${style.justify_center} 
-              ${style.items_center}  ${style.w_full} ${style.border_none} ${WeekHeaderClassName} ${style.bg_none}`}
-                style={{
-                  fontSize: "14px",
-                  cursor: "pointer",
-                  // color: isSelectedCol ? backgroundColor : tertiaryColor,
-                  // background: isSelectedCol ? secondaryColor : undefined,
-                  ...(renderColStyle
-                    ? renderColStyle({ isSelectedCol, name, index: i })
-                    : {}),
-                  ...WeekHeaderStyle,
-                }}
-                onClick={(e) => handleWeekDaySelect(e,i)}
+              ${style.items_center}  ${style.w_full} ${style.border_none} ${WeekHeaderClassName} ${style.bg_none}  `}
+                // style={{
+                //   fontSize: "14px",
+                //   cursor: "pointer",
+                //   // color: isSelectedCol ? backgroundColor : tertiaryColor,
+                //   // background: isSelectedCol ? secondaryColor : undefined,
+                //   ...(renderColStyle
+                //     ? renderColStyle({ isSelectedCol, name, index: i })
+                //     : {}),
+                //   ...WeekHeaderStyle,
+                // }}
+                onClick={(e) => handleWeekDaySelect(e, i)}
               >
                 {renderColContent ? (
                   renderColContent({
@@ -501,7 +507,7 @@ const Calendar: FC<Props> = ({
               ${style.justify_center} 
               ${style.items_center} 
               ${style.rounded_md} 
-              ${style.w_6} ${style.aspect_square} ${style.text_center} ${style.cursor_pointer}`}
+              ${style.w_6} ${style.aspect_square} ${style.text_center} ${selectableCols && style.cursor_pointer}`}
                     style={{
                       position: "relative",
                       color: isSelectedCol ? backgroundColor : tertiaryColor,

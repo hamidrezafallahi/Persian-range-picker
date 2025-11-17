@@ -1081,3 +1081,19 @@
 .bg_none{
   background-color: transparent;
 }
+
+.neoButton {
+   color: #939393;
+
+ 
+  border-radius: 0.5em;
+  background: #f0f0f0;
+  cursor: pointer;
+  border: 1px solid #f0f0f0;
+  transition: all 0.3s;
+  box-shadow: 4px 4px 8px #c5c5c5, -4px -4px 8px #ffffff;
+}
+
+.neoButtonActive {
+  box-shadow: inset 4px 4px 12px #c5c5c5, inset -4px -4px 12px #ffffff;
+}

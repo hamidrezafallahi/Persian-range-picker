@@ -66,6 +66,7 @@ export interface IProps {
     isSpecial: boolean;
     isColSelected: boolean;
   }) => ReactNode;
+    selectableCols?:boolean
   renderColContent?: (info: {
     isSelectedCol: boolean;
     name: string;

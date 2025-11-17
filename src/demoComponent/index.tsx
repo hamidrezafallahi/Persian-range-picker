@@ -1,7 +1,6 @@
 import { useState } from 'react';
 
-import { Mask } from '../range';
-import { DesktopDatePicker } from '../range/desktopDate/desktopDatePicker';
+import { DatePicker } from '../range/exportComponents/datePicker';
 
 export default function DemoComponent() {
   const [val, setVal] = useState<any>();
@@ -25,136 +24,60 @@ export default function DemoComponent() {
       <div
       // style={{padding:"12px"}}
       >
+        <DatePicker
+          onChange={(e) => {
+            setVal(e);
+            console.log(e);
+          }}
+          onClear={() => {
+            setVal(null);
 
-        {/* <MobileDate
-      onChange={(e) => {
-        setVal(e);
-        console.log(e);
-      }}
-      defaultValue={time}
-      value={val}
-      specialDays={[1762288200000, 1763411400000]}
-      disabledDays={[1763325000000, 1763497800000]}
-        onWeekdaySelect={(e) => {
-          console.log(e);
-        }}
-        renderDayContent={({ day, isSpecial, isColSelected }) => (
-          <>
+          }}
+          // calendarType='gregorian'
+          defaultValue={time}
+          value={val}
+          showMask
+          allowClear
+          selectableCols
+          specialDays={[1762288200000, 1763411400000]}
+          disabledDays={[1763325000000, 1763497800000]}
+          onWeekdaySelect={(e) => {
+
+            console.log(e);
+          }}
+          // renderDayContent={({ day, isSpecial, isColSelected }) => (
+          //   <>
+          //     <span
+          //       style={{
+          //         color: isSpecial ? "red" : isColSelected ? "#fff" : undefined,
+          //         fontWeight: isSpecial ? "bold" : "normal",
+          //       }}
+          //     >
+          //       {day}
+          //     </span>
+          //   </>
+          // )}
+          renderColContent={({ name, isSelectedCol }) => (
             <span
               style={{
-                color: isSpecial ? "red" : isColSelected ? "#fff" : undefined,
-                fontWeight: isSpecial ? "bold" : "normal",
+                color: isSelectedCol ? "#fff" : undefined,
+                background: isSelectedCol ? "#767676ff" : undefined,
+                minWidth: "24px",
+                height: "24px",
+                borderRadius: "8px",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
               }}
-              >
-              {day}
+            >
+              {name}
             </span>
-          </>
-        )}
-        renderColContent={({ name, isSelectedCol }) => (
-          <span
-          style={{
-            color: isSelectedCol ? "#fff" : undefined,
-            background: isSelectedCol ? "#767676ff" : undefined,
-            minWidth: "24px",
-            height: "24px",
-            borderRadius: "8px",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-          >
-            {name}
-          </span>
-        )}
-        // placeHolder={false}
-        // icon ={false}
-        />  */}
-        </div>  
-      <DesktopDatePicker
-      calendarType='gregorian'
-      // specialDays={[1762288200000, 1763411400000]}
-      // disabledDays={[1763325000000, 1763497800000]}
-        // onWeekdaySelect={(e) => {
-        //   console.log(e);
-        // }}
-        // renderDayContent={({ day, isSpecial, isColSelected }) => (
-        //   <>
-        //     <span
-        //       style={{
-        //         color: isSpecial ? "red" : isColSelected ? "#fff" : undefined,
-        //         fontWeight: isSpecial ? "bold" : "normal",
-        //       }}
-        //     >
-        //       {day}
-        //     </span>
-        //   </>
-        // )}
-        // renderColContent={({ name, isSelectedCol }) => (
-        //   <span
-        //     style={{
-        //       color: isSelectedCol ? "#fff" : undefined,
-        //       background: isSelectedCol ? "#767676ff" : undefined,
-        //       minWidth: "24px",
-        //       height: "24px",
-        //       borderRadius: "8px",
-        //       display: "flex",
-        //       justifyContent: "center",
-        //       alignItems: "center",
-        //     }}
-        //   >
-        //     {name}
-        //   </span>
-        // )}
-        // locale='en'
-        onChange={(e) => {
-          setVal(e);
-          console.log(e,"e");
-        }}
-              // placeHolder={false}
-        // icon ={false}
-        // defaultValue={time}
-        // value={val}
-        showMask
-                // placeholder={false}
-
-      />
-      {/* <TimePicker 
-       exportType='timeStamp'
-        onChange={(e) => {
-          setVal(e);
-          console.log(e,"TimePicker");
-        }}
-        showSecond
-        defaultValue={time}
-        value={val}
-        
-        />  */}
-        <Mask
-        // defaultValue={time}
-        // value={val}
-      
-      allowClear
-      // calendarType='gregorian'
-              onMaskChange={(e) => {
-                setVal(e);
-          console.log(e);
-        }} 
-      />
-      {/* <div
-      style={{padding:"12px"}}
-      >
-
-      <Calendar
-        model="range"
-        // disablePreviousDays
-        defaultValue={time}
-        locale="fa"
-        value={val}
-        onChange={(e: any) => {
-          console.log(e);
-          setVal(e);
-        }}
-        exportType="timeStamp"
+          )}
+          // icon ={false}
+        />
+      </div>
+      {/* <DesktopDatePicker
+        calendarType="gregorian"
         specialDays={[1762288200000, 1763411400000]}
         disabledDays={[1763325000000, 1763497800000]}
         onWeekdaySelect={(e) => {
@@ -167,42 +90,119 @@ export default function DemoComponent() {
                 color: isSpecial ? "red" : isColSelected ? "#fff" : undefined,
                 fontWeight: isSpecial ? "bold" : "normal",
               }}
-              >
+            >
               {day}
             </span>
           </>
         )}
-        renderDayStyle={({ isSpecial, isSelected ,isInRange,isToday,isDisabled,}) => ({
-          background: isSpecial ? "rgba(255,0,0,0.1)" : isSelected ? "#0af" :isInRange ? "rgba(33,150,243,0.2)": isToday ? "rgba(22, 187, 36, 0.98)":  isDisabled ? "rgba(255, 0, 0, 1)": "",
-          borderRadius: "8px",
-          width: "48px",
-          height: "48px",
-        })}
-        renderColStyle={({  isSelectedCol}) => ({
-          background: isSelectedCol ? "rgba(255,0,0,0.1)"  :"",
-          borderRadius: "8px",
-          width: "48px",
-          height: "48px",
-        })}
         renderColContent={({ name, isSelectedCol }) => (
           <span
-          style={{
-            color: isSelectedCol ? "#fff" : undefined,
-            background: isSelectedCol ? "#767676ff" : undefined,
-            width: "24px",
-            height: "24px",
-            borderRadius: "8px",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
+            style={{
+              color: isSelectedCol ? "#fff" : undefined,
+              background: isSelectedCol ? "#767676ff" : undefined,
+              minWidth: "24px",
+              height: "24px",
+              borderRadius: "8px",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
           >
             {name}
           </span>
         )}
-        /> 
-        </div> */}
-      {/* <Calendar
+        onChange={(e) => {
+          setVal(e);
+          console.log(e, "e");
+        }}
+        placeholder={false}
+        icon={false}
+        defaultValue={time}
+        value={val}
+        showMask
+      /> */}
+      {/* <TimePicker
+        exportType="timeStamp"
+        onChange={(e) => {
+          setVal(e);
+          console.log(e, "TimePicker");
+        }}
+        showSecond
+        defaultValue={time}
+        value={val}
+      /> */}
+      {/* <Mask
+        // defaultValue={time}
+        // value={val}
+
+        allowClear
+        // calendarType='gregorian'
+        onMaskChange={(e) => {
+          setVal(e);
+          console.log(e);
+        }}
+      /> */}
+       {/* <div style={{ padding: "12px" }}>
+        <Calendar
+          model="range"
+          disablePreviousDays
+          // selectableCols
+          defaultValue={time}
+          locale="fa"
+          value={val}
+          onChange={(e: any) => {
+            console.log(e);
+            setVal(e);
+          }}
+          exportType="timeStamp"
+          specialDays={[1762288200000, 1763411400000]}
+          disabledDays={[1763325000000, 1763497800000]}
+          onWeekdaySelect={(e) => {
+            console.log(e);
+          }}
+          // renderDayContent={({ day, isSpecial, isColSelected }) => (
+          //   <>
+          //     <span
+          //       style={{
+          //         color: isSpecial ? "red" : isColSelected ? "#fff" : undefined,
+          //         fontWeight: isSpecial ? "bold" : "normal",
+          //       }}
+          //       >
+          //       {day}
+          //     </span>
+          //   </>
+          // )}
+          // renderDayStyle={({ isSpecial, isSelected ,isInRange,isToday,isDisabled,}) => ({
+          //   background: isSpecial ? "rgba(255,0,0,0.1)" : isSelected ? "#0af" :isInRange ? "rgba(33,150,243,0.2)": isToday ? "rgba(22, 187, 36, 0.98)":  isDisabled ? "rgba(255, 0, 0, 1)": "",
+          //   borderRadius: "8px",
+          //   width: "48px",
+          //   height: "48px",
+          // })}
+          // renderColStyle={({ isSelectedCol }) => ({
+          //   background: isSelectedCol ? "rgba(255,0,0,0.1)" : "",
+          //   borderRadius: "8px",
+          //   width: "48px",
+          //   height: "48px",
+          // })}
+          // renderColContent={({ name, isSelectedCol }) => (
+          //   <span
+          //     style={{
+          //       color: isSelectedCol ? "#fff" : undefined,
+          //       background: isSelectedCol ? "#767676ff" : undefined,
+          //       width: "24px",
+          //       height: "24px",
+          //       borderRadius: "8px",
+          //       display: "flex",
+          //       justifyContent: "center",
+          //       alignItems: "center",
+          //     }}
+          //   >
+          //     {name}
+          //   </span>
+          // )}
+        />
+      </div> */}
+      {/*<Calendar
         model="range"
         // disablePreviousDays
         defaultValue={time}
@@ -237,14 +237,12 @@ export default function DemoComponent() {
               )}
       /> */}
 
-     
-
       {/* <RangePicker
-        // defaultValue={time}
-        // value={val as IDate}
+        defaultValue={time}
+        value={val as IDate}
         specialDays={[1762288200000, 1763411400000]}
-      disabledDays={[1763325000000, 1763497800000]}
-       calendarType='gregorian'
+        disabledDays={[1763325000000, 1763497800000]}
+         calendarType='gregorian'
         onWeekdaySelect={(e) => {
           console.log(e);
         }}
@@ -281,7 +279,7 @@ export default function DemoComponent() {
         }}
         onChange={(e) => {
           console.log(e);
-          // setVal(e.Data?.date as IDate);
+          setVal(e.Data?.date as IDate);
         }}
         onCompareDateChange={(e) => {
           console.log(e);

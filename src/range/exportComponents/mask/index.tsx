@@ -83,7 +83,6 @@ export function Mask({ ...props }: IMaskProps) {
   const fullValueRef = useRef<string>(
     `${initialTemp[0]}${initialTemp[1]}${initialTemp[2]}`
   );
-  console.log(initialTemp,separatedValue,fullValue)
   const [isEdit, setIsEdit] = useState<0 | 1 | 2>(0);
   const editModeRef = useRef<0 | 1 | 2>(null);
   const separatedValueRef = useRef(initialTemp);

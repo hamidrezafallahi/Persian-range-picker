@@ -8,7 +8,10 @@ import moment from 'moment-jalaali';
 
 import style from '../../main.module.css';
 import { Footer } from '../core/footer';
-import { toPersianDigits } from '../core/helper';
+import {
+  getWeekDayName,
+  toPersianDigits,
+} from '../core/helper';
 import type {
   IDate,
   IDateProps,
@@ -18,6 +21,7 @@ import { TimeColumns } from '../exportComponents/timePicker/exportComponents';
 import { CalenderIcon } from '../icons/CalenderIcon';
 import { MenuArrowBack } from '../icons/MenuArrowBack';
 import { DatePicker } from '../persianDatePicker';
+import { WeekDaySelectResponse } from '../persianDatePicker/Calendar';
 
 export function MobileDate({ ...props }: IDateProps) {
   const {
@@ -40,6 +44,7 @@ export function MobileDate({ ...props }: IDateProps) {
     disabled = false,
     placeholder = props.locale === "en" ? "Choose date" : "انتخاب تاریخ",
     value,
+    onWeekdaySelect,
   } = props;
   const isFa = locale === "fa";
   const initValue: IDate = (() => {
@@ -62,44 +67,33 @@ export function MobileDate({ ...props }: IDateProps) {
   const [showDate, setShowDate] = useState<IDate>(initValue);
   const [content, setContent] = useState<"Date" | "Time">("Date");
   const [open, setOpen] = useState(false);
+  const [title, setTitle] = useState(placeholder);
+
   const dynamicFormat = showSecond ? showTimeFormat : "HH:mm";
-  const persian =
-    showDate.from && new Date(showDate.from).valueOf() > 0
-      ? toPersianDigits(
-          moment(showDate.from).format(
-            showTime ? `jYYYY/jMM/jDD\u2003${dynamicFormat}` : `jYYYY/jMM/jDD`
-          )
-        )
-      : placeholder;
-
-  const gregorian =
-    showDate.from && new Date(showDate.from).valueOf() > 0
-      ? moment(showDate.from).format(
-          showTime ? `YYYY/MM/DD\u2003${dynamicFormat}` : `YYYY/MM/DD`
-        )
-      : placeholder;
-
-  const title = locale === "fa" ? persian : gregorian;
 
   const handleDateChange = (e: IDate) => {
     if (showTime) {
       setShowDate({ from: new Date(e.from as any).valueOf(), to: NaN });
       setContent("Time");
     } else {
-      setShowDate({ from: new Date(e.from as any).valueOf(), to: NaN });
-      if (exportType == "IsoString") {
-        onChange?.(
+      if (e.from !== null) {
+        setShowDate({ from: new Date(e.from as any).valueOf(), to: NaN });
+        if (exportType == "IsoString") {
+          onChange?.(
+            locale == "fa"
+              ? moment(e.from).format("YYYY-MM-DDTHH:mm:ss.SSSZ")
+              : moment.utc(e.from).format("YYYY-MM-DDTHH:mm:ss.SSSZ")
+          );
+        } else {
           locale == "fa"
-            ? moment(e.from).format("YYYY-MM-DDTHH:mm:ss.SSSZ")
-            : moment.utc(e.from).format("YYYY-MM-DDTHH:mm:ss.SSSZ")
-        );
+            ? moment(e.from).valueOf()
+            : moment.utc(e.from).valueOf();
+        }
+        setOpen(false);
       } else {
-        locale == "fa"
-          ? moment(e.from).valueOf()
-          : moment.utc(e.from).valueOf();
+        setOpen(false);
+        setShowDate({ from: null, to: null });
       }
-
-      setOpen(false);
     }
   };
 
@@ -136,7 +130,6 @@ export function MobileDate({ ...props }: IDateProps) {
   const renderOptions = (count: number, unit: TUnit, step = 1) => {
     const pad = (num: number) => num.toString().padStart(2, "0");
     const active = moment(showDate.from).locale(locale).get(unit);
-
     return Array.from({ length: Math.ceil(count / step) }, (_, i) => {
       const val = i * step;
       return (
@@ -166,6 +159,14 @@ export function MobileDate({ ...props }: IDateProps) {
       );
     });
   };
+  const handleWeekDaySelect = (e: WeekDaySelectResponse[]) => {
+    if (e.length > 0) {
+      setTitle(getWeekDayName(e[0].indexOfDay, isFa));
+    } else if (e?.length == 0) {
+      setTitle(placeholder);
+    }
+    onWeekdaySelect?.(e);
+  };
   useEffect(() => {
     if (value !== undefined) {
       if (typeof value === "string") {
@@ -175,6 +176,29 @@ export function MobileDate({ ...props }: IDateProps) {
       }
     }
   }, [value]);
+  useEffect(() => {
+    if (showDate.from && showDate.from !== null) {
+      const persian =
+        showDate.from && new Date(showDate.from).valueOf() > 0
+          ? toPersianDigits(
+              moment(new Date(showDate.from).valueOf()).format(
+                showTime
+                  ? `jYYYY/jMM/jDD\u2003${dynamicFormat}`
+                  : `jYYYY/jMM/jDD`
+              )
+            )
+          : placeholder;
+
+      const gregorian =
+        showDate.from && new Date(showDate.from).valueOf() > 0
+          ? moment(new Date(showDate.from).valueOf()).format(
+              showTime ? `YYYY/MM/DD\u2003${dynamicFormat}` : `YYYY/MM/DD`
+            )
+          : placeholder;
+
+      setTitle(isFa ? persian : gregorian);
+    }
+  }, [showDate, dynamicFormat, showTime, placeholder]);
   return (
     <>
       <button
@@ -238,6 +262,7 @@ export function MobileDate({ ...props }: IDateProps) {
                     defaultValue ? { from: defaultValue, to: 0 } : undefined
                   }
                   locale={locale}
+                  onWeekdaySelect={handleWeekDaySelect}
                   model="date"
                   onDateChange={handleDateChange}
                   value={{

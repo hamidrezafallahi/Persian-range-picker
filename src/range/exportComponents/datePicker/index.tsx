@@ -12,7 +12,7 @@ import { useMediaQuery } from '../useMediaQuery';
 type CustomDateProps = Omit<IDateProps, "defaultValue" | "locale"> & {
   defaultValue?: IDate["from"];
 };
-export function DatePicker({ ...props }: CustomDateProps) {
+export  function DatePicker({ ...props }: CustomDateProps) {
   const { onChange, exportType = "IsoString" } = props;
 const {match}=useMediaQuery("XSUP")
 
