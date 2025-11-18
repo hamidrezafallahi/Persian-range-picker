@@ -111,7 +111,6 @@ export function DesktopDatePicker({ ...props }: IProps) {
 
   const handleDateChange = (date: IDate) => {
     const rawTimestamp = getTimestamp(date.from) ?? NaN;
-
     if (!isNaN(rawTimestamp)) {
       const finalDate = showTime
         ? rawTimestamp
@@ -130,10 +129,10 @@ export function DesktopDatePicker({ ...props }: IProps) {
           );
         }
       }
-      setIsOpen(false);
     } else {
       setShowDate({ from: null, to: null });
     }
+    setIsOpen(false);
   };
 
   const handleSetTime = (timestamp: number) => {
@@ -142,10 +141,10 @@ export function DesktopDatePicker({ ...props }: IProps) {
   const handleWeekDaySelect = (e: WeekDaySelectResponse[]) => {
     if (e.length > 0) {
       setTitle(getWeekDayName(e[0].indexOfDay, isFa));
-    }else if(e?.length == 0 ){
-      setTitle(placeholder)
+      onWeekdaySelect?.(e);
+    } else if (e?.length == 0) {
+      setTitle(placeholder);
     }
-onWeekdaySelect?.(e)
   };
 
   const changeHandler = (e: number) => {
@@ -165,12 +164,13 @@ onWeekdaySelect?.(e)
     e.stopPropagation();
     setShowDate({ from: null, to: null });
     onClear?.();
-    setTitle(placeholder)
+    setTitle(placeholder);
   };
 
   useEffect(() => {
     if (value !== undefined) {
       if (value == null) {
+
         setShowDate({ from: null, to: null });
       } else {
         setShowDate({
@@ -324,7 +324,7 @@ onWeekdaySelect?.(e)
                 calendarBaseWidth={calendarBaseWidth}
                 onDateChange={handleDateChange}
                 value={{
-                  from: showDate?.from ?? new Date().valueOf(),
+                  from: showDate?.from ?? NaN,
                   to: 0,
                 }}
               />

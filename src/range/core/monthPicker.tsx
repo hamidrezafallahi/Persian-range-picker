@@ -61,6 +61,7 @@ const MonthPicker = ({
       ? moment(to).locale("fa").jMonth()
       : moment(to).locale("en").month();
   const handleMonthPicker = (chosenMonth: number) => {
+ 
     setState({ selectedMonth: chosenMonth, hoveredMonth: chosenMonth });
     const date = new Date(chosenMonth);
     let newFrom = dateFromOutside.from;
@@ -111,6 +112,7 @@ const MonthPicker = ({
     }
   };
   const handleHoveredMonth = (index: number) => {
+
     const hoveredMonth =
       locale === "fa"
         ? currentDate

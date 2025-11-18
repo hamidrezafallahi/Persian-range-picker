@@ -72,7 +72,7 @@ const Manual = (props: IBaseProps) => {
         onDateChange={(e: IDate) => {
           setDate?.({
             from: e.from,
-            to: moment(e.to).locale("fa").clone().endOf("day").valueOf(),
+            to: e.to !== null ? moment(e.to).locale("fa").clone().endOf("day").valueOf(): e.to,
           });
           setZone?.("manual");
           setStep?.(ESteps.manual);

@@ -259,15 +259,15 @@ export function MobileDate({ ...props }: IDateProps) {
                 <DatePicker
                   {...props}
                   defaultValue={
-                    defaultValue ? { from: defaultValue, to: 0 } : undefined
+                    defaultValue ? { from: defaultValue, to: null } : undefined
                   }
                   locale={locale}
                   onWeekdaySelect={handleWeekDaySelect}
                   model="date"
                   onDateChange={handleDateChange}
                   value={{
-                    from: showDate.from ?? new Date().valueOf(),
-                    to: 0,
+                    from: showDate.from ?? null,
+                    to: null,
                   }}
                 />
               ) : (

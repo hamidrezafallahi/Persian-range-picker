@@ -219,7 +219,6 @@ const Calendar: FC<Props> = ({
   const getCalendarDays = (year: number, month: number) => {
     const daysInMonth = getNumberOfDays(year, month, locale);
     const days: { timestamp: number; currentMonth: boolean }[] = [];
-
     const prevOffset = getFirstDayIndexInMonth(year, month, locale);
     const nextOffset = 42 - daysInMonth - prevOffset;
 
@@ -421,6 +420,7 @@ const Calendar: FC<Props> = ({
         ? ["ش", "ی", "د", "س", "چ", "پ", "ج"]
         : ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
     const handleWeekDaySelect = (e: any, weekdayIndex: number) => {
+      handleRangeSelection
       e.preventDefault();
       onChange(null, null);
       setState((s) => ({ ...s, hoveredDay: null }));
@@ -468,6 +468,7 @@ const Calendar: FC<Props> = ({
         <div
           className={`${style.grid} ${style.grid_cols_7} ${style.justify_between} ${style.gap_x_2} ${style.py_2}`}
           dir={locale === "fa" ? "rtl" : "ltr"}
+          style={{...WeekHeaderStyle}}
         >
           {weekNames.map((name, i) => {
             const isSelectedCol =

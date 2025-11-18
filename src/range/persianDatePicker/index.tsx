@@ -43,6 +43,7 @@ export const DatePicker = ({ ...props }: IProps) => {
         setDate({from:value.from,to:value.to});
       }
     }
+
   }, [value]);
   return (
     <Calendar

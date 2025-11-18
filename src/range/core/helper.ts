@@ -590,13 +590,13 @@ export const faWeekDays = [
 ];
 
 export const enWeekDays = [
-  "Saturdays",
   "Sundays",
   "Mondays",
   "Tuesdays",
   "Wednesdays",
   "Thursdays",
   "Fridays",
+  "Saturdays",
 ];
 export const getWeekDayName = (index: number, isFa: boolean) => {
   return isFa ? faWeekDays[index] : enWeekDays[index];

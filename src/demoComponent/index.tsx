@@ -1,22 +1,23 @@
 import { useState } from 'react';
 
-import { DatePicker } from '../range/exportComponents/datePicker';
+import { RangePicker } from '../range';
+import { IDate } from '../range/core/type';
 
 export default function DemoComponent() {
   const [val, setVal] = useState<any>();
-  const time = 1762893000000;
+  const time = { from: 1761510600000, to: 1763065799999 };
   return (
     <>
       <button
         onClick={() => {
-          setVal(null);
+          setVal({from: null, to: null});
         }}
       >
         set null
       </button>
       <button
         onClick={() => {
-          setVal(1762633800000);
+          setVal({from: 1762374600000, to: 1762720199999});
         }}
       >
         set rand
@@ -24,7 +25,7 @@ export default function DemoComponent() {
       <div
       // style={{padding:"12px"}}
       >
-        <DatePicker
+        {/* <DatePicker
           onChange={(e) => {
             setVal(e);
             console.log(e);
@@ -36,7 +37,7 @@ export default function DemoComponent() {
           // calendarType='gregorian'
           defaultValue={time}
           value={val}
-          showMask
+          // showMask
           allowClear
           selectableCols
           specialDays={[1762288200000, 1763411400000]}
@@ -74,7 +75,7 @@ export default function DemoComponent() {
             </span>
           )}
           // icon ={false}
-        />
+        /> */}
       </div>
       {/* <DesktopDatePicker
         calendarType="gregorian"
@@ -142,11 +143,11 @@ export default function DemoComponent() {
           console.log(e);
         }}
       /> */}
-       {/* <div style={{ padding: "12px" }}>
+      {/* <div style={{ padding: "12px" }}>
         <Calendar
-          model="range"
-          disablePreviousDays
-          // selectableCols
+          // model="range"
+          // disablePreviousDays
+          selectableCols
           defaultValue={time}
           locale="fa"
           value={val}
@@ -237,15 +238,16 @@ export default function DemoComponent() {
               )}
       /> */}
 
-      {/* <RangePicker
+      <RangePicker
         defaultValue={time}
         value={val as IDate}
         specialDays={[1762288200000, 1763411400000]}
         disabledDays={[1763325000000, 1763497800000]}
-         calendarType='gregorian'
+        //  calendarType='gregorian'
         onWeekdaySelect={(e) => {
           console.log(e);
         }}
+        selectableCols
         renderDayContent={({ day, isSpecial, isColSelected }) => (
           <>
             <span
@@ -284,7 +286,7 @@ export default function DemoComponent() {
         onCompareDateChange={(e) => {
           console.log(e);
         }}
-      /> */}
+      />
     </>
   );
 }

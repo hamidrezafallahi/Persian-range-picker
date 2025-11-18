@@ -1,5 +1,6 @@
-import jmoment from "moment-jalaali";
-import type { TLocale } from "../core/type";
+import jmoment from 'moment-jalaali';
+
+import type { TLocale } from '../core/type';
 
 const todayTimestamp = new Date().setHours(0, 0, 0, 0);
 
@@ -23,17 +24,21 @@ export const getFirstDayIndexInMonth = (
   month: number,
   locale: TLocale
 ): number => {
-  const dayName =
-    locale === "en"
-      ? // months are zero based so we plus one for month
-        jmoment(`${year}, ${month + 1}, 1`).format("ddd")
-      : jmoment(`${year}, ${month + 1}, 1`, "jYYYY=jMM-jDD").format("ddd");
+  let dayName: string;
+
+  if (locale === "en") {
+    dayName = jmoment([year, month, 1]).format("ddd");
+  } else {
+    dayName = jmoment(`${year}-${month + 1}-01`, "jYYYY-jMM-jDD").format("ddd");
+  }
   const dayOrder =
     locale === "fa"
       ? ["Sat", "Sun", "Mon", "Tue", "Wed", "Thu", "Fri"]
       : ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
   return dayOrder.indexOf(dayName);
 };
+
 
 export const getNumberOfDays = (
   year: number,
