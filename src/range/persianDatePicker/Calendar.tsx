@@ -91,6 +91,8 @@ interface Props {
   datePickerHeaderClassName?: string;
   datePickerBodyClassName?: string;
   yearPickerClassName?: string;
+  selectMultiple?:boolean
+
 }
 
 interface State {
@@ -127,6 +129,7 @@ const Calendar: FC<Props> = ({
   WeekHeaderClassName,
   WeekHeaderStyle,
   renderColContent,
+  selectMultiple=false
 }) => {
   // -------------------------------
   // STATE & VIEW MANAGEMENT
@@ -420,7 +423,6 @@ const Calendar: FC<Props> = ({
         ? ["ش", "ی", "د", "س", "چ", "پ", "ج"]
         : ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
     const handleWeekDaySelect = (e: any, weekdayIndex: number) => {
-      handleRangeSelection
       e.preventDefault();
       onChange(null, null);
       setState((s) => ({ ...s, hoveredDay: null }));

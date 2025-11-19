@@ -1,7 +1,6 @@
 import { useState } from 'react';
 
-import { RangePicker } from '../range';
-import { IDate } from '../range/core/type';
+import { Calendar } from '../range';
 
 export default function DemoComponent() {
   const [val, setVal] = useState<any>();
@@ -143,7 +142,7 @@ export default function DemoComponent() {
           console.log(e);
         }}
       /> */}
-      {/* <div style={{ padding: "12px" }}>
+      <div style={{ padding: "12px" }}>
         <Calendar
           // model="range"
           // disablePreviousDays
@@ -202,7 +201,7 @@ export default function DemoComponent() {
           //   </span>
           // )}
         />
-      </div> */}
+      </div>
       {/*<Calendar
         model="range"
         // disablePreviousDays
@@ -238,7 +237,7 @@ export default function DemoComponent() {
               )}
       /> */}
 
-      <RangePicker
+      {/* <RangePicker
         defaultValue={time}
         value={val as IDate}
         specialDays={[1762288200000, 1763411400000]}
@@ -286,7 +285,7 @@ export default function DemoComponent() {
         onCompareDateChange={(e) => {
           console.log(e);
         }}
-      />
+      /> */}
     </>
   );
 }
