@@ -185,6 +185,23 @@ export const TimePicker = ({ ...props }: ITimePickerProps) => {
       );
     }
   }, [value]);
+  useEffect(() => {
+    if (open == false) {
+      if (time && time > 0) {
+        if (exportType == "IsoString") {
+          onChange?.(
+            locale == "fa"
+              ? moment(time).format("YYYY-MM-DDTHH:mm:ss.SSSZ")
+              : moment.utc(time).format("YYYY-MM-DDTHH:mm:ss.SSSZ")
+          );
+        } else {
+          onChange?.(
+            locale == "fa" ? moment(time).valueOf() : moment.utc(time).valueOf()
+          );
+        }
+      }
+    }
+  }, [open]);
   return (
     <>
       <button
