@@ -579,25 +579,3 @@ export const getTimestampByFallBack = (
   if (val instanceof Date) return val.valueOf();
   return fallback;
 };
-export const faWeekDays = [
-  "شنبه ها",
-  "یک‌شنبه ها",
-  "دوشنبه ها",
-  "سه‌شنبه ها",
-  "چهارشنبه ها",
-  "پنج‌شنبه ها",
-  "جمعه ها",
-];
-
-export const enWeekDays = [
-  "Sundays",
-  "Mondays",
-  "Tuesdays",
-  "Wednesdays",
-  "Thursdays",
-  "Fridays",
-  "Saturdays",
-];
-export const getWeekDayName = (index: number, isFa: boolean) => {
-  return isFa ? faWeekDays[index] : enWeekDays[index];
-};

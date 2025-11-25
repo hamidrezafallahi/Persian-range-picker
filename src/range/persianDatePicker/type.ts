@@ -155,7 +155,7 @@ export type CalendarAction =
   | { type: "SET_DATE"; payload: number | null }
   | { type: "SET_RANGE"; payload: { from: number|null, to:  number|null } }
   | { type: "SET_MULTIPLE"; payload: number }
-  | { type: "SET_WEEK_DAYS"; payload: {multiple:number[],index:number|null }}
+  | { type: "SET_WEEK_DAYS"; payload: {multiple:number[]}}
   | { type: "CHANGE_HOVERED_DAY"; payload: number | null }
   | { type: "HOVER"; payload: any }
   | { type: "CHANGE_YEAR"; payload: number }

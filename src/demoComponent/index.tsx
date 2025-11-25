@@ -41,10 +41,7 @@ export default function DemoComponent() {
           selectableCols
           specialDays={[1762288200000, 1763411400000]}
           disabledDays={[1763325000000, 1763497800000]}
-          onWeekdaySelect={(e) => {
 
-            console.log(e);
-          }}
           // renderDayContent={({ day, isSpecial, isColSelected }) => (
           //   <>
           //     <span
@@ -80,9 +77,7 @@ export default function DemoComponent() {
         calendarType="gregorian"
         specialDays={[1762288200000, 1763411400000]}
         disabledDays={[1763325000000, 1763497800000]}
-        onWeekdaySelect={(e) => {
-          console.log(e);
-        }}
+
         renderDayContent={({ day, isSpecial, isColSelected }) => (
           <>
             <span
@@ -144,10 +139,10 @@ export default function DemoComponent() {
       /> */}
       <div style={{ padding: "12px" }}>
         <Calendar
-        selectMultiple
+        // selectMultiple
           // model="range"
           // disablePreviousDays
-          selectableCols
+          // selectableCols
           // defaultValue={time}
           // locale="fa"
           // value={val}
@@ -156,11 +151,9 @@ export default function DemoComponent() {
             setVal(e);
           }}
           // exportType="timeStamp"
-          specialDays={[1762288200000, 1763411400000]}
-          disabledDays={[1763325000000, 1763497800000]}
-          onWeekdaySelect={(e) => {
-            console.log(e);
-          }}
+          // specialDays={[1764534600000, 1766003400000]}
+          // disabledDays={[1765139400000, 1765312200000]}
+
           // renderDayContent={({ day, isSpecial, isColSelected }) => (
           //   <>
           //     <span
@@ -244,9 +237,7 @@ export default function DemoComponent() {
         specialDays={[1762288200000, 1763411400000]}
         disabledDays={[1763325000000, 1763497800000]}
         //  calendarType='gregorian'
-        onWeekdaySelect={(e) => {
-          console.log(e);
-        }}
+
         selectableCols
         renderDayContent={({ day, isSpecial, isColSelected }) => (
           <>

@@ -8,10 +8,7 @@ import moment from 'moment-jalaali';
 
 import style from '../../main.module.css';
 import { Footer } from '../core/footer';
-import {
-  getWeekDayName,
-  toPersianDigits,
-} from '../core/helper';
+import { toPersianDigits } from '../core/helper';
 import type {
   IDate,
   IDateProps,
@@ -21,7 +18,6 @@ import { TimeColumns } from '../exportComponents/timePicker/exportComponents';
 import { CalenderIcon } from '../icons/CalenderIcon';
 import { MenuArrowBack } from '../icons/MenuArrowBack';
 import { DatePicker } from '../persianDatePicker';
-import { WeekDaySelectResponse } from '../persianDatePicker/Calendar';
 
 export function MobileDate({ ...props }: IDateProps) {
   const {
@@ -44,7 +40,6 @@ export function MobileDate({ ...props }: IDateProps) {
     disabled = false,
     placeholder = props.locale === "en" ? "Choose date" : "انتخاب تاریخ",
     value,
-    onWeekdaySelect,
   } = props;
   const isFa = locale === "fa";
   const initValue: IDate = (() => {
@@ -159,14 +154,7 @@ export function MobileDate({ ...props }: IDateProps) {
       );
     });
   };
-  const handleWeekDaySelect = (e: WeekDaySelectResponse[]) => {
-    if (e.length > 0) {
-      setTitle(getWeekDayName(e[0].indexOfDay, isFa));
-    } else if (e?.length == 0) {
-      setTitle(placeholder);
-    }
-    onWeekdaySelect?.(e);
-  };
+
   useEffect(() => {
     if (value !== undefined) {
       if (typeof value === "string") {
@@ -262,7 +250,6 @@ export function MobileDate({ ...props }: IDateProps) {
                     defaultValue ? { from: defaultValue, to: null } : undefined
                   }
                   locale={locale}
-                  onWeekdaySelect={handleWeekDaySelect}
                   model="date"
                   onDateChange={handleDateChange}
                   value={{

@@ -4,6 +4,7 @@ import {
   ReactNode,
   RefObject,
   useCallback,
+  useEffect,
   useReducer,
 } from 'react';
 
@@ -40,11 +41,11 @@ export interface WeekDaySelectResponse {
 }
 interface Props {
   manualContainerRef?: RefObject<HTMLDivElement | null>;
-  onChange: ( e:number|number[]|IDate) => void;
+  onChange: (e: number | number[] | IDate) => void;
   // Display & behavior
   model?: "range" | "date";
-  value?: number|number[]|IDate|null;
-  defaultValue?:  number|number[]|IDate|null;
+  value?: number | number[] | IDate | null;
+  defaultValue?: number | number[] | IDate | null;
   locale?: TLocale;
   disablePreviousDays?: boolean;
   // Custom render
@@ -78,7 +79,6 @@ interface Props {
     isSelectedCol: boolean;
     name: string;
   }) => ReactNode;
-  onWeekdaySelect?: (e: WeekDaySelectResponse[]) => void;
   WeekHeaderClassName?: string;
   WeekHeaderStyle?: React.CSSProperties;
   // State
@@ -104,10 +104,9 @@ interface CalendarState {
   view: CalendarViews;
   hoveredDay: number | null;
   date: number | null;
-  range: {from:number|null,to:number|null};
+  range: { from: number | null; to: number | null };
   mode: "date" | "range";
   multiple: number[];
-  weekDay:number|null;
 }
 
 const Calendar: FC<Props> = ({
@@ -152,18 +151,33 @@ const Calendar: FC<Props> = ({
         ? new Date(defaultValue as number).valueOf()
         : null,
     range:
-      model == "range" && (defaultValue as IDate)
+      model === "range" &&
+      defaultValue &&
+      typeof defaultValue === "object" &&
+      !Array.isArray(defaultValue) &&
+      "from" in defaultValue &&
+      "to" in defaultValue
         ? {
-            from: new Date(defaultValue?.from).valueOf(),
-            to: new Date(defaultValue?.to).valueOf(),
+            from:
+              defaultValue.from != null
+                ? new Date(defaultValue.from).valueOf()
+                : null,
+            to:
+              defaultValue.to != null
+                ? new Date(defaultValue.to).valueOf()
+                : null,
           }
         : { from: null, to: null },
+
     mode: "date",
     multiple:
       model == "date" && selectMultiple && defaultValue
-        ? (defaultValue as (number | string)[]).map((i) => new Date(i as number).valueOf())
+        ? [
+            ...(defaultValue as (number | string)[]).map((i) =>
+              new Date(i as number).valueOf()
+            ),
+          ]
         : [],
-        weekDay:null
   };
 
   function reducer(
@@ -175,19 +189,18 @@ const Calendar: FC<Props> = ({
         return {
           ...state,
           multiple: [],
-          weekDay:null,
-          range: { ...state.range, from: action.payload },
+          hoveredDay: null,
+          range: { from: action.payload, to: null },
         };
       case "SET_TO":
         return { ...state, range: { ...state.range, to: action.payload } };
       case "SET_DATE":
-        return { ...state, multiple: [],weekDay:null, date: action.payload };
+        return { ...state, date: action.payload };
       case "SET_MULTIPLE":
         return {
           ...state,
           range: { from: null, to: null },
           date: null,
-          weekDay:null,
           multiple: state.multiple.includes(action.payload)
             ? state.multiple.filter((m) => m !== action.payload)
             : [...state.multiple, action.payload],
@@ -215,28 +228,30 @@ const Calendar: FC<Props> = ({
       case "CHANGE_HOVERED_DAY":
         return { ...state, hoveredDay: action.payload };
       case "SET_WEEK_DAYS":
+        const { multiple } = action.payload;
+        const allExist = multiple.every((c) => state.multiple.includes(c));
         return {
           ...state,
           range: { from: null, to: null },
           date: null,
-          multiple: action.payload.multiple,
-          weekDay:action.payload.index
+          hoveredDay: null,
+          multiple: allExist
+            ? state.multiple.filter((i) => !multiple.includes(i))
+            : Array.from(new Set([...state.multiple, ...multiple])),
         };
       case "SET_RANGE":
         return {
           ...state,
-          range: {from:action.payload.from,to:action.payload.to},
-          hoveredDay:action.payload.from
- 
+          range: { from: action.payload.from, to: action.payload.to },
+          hoveredDay: action.payload.to,
         };
       case "RESET_RANGE":
         return {
           ...state,
           range: { from: null, to: null },
           date: null,
-          multiple:[],
-          weekDay:null,
-          hoveredDay:null,
+          multiple: [],
+          hoveredDay: null,
         };
       case "RESET":
         return initialState;
@@ -282,28 +297,35 @@ const Calendar: FC<Props> = ({
   // -------------------------------
   const handleRangeSelection = useCallback(
     (day: number) => {
-      if (state.range.from && state.range.to && state.range.from === state.range.to && state.range.from === day) {
-        dispatchState({ type: "RESET_RANGE"});
+      const { from, to } = state.range;
+      if (from !== null && to !== null && from === to && from === day) {
+        dispatchState({ type: "RESET_RANGE" });
         return;
       }
-      if (!state.range.from) {
+      if (from == null) {
         dispatchState({ type: "SET_FROM", payload: day });
         return;
       }
-      if (state.range.from && !state.range.to) {
-        if (day > state.range.from) {
-        onChange({from:state.range.from, to:day});
-        dispatchState({ type: "SET_TO", payload: day });
-
-        } else{
-          onChange({from:day, to:state.range.from});
-          dispatchState({ type: "SET_RANGE", payload: {from:day,to:state.range.from} });
-        } 
-        return;
+      if (from !== null && to == null) {
+        if (day > from) {
+          onChange({ from, to: day });
+          dispatchState({
+            type: "SET_RANGE",
+            payload: { from: from, to: day },
+          });
+          return;
+        } else {
+          onChange({ from: day, to: from });
+          dispatchState({
+            type: "SET_RANGE",
+            payload: { from: day, to: from },
+          });
+          return;
+        }
       }
-      dispatchState({ type: "CHANGE_HOVERED_DAY", payload: day });
+      dispatchState({ type: "SET_FROM", payload: day });
     },
-    [ state, onChange]
+    [state.range, onChange]
   );
 
   // -------------------------------
@@ -314,8 +336,14 @@ const Calendar: FC<Props> = ({
       if (model === "range") handleRangeSelection(timestamp);
       else if (selectMultiple) {
         dispatchState({ type: "SET_MULTIPLE", payload: timestamp });
+        if (state.multiple.includes(timestamp)) {
+          onChange(state.multiple.filter((i) => i !== timestamp));
+        } else {
+          onChange([...state.multiple, timestamp]);
+        }
       } else {
         dispatchState({ type: "SET_DATE", payload: timestamp });
+        onChange(timestamp);
       }
     },
     [model, handleRangeSelection, onChange]
@@ -392,16 +420,20 @@ const Calendar: FC<Props> = ({
         isHoliday;
       const isToday = isEqualDays(day.timestamp, todayTimestamp);
       const isSelected =
-        model === "date" && selectMultiple ?  state.multiple.includes(day.timestamp):isEqualDays(day.timestamp, state.date)
+        model === "date" && selectMultiple
+          ? state.multiple.includes(day.timestamp)
+          : isEqualDays(day.timestamp, state.date);
       const isHoveredDay =
         model === "range" &&
         state.range.from &&
         !state.range.to &&
         (state.hoveredDay as number) >= day.timestamp &&
         day.timestamp > state.range.from;
-      const isColSelected = false//state.multiple?.includes(day.timestamp);
-      const isFrom = model === "range" && isEqualDays(day.timestamp, state.range.from);
-      const isTo = model === "range" && isEqualDays(day.timestamp, state.range.to);
+      const isColSelected = false; //state.multiple?.includes(day.timestamp);
+      const isFrom =
+        model === "range" && isEqualDays(day.timestamp, state.range.from);
+      const isTo =
+        model === "range" && isEqualDays(day.timestamp, state.range.to);
       const isInRange =
         model === "range" &&
         state.range.from &&
@@ -418,7 +450,7 @@ const Calendar: FC<Props> = ({
             disabled={isDisabled}
             onClick={() => day.currentMonth && handleDateClick(day.timestamp)}
             onMouseOver={() => {
-              if (!state.range.to && state.hoveredDay) {
+              if (state.range.from !== null && state.range.to == null) {
                 dispatchState({
                   type: "CHANGE_HOVERED_DAY",
                   payload: day.timestamp,
@@ -516,7 +548,6 @@ const Calendar: FC<Props> = ({
     6: 5, // پنجشنبه
     0: 6, // جمعه
   };
-
   const renderCalendar = (year: number, month: number) => {
     const days = getCalendarDays(year, month);
     const weekNames =
@@ -525,7 +556,6 @@ const Calendar: FC<Props> = ({
         : ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
     const handleWeekDaySelect = (e: any, weekdayIndex: number) => {
       e.preventDefault();
-      dispatchState({ type: "CHANGE_HOVERED_DAY", payload: null });
 
       const filtered = days.filter((d) => {
         if (!d.currentMonth) return false;
@@ -537,13 +567,20 @@ const Calendar: FC<Props> = ({
         const expected = jalaliMap[weekdayIndex as 0 | 1 | 2 | 3 | 4 | 5 | 6];
         return jDay === expected;
       });
-      const col = filtered.map((d) =>(d.timestamp))
-      const isEqual = (arr1: number[], arr2: number[]) =>
-        arr1.length === arr2.length && arr1.every((v, i) => v === arr2[i]);
+      const col = filtered.map((d) => d.timestamp);
       dispatchState({
         type: "SET_WEEK_DAYS",
-        payload: {multiple:isEqual(col, state.multiple) ? [] : col,index:jmoment(col[0]).day()},
+        payload: {
+          multiple: col,
+        },
       });
+      const allExist = col.every((c) => state.multiple.includes(c));
+
+      onChange(
+        allExist
+          ? state.multiple.filter((i) => !col.includes(i))
+          : Array.from(new Set([...state.multiple, ...col]))
+      );
     };
 
     return (
@@ -555,30 +592,24 @@ const Calendar: FC<Props> = ({
           style={{ ...WeekHeaderStyle }}
         >
           {weekNames.map((name, i) => {
-            console.log(i,state.weekDay)
-            const isSelectedCol =
-              state.weekDay !==null
-                ? locale == "fa"
-                  ? state.weekDay ==
-                    jalaliMap[i as 0 | 1 | 2 | 3 | 4 | 5 | 6]
-                  : new Date(state.weekDay).getDay() == i
-                : false;
+            const filtered = days.filter((d) => {
+              if (!d.currentMonth) return false;
+              const date = new Date(d.timestamp);
+              if (locale === "en") {
+                return date.getDay() === i;
+              }
+              const jDay = jmoment(date).day();
+              const expected = jalaliMap[i as 0 | 1 | 2 | 3 | 4 | 5 | 6];
+              return jDay === expected;
+            });
+            const col = filtered.map((d) => d.timestamp);
+            const isSelectedCol = col.every((c) => state.multiple.includes(c));
             return (
               <button
                 key={i}
-                disabled={!selectableCols}
+                disabled={!selectableCols || model == "range"}
                 className={`${style.flex} ${style.justify_center} 
               ${style.items_center}  ${style.w_full} ${style.border_none} ${WeekHeaderClassName} ${style.bg_none}  `}
-                // style={{
-                //   fontSize: "14px",
-                //   cursor: "pointer",
-                //   // color: isSelectedCol ? backgroundColor : tertiaryColor,
-                //   // background: isSelectedCol ? secondaryColor : undefined,
-                //   ...(renderColStyle
-                //     ? renderColStyle({ isSelectedCol, name, index: i })
-                //     : {}),
-                //   ...WeekHeaderStyle,
-                // }}
                 onClick={(e) => handleWeekDaySelect(e, i)}
               >
                 {renderColContent ? (
@@ -594,7 +625,7 @@ const Calendar: FC<Props> = ({
               ${style.items_center} 
               ${style.rounded_md} 
               ${style.w_6} ${style.aspect_square} ${style.text_center} ${
-                      selectableCols && style.cursor_pointer
+                      model == "date" && selectableCols && style.cursor_pointer
                     }`}
                     style={{
                       position: "relative",
@@ -625,6 +656,7 @@ const Calendar: FC<Props> = ({
       </>
     );
   };
+  useEffect(() => {}, [value]);
 
   // -------------------------------
   // MAIN RENDER

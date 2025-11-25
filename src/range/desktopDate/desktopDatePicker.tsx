@@ -14,7 +14,6 @@ import styles from '../../main.module.css';
 import { Footer } from '../core/footer';
 import {
   getTimestamp,
-  getWeekDayName,
   toPersianDigits,
 } from '../core/helper';
 import type {
@@ -26,7 +25,6 @@ import { useRenderPosition } from '../exportComponents/useRenderPosition';
 import { CalenderIcon } from '../icons/CalenderIcon';
 import { ClearIcon } from '../icons/ClearIcon';
 import { DatePicker } from '../persianDatePicker';
-import { WeekDaySelectResponse } from '../persianDatePicker/Calendar';
 import { DesktopTimePicker } from './desktopTimePicker';
 
 interface IProps extends Omit<IDateProps, "locale"> {}
@@ -55,7 +53,7 @@ export function DesktopDatePicker({ ...props }: IProps) {
     allowClear,
     onClear,
     value,
-    onWeekdaySelect,
+
     calendarType = "shamsi",
   } = props;
   const isFa = calendarType === "shamsi";
@@ -138,15 +136,6 @@ export function DesktopDatePicker({ ...props }: IProps) {
   const handleSetTime = (timestamp: number) => {
     setShowDate({ from: timestamp, to: NaN });
   };
-  const handleWeekDaySelect = (e: WeekDaySelectResponse[]) => {
-    if (e.length > 0) {
-      setTitle(getWeekDayName(e[0].indexOfDay, isFa));
-      onWeekdaySelect?.(e);
-    } else if (e?.length == 0) {
-      setTitle(placeholder);
-    }
-  };
-
   const changeHandler = (e: number) => {
     if (!e) return;
     setShowDate({ from: e, to: NaN });
@@ -318,7 +307,6 @@ export function DesktopDatePicker({ ...props }: IProps) {
                 defaultValue={
                   defaultValue ? { from: defaultValue, to: 0 } : undefined
                 }
-                onWeekdaySelect={handleWeekDaySelect}
                 locale={isFa ? "fa" : "en"}
                 model="date"
                 calendarBaseWidth={calendarBaseWidth}

@@ -116,7 +116,6 @@ export interface IDateProps
     isSelectedCol: boolean;
     name: string;
   }) => ReactNode;
-  onWeekdaySelect?: (e: WeekDaySelectResponse[]) => void;
   WeekHeaderClassName?: string;
   WeekHeaderStyle?: React.CSSProperties;
 }
@@ -246,7 +245,6 @@ export interface IBaseProps extends IRangeOptions {
     isSelectedCol: boolean;
     name: string;
   }) => ReactNode;
-  onWeekdaySelect?: (e: WeekDaySelectResponse[]) => void;
   WeekHeaderClassName?: string;
   WeekHeaderStyle?: React.CSSProperties;
 }
@@ -359,16 +357,6 @@ export interface IRangePickerProps
   onChange?: (e: HandleParams) => void;
 }
 export interface IDatePickerProps extends Omit<IDateProps, "locale"> { }
-interface WeekDaySelectResponse {
-  indexOfDay: number;
-  month: number;
-  year: number;
-  timestamp: number;
-  gregorian: string;
-  jalali: string;
-  isoGregorian: string;
-  isoJalali: string;
-}
 interface BaseCalendarProps
   extends Omit<IProps, "dateFromOutside" | "locale" | "onDateChange" | "defaultValue" | "value"> {
   model?: "date" | "range"
@@ -406,7 +394,6 @@ interface BaseCalendarProps
     isSelectedCol: boolean;
     name: string;
   }) => ReactNode;
-  onWeekdaySelect?: (e: WeekDaySelectResponse[]) => void;
   WeekHeaderClassName?: string;
   WeekHeaderStyle?: React.CSSProperties;
 }
