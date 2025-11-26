@@ -4,7 +4,7 @@ import type {
   SetStateAction,
 } from 'react';
 
-import { IProps } from '../persianDatePicker/type';
+import { ITimePickerProps } from '../persianDatePicker/type';
 
 export type ExportType = "timeStamp" | "IsoString";
 
@@ -304,31 +304,6 @@ export interface IMaskProps
 }
 
 
-export interface ITimePickerProps {
-  className?: string
-  defaultValue?: IDate["from"];
-  value?: IDate["from"];
-  Style?: React.CSSProperties;
-  calendarType?: "shamsi" | "gregorian";
-  onChange?: (e: number | string) => void;
-  containerClassName?: string;
-  okButtonClassName?: string;
-  nowButtonClassName?: string;
-  timeButtonClassName?: string;
-  displayButtonCount?: number;
-  icon?: ReactNode | null;
-  tertiaryColor?: string;
-  highlightColor?: string;
-  format?: string;
-  showNow?: boolean;
-  showSecond?: boolean;
-  hourStep?: number;
-  minuteStep?: number;
-  secondStep?: number;
-  disabled?: boolean;
-  exportType?: ExportType;
-  placeholder?: string | ReactNode | boolean
-}
 export interface ISubmittedData {
   date: IDate;
   compareDate: IDate | null;

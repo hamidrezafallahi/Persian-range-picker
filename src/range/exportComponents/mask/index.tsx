@@ -14,10 +14,10 @@ import {
 } from '../../core/helper';
 import type {
   IDate,
-  IMaskProps,
   TLocale,
 } from '../../core/type';
 import { ClearIcon } from '../../icons/ClearIcon';
+import { IMaskProps } from '../../persianDatePicker/type';
 
 type TimeZone = "year" | "month" | "day";
 const defaultErrorClass = `${style.border_red_700}`;
@@ -60,7 +60,7 @@ export function Mask({ ...props }: IMaskProps) {
 
   const initialTemp = timestampToDateNumbers(
     locale,
-    getTimestamp(defaultValue)
+    getTimestamp(defaultValue as number|string)
   );
 
   const [separatedValue, setSeparatedValue] = useState(initialTemp);
@@ -71,7 +71,7 @@ export function Mask({ ...props }: IMaskProps) {
 
   const [baseValue, setBaseValue] = useState<IDate["from"] | null>(
     defaultValue
-      ? getTimestamp(defaultValue) ?? 0
+      ? getTimestamp(defaultValue as number|string)
       : isTodaySelectPreset
       ? today
       : null
@@ -727,8 +727,8 @@ export function Mask({ ...props }: IMaskProps) {
   useEffect(() => {
     if (value === null) {
       handleClearMask();
-    } else if (value && getTimestamp(value) !== baseValue) {
-      const dateValues = timestampToDateNumbers(locale, getTimestamp(value));
+    } else if (value && getTimestamp(value as number|string) !== baseValue) {
+      const dateValues = timestampToDateNumbers(locale, getTimestamp(value as number|string));
       const [year, month, day] = dateValues;
       const temp = `${convertPersianToEnglishNumbers(
         year
@@ -742,7 +742,7 @@ export function Mask({ ...props }: IMaskProps) {
         convertPersianToEnglishNumbers(month).toString(),
         convertPersianToEnglishNumbers(day).toString(),
       ]);
-      setBaseValue(getTimestamp(value)!);
+      setBaseValue(getTimestamp(value as number|string)!);
     }
   }, [value]);
   const fontSize = useMemo(() => {

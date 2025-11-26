@@ -1,8 +1,5 @@
 import {
   FC,
-  memo,
-  ReactNode,
-  RefObject,
   useCallback,
   useEffect,
   useReducer,
@@ -11,10 +8,6 @@ import {
 import jmoment from 'moment-jalaali';
 
 import style from '../../main.module.css';
-import type {
-  IDate,
-  TLocale,
-} from '../core/type';
 import DataPickerBody from './dataPickerBody';
 import DatePickerHeader from './datePickerHeader';
 import { CalendarViews } from './enum';
@@ -24,78 +17,14 @@ import {
   isEqualDays,
 } from './helper';
 import MonthPicker from './monthPicker';
-import { CalendarAction } from './type';
+import {
+  CalendarAction,
+  CalendarProps2,
+} from './type';
 import YearPicker from './yearPicker';
 
 const todayTimestamp = new Date().setHours(0, 0, 0, 0);
 const today = jmoment();
-export interface WeekDaySelectResponse {
-  indexOfDay: number;
-  month: number;
-  year: number;
-  timestamp: number;
-  gregorian: string;
-  jalali: string;
-  isoGregorian: string;
-  isoJalali: string;
-}
-interface Props {
-  manualContainerRef?: RefObject<HTMLDivElement | null>;
-  onChange: (e: number | number[] | IDate) => void;
-  // Display & behavior
-  model?: "range" | "date";
-  value?: number | number[] | IDate | null;
-  defaultValue?: number | number[] | IDate | null;
-  locale?: TLocale;
-  disablePreviousDays?: boolean;
-  // Custom render
-  renderDayFn?: (
-    day: { timestamp: number; currentMonth: boolean },
-    index: number
-  ) => ReactNode;
-  renderDayStyle?: (args: {
-    timestamp?: number;
-    isSpecial?: boolean;
-    isSelected?: boolean;
-    isDisabled?: boolean;
-    isToday?: boolean;
-    isInRange?: boolean;
-    isFrom?: boolean;
-    isTo?: boolean;
-  }) => React.CSSProperties;
-  renderColStyle?: (args: {
-    isSelectedCol: boolean;
-    name: string;
-    index: number;
-  }) => React.CSSProperties;
-  renderDayContent?: (info: {
-    day: string | number;
-    timestamp: number;
-    isSpecial: boolean;
-  }) => ReactNode;
-  selectableCols?: boolean;
-  renderColContent?: (info: {
-    isSelectedCol: boolean;
-    name: string;
-  }) => ReactNode;
-  WeekHeaderClassName?: string;
-  WeekHeaderStyle?: React.CSSProperties;
-  // State
-  specialDays?: number[];
-  disabledDays?: number[];
-  // Styles
-  primaryColor?: string;
-  backgroundColor?: string;
-  highlightColor?: string;
-  secondaryColor?: string;
-  tertiaryColor?: string;
-  calendarBaseWidth?: number;
-  containerClassName?: string;
-  datePickerHeaderClassName?: string;
-  datePickerBodyClassName?: string;
-  yearPickerClassName?: string;
-  selectMultiple?: boolean;
-}
 
 interface CalendarState {
   year: number;
@@ -108,7 +37,7 @@ interface CalendarState {
   multiple: number[];
 }
 
-const Calendar: FC<Props> = ({
+export const Calendar: FC<CalendarProps2> = ({
   onChange,
   model = "date",
   locale = "fa",
@@ -170,7 +99,10 @@ const Calendar: FC<Props> = ({
 
     mode: "date",
     multiple:
-      model == "date" && selectMultiple && defaultValue && Array.isArray(defaultValue)
+      model == "date" &&
+      selectMultiple &&
+      defaultValue &&
+      Array.isArray(defaultValue)
         ? [
             ...(defaultValue as (number | string)[]).map((i) =>
               new Date(i as number).valueOf()
@@ -218,7 +150,7 @@ const Calendar: FC<Props> = ({
           range: { from: null, to: null },
           date: null,
           hoveredDay: null,
-          multiple:action.payload.multiple,
+          multiple: action.payload.multiple,
         };
       case "HOVER":
         return { ...state, hoveredDay: action.payload };
@@ -277,7 +209,6 @@ const Calendar: FC<Props> = ({
     }
   }
   const [state, dispatchState] = useReducer(reducer, initialState);
-console.log(state)
   // -------------------------------
   // NAVIGATION HANDLERS
   // -------------------------------
@@ -325,14 +256,14 @@ console.log(state)
       }
       if (from !== null && to == null) {
         if (day > from) {
-          onChange({ from, to: day });
+          onChange?.({ from, to: day });
           dispatchState({
             type: "SET_RANGE",
             payload: { from: from, to: day },
           });
           return;
         } else {
-          onChange({ from: day, to: from });
+          onChange?.({ from: day, to: from });
           dispatchState({
             type: "SET_RANGE",
             payload: { from: day, to: from },
@@ -354,13 +285,13 @@ console.log(state)
       else if (selectMultiple) {
         dispatchState({ type: "SET_MULTIPLE", payload: timestamp });
         if (state.multiple.includes(timestamp)) {
-          onChange(state.multiple.filter((i) => i !== timestamp));
+          onChange?.(state.multiple.filter((i) => i !== timestamp));
         } else {
-          onChange([...state.multiple, timestamp]);
+          onChange?.([...state.multiple, timestamp]);
         }
       } else {
         dispatchState({ type: "SET_DATE", payload: timestamp });
-        onChange(timestamp);
+        onChange?.(timestamp);
       }
     },
     [model, handleRangeSelection, onChange]
@@ -485,12 +416,10 @@ console.log(state)
               pointerEvents: isDisabled ? "none" : "auto",
               opacity: isDisabled ? 0.5 : day.currentMonth ? 1 : 0,
               color:
-                isTo || isFrom || isSelected 
-                  ? backgroundColor
-                  : tertiaryColor,
+                isTo || isFrom || isSelected ? backgroundColor : tertiaryColor,
               border: isToday ? `2px solid ${secondaryColor}` : "none",
               background:
-                isTo || isFrom 
+                isTo || isFrom
                   ? secondaryColor
                   : isSelected
                   ? tertiaryColor
@@ -506,7 +435,7 @@ console.log(state)
                     // isColSelected,
                     isDisabled,
                     isToday,
-                    isInRange: !!isInRange, 
+                    isInRange: !!isInRange,
                     isFrom,
                     isTo,
                   })
@@ -591,7 +520,7 @@ console.log(state)
       });
       const allExist = col.every((c) => state.multiple.includes(c));
 
-      onChange(
+      onChange?.(
         allExist
           ? state.multiple.filter((i) => !col.includes(i))
           : Array.from(new Set([...state.multiple, ...col]))
@@ -677,7 +606,7 @@ console.log(state)
         if (selectMultiple && Array.isArray(value)) {
           dispatchState({
             type: "SET_MULTIPLE_BY_ARRAY",
-            payload: { multiple: value },
+            payload: { multiple: value.map(v=>new Date(v).valueOf()) },
           });
         } else {
           dispatchState({
@@ -758,4 +687,4 @@ console.log(state)
   );
 };
 
-export default memo(Calendar);
+  

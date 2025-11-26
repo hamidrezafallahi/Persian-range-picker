@@ -11,88 +11,32 @@ import { CalendarViews } from './enum';
 
 export type DateValue =
   | IDate                 // RANGE
-  | number                // Single date
-  | number[];             // Multiple date
-
-export interface IProps {
-  onDateChange?: (e: IDate) => void;
-  tabIndex?: number;
-  value?: IDate | null;
-  defaultValue?: IDate | null;
-  inputClassName?: string;
-  model?: "range" | "date";
-  name?: string;
-  disablePreviousDays?: boolean;
-  calenderClassName?: string;
-  renderDayFn?: (
-    day: { timestamp: number; currentMonth: boolean },
-    index: number
-  ) => ReactNode;
-  label?: string;
-  locale: TLocale;
-  onClear?: () => void;
-  padding?: string;
-  disabled?: boolean;
-  datePickerBodyClassName?: string;
-  chooseTodayClassName?: string;
+  | number  
+  | string              // Single date
+  | number[]
+  | string[]
+  |null;             // Multiple date
+export type ExportType = "timeStamp" | "IsoString";
+export type CalendarType = "jalali" | "gregorian";
+export interface IColorProps {
   primaryColor?: string;
-  backgroundColor?: string;
-  tertiaryColor?: string;
-  highlightColor?: string;
-  accentColor?: string;
   secondaryColor?: string;
+  accentColor?: string;
+  tertiaryColor?: string;
+  dangerColor?: string;
+  backgroundColor?: string;
+  highlightColor?: string;
   neutralColor?: string;
-  calendarBaseWidth?: number;
-
-  renderDayStyle?: (args: {
-    timestamp?: number;
-    isSpecial?: boolean;
-    isSelected?: boolean;
-    isDisabled?: boolean;
-    isToday?: boolean;
-    isInRange?: boolean;
-    isFrom?: boolean;
-    isTo?: boolean;
-  }) => React.CSSProperties;
-  renderColStyle?: (args: {
-    isSelectedCol: boolean;
-    name: string;
-    index: number;
-  }) => React.CSSProperties;
-  renderDayContent?: (info: {
-    day: string | number;
-    timestamp: number;
-    isSpecial: boolean;
-  }) => ReactNode;
-  selectableCols?: boolean
-  renderColContent?: (info: {
-    isSelectedCol: boolean;
-    name: string;
-  }) => ReactNode;
-  WeekHeaderClassName?: string;
-  WeekHeaderStyle?: React.CSSProperties;
-
 }
-export interface WeekDaySelectResponse {
-  indexOfDay: number;
-  month: number;
-  year: number;
-  timestamp: number;
-  gregorian: string;
-  jalali: string;
-  isoGregorian: string;
-  isoJalali: string;
-}
-export interface CalendarProps {
+
+export interface CalendarProps2 extends IColorProps {
   manualContainerRef?: RefObject<HTMLDivElement | null>;
-  onChange: (e: DateValue) => void;
-  // Display & behavior
+  onChange?: (e:DateValue) => void;
   model?: "range" | "date";
+  value?:DateValue;
+  defaultValue?: DateValue;
   locale?: TLocale;
   disablePreviousDays?: boolean;
-  value?: IDate | null;
-  defaultValue?: IDate | null;
-  // Custom render
   renderDayFn?: (
     day: { timestamp: number; currentMonth: boolean },
     index: number
@@ -117,33 +61,113 @@ export interface CalendarProps {
     timestamp: number;
     isSpecial: boolean;
   }) => ReactNode;
-  selectableCols?: boolean
+  selectableCols?: boolean;
   renderColContent?: (info: {
     isSelectedCol: boolean;
     name: string;
   }) => ReactNode;
   WeekHeaderClassName?: string;
   WeekHeaderStyle?: React.CSSProperties;
-  // State
-  startDate?: number;
-  endDate?: number;
   specialDays?: number[];
   disabledDays?: number[];
-  // Styles
-  primaryColor?: string;
-  backgroundColor?: string;
-  highlightColor?: string;
-  secondaryColor?: string;
-  tertiaryColor?: string;
+ 
   calendarBaseWidth?: number;
   containerClassName?: string;
   datePickerHeaderClassName?: string;
   datePickerBodyClassName?: string;
   yearPickerClassName?: string;
-  selectMultiple?: boolean
+  selectMultiple?: boolean;
+  exportType?: ExportType;
+  calendarType?: CalendarType;
+
+  // onDateChange?: (e: IDate) => void;
+  // tabIndex?: number;
+  // inputClassName?: string;
+  // name?: string;
+  // calenderClassName?: string;
+  // label?: string;
+  // onClear?: () => void;
+  // padding?: string;
+  // disabled?: boolean;
+  // chooseTodayClassName?: string;
+  // accentColor?: string;
+  // neutralColor?: string;
 
 }
 
+export interface DesktopProps2 extends CalendarProps2, ITimePickerProps {
+  showTime?:boolean
+  chooseTodayClassName?:string
+  showTimeFormat?:string
+  isOpenDropdown?:boolean
+  showMask?:boolean
+  allowClear?:boolean
+  onClear?:()=>void
+}
+
+
+export interface ITimePickerProps extends IColorProps {
+  className?: string
+  Style?: React.CSSProperties;
+  containerClassName?: string;
+  okButtonClassName?: string;
+  nowButtonClassName?: string;
+  timeButtonClassName?: string;
+  displayButtonCount?: number;
+  icon?: ReactNode | null;
+  format?: string;
+  showNow?: boolean;
+  showSecond?: boolean;
+  hourStep?: number;
+  minuteStep?: number;
+  secondStep?: number;
+  disabled?: boolean;
+  exportType?: ExportType;
+  placeholder?: string | ReactNode | boolean
+
+}
+
+export interface IMaskProps extends IColorProps {
+  maskClassName?:string
+  defaultValue?: DateValue;
+  value?:DateValue;
+  onError?: (e: string) => void;
+  onMaskChange?: (e: DateValue) => void;
+  calendarType?: CalendarType
+  inputClassName?: string;
+  suffix?: ReactNode | boolean;
+  prefix?: ReactNode | boolean;
+  maskHeight?: number;
+  MaskFontStyle?: Pick<
+    React.CSSProperties,
+    "fontFamily" | "fontSize" | "color"
+  >;
+  ErrorClass?: string;
+  allowClear?: boolean;
+  onClear?: () => void
+  dir?: "ltr" | "rtl";
+
+  disabled?: boolean;
+  maskPlaceHolder?: string;
+  isTodaySelectPreset?: boolean;
+  exportType?: ExportType;
+  Style?: React.CSSProperties;
+
+}
+export interface DesktopTimePickerProps extends IColorProps {
+  defaultValue?: number;
+  calendarType?: CalendarType
+  containerClassName?: string;
+  displayButtonCount?: number;
+  format?: string;
+  hourStep?: number;
+  minuteStep?: number;
+  secondStep?: number;
+  onGetValue?: (e: number) => void;
+  onChange?: (e: number) => void;
+  showSecond?: boolean;
+}
+ 
 
 export type CalendarAction =
   { type: "SET_FROM"; payload: number | null }

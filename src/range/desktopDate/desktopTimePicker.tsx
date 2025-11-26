@@ -9,28 +9,15 @@ import moment from 'moment-jalaali';
 import style from '../../main.module.css';
 import { toPersianDigits } from '../core/helper';
 import { TimeColumns } from '../exportComponents/timePicker/exportComponents';
+import { DesktopTimePickerProps } from '../persianDatePicker/type';
 
 type TUnit = "hour" | "minute" | "second";
 
-interface Props {
-  defaultValue?: number;
-  calendarType?: "shamsi" | "gregorian";
-  containerClassName?: string;
-  displayButtonCount?: number;
-  tertiaryColor?: string;
-  highlightColor?: string;
-  format?: string;
-  hourStep?: number;
-  minuteStep?: number;
-  secondStep?: number;
-  onGetValue?: (e: number) => void;
-  onChange?: (e: number) => void;
-  showSecond?: boolean;
-}
 
-export const DesktopTimePicker: React.FC<Props> = ({
+
+export const DesktopTimePicker: React.FC<DesktopTimePickerProps> = ({
   defaultValue,
-  calendarType = "shamsi",
+  calendarType = "jalali",
   containerClassName,
   displayButtonCount = 6,
   tertiaryColor = "#939393",
@@ -39,10 +26,10 @@ export const DesktopTimePicker: React.FC<Props> = ({
   secondStep = 1,
   onGetValue,
   showSecond = false,
-}: Props) => {
+}) => {
   const [time, setTime] = useState<number | null>(null);
   const buttonRefs = useRef<(HTMLButtonElement | null)[]>([]);
-  const locale = calendarType == "shamsi" ? "fa" : "en";
+  const locale = calendarType == "jalali" ? "fa" : "en";
 
   const renderHeight =
     displayButtonCount * (buttonRefs.current[0]?.offsetHeight ?? 24) +

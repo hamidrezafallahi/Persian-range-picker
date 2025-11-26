@@ -1,10 +1,11 @@
 import { useState } from 'react';
 
-import Calendar from '../range/persianDatePicker/Calendar';
+import { DatePicker } from '../range';
 
 export default function DemoComponent() {
   const [val, setVal] = useState<any>();
-  const time ={from: 1764534600000, to: 1765312200000} //[1765053000000,1765139400000,1765398600000];
+  const time =new Date(1765744200000).toISOString()//{from: 1764534600000, to: 1765312200000} //[1765053000000,1765139400000,1765398600000];
+ 
   return (
     <>
       <button
@@ -17,8 +18,9 @@ export default function DemoComponent() {
       </button>
       <button
         onClick={() => {
+          setVal(1766089800000)
           //setVal([1765830600000, 1765917000000, 1766089800000])
-          setVal({from: 1765744200000, to: 1766003400000});
+          // setVal({from: 1765744200000, to: 1766003400000});
         }}
       >
         set rand
@@ -26,7 +28,7 @@ export default function DemoComponent() {
       <div
       // style={{padding:"12px"}}
       >
-        {/* <DatePicker
+        <DatePicker
           onChange={(e) => {
             setVal(e);
             console.log(e);
@@ -38,7 +40,7 @@ export default function DemoComponent() {
           // calendarType='gregorian'
           defaultValue={time}
           value={val}
-          // showMask
+          showMask
           allowClear
           selectableCols
           specialDays={[1762288200000, 1763411400000]}
@@ -56,24 +58,24 @@ export default function DemoComponent() {
           //     </span>
           //   </>
           // )}
-          renderColContent={({ name, isSelectedCol }) => (
-            <span
-              style={{
-                color: isSelectedCol ? "#fff" : undefined,
-                background: isSelectedCol ? "#767676ff" : undefined,
-                minWidth: "24px",
-                height: "24px",
-                borderRadius: "8px",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              {name}
-            </span>
-          )}
+          // renderColContent={({ }) => (
+          //   <span
+          //     style={{
+          //       color: isSelectedCol ? "#fff" : undefined,
+          //       background: isSelectedCol ? "#767676ff" : undefined,
+          //       minWidth: "24px",
+          //       height: "24px",
+          //       borderRadius: "8px",
+          //       display: "flex",
+          //       justifyContent: "center",
+          //       alignItems: "center",
+          //     }}
+          //   >
+          //     {name}
+          //   </span>
+          // )}
           // icon ={false}
-        /> */}
+        />
       </div>
       {/* <DesktopDatePicker
         calendarType="gregorian"
@@ -139,10 +141,10 @@ export default function DemoComponent() {
           console.log(e);
         }}
       /> */}
-      <div style={{ padding: "12px" }}>
+      {/* <div style={{ padding: "12px" }}>
         <Calendar
         selectMultiple
-          model="range"
+          // model="range"
           // disablePreviousDays
           // selectableCols
           defaultValue={time}
@@ -197,7 +199,7 @@ export default function DemoComponent() {
           //   </span>
           // )}
         />
-      </div>
+      </div> */}
       {/*<Calendar
         model="range"
         // disablePreviousDays

@@ -1,10 +1,8 @@
 // import type { ChangeEvent } from "react";
 
-import moment from 'moment-jalaali';
-
 import style from '../../main.module.css';
 import Comparison from '../comparison';
-import { DatePicker } from '../persianDatePicker';
+import { DatePicker } from '../exportComponents/datePicker';
 import MaskRange from './maskRange';
 import MonthPicker from './monthPicker';
 import type {
@@ -67,12 +65,12 @@ const Manual = (props: IBaseProps) => {
       />
       <DatePicker
         {...props}
-        name="custom range"
+ 
         value={date!}
-        onDateChange={(e: IDate) => {
+        onChange={(e) => {
           setDate?.({
-            from: e.from,
-            to: e.to !== null ? moment(e.to).locale("fa").clone().endOf("day").valueOf(): e.to,
+            from: e,
+            to:null
           });
           setZone?.("manual");
           setStep?.(ESteps.manual);

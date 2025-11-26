@@ -30,9 +30,9 @@ const DatePickerHeader: FC<Props> = ({
   onViewChange,
   locale,
   datePickerHeaderClassName,
-  tertiaryColor = "#939393", //رنگ سوم، معمولاً برای جزئیات یا عناصر کم‌اهمیت‌تر   -  رنگ متن
-  highlightColor = "#f4f4f4", //رنگ برجسته‌کننده برای هاور، نوتیف یا نقاط توجه
-  secondaryColor = "#585858", //رنگ فرعی یا مکمل برای تأکید ثانویه   - متن #585858   ,
+  tertiaryColor = "#939393",
+  highlightColor = "#f4f4f4",
+  secondaryColor = "#585858",
 }) => {
   const currentMonth = locale === "fa" ? PmonthMap[month] : monthMap[month];
 
