@@ -4,19 +4,21 @@ import Calendar from '../range/persianDatePicker/Calendar';
 
 export default function DemoComponent() {
   const [val, setVal] = useState<any>();
-  const time = 1761510600000//{ from: 1761510600000, to: 1763065799999 };
+  const time ={from: 1764534600000, to: 1765312200000} //[1765053000000,1765139400000,1765398600000];
   return (
     <>
       <button
         onClick={() => {
-           setVal(null)//setVal({from: null, to: null});
+            //setVal(null)
+          setVal(null);
         }}
       >
         set null
       </button>
       <button
         onClick={() => {
-          setVal(1762720199999)//{from: 1762374600000, to: 1762720199999});
+          //setVal([1765830600000, 1765917000000, 1766089800000])
+          setVal({from: 1765744200000, to: 1766003400000});
         }}
       >
         set rand
@@ -139,13 +141,13 @@ export default function DemoComponent() {
       /> */}
       <div style={{ padding: "12px" }}>
         <Calendar
-        // selectMultiple
-          // model="range"
+        selectMultiple
+          model="range"
           // disablePreviousDays
           // selectableCols
-          // defaultValue={time}
+          defaultValue={time}
           // locale="fa"
-          // value={val}
+          value={val}
           onChange={(e: any) => {
             console.log(e);
             setVal(e);

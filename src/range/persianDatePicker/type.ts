@@ -63,14 +63,12 @@ export interface IProps {
     day: string | number;
     timestamp: number;
     isSpecial: boolean;
-    isColSelected: boolean;
   }) => ReactNode;
   selectableCols?: boolean
   renderColContent?: (info: {
     isSelectedCol: boolean;
     name: string;
   }) => ReactNode;
-  onWeekdaySelect?: (e: WeekDaySelectResponse[]) => void;
   WeekHeaderClassName?: string;
   WeekHeaderStyle?: React.CSSProperties;
 
@@ -118,14 +116,12 @@ export interface CalendarProps {
     day: string | number;
     timestamp: number;
     isSpecial: boolean;
-    isColSelected: boolean;
   }) => ReactNode;
   selectableCols?: boolean
   renderColContent?: (info: {
     isSelectedCol: boolean;
     name: string;
   }) => ReactNode;
-  onWeekdaySelect?: (e: WeekDaySelectResponse[]) => void;
   WeekHeaderClassName?: string;
   WeekHeaderStyle?: React.CSSProperties;
   // State
@@ -153,9 +149,10 @@ export type CalendarAction =
   { type: "SET_FROM"; payload: number | null }
   | { type: "SET_TO"; payload: number | null }
   | { type: "SET_DATE"; payload: number | null }
-  | { type: "SET_RANGE"; payload: { from: number|null, to:  number|null } }
+  | { type: "SET_RANGE"; payload: { from: number | null, to: number | null } }
   | { type: "SET_MULTIPLE"; payload: number }
-  | { type: "SET_WEEK_DAYS"; payload: {multiple:number[]}}
+  | { type: "SET_WEEK_DAYS"; payload: { multiple: number[] } }
+  | { type: "SET_MULTIPLE_BY_ARRAY"; payload: { multiple: number[] } }
   | { type: "CHANGE_HOVERED_DAY"; payload: number | null }
   | { type: "HOVER"; payload: any }
   | { type: "CHANGE_YEAR"; payload: number }

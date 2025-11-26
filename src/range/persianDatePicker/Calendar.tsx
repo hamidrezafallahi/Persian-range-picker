@@ -72,7 +72,6 @@ interface Props {
     day: string | number;
     timestamp: number;
     isSpecial: boolean;
-    isColSelected: boolean;
   }) => ReactNode;
   selectableCols?: boolean;
   renderColContent?: (info: {
@@ -171,7 +170,7 @@ const Calendar: FC<Props> = ({
 
     mode: "date",
     multiple:
-      model == "date" && selectMultiple && defaultValue
+      model == "date" && selectMultiple && defaultValue && Array.isArray(defaultValue)
         ? [
             ...(defaultValue as (number | string)[]).map((i) =>
               new Date(i as number).valueOf()
@@ -190,20 +189,36 @@ const Calendar: FC<Props> = ({
           ...state,
           multiple: [],
           hoveredDay: null,
+          date: null,
           range: { from: action.payload, to: null },
         };
       case "SET_TO":
         return { ...state, range: { ...state.range, to: action.payload } };
       case "SET_DATE":
-        return { ...state, date: action.payload };
+        return {
+          ...state,
+          multiple: [],
+          hoveredDay: null,
+          range: { from: null, to: null },
+          date: action.payload,
+        };
       case "SET_MULTIPLE":
         return {
           ...state,
           range: { from: null, to: null },
           date: null,
+          hoveredDay: null,
           multiple: state.multiple.includes(action.payload)
             ? state.multiple.filter((m) => m !== action.payload)
             : [...state.multiple, action.payload],
+        };
+      case "SET_MULTIPLE_BY_ARRAY":
+        return {
+          ...state,
+          range: { from: null, to: null },
+          date: null,
+          hoveredDay: null,
+          multiple:action.payload.multiple,
         };
       case "HOVER":
         return { ...state, hoveredDay: action.payload };
@@ -242,6 +257,8 @@ const Calendar: FC<Props> = ({
       case "SET_RANGE":
         return {
           ...state,
+          date: null,
+          multiple: [],
           range: { from: action.payload.from, to: action.payload.to },
           hoveredDay: action.payload.to,
         };
@@ -260,7 +277,7 @@ const Calendar: FC<Props> = ({
     }
   }
   const [state, dispatchState] = useReducer(reducer, initialState);
-
+console.log(state)
   // -------------------------------
   // NAVIGATION HANDLERS
   // -------------------------------
@@ -429,7 +446,6 @@ const Calendar: FC<Props> = ({
         !state.range.to &&
         (state.hoveredDay as number) >= day.timestamp &&
         day.timestamp > state.range.from;
-      const isColSelected = false; //state.multiple?.includes(day.timestamp);
       const isFrom =
         model === "range" && isEqualDays(day.timestamp, state.range.from);
       const isTo =
@@ -469,12 +485,12 @@ const Calendar: FC<Props> = ({
               pointerEvents: isDisabled ? "none" : "auto",
               opacity: isDisabled ? 0.5 : day.currentMonth ? 1 : 0,
               color:
-                isTo || isFrom || isSelected || isColSelected
+                isTo || isFrom || isSelected 
                   ? backgroundColor
                   : tertiaryColor,
               border: isToday ? `2px solid ${secondaryColor}` : "none",
               background:
-                isTo || isFrom || isColSelected
+                isTo || isFrom 
                   ? secondaryColor
                   : isSelected
                   ? tertiaryColor
@@ -490,7 +506,7 @@ const Calendar: FC<Props> = ({
                     // isColSelected,
                     isDisabled,
                     isToday,
-                    isInRange: !!isInRange, // 👈 اینجا
+                    isInRange: !!isInRange, 
                     isFrom,
                     isTo,
                   })
@@ -505,7 +521,6 @@ const Calendar: FC<Props> = ({
                       : currentDay.date(),
                   timestamp: day.timestamp,
                   isSpecial,
-                  isColSelected,
                 })
               : locale === "fa"
               ? currentDay.jDate().toLocaleString("fa")
@@ -656,7 +671,33 @@ const Calendar: FC<Props> = ({
       </>
     );
   };
-  useEffect(() => {}, [value]);
+  useEffect(() => {
+    if (value !== undefined) {
+      if (model === "date") {
+        if (selectMultiple && Array.isArray(value)) {
+          dispatchState({
+            type: "SET_MULTIPLE_BY_ARRAY",
+            payload: { multiple: value },
+          });
+        } else {
+          dispatchState({
+            type: "SET_DATE",
+            payload: new Date(value as number).valueOf(),
+          });
+        }
+      } else {
+        if (typeof value === "object" && !Array.isArray(value)) {
+          dispatchState({
+            type: "SET_RANGE",
+            payload: {
+              from: value?.from != null ? new Date(value.from).valueOf() : null,
+              to: value?.to != null ? new Date(value.to).valueOf() : null,
+            },
+          });
+        }
+      }
+    }
+  }, [value]);
 
   // -------------------------------
   // MAIN RENDER
