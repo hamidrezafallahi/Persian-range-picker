@@ -65,7 +65,6 @@ const Manual = (props: IBaseProps) => {
       />
       <DatePicker
         {...props}
- 
         value={date!}
         onChange={(e) => {
           setDate?.({

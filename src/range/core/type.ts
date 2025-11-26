@@ -4,8 +4,6 @@ import type {
   SetStateAction,
 } from 'react';
 
-import { ITimePickerProps } from '../persianDatePicker/type';
-
 export type ExportType = "timeStamp" | "IsoString";
 
 export type HandleParams = {
@@ -65,70 +63,9 @@ export interface IAdditionalElementType {
   content: ReactNode;
 }
 
-export interface IDateProps
-  extends IColorProps,
-  IClassNameProps,
-  ITimeSettings,
-  ITimePickerProps,
-  IMaskProps {
-  calendarType?: "shamsi" | "gregorian";
-  defaultValue?: number | string;
-  showMask?: boolean;
-  onChange?: (e: number | string) => void;
-  calendarBaseWidth?: number;
-  locale?: TLocale;
-  dropdownWidth?: number;
-  dropdownHeight?: number;
-  exportType?: ExportType;
-  isOpenDropdown?: boolean;
-  disabled?: boolean;
-  Style?: React.CSSProperties;
-  disablePreviousDays?: boolean
-  specialDays?: number[];
-  disabledDays?: number[];
-  renderDayFn?: (
-    day: { timestamp: number; currentMonth: boolean },
-    index: number
-  ) => ReactNode;
-  renderDayStyle?: (args: {
-    timestamp?: number;
-    isSpecial?: boolean;
-    isSelected?: boolean;
-    isDisabled?: boolean;
-    isToday?: boolean;
-    isInRange?: boolean;
-    isFrom?: boolean;
-    isTo?: boolean;
-  }) => React.CSSProperties;
-  renderColStyle?: (args: {
-    isSelectedCol: boolean;
-    name: string;
-    index: number;
-  }) => React.CSSProperties;
-  renderDayContent?: (info: {
-    day: string | number;
-    timestamp: number;
-    isSpecial: boolean;
-  }) => ReactNode;
-    selectableCols?:boolean
-  renderColContent?: (info: {
-    isSelectedCol: boolean;
-    name: string;
-  }) => ReactNode;
-  WeekHeaderClassName?: string;
-  WeekHeaderStyle?: React.CSSProperties;
-}
 
-export interface IColorProps {
-  primaryColor?: string;
-  secondaryColor?: string;
-  accentColor?: string;
-  tertiaryColor?: string;
-  dangerColor?: string;
-  backgroundColor?: string;
-  highlightColor?: string;
-  neutralColor?: string;
-}
+
+
 
 export interface IClassNameProps {
   className?: string;
@@ -274,34 +211,6 @@ export interface IMobileProps
   locale?: TLocale;
 }
 
-export interface IMaskProps
-  extends Pick<IColorProps, "tertiaryColor" | "highlightColor">,
-  Pick<IClassNameProps, "maskClassName" | "className"> {
-  defaultValue?: IDate["from"];
-  value?: IDate["from"];
-  onError?: (e: string) => void;
-  onMaskChange?: (e: IDate["from"] | number | string | null) => void;
-  calendarType?: "shamsi" | "gregorian";
-  inputClassName?: string;
-  suffix?: ReactNode | boolean;
-  prefix?: ReactNode | boolean;
-  maskHeight?: number;
-  MaskFontStyle?: Pick<
-    React.CSSProperties,
-    "fontFamily" | "fontSize" | "color"
-  >;
-  ErrorClass?: string;
-  allowClear?: boolean;
-  onClear?: () => void
-  dir?: "ltr" | "rtl";
-
-  disabled?: boolean;
-  maskPlaceHolder?: string;
-  isTodaySelectPreset?: boolean;
-  exportType?: ExportType;
-  Style?: React.CSSProperties;
-
-}
 
 
 export interface ISubmittedData {
