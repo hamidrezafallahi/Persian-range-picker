@@ -1,12 +1,14 @@
 import moment from 'moment-jalaali';
 
-import type {
-  IDate,
+import { ESteps } from '../persianDatePicker/enum';
+import {
   ITimeSections,
   ITimeZone,
+} from '../persianDatePicker/type';
+import type {
+  IDate,
   TLocale,
 } from './type';
-import { ESteps } from './type';
 
 export const toPersianDigits = (str: string) => {
   return str.replace(/\d/g, (d) => "۰۱۲۳۴۵۶۷۸۹"[parseInt(d)]);

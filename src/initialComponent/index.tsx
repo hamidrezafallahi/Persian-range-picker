@@ -164,7 +164,7 @@ const TEXT: Record<"fa" | "en", LanguageText> = {
         image: rangePic,
         component: (
           <RangePicker
-            calendarType="shamsi"
+            calendarType="jalali"
             onChange={(e) => console.log("RangePicker has changed", e)}
             exportType="timeStamp"
             showComparison
@@ -182,13 +182,13 @@ const TEXT: Record<"fa" | "en", LanguageText> = {
             showSecond
             isTodaySelectPreset
             onChange={(e) => console.log(e)}
-            calendarType="shamsi"
+            calendarType="jalali"
             exportType="timeStamp"
           />
         ),
       },
       Mask: {
-        component: <Mask calendarType="shamsi" />,
+        component: <Mask calendarType="jalali" />,
         title: "ورودی تاریخ",
         desc: "ورودی تاریخ با ماسک باعث می‌شود کاربر تنها در قالب خاصی بتواند مقدار وارد کند. این قابلیت از بروز خطاهای متداول جلوگیری می‌کند و یکپارچگی داده‌ها را حفظ می‌کند.",
         video: MaskVid,
@@ -202,7 +202,7 @@ const TEXT: Record<"fa" | "en", LanguageText> = {
         component: (
           <TimePicker
             calendarType="shamsi"
-            onChange={(e) => console.log(e)}
+            onChange={(e:any) => console.log(e)}
             showSecond
           />
         ),
@@ -272,7 +272,7 @@ const TEXT: Record<"fa" | "en", LanguageText> = {
         component: (
           <TimePicker
             calendarType="gregorian"
-            onChange={(e) => console.log(e)}
+            onChange={(e:any) => console.log(e)}
             showSecond
           />
         ),

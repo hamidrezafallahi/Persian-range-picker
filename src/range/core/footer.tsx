@@ -7,7 +7,7 @@ import type {
 import moment from 'moment-jalaali';
 
 import style from '../../main.module.css';
-import type { IRangeProps } from './type';
+import { IRangeProps } from '../persianDatePicker/type';
 
 interface IFooter {
   setShowDate: Dispatch<SetStateAction<number|null>>;

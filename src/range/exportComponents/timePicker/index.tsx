@@ -9,11 +9,11 @@ import moment from 'moment-jalaali';
 
 import style from '../../../main.module.css';
 import { toPersianDigits } from '../../core/helper';
-import type {
+import { CalenderIcon } from '../../icons/CalenderIcon';
+import {
   ITimePickerProps,
   TUnit,
-} from '../../core/type';
-import { CalenderIcon } from '../../icons/CalenderIcon';
+} from '../../persianDatePicker/type';
 import { useMediaQuery } from '../useMediaQuery';
 import { useRenderPosition } from '../useRenderPosition';
 import { TimeColumns } from './exportComponents';
@@ -51,8 +51,8 @@ export const TimePicker = ({ ...props }: ITimePickerProps) => {
   const initValue: number | null = (() => {
     if (defaultValue !== undefined) {
       return isFa
-        ? moment(defaultValue).locale("fa").valueOf()
-        : moment(defaultValue).utc().valueOf();
+        ? moment(defaultValue as number|string).locale("fa").valueOf()
+        : moment(defaultValue as number|string).utc().valueOf();
     } else {
       return null; // isFa ? moment().locale("fa").valueOf() : moment().utc().valueOf();
     }
@@ -176,12 +176,12 @@ export const TimePicker = ({ ...props }: ITimePickerProps) => {
   useEffect(() => {
     if (
       value !== undefined &&
-      moment(value).valueOf() !== moment(time).valueOf()
+      moment(value as number|string).valueOf() !== moment(time).valueOf()
     ) {
       setTime(
         isFa
-          ? moment(value).locale("fa").valueOf()
-          : moment(value).utc().valueOf()
+          ? moment(value as number|string).locale("fa").valueOf()
+          : moment(value as number|string).utc().valueOf()
       );
     }
   }, [value]);

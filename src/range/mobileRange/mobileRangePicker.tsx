@@ -13,9 +13,9 @@ import style from '../../main.module.css';
 import { toPersianDigits } from '../core/helper';
 import MainContent from '../core/mainContent';
 import NavigateButton from '../core/navigateButton';
-import type { IRangeProps } from '../core/type';
 import { CalenderIcon } from '../icons/CalenderIcon';
 import { MenuArrowBack } from '../icons/MenuArrowBack';
+import { IRangeProps } from '../persianDatePicker/type';
 
 export function MobileRangePicker(props: IRangeProps) {
   const {

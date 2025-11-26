@@ -16,12 +16,12 @@ import {
 } from '../core/helper';
 import MainContent from '../core/mainContent';
 import NavigateButton from '../core/navigateButton';
-import type {
-  IRangeProps,
-  ISubmittedData,
-} from '../core/type';
 import { useRenderPosition } from '../exportComponents/useRenderPosition';
 import { DownTriangle } from '../icons/DownTriangle';
+import {
+  IRangeProps,
+  ISubmittedData,
+} from '../persianDatePicker/type';
 
 export function DesktopRangePicker(props: IRangeProps) {
   const {

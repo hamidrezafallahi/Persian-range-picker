@@ -5,15 +5,15 @@ import {
 
 import moment from 'moment-jalaali';
 
-import type {
-  ESteps,
-  IDate,
+import type { IDate } from '../../core/type';
+import { DesktopRangePicker } from '../../desktopRange/desktopRangePicker';
+import { MobileRangePicker } from '../../mobileRange/mobileRangePicker';
+import { ESteps } from '../../persianDatePicker/enum';
+import {
   IRangeProps,
   ITime,
   ITimeZone,
-} from '../../core/type';
-import { DesktopRangePicker } from '../../desktopRange/desktopRangePicker';
-import { MobileRangePicker } from '../../mobileRange/mobileRangePicker';
+} from '../../persianDatePicker/type';
 import { useMediaQuery } from '../useMediaQuery';
 
 export function RangePicker({ ...props }: Omit<IRangeProps, "locale">) {
@@ -24,9 +24,9 @@ export function RangePicker({ ...props }: Omit<IRangeProps, "locale">) {
     calendarType = "shamsi",
     defaultValue,
     value,
-    onError
+    onError,
   } = props;
-  const locale = calendarType == "shamsi" ? "fa" : "en";
+  const locale = calendarType == "jalali" ? "fa" : "en";
   const isFa = locale === "fa";
   const initValue: IDate = (() => {
     if (defaultValue !== undefined) {

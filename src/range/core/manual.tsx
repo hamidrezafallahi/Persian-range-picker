@@ -2,37 +2,26 @@
 
 import style from '../../main.module.css';
 import Comparison from '../comparison';
-import { DatePicker } from '../exportComponents/datePicker';
+import { Calendar } from '../persianDatePicker';
+import { ESteps } from '../persianDatePicker/enum';
+import { IBaseProps } from '../persianDatePicker/type';
 import MaskRange from './maskRange';
 import MonthPicker from './monthPicker';
-import type {
-  IBaseProps,
-  IDate,
-} from './type';
-import { ESteps } from './type';
+import type { IDate } from './type';
 
 const Manual = (props: IBaseProps) => {
   const {
     date,
     locale = "fa",
-    // defaultValue,
     setDate,
     setZone,
     setStep,
     showComparison = true,
     monthPickerClassName,
-    model,
- 
-    // secondaryColor,
-    // tertiaryColor,
-    // dangerColor,
-    // InputHandleChange,
   } = props;
  
 
   const switchHandler = () => {};
- 
-
   return (
     <div
       className={`
@@ -42,9 +31,6 @@ const Manual = (props: IBaseProps) => {
       ${style.items_center}
       ${style.gap_2}
       ${style.mx_4}
-
-      
- 
     `}
     >
       <MonthPicker
@@ -60,25 +46,19 @@ const Manual = (props: IBaseProps) => {
       />
       <MaskRange
         {...props}
-        
-        // InputHandleChange={InputHandleChangeFrom}
       />
-      <DatePicker
+      <Calendar
         {...props}
-        value={date!}
+        model='range'
         onChange={(e) => {
           setDate?.({
-            from: e,
+            from: e as number,
             to:null
           });
           setZone?.("manual");
           setStep?.(ESteps.manual);
         }}
-        model={model}
-        locale={locale}
-
       />
-
       {showComparison && (
         <Comparison {...props} switchHandler={switchHandler} />
       )}

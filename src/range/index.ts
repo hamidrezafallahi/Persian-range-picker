@@ -1,5 +1,5 @@
 export { RangePicker } from './exportComponents/rangePicker';
-// export { Calendar } from './exportComponents/Calendar';
+export { Calendar } from './persianDatePicker';
 export { DatePicker } from './exportComponents/datePicker';
 export { Mask } from '../range/exportComponents/mask';
 export { TimePicker } from './exportComponents/timePicker';

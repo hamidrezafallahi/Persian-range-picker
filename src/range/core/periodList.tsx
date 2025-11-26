@@ -1,12 +1,12 @@
 import style from '../../main.module.css';
 import Comparison from '../comparison';
 import { TickIcon } from '../icons/TickIcon';
-import { getTimestampsForPeriod } from './helper';
-import type {
+import { ESteps } from '../persianDatePicker/enum';
+import {
   IBaseProps,
   ITimeSections,
-} from './type';
-import { ESteps } from './type';
+} from '../persianDatePicker/type';
+import { getTimestampsForPeriod } from './helper';
 
 function PeriodList({ ...props }: IBaseProps) {
   const {

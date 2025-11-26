@@ -6,10 +6,10 @@ import React, {
 
 import moment from 'moment-jalaali';
 
+import { toPersianDigits } from '../../core/helper';
 import style from '../../main.module.css';
-import { toPersianDigits } from '../core/helper';
-import { TimeColumns } from '../exportComponents/timePicker/exportComponents';
-import { DesktopTimePickerProps } from '../persianDatePicker/type';
+import { DesktopTimePickerProps } from '../../persianDatePicker/type';
+import { TimeColumns } from '../timePicker/exportComponents';
 
 type TUnit = "hour" | "minute" | "second";
 

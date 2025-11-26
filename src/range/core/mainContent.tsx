@@ -7,13 +7,13 @@ import React, {
 } from 'react';
 
 import style from '../../main.module.css';
+import { ESteps } from '../persianDatePicker/enum';
+import {
+  IBaseProps,
+  ITime,
+} from '../persianDatePicker/type';
 import Manual from './manual';
 import PeriodList from './periodList';
-import {
-  ESteps,
-  type IBaseProps,
-  type ITime,
-} from './type';
 
 interface IProps extends IBaseProps {
   setCustomData: Dispatch<SetStateAction<unknown>>;

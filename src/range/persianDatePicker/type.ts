@@ -1,13 +1,18 @@
 import type {
+  Dispatch,
   ReactNode,
   RefObject,
+  SetStateAction,
 } from 'react';
 
 import type {
   IDate,
   TLocale,
 } from '../core/type';
-import { CalendarViews } from './enum';
+import {
+  CalendarViews,
+  ESteps,
+} from './enum';
 
 export type DateValue =
   | IDate                 // RANGE
@@ -100,6 +105,7 @@ export interface DesktopProps2 extends CalendarProps2, ITimePickerProps {
   chooseTodayClassName?:string
   showTimeFormat?:string
   isOpenDropdown?:boolean
+  isTodaySelectPreset?:boolean
   showMask?:boolean
   allowClear?:boolean
   onClear?:()=>void
@@ -107,6 +113,11 @@ export interface DesktopProps2 extends CalendarProps2, ITimePickerProps {
 
 
 export interface ITimePickerProps extends IColorProps {
+  defaultValue?: DateValue;
+  value?:DateValue;
+    onChange?:(e:number|string)=>void;
+    calendarType?:CalendarType,
+
   className?: string
   Style?: React.CSSProperties;
   containerClassName?: string;
@@ -167,6 +178,284 @@ export interface DesktopTimePickerProps extends IColorProps {
   onChange?: (e: number) => void;
   showSecond?: boolean;
 }
+export type ITimeZone =
+  | "today"
+  | "yesterday"
+  | "thisWeek"
+  | "lastWeek"
+  | "last7Days"
+  | "7DayAgo"
+  | "thisMonth"
+  | "lastMonth"
+  | "last30Days"
+  | "1MonthAgo"
+  | "lastThreeMonth"
+  | "threeMonthsAgo"
+  | "thisYear"
+  | "lastYear"
+  | "oneYearAgo"
+  | "manual"
+  | string;
+
+export type ITime =
+  | "Day"
+  | "Week"
+  | "Month"
+  | "ThreeMonth"
+  | "Year"
+  | "manual"
+  | string;
+
+export type TUnit = "hour" | "minute" | "second";
+
+
+
+
+
+export type HandleParams = {
+  type: string;
+  Data?: { date: IDate; compareDate: IDate } | Record<string, unknown>;
+};
+export interface IAdditionalElementType {
+  key: string;
+  label: string;
+  content: ReactNode;
+}
+export interface IClassNameProps {
+  className?: string;
+  maskClassName?: string;
+  popoverClassName?: string;
+  monthPickerClassName?: string;
+  tabClassName?: string;
+  periodClassName?: string;
+  calenderClassName?: string;
+  datePickerBodyClassName?: string;
+  yearPickerClassName?: string;
+  datePickerHeaderClassName?: string;
+  dateClassName?: string;
+  periodListClassName?: string;
+  chooseTodayClassName?: string;
+  buttonClassName?: string;
+}
+export interface IRangeOptions extends IColorProps, IClassNameProps {
+  model?: "date" | "range";
+  calendarType?: CalendarType;
+  isShowNavigationButton?: boolean;
+  showComparison?: boolean;
+  additionalElement?: IAdditionalElementType[];
+  defaultValue?: IDate;
+  onError?: (e: string) => void;
+  onChange?: (e: HandleParams) => void;
+  onCompareDateChange?: (e: HandleParams) => void;
+  isOpenDropdown?: boolean;
+}
+export interface IBaseProps extends IRangeOptions {
+  step?: ESteps;
+  counter?: number;
+  zone?: ITimeZone;
+  date?: IDate;
+  locale?: TLocale;
+  tabKey?: ITime | string;
+  compareDate?: IDate | null;
+  activeCompareStep?: ESteps | null;
+  setStep?: Dispatch<SetStateAction<ESteps>>;
+  setCounter?: Dispatch<SetStateAction<number>>;
+  setCompareDate?: Dispatch<SetStateAction<IDate | null>>;
+  setDate?: Dispatch<SetStateAction<IDate>>;
+  setActiveCompareStep?: Dispatch<SetStateAction<ESteps | null>>;
+  setTabKey?: Dispatch<SetStateAction<ITime | string>>;
+  setZone?: Dispatch<SetStateAction<ITimeZone>>;
+  onNavigateChange?: (date: IDate, compareDate: IDate | null) => void;
+  componentStep?: ESteps;
+  open?: boolean;
+  setOpen?: Dispatch<SetStateAction<boolean>>;
+  type?: "range" | "compareRange";
+  setType?: Dispatch<SetStateAction<string>>;
+  activeTable?: "Day" | "Week" | "Month" | "Year" | "manual";
+  disabled?: boolean;
+  disablePreviousDays?: boolean
+  exportType?: ExportType;
+  renderDayFn?: (
+    day: { timestamp: number; currentMonth: boolean },
+    index: number
+  ) => ReactNode;
+    specialDays?: number[];
+  disabledDays?: number[];
+  renderDayStyle?: (args: {
+    timestamp?: number;
+    isSpecial?: boolean;
+    isSelected?: boolean;
+    isDisabled?: boolean;
+    isToday?: boolean;
+    isInRange?: boolean;
+    isFrom?: boolean;
+    isTo?: boolean;
+  }) => React.CSSProperties;
+  renderColStyle?: (args: {
+    isSelectedCol: boolean;
+    name: string;
+    index: number;
+  }) => React.CSSProperties;
+  renderDayContent?: (info: {
+    day: string | number;
+    timestamp: number;
+    isSpecial: boolean;
+  }) => ReactNode;
+    selectableCols?:boolean
+  renderColContent?: (info: {
+    isSelectedCol: boolean;
+    name: string;
+  }) => ReactNode;
+  WeekHeaderClassName?: string;
+  WeekHeaderStyle?: React.CSSProperties;
+}
+export interface RangeProps
+  extends IRangeOptions,
+  Omit<
+    IRangeProps,
+    "defaultValue" | "onChange" | "calendarType" | "device" | "isOpenDropdown"
+  > {
+  defaultValue?: IDate;
+  onChange?: (e: HandleParams) => void;
+  calendarType?:  CalendarType;
+  isOpenDropdown?: boolean;
+  handleReject?: () => void;
+  handleSubmit?: (params: HandleParams) => void;
+  onNavigateChange?: (date: IDate, compareDate: IDate | null) => void;
+  navigation?: boolean;
+}
+
+
+export interface IRangeProps extends IBaseProps {
+  handleSubmit?: RangeProps["handleSubmit"];
+  handleReject?: RangeProps["handleReject"];
+  label?: boolean | ReactNode | string;
+  dropdownWidth?: number;
+  dropdownHeight?: number;
+  disabled?: boolean;
+  locale?: TLocale;
+  value?: IDate;
+}
+
+
+
+export interface ITimeSettings {
+  showTime?: boolean;
+  showTimeFormat?: string;
+  showSecond?: boolean;
+  hourStep?: number;
+  minuteStep?: number;
+  secondStep?: number;
+}
+
+
+
+
+
+
+
+
+export interface ITimeSections {
+  title?: string;
+  value: { from: number; to: number };
+  timeZone: ITimeZone;
+  step: ESteps;
+}
+
+
+
+export interface IMobileProps
+  extends IColorProps,
+  ITimeSettings {
+  onChange?: (e: HandleParams) => void;
+  defaultValue?: IDate;
+  chooseTodayClassName?: string;
+  locale?: TLocale;
+}
+
+
+
+export interface ISubmittedData {
+  date: IDate;
+  compareDate: IDate | null;
+  Data: unknown;
+}
+export interface IRangePickerProps
+  extends Omit<IRangeOptions, "defaultValue" | "onChange">,
+  Omit<IDateProps, "defaultValue" | "onChange"> {
+  handleSubmit?: RangeProps["handleSubmit"];
+  handleReject?: RangeProps["handleReject"];
+  label?: boolean | ReactNode | string;
+  dropdownWidth?: number;
+  dropdownHeight?: number;
+  locale?: TLocale;
+  disabled?: boolean;
+  onNavigateChange?: (date: IDate, compareDate: IDate | null) => void;
+  componentStep?: ESteps;
+  open?: boolean;
+  setOpen?: Dispatch<SetStateAction<boolean>>;
+  type?: string;
+  setType?: Dispatch<SetStateAction<string>>;
+  activeTable?: "Day" | "Week" | "Month" | "Year" | "manual";
+  defaultValue?: IDate;
+  onChange?: (e: HandleParams) => void;
+}
+interface BaseCalendarProps
+  extends Omit<IProps, "dateFromOutside" | "locale" | "onDateChange" | "defaultValue" | "value"> {
+  model?: "date" | "range"
+  locale?: TLocale;
+  specialDays?: number[];
+  disabledDays?: number[];
+  exportType?: ExportType;
+  renderDayFn?: (
+    day: { timestamp: number; currentMonth: boolean },
+    index: number
+  ) => ReactNode;
+  renderDayStyle?: (args: {
+    timestamp?: number;
+    isSpecial?: boolean;
+    isSelected?: boolean;
+    isDisabled?: boolean;
+    isToday?: boolean;
+    isInRange?: boolean;
+    isFrom?: boolean;
+    isTo?: boolean;
+  }) => React.CSSProperties;
+  renderColStyle?: (args: {
+    isSelectedCol: boolean;
+    name: string;
+    index: number;
+  }) => React.CSSProperties;
+  renderDayContent?: (info: {
+    day: string | number;
+    timestamp: number;
+    isSpecial: boolean;
+  }) => ReactNode;
+    selectableCols?:boolean
+  renderColContent?: (info: {
+    isSelectedCol: boolean;
+    name: string;
+  }) => ReactNode;
+  WeekHeaderClassName?: string;
+  WeekHeaderStyle?: React.CSSProperties;
+}
+
+/** مدل date */
+
+
+/** مدل range */
+export interface CalendarRangeProps extends BaseCalendarProps {
+
+  value?: IDate;
+  defaultValue?: IDate;
+  onChange?: (e: IDate) => void;
+}
+
+/** نوع نهایی با union (TypeScript خودش تشخیص می‌دهد کدام حالت فعال است) */
+
+
+
+
  
 
 export type CalendarAction =

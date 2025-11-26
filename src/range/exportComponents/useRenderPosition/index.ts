@@ -1,4 +1,8 @@
-import { type Dispatch, type SetStateAction, useEffect } from "react";
+import {
+  type Dispatch,
+  type SetStateAction,
+  useEffect,
+} from 'react';
 
 interface UseRenderPositionOptions<T extends HTMLElement> {
   buttonRef: React.RefObject<T | null>;
@@ -56,7 +60,6 @@ export function useRenderPosition<T extends HTMLElement = HTMLElement>({
           getComputedStyle(buttonRef.current!).direction;
         popupRef.current.style.top = `${top + scrollTop}px`;
         if (direction === "rtl") {
-          // اگر جا بشه از راست دکمه، قرار بگیره
           const right = window.innerWidth - buttonArea.right;
           popupRef.current.style.left = "auto";
           popupRef.current.style.right = `${right + scrollLeft}px`;

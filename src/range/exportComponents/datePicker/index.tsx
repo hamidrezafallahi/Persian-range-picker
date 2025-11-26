@@ -13,20 +13,20 @@ import {
   getTimestamp,
   toPersianDigits,
 } from '../../core/helper';
-import {
-  IDate,
-  TUnit,
-} from '../../core/type';
-import { DesktopTimePicker } from '../../desktopDate/desktopTimePicker';
+import { IDate } from '../../core/type';
 import { CalenderIcon } from '../../icons/CalenderIcon';
 import { ClearIcon } from '../../icons/ClearIcon';
 import { MenuArrowBack } from '../../icons/MenuArrowBack';
 import { Calendar } from '../../persianDatePicker';
-import { DesktopProps2 } from '../../persianDatePicker/type';
+import {
+  DesktopProps2,
+  TUnit,
+} from '../../persianDatePicker/type';
 import { Mask } from '../mask';
 import { TimeColumns } from '../timePicker/exportComponents';
 import { useMediaQuery } from '../useMediaQuery';
 import { useRenderPosition } from '../useRenderPosition';
+import { DesktopTimePicker } from './desktopTimePicker';
 
 export function DatePicker({ ...props }: DesktopProps2) {
   const {
@@ -351,7 +351,6 @@ export function DatePicker({ ...props }: DesktopProps2) {
                     onChange={(e) => {
                       handleDateChange(e as number);
                     }}
-                   
                   />
                   {showTime && (
                     <div
@@ -474,7 +473,6 @@ export function DatePicker({ ...props }: DesktopProps2) {
                       onChange={(e) => {
                         handleDateChange(e as number);
                       }}
-                     
                     />
                   ) : (
                     <div style={{ zIndex: 10 }}>

@@ -9,13 +9,13 @@ import moment from 'moment-jalaali';
 import style from '../../main.module.css';
 import { LeftChevron } from '../icons/LeftChevron';
 import { RightChevron } from '../icons/RightChevron';
-import { period } from './helper';
-import type {
+import { ESteps } from '../persianDatePicker/enum';
+import {
   IBaseProps,
   ITimeZone,
-  TLocale,
-} from './type';
-import { ESteps } from './type';
+} from '../persianDatePicker/type';
+import { period } from './helper';
+import type { TLocale } from './type';
 
 interface INavigationProps {
   step?: IBaseProps["step"];
