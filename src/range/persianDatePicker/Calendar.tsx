@@ -169,7 +169,7 @@ export const Calendar: FC<CalendarProps2> = ({
           month: action.payload.month,
         };
       case "CHANGE_MONTH":
-        return { ...state, year: action.payload, view: CalendarViews.DAY };
+        return { ...state, month: action.payload, view: CalendarViews.DAY };
       case "CHANGE_VIEW":
         return { ...state, view: action.payload };
       case "CHANGE_HOVERED_DAY":
@@ -321,6 +321,7 @@ export const Calendar: FC<CalendarProps2> = ({
               ).format()
             : `${prevYear}/${prevMonth + 1}/${prevDays - i + 1}`
         );
+
         days.push({
           timestamp: date.setHours(0, 0, 0, 0),
           currentMonth: false,
@@ -493,6 +494,7 @@ export const Calendar: FC<CalendarProps2> = ({
     0: 6, // جمعه
   };
   const renderCalendar = (year: number, month: number) => {
+
     const days = getCalendarDays(year, month);
     const weekNames =
       locale === "fa"
@@ -606,7 +608,7 @@ export const Calendar: FC<CalendarProps2> = ({
         if (selectMultiple && Array.isArray(value)) {
           dispatchState({
             type: "SET_MULTIPLE_BY_ARRAY",
-            payload: { multiple: value.map(v=>new Date(v).valueOf()) },
+            payload: { multiple: value.map((v) => new Date(v).valueOf()) },
           });
         } else {
           dispatchState({
@@ -686,5 +688,3 @@ export const Calendar: FC<CalendarProps2> = ({
     </div>
   );
 };
-
-  

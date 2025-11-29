@@ -60,7 +60,7 @@ export function Mask({ ...props }: IMaskProps) {
 
   const initialTemp = timestampToDateNumbers(
     locale,
-    getTimestamp(defaultValue as number|string)
+    getTimestamp(defaultValue as number | string)
   );
 
   const [separatedValue, setSeparatedValue] = useState(initialTemp);
@@ -71,7 +71,7 @@ export function Mask({ ...props }: IMaskProps) {
 
   const [baseValue, setBaseValue] = useState<IDate["from"] | null>(
     defaultValue
-      ? getTimestamp(defaultValue as number|string)
+      ? getTimestamp(defaultValue as number | string)
       : isTodaySelectPreset
       ? today
       : null
@@ -80,6 +80,7 @@ export function Mask({ ...props }: IMaskProps) {
   const [fullValue, setFullValue] = useState<string>(
     `${initialTemp[0]}${initialTemp[1]}${initialTemp[2]}`
   );
+
   const fullValueRef = useRef<string>(
     `${initialTemp[0]}${initialTemp[1]}${initialTemp[2]}`
   );
@@ -528,6 +529,8 @@ export function Mask({ ...props }: IMaskProps) {
   const handleClearMask = () => {
     setIsEdit(0);
     setBaseValue(null);
+    setSeparatedValue(initialTemp);
+    setFullValue(`${initialTemp[0]}${initialTemp[1]}${initialTemp[2]}`);
     onClear?.();
     //  onMaskChange?.(null);
   };
@@ -600,15 +603,15 @@ export function Mask({ ...props }: IMaskProps) {
             setSeparatedValue([year, month, day]);
             setBaseValue(changeToTimestamp(fullValueRef.current, locale));
             onMaskChange?.(
-              exportType == "IsoString"?
-              locale == "fa"
-                ? moment(
-                    changeToTimestamp(fullValueRef.current, locale)
-                  ).format("YYYY-MM-DDTHH:mm:ss.SSSZ")
-                : moment
-                    .utc(changeToTimestamp(fullValueRef.current, locale))
-                    .format("YYYY-MM-DDTHH:mm:ss.SSSZ"):
-                     locale == "fa"
+              exportType == "IsoString"
+                ? locale == "fa"
+                  ? moment(
+                      changeToTimestamp(fullValueRef.current, locale)
+                    ).format("YYYY-MM-DDTHH:mm:ss.SSSZ")
+                  : moment
+                      .utc(changeToTimestamp(fullValueRef.current, locale))
+                      .format("YYYY-MM-DDTHH:mm:ss.SSSZ")
+                : locale == "fa"
                 ? moment(
                     changeToTimestamp(fullValueRef.current, locale)
                   ).valueOf()
@@ -661,19 +664,17 @@ export function Mask({ ...props }: IMaskProps) {
           ) {
             setBaseValue(changeToTimestamp(temp, locale));
             onMaskChange?.(
-              exportType == "IsoString"?
-              locale == "fa"
-                ? moment(changeToTimestamp(temp, locale)).format(
-                    "YYYY-MM-DDTHH:mm:ss.SSSZ"
-                  )
-                : moment
-                    .utc(changeToTimestamp(temp, locale))
-                    .format("YYYY-MM-DDTHH:mm:ss.SSSZ"):
-                    locale == "fa"
+              exportType == "IsoString"
+                ? locale == "fa"
+                  ? moment(changeToTimestamp(temp, locale)).format(
+                      "YYYY-MM-DDTHH:mm:ss.SSSZ"
+                    )
+                  : moment
+                      .utc(changeToTimestamp(temp, locale))
+                      .format("YYYY-MM-DDTHH:mm:ss.SSSZ")
+                : locale == "fa"
                 ? moment(changeToTimestamp(temp, locale)).valueOf()
-                : moment
-                    .utc(changeToTimestamp(temp, locale))
-                    .valueOf()
+                : moment.utc(changeToTimestamp(temp, locale)).valueOf()
             );
           } else {
             onMaskChange?.(null);
@@ -727,8 +728,11 @@ export function Mask({ ...props }: IMaskProps) {
   useEffect(() => {
     if (value === null) {
       handleClearMask();
-    } else if (value && getTimestamp(value as number|string) !== baseValue) {
-      const dateValues = timestampToDateNumbers(locale, getTimestamp(value as number|string));
+    } else if (value && getTimestamp(value as number | string) !== baseValue) {
+      const dateValues = timestampToDateNumbers(
+        locale,
+        getTimestamp(value as number | string)
+      );
       const [year, month, day] = dateValues;
       const temp = `${convertPersianToEnglishNumbers(
         year
@@ -742,7 +746,7 @@ export function Mask({ ...props }: IMaskProps) {
         convertPersianToEnglishNumbers(month).toString(),
         convertPersianToEnglishNumbers(day).toString(),
       ]);
-      setBaseValue(getTimestamp(value as number|string)!);
+      setBaseValue(getTimestamp(value as number | string)!);
     }
   }, [value]);
   const fontSize = useMemo(() => {
@@ -773,8 +777,6 @@ export function Mask({ ...props }: IMaskProps) {
           userSelect: disabled ? "none" : "auto",
           ...props.Style,
         }}
- 
-
       >
         {allowClear ? (
           <button
@@ -891,8 +893,7 @@ export function Mask({ ...props }: IMaskProps) {
                   type="text"
                   name="month"
                   tabIndex={1}
-                                    autoComplete="off"
-
+                  autoComplete="off"
                   ref={monthInputRef}
                   value={separatedValue[1]}
                   onChange={handleChange}
@@ -935,8 +936,7 @@ export function Mask({ ...props }: IMaskProps) {
                   tabIndex={2}
                   ref={dayInputRef}
                   value={separatedValue[2]}
-                                   autoComplete="off"
-
+                  autoComplete="off"
                   onChange={handleChange}
                   onClick={handleClick}
                   onKeyDown={handleKeyDown}
@@ -981,8 +981,7 @@ export function Mask({ ...props }: IMaskProps) {
               onFocus={() => {
                 handleFocusFullInput();
               }}
-                               autoComplete="off"
-
+              autoComplete="off"
               value={fullValue}
               onChange={handleChange}
               onKeyDown={handleKeyDown}

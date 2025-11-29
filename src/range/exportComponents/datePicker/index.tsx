@@ -242,6 +242,7 @@ export function DatePicker({ ...props }: DesktopProps2) {
       setTitle(isFa ? persian : gregorian);
     }
   }, [showDate, dynamicFormat, showTime, placeholder]);
+
   return (
     <>
       {match ? (
@@ -294,6 +295,8 @@ export function DatePicker({ ...props }: DesktopProps2) {
               >
                 <Mask
                   {...props}
+                  value={value}
+                  defaultValue={defaultValue}
                   allowClear={false}
                   exportType="timeStamp"
                   onMaskChange={changeHandler as (e: any) => void}

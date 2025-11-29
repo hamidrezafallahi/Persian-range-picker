@@ -4,13 +4,13 @@ import {
 } from 'react';
 
 import style from '../../main.module.css';
-// import { CustomSwitch } from "@components/atoms/defaultElements";
 import {
   stepToTimeIndex,
   time,
 } from '../core/helper';
-import type { IBaseProps } from '../core/type';
-import { ESteps } from '../core/type';
+import { ESteps } from '../persianDatePicker/enum';
+import { IBaseProps } from '../persianDatePicker/type';
+// import { CustomSwitch } from "@components/atoms/defaultElements";
 import CompareList from './CompareList';
 import CustomSwitch from './customSwitch/customSwitch';
 import ManualCompare from './manualCompare';

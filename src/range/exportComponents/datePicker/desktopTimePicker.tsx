@@ -6,8 +6,8 @@ import React, {
 
 import moment from 'moment-jalaali';
 
+import style from '../../../main.module.css';
 import { toPersianDigits } from '../../core/helper';
-import style from '../../main.module.css';
 import { DesktopTimePickerProps } from '../../persianDatePicker/type';
 import { TimeColumns } from '../timePicker/exportComponents';
 

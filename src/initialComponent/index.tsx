@@ -201,7 +201,7 @@ const TEXT: Record<"fa" | "en", LanguageText> = {
         image: timeP,
         component: (
           <TimePicker
-            calendarType="shamsi"
+            calendarType="jalali"
             onChange={(e:any) => console.log(e)}
             showSecond
           />

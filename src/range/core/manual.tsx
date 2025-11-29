@@ -19,8 +19,6 @@ const Manual = (props: IBaseProps) => {
     showComparison = true,
     monthPickerClassName,
   } = props;
- 
-
   const switchHandler = () => {};
   return (
     <div
@@ -44,17 +42,21 @@ const Manual = (props: IBaseProps) => {
         }}
         locale={locale}
       />
-      <MaskRange
-        {...props}
+      <MaskRange {...props}
+      setDate={(e: IDate) => {
+          setDate?.(e);
+          setZone?.("manual");
+          setStep?.(ESteps.manual);
+        }}
+ 
+ 
       />
       <Calendar
         {...props}
-        model='range'
-        onChange={(e) => {
-          setDate?.({
-            from: e as number,
-            to:null
-          });
+        value={date}
+        model="range"
+        onChange={(e: IDate) => {
+          setDate?.(e);
           setZone?.("manual");
           setStep?.(ESteps.manual);
         }}

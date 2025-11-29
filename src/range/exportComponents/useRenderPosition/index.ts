@@ -8,6 +8,7 @@ interface UseRenderPositionOptions<T extends HTMLElement> {
   buttonRef: React.RefObject<T | null>;
   popupRef: React.RefObject<T | null>;
   offset?: number;
+  onClickOutSide?:()=>void
   setIsOpen: Dispatch<SetStateAction<boolean>>;
   isOpen: boolean;
 }
@@ -16,6 +17,7 @@ export function useRenderPosition<T extends HTMLElement = HTMLElement>({
   buttonRef,
   popupRef,
   setIsOpen,
+  onClickOutSide,
   offset = 4,
   isOpen = false,
 }: UseRenderPositionOptions<T>): void {
@@ -28,7 +30,9 @@ export function useRenderPosition<T extends HTMLElement = HTMLElement>({
         buttonRef.current &&
         !buttonRef.current.contains(event.target as Node)
       ) {
+        onClickOutSide?.()
         setIsOpen(false);
+
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
@@ -39,7 +43,6 @@ export function useRenderPosition<T extends HTMLElement = HTMLElement>({
       const scrollTop = window.scrollY || document.documentElement.scrollTop;
       const scrollLeft = window.scrollX || document.documentElement.scrollLeft;
       // ... existing position logic
-
       if (isOpen && buttonRef.current && popupRef.current) {
         const buttonArea = buttonRef.current.getBoundingClientRect();
         const popupArea = popupRef.current.getBoundingClientRect();

@@ -6,12 +6,12 @@ import {
 import moment from 'moment-jalaali';
 
 import style from '../../main.module.css';
-import type {
+import { TickIcon } from '../icons/TickIcon';
+import { ESteps } from '../persianDatePicker/enum';
+import {
   IBaseProps,
   ITime,
-} from '../core/type';
-import { ESteps } from '../core/type';
-import { TickIcon } from '../icons/TickIcon';
+} from '../persianDatePicker/type';
 
 function ManualCompare({ ...props }: IBaseProps) {
   const {

@@ -1,26 +1,30 @@
 import { useState } from 'react';
 
-import { DatePicker } from '../range';
+import { RangePicker } from '../range';
+import { IDate } from '../range/core/type';
 
 export default function DemoComponent() {
   const [val, setVal] = useState<any>();
-  const time =new Date(1765744200000).toISOString()//{from: 1764534600000, to: 1765312200000} //[1765053000000,1765139400000,1765398600000];
+  const time ={from: 1764534600000, to: 1765312200000} 
+  //new Date(1765133698040).toISOString()//
+  // {from: 1764534600000, to: 1765312200000} 
+  // //[1765053000000,1765139400000,1765398600000];
  
   return (
     <>
       <button
         onClick={() => {
             //setVal(null)
-          setVal(null);
+          setVal({from:null,to:null});
         }}
       >
         set null
       </button>
       <button
         onClick={() => {
-          setVal(1766089800000)
+          // setVal(1764404009040)
           //setVal([1765830600000, 1765917000000, 1766089800000])
-          // setVal({from: 1765744200000, to: 1766003400000});
+          setVal({from: 1765744200000, to: 1766003400000});
         }}
       >
         set rand
@@ -28,7 +32,7 @@ export default function DemoComponent() {
       <div
       // style={{padding:"12px"}}
       >
-        <DatePicker
+        {/* <DatePicker
           onChange={(e) => {
             setVal(e);
             console.log(e);
@@ -75,53 +79,11 @@ export default function DemoComponent() {
           //   </span>
           // )}
           // icon ={false}
-        />
-      </div>
-      {/* <DesktopDatePicker
-        calendarType="gregorian"
-        specialDays={[1762288200000, 1763411400000]}
-        disabledDays={[1763325000000, 1763497800000]}
-
-        renderDayContent={({ day, isSpecial, isColSelected }) => (
-          <>
-            <span
-              style={{
-                color: isSpecial ? "red" : isColSelected ? "#fff" : undefined,
-                fontWeight: isSpecial ? "bold" : "normal",
-              }}
-            >
-              {day}
-            </span>
-          </>
-        )}
-        renderColContent={({ name, isSelectedCol }) => (
-          <span
-            style={{
-              color: isSelectedCol ? "#fff" : undefined,
-              background: isSelectedCol ? "#767676ff" : undefined,
-              minWidth: "24px",
-              height: "24px",
-              borderRadius: "8px",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            {name}
-          </span>
-        )}
-        onChange={(e) => {
-          setVal(e);
-          console.log(e, "e");
-        }}
-        placeholder={false}
-        icon={false}
-        defaultValue={time}
-        value={val}
-        showMask
-      /> */}
+        />*/}
+      </div> 
+      
       {/* <TimePicker
-        exportType="timeStamp"
+        // exportType="timeStamp"
         onChange={(e) => {
           setVal(e);
           console.log(e, "TimePicker");
@@ -131,8 +93,8 @@ export default function DemoComponent() {
         value={val}
       /> */}
       {/* <Mask
-        // defaultValue={time}
-        // value={val}
+        defaultValue={time}
+        value={val}
 
         allowClear
         // calendarType='gregorian'
@@ -143,7 +105,7 @@ export default function DemoComponent() {
       /> */}
       {/* <div style={{ padding: "12px" }}>
         <Calendar
-        selectMultiple
+        // selectMultiple
           // model="range"
           // disablePreviousDays
           // selectableCols
@@ -235,19 +197,18 @@ export default function DemoComponent() {
               )}
       /> */}
 
-      {/* <RangePicker
+      <RangePicker
         defaultValue={time}
         value={val as IDate}
         specialDays={[1762288200000, 1763411400000]}
         disabledDays={[1763325000000, 1763497800000]}
         //  calendarType='gregorian'
-
-        selectableCols
-        renderDayContent={({ day, isSpecial, isColSelected }) => (
+        // selectableCols
+        renderDayContent={({ day, isSpecial,timestamp }) => (
           <>
             <span
               style={{
-                color: isSpecial ? "red" : isColSelected ? "#fff" : undefined,
+                color: isSpecial ? "red" : undefined,
                 fontWeight: isSpecial ? "bold" : "normal",
               }}
             >
@@ -281,7 +242,7 @@ export default function DemoComponent() {
         onCompareDateChange={(e) => {
           console.log(e);
         }}
-      /> */}
+      />
     </>
   );
 }

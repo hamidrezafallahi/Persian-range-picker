@@ -21,7 +21,7 @@ export function RangePicker({ ...props }: Omit<IRangeProps, "locale">) {
   const {
     isOpenDropdown = false,
     additionalElement,
-    calendarType = "shamsi",
+    calendarType = "jalali",
     defaultValue,
     value,
     onError,

@@ -1,10 +1,10 @@
 import style from '../../main.module.css';
 import { period } from '../core/helper';
-import type {
+import { TickIcon } from '../icons/TickIcon';
+import {
   IBaseProps,
   ITimeSections,
-} from '../core/type';
-import { TickIcon } from '../icons/TickIcon';
+} from '../persianDatePicker/type';
 
 const CompareList = ({ ...props }: IBaseProps) => {
   const {

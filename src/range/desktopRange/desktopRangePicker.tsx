@@ -39,9 +39,9 @@ export function DesktopRangePicker(props: IRangeProps) {
     counter,
     setStep,
     isShowNavigationButton = true,
-    primaryColor = "#000", //رنگ اصلی (برای دکمه‌ها، لینک‌ها یا تأکید اصلی برند)
-    backgroundColor = "#fff", //رنگ پس‌زمینه کلی یا نواحی بزرگ
-    tertiaryColor = "#939393", //رنگ سوم، معمولاً برای جزئیات یا عناصر کم‌اهمیت‌تر   -  رنگ متن
+    primaryColor = "#000", 
+    backgroundColor = "#fff", 
+    tertiaryColor = "#939393", 
     // tabClassName = "",
     dateClassName,
     locale = "fa",
@@ -51,7 +51,7 @@ export function DesktopRangePicker(props: IRangeProps) {
     dropdownWidth = 460,
     dropdownHeight = 460,
     label = props.locale == "en" ? "Date" : "تاریخ",
-    value
+    value,
   } = props;
   const isInitialRender = useRef(true);
   const prevDate = useRef(date);
@@ -68,7 +68,7 @@ export function DesktopRangePicker(props: IRangeProps) {
     Data: null, // or any default value you want for Data
   });
 
-  const [type, setType] = useState<"range"|"compareRange">("range");
+  const [type, setType] = useState<"range" | "compareRange">("range");
   const [customData, setCustomData] = useState<unknown>(null);
   const buttonRef = useRef<HTMLElement>(null);
   const popupRef = useRef<HTMLDivElement>(null);
@@ -163,17 +163,27 @@ export function DesktopRangePicker(props: IRangeProps) {
     }
   }, [counter]);
   useEffect(() => {
+    //  setShowDate({
+    //   date: date!,
+    //   compareDate,
+    //   Data: null,
+    // });
+
     const hasCompareDateChanged =
       compareDate?.from !== prevCompareDate.current?.from ||
       compareDate?.to !== prevCompareDate.current?.to;
     if (onCompareDateChange && compareDate && hasCompareDateChanged) {
-      onCompareDateChange({ type: "compareRange", Data: { date, compareDate } });
+      onCompareDateChange({
+        type: "compareRange",
+        Data: { date, compareDate },
+      });
       setShowDate((prev) => ({
         ...prev,
         compareDate,
       }));
     }
     prevCompareDate.current = compareDate;
+
     const hasDateChanged =
       date?.from !== prevDate.current?.from ||
       date?.to !== prevDate.current?.to;
@@ -185,28 +195,27 @@ export function DesktopRangePicker(props: IRangeProps) {
       const isInvalidDateTo = date?.to == null || Number.isNaN(date?.to);
       const isInvalid = date?.from && isInvalidDateTo;
       if (!(isEmpty || isInvalid)) {
-        if(!Number.isNaN(date?.from)){
-          const dateFromValue = !((new Date(date?.from!).valueOf() == new Date(value?.from!).valueOf())||(new Date(date?.to!).valueOf() == new Date(value?.to!).valueOf()))
-          if(dateFromValue && new Date(date?.to as number).valueOf()>0){
+        console.log(date, value);
+        if (!Number.isNaN(date?.from)) {
+          const dateFromValue = !(
+            new Date(date?.from!).valueOf() ==
+              new Date(value?.from!).valueOf() ||
+            new Date(date?.to!).valueOf() == new Date(value?.to!).valueOf()
+          );
+
+          if (dateFromValue && new Date(date?.to as number).valueOf() > 0) {
             onChange({ type, Data: { date, compareDate } });
           }
         }
       }
     }
     prevDate.current = date;
-  }, [date, compareDate]);
+  }, [date]);
   useEffect(() => {
     if (customData) {
       onChange?.({ type, Data: { customData } });
     }
   }, [customData]);
-  useEffect(() => {
-    setShowDate({
-      date: date!,
-      compareDate,
-      Data: null,
-    });
-  }, [date, compareDate]);
   return (
     <div
       className={`

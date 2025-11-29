@@ -16,11 +16,11 @@ import {
 
 export type DateValue =
   | IDate                 // RANGE
-  | number  
+  | number
   | string              // Single date
   | number[]
   | string[]
-  |null;             // Multiple date
+  | null;             // Multiple date
 export type ExportType = "timeStamp" | "IsoString";
 export type CalendarType = "jalali" | "gregorian";
 export interface IColorProps {
@@ -36,9 +36,9 @@ export interface IColorProps {
 
 export interface CalendarProps2 extends IColorProps {
   manualContainerRef?: RefObject<HTMLDivElement | null>;
-  onChange?: (e:DateValue) => void;
+  onChange?: (e: DateValue) => void;
   model?: "range" | "date";
-  value?:DateValue;
+  value?: DateValue;
   defaultValue?: DateValue;
   locale?: TLocale;
   disablePreviousDays?: boolean;
@@ -75,7 +75,7 @@ export interface CalendarProps2 extends IColorProps {
   WeekHeaderStyle?: React.CSSProperties;
   specialDays?: number[];
   disabledDays?: number[];
- 
+
   calendarBaseWidth?: number;
   containerClassName?: string;
   datePickerHeaderClassName?: string;
@@ -100,24 +100,23 @@ export interface CalendarProps2 extends IColorProps {
 
 }
 
-export interface DesktopProps2 extends CalendarProps2, ITimePickerProps {
-  showTime?:boolean
-  chooseTodayClassName?:string
-  showTimeFormat?:string
-  isOpenDropdown?:boolean
-  isTodaySelectPreset?:boolean
-  showMask?:boolean
-  allowClear?:boolean
-  onClear?:()=>void
+export interface DesktopProps2 extends CalendarProps2, Omit<ITimePickerProps, "onChange"> {
+  showTime?: boolean
+  chooseTodayClassName?: string
+  showTimeFormat?: string
+  isOpenDropdown?: boolean
+  isTodaySelectPreset?: boolean
+  showMask?: boolean
+  allowClear?: boolean
+  onClear?: () => void
 }
 
 
 export interface ITimePickerProps extends IColorProps {
   defaultValue?: DateValue;
-  value?:DateValue;
-    onChange?:(e:number|string)=>void;
-    calendarType?:CalendarType,
-
+  value?: DateValue;
+  onChange?: (e: number | string) => void;
+  calendarType?: CalendarType,
   className?: string
   Style?: React.CSSProperties;
   containerClassName?: string;
@@ -139,9 +138,9 @@ export interface ITimePickerProps extends IColorProps {
 }
 
 export interface IMaskProps extends IColorProps {
-  maskClassName?:string
+  maskClassName?: string
   defaultValue?: DateValue;
-  value?:DateValue;
+  value?: DateValue;
   onError?: (e: string) => void;
   onMaskChange?: (e: DateValue) => void;
   calendarType?: CalendarType
@@ -279,7 +278,7 @@ export interface IBaseProps extends IRangeOptions {
     day: { timestamp: number; currentMonth: boolean },
     index: number
   ) => ReactNode;
-    specialDays?: number[];
+  specialDays?: number[];
   disabledDays?: number[];
   renderDayStyle?: (args: {
     timestamp?: number;
@@ -301,7 +300,7 @@ export interface IBaseProps extends IRangeOptions {
     timestamp: number;
     isSpecial: boolean;
   }) => ReactNode;
-    selectableCols?:boolean
+  selectableCols?: boolean
   renderColContent?: (info: {
     isSelectedCol: boolean;
     name: string;
@@ -317,7 +316,7 @@ export interface RangeProps
   > {
   defaultValue?: IDate;
   onChange?: (e: HandleParams) => void;
-  calendarType?:  CalendarType;
+  calendarType?: CalendarType;
   isOpenDropdown?: boolean;
   handleReject?: () => void;
   handleSubmit?: (params: HandleParams) => void;
@@ -382,7 +381,7 @@ export interface ISubmittedData {
 }
 export interface IRangePickerProps
   extends Omit<IRangeOptions, "defaultValue" | "onChange">,
-  Omit<IDateProps, "defaultValue" | "onChange"> {
+  Omit<Date, "defaultValue" | "onChange"> {
   handleSubmit?: RangeProps["handleSubmit"];
   handleReject?: RangeProps["handleReject"];
   label?: boolean | ReactNode | string;
@@ -401,7 +400,7 @@ export interface IRangePickerProps
   onChange?: (e: HandleParams) => void;
 }
 interface BaseCalendarProps
-  extends Omit<IProps, "dateFromOutside" | "locale" | "onDateChange" | "defaultValue" | "value"> {
+  extends Omit<CalendarProps2, | "locale" | "onDateChange" | "defaultValue" | "value"> {
   model?: "date" | "range"
   locale?: TLocale;
   specialDays?: number[];
@@ -431,7 +430,7 @@ interface BaseCalendarProps
     timestamp: number;
     isSpecial: boolean;
   }) => ReactNode;
-    selectableCols?:boolean
+  selectableCols?: boolean
   renderColContent?: (info: {
     isSelectedCol: boolean;
     name: string;
@@ -448,7 +447,7 @@ export interface CalendarRangeProps extends BaseCalendarProps {
 
   value?: IDate;
   defaultValue?: IDate;
-  onChange?: (e: IDate) => void;
+  // onChange?: (e: IDate) => void;
 }
 
 /** نوع نهایی با union (TypeScript خودش تشخیص می‌دهد کدام حالت فعال است) */
@@ -456,7 +455,7 @@ export interface CalendarRangeProps extends BaseCalendarProps {
 
 
 
- 
+
 
 export type CalendarAction =
   { type: "SET_FROM"; payload: number | null }
