@@ -1,5 +1,4 @@
 import React, {
-  type Dispatch,
   useEffect,
   useState,
 } from 'react';
@@ -15,7 +14,7 @@ import type {
 
 interface IProps {
   date?: IDate;
-  setDate?: Dispatch<React.SetStateAction<IDate>>;
+onDateChange?: (e: IDate) => void;
   locale?: TLocale;
   onError?: (e:string)=>void;
 
@@ -24,7 +23,8 @@ function MaskRange({ ...props }: IProps) {
   const {onError}=props
   const [error, setError] = useState<"from" | "to" | null>(null);
 
-  const { date, setDate, locale } = props;
+  const { date, onDateChange, locale } = props;
+
   const handleChange = (e: IDate["from"], name: "from" | "to") => {
     if (name === "from") {
       if (date?.to && e && e > date.to) {
@@ -32,7 +32,7 @@ function MaskRange({ ...props }: IProps) {
         return;
       }
       setError(null);
-      setDate?.({ from: e, to: date?.to });
+      onDateChange?.({ from: e, to: date?.to });
     } else if (name === "to") {
       if (date?.from && e && e < date.from) {
         setError("to");
@@ -45,7 +45,7 @@ function MaskRange({ ...props }: IProps) {
       } else {
         endOfDate = moment(e).utc().endOf("day").valueOf();
       }
-      setDate?.({ from: date?.from, to: endOfDate });
+      onDateChange?.({ from: date?.from, to: endOfDate });
     }
   };
   useEffect(()=>{

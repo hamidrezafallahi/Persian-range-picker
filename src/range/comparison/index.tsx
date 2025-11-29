@@ -1,4 +1,6 @@
 import {
+  Dispatch,
+  SetStateAction,
   useEffect,
   useState,
 } from 'react';
@@ -8,14 +10,29 @@ import {
   stepToTimeIndex,
   time,
 } from '../core/helper';
+import {
+  IDate,
+  TLocale,
+} from '../core/type';
 import { ESteps } from '../persianDatePicker/enum';
-import { IBaseProps } from '../persianDatePicker/type';
-// import { CustomSwitch } from "@components/atoms/defaultElements";
+import { ITimeZone } from '../persianDatePicker/type';
 import CompareList from './CompareList';
 import CustomSwitch from './customSwitch/customSwitch';
 import ManualCompare from './manualCompare';
 
-interface IProps extends IBaseProps {
+interface IProps {
+  step: ESteps;
+  zone: ITimeZone;
+  date: IDate;
+  locale: TLocale;
+  setCompareDate: Dispatch<SetStateAction<IDate | null>>;
+  setActiveCompareStep: Dispatch<SetStateAction<ESteps | null>>;
+activeCompareStep: ESteps|null;
+  componentStep: ESteps;
+  primaryColor:string 
+  accentColor:string
+  tertiaryColor:string
+  neutralColor:string
   switchHandler: () => void;
 }
 function Comparison({ ...props }: IProps) {
@@ -26,6 +43,13 @@ function Comparison({ ...props }: IProps) {
     setActiveCompareStep,
     primaryColor = "#000",
     switchHandler,
+    date,
+    setCompareDate,
+    accentColor,
+    tertiaryColor,
+    zone,
+    neutralColor,
+    activeCompareStep
   } = props;
   const [showCompare, setShowCompare] = useState(false);
 
@@ -45,7 +69,6 @@ function Comparison({ ...props }: IProps) {
       time[stepToTimeIndex[step!]].toLowerCase();
     setShowCompare(flag);
   }, [step, componentStep]);
-
   return (
     <>
       <div
@@ -58,14 +81,32 @@ function Comparison({ ...props }: IProps) {
           {locale == "fa" ? "مقایسه" : "Compare"}
         </div>
 
-        <CustomSwitch checked={showCompare} onChange={handleShowCompare}   />
+        <CustomSwitch checked={showCompare} onChange={handleShowCompare} />
       </div>
       {showCompare && (
         <>
           {step == ESteps.manual ? (
-            <ManualCompare {...props} />
+            <ManualCompare
+              locale={locale}
+              setCompareDate={setCompareDate}
+              step={step}
+              accentColor={accentColor}
+              tertiaryColor={tertiaryColor}
+              date={date}
+            />
           ) : (
-            <CompareList {...props} />
+            <CompareList
+              activeCompareStep={activeCompareStep}
+              componentStep={componentStep}
+              date={date}
+              locale={locale}
+              setActiveCompareStep={setActiveCompareStep}
+              setCompareDate={setCompareDate}
+              zone={zone}
+              accentColor={accentColor}
+              tertiaryColor={tertiaryColor}
+              neutralColor={neutralColor}
+            />
           )}
         </>
       )}

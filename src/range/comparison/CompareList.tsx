@@ -1,12 +1,35 @@
+import {
+  Dispatch,
+  SetStateAction,
+} from 'react';
+
 import style from '../../main.module.css';
 import { period } from '../core/helper';
-import { TickIcon } from '../icons/TickIcon';
 import {
-  IBaseProps,
+  IDate,
+  TLocale,
+} from '../core/type';
+import { TickIcon } from '../icons/TickIcon';
+import { ESteps } from '../persianDatePicker/enum';
+import {
+  IColorProps,
   ITimeSections,
+  ITimeZone,
 } from '../persianDatePicker/type';
 
-const CompareList = ({ ...props }: IBaseProps) => {
+interface ICompareList extends IColorProps {
+  zone: ITimeZone;
+  date: IDate;
+  setActiveCompareStep: Dispatch<SetStateAction<ESteps | null>>;
+  activeCompareStep: ESteps | null;
+  setCompareDate: Dispatch<SetStateAction<IDate | null>>;
+  componentStep: ESteps|null;
+  locale: TLocale;
+  accentColor:string;
+  tertiaryColor:string;
+  neutralColor:string;
+}
+const CompareList = ({ ...props }: ICompareList) => {
   const {
     date,
     zone,
@@ -14,15 +37,15 @@ const CompareList = ({ ...props }: IBaseProps) => {
     activeCompareStep,
     setCompareDate,
     componentStep,
-    locale = "fa",
-    accentColor = "#2563eb", // تأکیدی (برای جلب توجه، مثلاً نوتیفیکیشن‌ها یا CTAها)- آبی
-    tertiaryColor = "#939393", //رنگ سوم، معمولاً برای جزئیات یا عناصر کم‌اهمیت‌تر   -  رنگ متن
-    neutralColor = "#9cc5f1", //رنگ خنثی، اغلب برای پس‌زمینه یا متن - آبی کمرنگ
+    locale,
+    accentColor ,
+    tertiaryColor ,
+    neutralColor,  
   } = props;
 
   const timeHandler = (item: ITimeSections) => {
     setCompareDate?.(item.value);
-    setActiveCompareStep?.(item.step);
+    setActiveCompareStep(item.step);
   };
   const templatePeriods = period(date!, locale, zone!);
 
@@ -33,26 +56,10 @@ const CompareList = ({ ...props }: IBaseProps) => {
       !(item.timeZone === "lastMonth" && zone === "lastThreeMonth")
   );
 
-  // useEffect(() => {
-  //   const temp = templatePeriods.find(
-  //     (item) => item.step == activeCompareStep
-  //   )?.value;
-  //   if (temp) {
-  //     setCompareDate({ from: temp.from, to: temp.to });
-  //   }
-  // }, [counter]);
-
   return (
     <>
       {filteredPeriod.map((item, index) => {
         const active = item.step == activeCompareStep;
-        // if (
-        //   active &&
-        //   compareDate.from !== item.value.from &&
-        //   compareDate.to !== item.value.to
-        // ) {
-        //   setCompareDate(item.value);
-        // }
         const stringDateFrom = new Date(item.value.from).toLocaleDateString(
           `${locale == "fa" ? "fa-IR" : "en-UK"}`,
           {
@@ -72,13 +79,11 @@ const CompareList = ({ ...props }: IBaseProps) => {
         return (
           <button
             key={index}
-
             type="button"
             onClick={() => timeHandler(item)}
-            // style={{backgroundColor:"red"}}
-            className={`${style.relative} ${style.flex} ${style.flex_col} ${style.border_none} ${style.rounded_md} ${
-              style.items_start
-            }
+            className={`${style.relative} ${style.flex} ${style.flex_col} ${
+              style.border_none
+            } ${style.rounded_md} ${style.items_start}
             ${style.gap_y_2} ${style.pb_2} ${style.w_full} ${style.h_fit}
                
                 ${index < filteredPeriod.length - 1 && style.border_b}
@@ -105,7 +110,7 @@ const CompareList = ({ ...props }: IBaseProps) => {
                   locale == "en" ? style.right_5 : style.left_5
                 }`}
               >
-                <TickIcon {...props} />
+                <TickIcon accentColor={accentColor} />
               </span>
             )}
           </button>

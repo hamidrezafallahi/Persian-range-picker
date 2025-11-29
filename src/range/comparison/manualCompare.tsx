@@ -1,4 +1,6 @@
 import {
+  Dispatch,
+  SetStateAction,
   useEffect,
   useState,
 } from 'react';
@@ -6,41 +8,55 @@ import {
 import moment from 'moment-jalaali';
 
 import style from '../../main.module.css';
+import {
+  IDate,
+  TLocale,
+} from '../core/type';
 import { TickIcon } from '../icons/TickIcon';
 import { ESteps } from '../persianDatePicker/enum';
-import {
-  IBaseProps,
-  ITime,
-} from '../persianDatePicker/type';
+import { ITime } from '../persianDatePicker/type';
 
-function ManualCompare({ ...props }: IBaseProps) {
+interface IManualCompare {
+  step: ESteps;
+  date: IDate;
+  locale: TLocale;
+  setCompareDate: Dispatch<SetStateAction<IDate | null>>;
+  accentColor: string; 
+  tertiaryColor: string;
+}
+function ManualCompare({ ...props }: IManualCompare) {
   const {
     date,
     step,
     setCompareDate,
     locale,
-   accentColor = "#2563eb", // تأکیدی (برای جلب توجه، مثلاً نوتیفیکیشن‌ها یا CTAها)- آبی
-    tertiaryColor = "#939393", //رنگ سوم، معمولاً برای جزئیات یا عناصر کم‌اهمیت‌تر   -  رنگ متن
-    neutralColor = "#9cc5f1", //رنگ خنثی، اغلب برای پس‌زمینه یا متن - آبی کمرنگ
+    accentColor, 
+    tertiaryColor
   } = props;
   const [compare, setCompare] = useState(date);
   const [oneYearCompareDate, setOneYearCompareDate] = useState(date);
   const [active, setActive] = useState<string>("");
   const [disableButton, setDisableButton] = useState("");
-  const stringDateFrom = new Date(compare!.from as any).toLocaleDateString("fa-IR", {
-    weekday: "long",
-    month: "long",
-    day: "numeric",
-    // hour: "numeric",
-    // minute: "numeric",
-  });
-  const stringDateTo = new Date(compare!.to as any).toLocaleDateString("fa-IR", {
-    weekday: "long",
-    month: "long",
-    day: "numeric",
-    // hour: "numeric",
-    // minute: "numeric",
-  });
+  const stringDateFrom = new Date(compare!.from as any).toLocaleDateString(
+    "fa-IR",
+    {
+      weekday: "long",
+      month: "long",
+      day: "numeric",
+      // hour: "numeric",
+      // minute: "numeric",
+    }
+  );
+  const stringDateTo = new Date(compare!.to as any).toLocaleDateString(
+    "fa-IR",
+    {
+      weekday: "long",
+      month: "long",
+      day: "numeric",
+      // hour: "numeric",
+      // minute: "numeric",
+    }
+  );
   const stringDateOneYearFrom = new Date(
     oneYearCompareDate!.from as any
   ).toLocaleDateString("fa-IR", {
@@ -61,7 +77,10 @@ function ManualCompare({ ...props }: IBaseProps) {
   });
   const timeHandler = (key: ITime | "collapse") => {
     if (key == "manual") {
-      setCompareDate?.({ from: Number(compare!.from), to: Number(compare!.to) });
+      setCompareDate?.({
+        from: Number(compare!.from),
+        to: Number(compare!.to),
+      });
       setActive(key);
       setDisableButton("manual");
     } else {
@@ -109,7 +128,7 @@ function ManualCompare({ ...props }: IBaseProps) {
         key="manual"
         onClick={() => timeHandler("manual")}
         type="button"
-        style={{backgroundColor: "#f0f0f0"}}
+        style={{ backgroundColor: "#f0f0f0" }}
         className={`${style.flex} ${style.flex_col} ${style.relative} ${style.items_start} ${style.gap_2} ${style.w_full} ${style.h_fit} ${style.rounded_md} ${style.border_none} `}
       >
         <div
@@ -141,18 +160,18 @@ function ManualCompare({ ...props }: IBaseProps) {
         onClick={() => timeHandler("collapse")}
         type="button"
         className={`${style.flex} ${style.flex_col} ${style.relative} ${style.items_start} ${style.gap_2} ${style.w_full} ${style.h_fit} ${style.rounded_md} ${style.border_none} `}
-        style={{backgroundColor: "#f0f0f0"}}
-
+        style={{ backgroundColor: "#f0f0f0" }}
       >
         <div
-         style={{ color: active == "collapse" ? accentColor : tertiaryColor }}
+          style={{ color: active == "collapse" ? accentColor : tertiaryColor }}
         >
           {locale == "fa"
             ? "همین بازه یک سال پیش"
             : "Same duration noe year ago"}
         </div>
         <div
-          style={{ color: active == "collapse" ? accentColor : tertiaryColor }}        >
+          style={{ color: active == "collapse" ? accentColor : tertiaryColor }}
+        >
           {stringDateOneYearFrom}
           {" - "}
           {stringDateOneYearTo}

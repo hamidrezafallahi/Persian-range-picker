@@ -9,14 +9,47 @@ import React, {
 import style from '../../main.module.css';
 import { ESteps } from '../persianDatePicker/enum';
 import {
-  IBaseProps,
+  HandleParams,
+  IAdditionalElementType,
   ITime,
+  ITimeZone,
 } from '../persianDatePicker/type';
 import Manual from './manual';
 import PeriodList from './periodList';
+import {
+  IDate,
+  TLocale,
+} from './type';
 
-interface IProps extends IBaseProps {
+export interface IMainContentProps {
+  step: ESteps;
+  zone: ITimeZone;
+  date: IDate;
+  locale: TLocale;
+  setDate: Dispatch<SetStateAction<IDate>>;
+  setStep: Dispatch<SetStateAction<ESteps>>;
+  setZone: Dispatch<SetStateAction<ITimeZone>>;
+  setCompareDate: Dispatch<SetStateAction<IDate | null>>;
+  onChange: (e: HandleParams) => void;
+  componentStep: ESteps;
+  setCounter: Dispatch<SetStateAction<number>>;
+  activeCompareStep: ESteps | null;
+  setActiveCompareStep: Dispatch<SetStateAction<ESteps|null>>;
+  showComparison: boolean;
+  periodClassName: string;
+  primaryColor: string;
+  highlightColor: string;
+  accentColor: string;
+  tertiaryColor: string;
+  neutralColor: string;
   setCustomData: Dispatch<SetStateAction<unknown>>;
+  onError?: (e: string) => void;
+  additionalElement?: IAdditionalElementType[];
+  periodListClassName: string;
+  tabClassName: string;
+  setType?: Dispatch<SetStateAction<string>>;
+  activeTable?: "Day" | "Week" | "Month" | "Year" | "manual";
+  monthPickerClassName?: string;
 }
 interface ITab {
   key: ITime;
@@ -24,9 +57,8 @@ interface ITab {
   content: ReactNode;
 }
 
-const MainContent = ({ ...props }: IProps) => {
+const MainContent = ({ ...props }: IMainContentProps) => {
   const {
-    setTabKey,
     onError,
     additionalElement = [],
     periodListClassName,
@@ -41,12 +73,24 @@ const MainContent = ({ ...props }: IProps) => {
     setCustomData,
     setType,
     activeTable = "manual",
+    activeCompareStep,
+    date,
+    highlightColor,
+    neutralColor,
+    onChange,
+    setDate,
+    periodClassName,
+    primaryColor,
+    showComparison,
+    step,
+    tertiaryColor,
+    zone,
+    monthPickerClassName,
   } = props;
 
   const [activeTab, setActiveTab] = useState<string>(activeTable);
   const handleTabChange = (key: ITab["key"]) => {
     setActiveTab(key);
-    setTabKey?.(key);
   };
   const handleChange = (key: ITab["key"], value: unknown) => {
     const defaultKeys = ["day", "week", "month", "season", "year", "manual"];
@@ -61,33 +105,54 @@ const MainContent = ({ ...props }: IProps) => {
       setType?.(key);
     }
   };
+  const otherProps = {
+    accentColor,
+    activeCompareStep,
+    date,
+    highlightColor,
+    locale,
+    neutralColor,
+    onChange,
+    periodClassName,
+    primaryColor,
+    setActiveCompareStep,
+    setCompareDate,
+    setCounter,
+    setDate,
+    setStep,
+    setZone,
+    showComparison,
+    step,
+    tertiaryColor,
+    zone,
+    onError,
+    monthPickerClassName,
+  };
   const tabs: ITab[] = [
     {
       key: "Day",
       label: locale == "fa" ? "روز" : "day",
-      content: <PeriodList {...props} componentStep={ESteps.day} />,
+      content: <PeriodList {...otherProps} componentStep={ESteps.day} />,
     },
     {
       key: "Week",
       label: locale == "fa" ? "هفته" : "week",
-      content: <PeriodList {...props} componentStep={ESteps.week} />,
+      content: <PeriodList {...otherProps} componentStep={ESteps.week} />,
     },
     {
       key: "Month",
       label: locale == "fa" ? "ماه" : "month",
-      content: <PeriodList {...props} componentStep={ESteps.month} />,
+      content: <PeriodList {...otherProps} componentStep={ESteps.month} />,
     },
     {
       key: "Year",
       label: locale == "fa" ? "سال" : "year",
-      content: <PeriodList {...props} componentStep={ESteps.year} />,
+      content: <PeriodList {...otherProps} componentStep={ESteps.year} />,
     },
     {
       key: "manual",
       label: locale == "fa" ? "دستی" : "manual",
-      content: (
-        <Manual {...props} onError={onError} componentStep={ESteps.manual} />
-      ),
+      content: <Manual {...otherProps} componentStep={ESteps.manual} />,
     },
     ...additionalElement,
   ];

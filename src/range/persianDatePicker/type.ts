@@ -249,12 +249,15 @@ export interface IRangeOptions extends IColorProps, IClassNameProps {
   isOpenDropdown?: boolean;
 }
 export interface IBaseProps extends IRangeOptions {
-  step?: ESteps;
+
+
+
+  step: ESteps;
+  zone: ITimeZone;
+  date: IDate;
+  locale: TLocale;
   counter?: number;
-  zone?: ITimeZone;
-  date?: IDate;
-  locale?: TLocale;
-  tabKey?: ITime | string;
+
   compareDate?: IDate | null;
   activeCompareStep?: ESteps | null;
   setStep?: Dispatch<SetStateAction<ESteps>>;
@@ -262,7 +265,6 @@ export interface IBaseProps extends IRangeOptions {
   setCompareDate?: Dispatch<SetStateAction<IDate | null>>;
   setDate?: Dispatch<SetStateAction<IDate>>;
   setActiveCompareStep?: Dispatch<SetStateAction<ESteps | null>>;
-  setTabKey?: Dispatch<SetStateAction<ITime | string>>;
   setZone?: Dispatch<SetStateAction<ITimeZone>>;
   onNavigateChange?: (date: IDate, compareDate: IDate | null) => void;
   componentStep?: ESteps;
@@ -308,33 +310,9 @@ export interface IBaseProps extends IRangeOptions {
   WeekHeaderClassName?: string;
   WeekHeaderStyle?: React.CSSProperties;
 }
-export interface RangeProps
-  extends IRangeOptions,
-  Omit<
-    IRangeProps,
-    "defaultValue" | "onChange" | "calendarType" | "device" | "isOpenDropdown"
-  > {
-  defaultValue?: IDate;
-  onChange?: (e: HandleParams) => void;
-  calendarType?: CalendarType;
-  isOpenDropdown?: boolean;
-  handleReject?: () => void;
-  handleSubmit?: (params: HandleParams) => void;
-  onNavigateChange?: (date: IDate, compareDate: IDate | null) => void;
-  navigation?: boolean;
-}
 
 
-export interface IRangeProps extends IBaseProps {
-  handleSubmit?: RangeProps["handleSubmit"];
-  handleReject?: RangeProps["handleReject"];
-  label?: boolean | ReactNode | string;
-  dropdownWidth?: number;
-  dropdownHeight?: number;
-  disabled?: boolean;
-  locale?: TLocale;
-  value?: IDate;
-}
+
 
 
 
@@ -382,8 +360,6 @@ export interface ISubmittedData {
 export interface IRangePickerProps
   extends Omit<IRangeOptions, "defaultValue" | "onChange">,
   Omit<Date, "defaultValue" | "onChange"> {
-  handleSubmit?: RangeProps["handleSubmit"];
-  handleReject?: RangeProps["handleReject"];
   label?: boolean | ReactNode | string;
   dropdownWidth?: number;
   dropdownHeight?: number;

@@ -18,20 +18,15 @@ import { period } from './helper';
 import type { TLocale } from './type';
 
 interface INavigationProps {
-  step?: IBaseProps["step"];
-  zone?: IBaseProps["zone"];
-  setDate?: IBaseProps["setDate"];
-  counter?: IBaseProps["counter"];
-  setCounter?: IBaseProps["setCounter"];
-  setCompareDate?: IBaseProps["setCompareDate"];
-  date?: IBaseProps["date"];
-  compareDate?: IBaseProps["compareDate"];
-  setActiveCompareStep?: IBaseProps["setActiveCompareStep"];
-  activeCompareStep?: IBaseProps["activeCompareStep"];
-  setTabKey?: IBaseProps["setTabKey"];
-  setStep?: IBaseProps["setStep"];
-  setZone?: IBaseProps["setZone"];
-  locale?: IBaseProps["locale"];
+  step: IBaseProps["step"];
+  zone: IBaseProps["zone"];
+  setDate: IBaseProps["setDate"];
+  counter: IBaseProps["counter"];
+  setCounter: IBaseProps["setCounter"];
+  setCompareDate: IBaseProps["setCompareDate"];
+  compareDate: IBaseProps["compareDate"];
+  activeCompareStep: IBaseProps["activeCompareStep"];
+  locale: IBaseProps["locale"];
 }
 function NavigateButton({ ...props }: INavigationProps) {
   const {
@@ -43,7 +38,7 @@ function NavigateButton({ ...props }: INavigationProps) {
     activeCompareStep,
     compareDate,
     setCompareDate,
-    locale = "fa",
+    locale = "fa",       
   } = props;
   const containerRef = useRef<HTMLDivElement>(null);
   const [dir, setDir] = useState<"ltr" | "rtl">("ltr");

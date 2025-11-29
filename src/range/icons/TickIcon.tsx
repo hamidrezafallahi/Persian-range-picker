@@ -1,9 +1,9 @@
 interface ITickIconProps {
-  accentColor?: string;
+  accentColor: string;
 }
 
 export const TickIcon = ({
-  accentColor = "#2563eb", // تأکیدی (برای جلب توجه، مثلاً نوتیفیکیشن‌ها یا CTAها)- آبی
+  accentColor 
 }: ITickIconProps) => {
   return (
     <svg

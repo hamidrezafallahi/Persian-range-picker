@@ -1,14 +1,46 @@
+import {
+  Dispatch,
+  SetStateAction,
+} from 'react';
+
 import style from '../../main.module.css';
 import Comparison from '../comparison';
 import { TickIcon } from '../icons/TickIcon';
 import { ESteps } from '../persianDatePicker/enum';
 import {
-  IBaseProps,
+  HandleParams,
   ITimeSections,
+  ITimeZone,
 } from '../persianDatePicker/type';
 import { getTimestampsForPeriod } from './helper';
+import {
+  IDate,
+  TLocale,
+} from './type';
 
-function PeriodList({ ...props }: IBaseProps) {
+interface IPeriodList {
+  step: ESteps;
+  zone: ITimeZone;
+  date: IDate;
+  locale: TLocale;
+  setDate: Dispatch<SetStateAction<IDate>>;
+  setStep: Dispatch<SetStateAction<ESteps>>;
+  setZone: Dispatch<SetStateAction<ITimeZone>>;
+  setCompareDate: Dispatch<SetStateAction<IDate | null>>;
+  onChange: (e: HandleParams) => void;
+  componentStep: ESteps;
+  setCounter: Dispatch<SetStateAction<number>>;
+  activeCompareStep: ESteps | null;
+  setActiveCompareStep: Dispatch<SetStateAction<ESteps | null>>;
+  showComparison: boolean;
+  periodClassName: string;
+  primaryColor: string;
+  highlightColor: string;
+  accentColor: string;
+  tertiaryColor: string;
+  neutralColor: string;
+}
+function PeriodList({ ...props }: IPeriodList) {
   const {
     onChange,
     setDate,
@@ -18,15 +50,21 @@ function PeriodList({ ...props }: IBaseProps) {
     date,
     locale = "fa",
     setCounter,
+    activeCompareStep,
     setActiveCompareStep,
     setCompareDate,
     showComparison = true,
     periodClassName,
+    step,
+    zone,
+    primaryColor,
     highlightColor = "#f4f4f4", //رنگ برجسته‌کننده برای هاور، نوتیف یا نقاط توجه
     accentColor = "#2563eb", // تأکیدی (برای جلب توجه، مثلاً نوتیفیکیشن‌ها یا CTAها)- آبی
     tertiaryColor = "#939393", //رنگ سوم، معمولاً برای جزئیات یا عناصر کم‌اهمیت‌تر   -  رنگ متن
     neutralColor = "#9cc5f1", //رنگ خنثی، اغلب برای پس‌زمینه یا متن - آبی کمرنگ
   } = props;
+  console.log(date);
+
   const period: ITimeSections[] = [
     {
       title: locale == "fa" ? "امروز" : "Today",
@@ -120,7 +158,8 @@ function PeriodList({ ...props }: IBaseProps) {
   return (
     <>
       {filteredPeriod.map((item, index) => {
-        const active = date!.from == item.value.from && date!.to == item.value.to;
+        const active =
+          date!.from == item.value.from && date!.to == item.value.to;
         const stringDateFrom = new Date(item.value.from).toLocaleDateString(
           `${locale == "fa" ? "fa-IR" : "en-UK"}`,
           {
@@ -142,7 +181,6 @@ function PeriodList({ ...props }: IBaseProps) {
             key={index}
             onClick={() => timeHandler(item)}
             type="button"
- 
             className={`
               ${style.border_none}
               ${style.py_2}
@@ -162,7 +200,6 @@ function PeriodList({ ...props }: IBaseProps) {
             </div>
             <div
               style={{
-               
                 color: active ? neutralColor : tertiaryColor,
                 fontSize: "0.75rem",
               }}
@@ -192,7 +229,21 @@ function PeriodList({ ...props }: IBaseProps) {
       })}
 
       {showComparison && (
-        <Comparison {...props} switchHandler={switchHandler} />
+        <Comparison
+          switchHandler={switchHandler}
+          date={date}
+          activeCompareStep={activeCompareStep}
+          componentStep={componentStep}
+          locale={locale}
+          setActiveCompareStep={setActiveCompareStep}
+          setCompareDate={setCompareDate}
+          step={step}
+          zone={zone}
+          accentColor={accentColor}
+          neutralColor={neutralColor}
+          primaryColor={primaryColor}
+          tertiaryColor={tertiaryColor}
+        />
       )}
     </>
   );

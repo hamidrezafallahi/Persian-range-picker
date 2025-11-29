@@ -1,23 +1,70 @@
 import {
   useEffect,
+  useRef,
   useState,
 } from 'react';
+import { createPortal } from 'react-dom';
 
 import moment from 'moment-jalaali';
 
+import style from '../../../main.module.css';
+import {
+  getTimestamp,
+  toPersianDigits,
+} from '../../core/helper';
+import MainContent, { IMainContentProps } from '../../core/mainContent';
+import NavigateButton from '../../core/navigateButton';
 import type { IDate } from '../../core/type';
-import { DesktopRangePicker } from '../../desktopRange/desktopRangePicker';
-import { MobileRangePicker } from '../../mobileRange/mobileRangePicker';
+import { CalenderIcon } from '../../icons/CalenderIcon';
+import { DownTriangle } from '../../icons/DownTriangle';
+import { MenuArrowBack } from '../../icons/MenuArrowBack';
 import { ESteps } from '../../persianDatePicker/enum';
 import {
-  IRangeProps,
-  ITime,
+  HandleParams,
+  IAdditionalElementType,
+  ISubmittedData,
   ITimeZone,
 } from '../../persianDatePicker/type';
 import { useMediaQuery } from '../useMediaQuery';
+import { useRenderPosition } from '../useRenderPosition';
 
-export function RangePicker({ ...props }: Omit<IRangeProps, "locale">) {
-  const { match } = useMediaQuery("XSUP");
+interface IRangeProps{
+    isOpenDropdown?:boolean
+    additionalElement?:IAdditionalElementType[]
+    calendarType?: "jalali"|"gregorian"
+    defaultValue?:IDate;
+    value?:IDate;
+    onError?:(e:string)=>void;
+    handleSubmit?:(e: HandleParams) => void;
+    handleReject?:() => void
+    onChange?:(e: HandleParams) => void;
+    onCompareDateChange?:(e: HandleParams) => void;
+    isShowNavigationButton?:boolean;
+    primaryColor?:string;
+    backgroundColor?:string;
+    tertiaryColor?:string;
+    dateClassName?:string;
+    buttonClassName?:string;
+    dropdownWidth?:number;
+    dropdownHeight?:number;
+    label?: "Date" | "تاریخ";
+    className?:string;
+    disabled?:boolean;
+    highlightColor?:string;
+    componentStep?:ESteps;
+    periodClassName?:string;
+    periodListClassName?:string;
+    showComparison?:boolean;
+    accentColor?:string;
+    neutralColor?:string;
+    tabClassName?:string;
+    activeTable?: "Day" | "Week" | "Month" | "Year" | "manual";
+    monthPickerClassName?:string;
+
+
+}
+
+export function RangePicker( props :IRangeProps  ) {
   const {
     isOpenDropdown = false,
     additionalElement,
@@ -25,6 +72,31 @@ export function RangePicker({ ...props }: Omit<IRangeProps, "locale">) {
     defaultValue,
     value,
     onError,
+    handleSubmit,
+    handleReject,
+    onChange,
+    onCompareDateChange,
+    isShowNavigationButton = true,
+    primaryColor = "#000",
+    backgroundColor = "#fff",
+    tertiaryColor = "#939393",
+    dateClassName,
+    buttonClassName,
+    dropdownWidth = 460,
+    dropdownHeight = 460,
+    label = props.calendarType == "gregorian" ? "Date" : "تاریخ",
+    className,
+    disabled,
+    highlightColor = "#f4f4f4",
+    componentStep = ESteps.manual,
+    periodClassName = "",
+    periodListClassName = "",
+    showComparison = true,
+    accentColor = "#2563eb",
+    neutralColor = "#9cc5f1",
+    tabClassName = "",
+    activeTable,
+    monthPickerClassName,
   } = props;
   const locale = calendarType == "jalali" ? "fa" : "en";
   const isFa = locale === "fa";
@@ -49,8 +121,8 @@ export function RangePicker({ ...props }: Omit<IRangeProps, "locale">) {
       };
     }
   })();
-
-  const [range, setRange] = useState<IDate>(initValue);
+  const { match } = useMediaQuery("XSUP");
+  const [date, setDate] = useState<IDate>(initValue);
   const [compareDate, setCompareDate] = useState<IDate | null>(null);
   const [counter, setCounter] = useState(0);
   const [activeCompareStep, setActiveCompareStep] = useState<ESteps | null>(
@@ -58,69 +130,420 @@ export function RangePicker({ ...props }: Omit<IRangeProps, "locale">) {
   );
   const [step, setStep] = useState<ESteps>(366);
   const [zone, setZone] = useState<ITimeZone>("manual");
-  const [tabKey, setTabKey] = useState<ITime | string>("manual");
-  const [open, setOpen] = useState(isOpenDropdown);
+  const [open, setOpen] = useState<boolean>(isOpenDropdown);
+  const [type, setType] = useState<string>("range");
+  const [customData, setCustomData] = useState<unknown>(null);
+  const buttonRef = useRef<HTMLElement>(null);
+  const popupRef = useRef<HTMLDivElement>(null);
+  const fromTimestamp = getTimestamp(date!.from) ?? 0;
+  const toTimestamp = getTimestamp(date!.to) ?? 0;
+  const DateFrom =
+    fromTimestamp > 0
+      ? locale === "fa"
+        ? toPersianDigits(moment(fromTimestamp).format("jYYYY/jMM/jDD"))
+        : moment(fromTimestamp).format("YYYY/MM/DD")
+      : locale === "fa"
+      ? "انتخاب تاریخ"
+      : "Choose date";
 
-  useEffect(() => {
-    if (value !== undefined) {
-      setRange({
-        from: isFa
-          ? moment(value.from).locale("fa").startOf("day").valueOf()
-          : moment(value.from).utc().startOf("day").valueOf(),
-        to: isFa
-          ? moment(value.to).locale("fa").endOf("day").valueOf()
-          : moment(value.to).utc().endOf("day").valueOf(),
-      });
+  const DateTo =
+    toTimestamp > 0
+      ? locale === "fa"
+        ? toPersianDigits(moment(toTimestamp).format("jYYYY/jMM/jDD"))
+        : moment(toTimestamp).format("YYYY/MM/DD")
+      : locale === "fa"
+      ? "انتخاب تاریخ"
+      : "Choose date";
+  const isInitialRender = useRef(true);
+  const prevDate = useRef(date);
+  const prevCompareDate = useRef(compareDate);
+  const [showDate, setShowDate] = useState<ISubmittedData>({
+    date: {
+      from:
+        locale === "fa"
+          ? moment().locale("fa").startOf("jYear").valueOf()
+          : moment().locale("en").startOf("year").valueOf(),
+      to: moment().locale(locale).startOf("day").valueOf(),
+    },
+    compareDate: null,
+    Data: null, // or any default value you want for Data
+  });
+
+  const handleAccept = () => {
+    if (date) {
+      if (date.from && date.to && date.from < date.to) {
+        if (handleSubmit) {
+          if (type == "range") {
+            handleSubmit({ type, Data: { date, compareDate } });
+          } else {
+            handleSubmit({ type, Data: { customData } });
+          }
+        }
+        setShowDate({
+          date,
+          compareDate,
+          Data: customData,
+        });
+        setOpen?.(false);
+      } else {
+        if (onError) {
+          onError(
+            `${
+              locale == "fa"
+                ? "تاریخ پایان نمی‌تواند زودتر از تاریخ آغاز باشد."
+                : "The end date must not be earlier than the start date."
+            }`
+          );
+        }
+      }
+    } else {
+      if (handleSubmit) {
+        if (type == "range") {
+          handleSubmit({ type, Data: { date, compareDate } });
+        } else {
+          handleSubmit({ type, Data: { customData } });
+        }
+      }
+      setShowDate({ date: date!, compareDate, Data: customData });
+      setOpen?.(false);
     }
-  }, [value]);
+  };
+  const handleCancel = () => {
+    setOpen?.(false);
+    setDate?.(showDate?.date);
+    setStep?.(366);
+    setCompareDate?.(showDate.compareDate);
+    if (handleReject) {
+      handleReject();
+    }
+  };
+
+  useRenderPosition({
+    buttonRef: buttonRef as React.RefObject<HTMLElement>,
+    popupRef: popupRef,
+    setIsOpen: setOpen ?? (() => {}),
+    isOpen: open ?? false,
+  });
+
+  const handleDropdown = () => {
+    setOpen?.((prev) => !prev);
+  };
+  useEffect(() => {
+    if (date) {
+      setShowDate((prev) => ({
+        ...prev,
+        Data: null,
+      }));
+    }
+  }, [counter]);
+  useEffect(() => {
+    const hasCompareDateChanged =
+      compareDate?.from !== prevCompareDate.current?.from ||
+      compareDate?.to !== prevCompareDate.current?.to;
+    if (onCompareDateChange && compareDate && hasCompareDateChanged) {
+      onCompareDateChange({
+        type: "compareRange",
+        Data: { date, compareDate },
+      });
+      setShowDate((prev) => ({
+        ...prev,
+        compareDate,
+      }));
+    }
+    prevCompareDate.current = compareDate;
+    const hasDateChanged =
+      date?.from !== prevDate.current?.from ||
+      date?.to !== prevDate.current?.to;
+    if (isInitialRender.current) {
+      isInitialRender.current = false;
+    } else if (hasDateChanged && onChange) {
+      const isEmpty = !date && !compareDate;
+      const isInvalidDateTo = date?.to == null || Number.isNaN(date?.to);
+      const isInvalid = date?.from && isInvalidDateTo;
+      if (!(isEmpty || isInvalid)) {
+        console.log(date, value);
+        if (!Number.isNaN(date?.from)) {
+          const dateFromValue = !(
+            new Date(date?.from!).valueOf() ==
+              new Date(value?.from!).valueOf() ||
+            new Date(date?.to!).valueOf() == new Date(value?.to!).valueOf()
+          );
+          if (dateFromValue && new Date(date?.to as number).valueOf() > 0) {
+            onChange({ type, Data: { date, compareDate } });
+          }
+        }
+      }
+    }
+    prevDate.current = date;
+  }, [date]);
+  useEffect(() => {
+    if (customData) {
+      onChange?.({ type, Data: { customData } });
+    }
+  }, [customData]);
+  const mainContentProps: IMainContentProps = {
+    activeCompareStep,
+    date,
+    highlightColor,
+    onChange,
+    primaryColor,
+    setActiveCompareStep,
+    setCompareDate,
+    setCounter,
+    setDate,
+    setStep,
+    setZone,
+    componentStep,
+    neutralColor,
+    periodClassName,
+    periodListClassName,
+    showComparison,
+    accentColor,
+    tabClassName,
+    activeTable,
+    monthPickerClassName,
+    tertiaryColor,
+    zone,
+    additionalElement,
+    onError,
+    step,
+    locale: calendarType === "gregorian" ? "en" : "fa",
+    setCustomData,
+    setType,
+  };
+
   return (
     <>
       {match ? (
-        <DesktopRangePicker
-          {...props}
-          step={step}
-          counter={counter}
-          zone={zone}
-          date={range}
-          tabKey={tabKey}
-          compareDate={compareDate}
-          setCompareDate={setCompareDate}
-          activeCompareStep={activeCompareStep}
-          setStep={setStep}
-          setCounter={setCounter}
-          setDate={setRange}
-          setActiveCompareStep={setActiveCompareStep}
-          setTabKey={setTabKey}
-          setZone={setZone}
-          setOpen={setOpen}
-          open={open}
-          additionalElement={additionalElement}
-          activeTable="manual"
-          locale={locale}
-          onError={onError}
-        />
+        <div
+          className={`
+      ${style.flex}
+      ${style.flex_col}
+      ${style.justify_center}
+      ${style.w_fit}
+      ${label ? style.h_14 : style.h_8}
+      ${style.relative}
+      ${buttonClassName}
+      
+    `}
+          ref={buttonRef as React.RefObject<HTMLDivElement>}
+        >
+          {label && <div>{label}</div>}
+          <div className={`${style.flex} ${style.gap_2}  `}>
+            <button
+              type="button"
+              className={`
+            ${style.flex}
+            ${style.justify_between}
+            ${style.items_center}
+            ${style.gap_2}
+            ${style.px_2}
+            ${style.border}
+            ${style.border_gray_300}
+            ${style.rounded_md}
+            ${style.h_8}
+            ${style.cursor_pointer}
+            ${dateClassName}
+            ${style.bg_white}
+                    `}
+              onClick={handleDropdown}
+            >
+              <div
+                className={`${style.px_2} ${style.w_fit} ${style.text_center}`}
+                style={{
+                  color: tertiaryColor,
+                  direction: "ltr",
+                }}
+              >
+                {DateFrom}
+                {" _ "}
+                {DateTo}
+              </div>
+              <DownTriangle />
+            </button>
+            {zone !== "manual" && isShowNavigationButton && (
+              <NavigateButton
+                compareDate={compareDate}
+                setDate={setDate}
+                setCompareDate={setCompareDate}
+                step={step}
+                zone={zone}
+                activeCompareStep={activeCompareStep}
+                counter={counter}
+                setCounter={setCounter}
+                locale={locale}
+              />
+            )}
+          </div>
+          {open &&
+            createPortal(
+              <div
+                ref={popupRef}
+                style={{
+                  backgroundColor: backgroundColor,
+                  position: "absolute",
+                  zIndex: 1050,
+                  width: dropdownWidth,
+                  height: dropdownHeight,
+                }}
+                className={`
+            ${style.absolute}
+            ${style.z_50}
+            ${style.p_2}
+            ${style.border}
+            ${style.border_gray_300}
+            ${style.rounded_lg}
+            ${style.shadow_md}
+            ${style.overflow_hidden}
+            ${locale === "fa" ? style.right_0 : style.left_0}
+          `}
+              >
+                <div
+                  className={`${style.relative} ${style.w_full} ${style.h_full}`}
+                >
+                  <MainContent {...mainContentProps} />
+                  <div
+                    className={`
+  ${style.w_full}
+  ${style.flex}
+  ${style.gap_2}
+  ${style.absolute}
+  ${style.bottom_0}
+  ${style.flex_row_reverse}
+  ${style.justify_end}
+`}
+                    dir={locale == "fa" ? "ltr" : "rtl"}
+                  >
+                    <button
+                      style={{ color: primaryColor }}
+                      className={`${style.p_2} ${style.px_3} ${style.rounded_md} ${style.border_none}`}
+                      onClick={handleCancel}
+                    >
+                      {locale == "fa" ? "لغو" : "Cancel"}
+                    </button>
+                    <button
+                      onClick={() => handleAccept()}
+                      style={{
+                        background: primaryColor,
+                        borderColor: primaryColor,
+                        color: backgroundColor,
+                      }}
+                      className={`${style.p_2} ${style.px_3} ${style.border} ${style.rounded_md}`}
+                    >
+                      {locale == "fa" ? "اعمال" : "Accept"}
+                    </button>
+                  </div>
+                </div>
+              </div>,
+              document.body
+            )}
+        </div>
       ) : (
-        <MobileRangePicker
-          {...props}
-          onError={onError}
-          step={step}
-          counter={counter}
-          zone={zone}
-          date={range}
-          tabKey={tabKey}
-          compareDate={compareDate}
-          activeCompareStep={activeCompareStep}
-          setCompareDate={setCompareDate}
-          setDate={setRange}
-          setActiveCompareStep={setActiveCompareStep}
-          setCounter={setCounter}
-          setTabKey={setTabKey}
-          setStep={setStep}
-          setZone={setZone}
-          additionalElement={additionalElement}
-          locale={locale}
-          activeTable="manual"
-        />
+        <div className={`${style.flex} ${className}`}>
+          <button
+            disabled={disabled}
+            type="button"
+            onClick={() => setOpen(true)}
+            className={`
+          ${style.flex}
+          ${style.justify_between}
+          ${style.items_center}
+          ${style.gap_2}
+          ${style.px_1}
+          ${style.h_9}
+           ${style.rounded_md}
+           ${style.border_none}
+          
+          ${style.w_full}      
+          ${disabled ? style.cursor_not_allowed : ""}
+          ${className}
+        `}
+            style={{
+              color: tertiaryColor,
+              backgroundColor: highlightColor,
+              width: "100%",
+            }}
+          >
+            <CalenderIcon />
+            <div
+              className={`
+            ${style.w_fit}
+            ${style.text_gray_gray8}
+            ${style.text_center}
+          `}
+            >
+              {DateFrom}
+            </div>
+            <div className={`${style.text_gray_gray8} ${style.text_center}`}>
+              {"-"}
+            </div>
+            <div
+              className={`
+            ${style.w_fit}
+            ${style.text_gray_gray8}
+            ${style.text_center}
+          `}
+            >
+              {DateTo}
+            </div>
+          </button>
+
+          {zone !== "manual" && isShowNavigationButton && (
+            <NavigateButton
+              compareDate={compareDate}
+              setDate={setDate}
+              setCompareDate={setCompareDate}
+              step={step}
+              zone={zone}
+              activeCompareStep={activeCompareStep}
+              counter={counter}
+              setCounter={setCounter}
+              locale={locale}
+            />
+          )}
+
+          {/* مودال */}
+          {open &&
+            createPortal(
+              <div
+                style={{
+                  position: "fixed",
+                  inset: 0,
+                  zIndex: 9999,
+                  background: "#fff",
+                  overflow: "auto",
+                }}
+              >
+                <div
+                  className={`${style.flex} ${style.gap_1}`}
+                  dir={locale == "fa" ? "rtl" : "ltr"}
+                >
+                  <button
+                    type="button"
+                    onClick={() => setOpen(false)}
+                    className={`
+                  ${style.flex}
+                  ${style.justify_center}
+                  ${style.items_center}
+                  ${style.gap_2}
+                  ${style.border_none}
+                  ${style.rounded_md}
+                  ${style.font_IRANSans}
+                  ${style.font_extrabold}
+                  ${style.text_base}
+                  ${style.whitespace_nowrap}
+                `}
+                    style={{ color: "#6e6e6e" }}
+                  >
+                    <MenuArrowBack />
+                    <span>{locale == "fa" ? "تاریخ" : "Date"}</span>
+                  </button>
+                </div>
+                <MainContent {...mainContentProps} />
+              </div>,
+              document.body
+            )}
+        </div>
       )}
     </>
   );
