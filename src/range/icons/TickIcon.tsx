@@ -1,9 +1,10 @@
 interface ITickIconProps {
-  accentColor: string;
+  accentColor?: string;
 }
 
 export const TickIcon = ({
-  accentColor 
+    accentColor = "#2563eb"
+
 }: ITickIconProps) => {
   return (
     <svg

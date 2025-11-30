@@ -7,13 +7,13 @@ import type {
 import moment from 'moment-jalaali';
 
 import style from '../../main.module.css';
-import { IRangeProps } from '../persianDatePicker/type';
+import { TLocale } from './type';
 
 interface IFooter {
   setShowDate: Dispatch<SetStateAction<number|null>>;
   showDate: number|null;
   setIsOpen?: Dispatch<SetStateAction<boolean>>;
-  locale: IRangeProps["locale"];
+  locale: TLocale
   elements?: ReactNode[] | null;
   primaryColor?: string;
   highlightColor?: string;

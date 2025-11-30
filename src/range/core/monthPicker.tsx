@@ -19,7 +19,6 @@ interface IMonthPickerType {
   highlightColor?: string;
   tertiaryColor?: string;
 }
-
 const MonthPicker = ({
   dateFromOutside = {
     from: moment().locale("fa").clone().startOf("jYear").valueOf(),

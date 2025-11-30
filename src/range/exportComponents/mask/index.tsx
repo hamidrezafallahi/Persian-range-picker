@@ -702,23 +702,6 @@ export function Mask({ ...props }: IMaskProps) {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [isEdit]);
-  // console.log(defaultValue,new Date(value).valueOf(),baseValue)
-
-  // useEffect(() => {
-  //   if (value && (new Date(baseValue).valueOf() !== new Date(value).valueOf())) {
-  //     if (exportType == "IsoString") {
-  //       onMaskChange?.(
-  //         locale == "fa"
-  //           ? moment(baseValue).format("YYYY-MM-DDTHH:mm:ss.SSSZ")
-  //           : moment.utc(baseValue).format("YYYY-MM-DDTHH:mm:ss.SSSZ")
-  //       );
-  //     } else {
-  //       locale == "fa"
-  //         ? moment(baseValue).valueOf()
-  //         : moment.utc(baseValue).valueOf();
-  //     }
-  //   }
-  // }, [baseValue]);
   useEffect(() => {
     const [year, month, day] = separatedValue;
     const temp = `${year}${month}${day}`.substring(0, 8);

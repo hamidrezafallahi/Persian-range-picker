@@ -20,6 +20,7 @@ import { DownTriangle } from '../../icons/DownTriangle';
 import { MenuArrowBack } from '../../icons/MenuArrowBack';
 import { ESteps } from '../../persianDatePicker/enum';
 import {
+  CalendarProps2,
   HandleParams,
   IAdditionalElementType,
   ISubmittedData,
@@ -28,43 +29,39 @@ import {
 import { useMediaQuery } from '../useMediaQuery';
 import { useRenderPosition } from '../useRenderPosition';
 
-interface IRangeProps{
-    isOpenDropdown?:boolean
-    additionalElement?:IAdditionalElementType[]
-    calendarType?: "jalali"|"gregorian"
-    defaultValue?:IDate;
-    value?:IDate;
-    onError?:(e:string)=>void;
-    handleSubmit?:(e: HandleParams) => void;
-    handleReject?:() => void
-    onChange?:(e: HandleParams) => void;
-    onCompareDateChange?:(e: HandleParams) => void;
-    isShowNavigationButton?:boolean;
-    primaryColor?:string;
-    backgroundColor?:string;
-    tertiaryColor?:string;
-    dateClassName?:string;
-    buttonClassName?:string;
-    dropdownWidth?:number;
-    dropdownHeight?:number;
-    label?: "Date" | "تاریخ";
-    className?:string;
-    disabled?:boolean;
-    highlightColor?:string;
-    componentStep?:ESteps;
-    periodClassName?:string;
-    periodListClassName?:string;
-    showComparison?:boolean;
-    accentColor?:string;
-    neutralColor?:string;
-    tabClassName?:string;
-    activeTable?: "Day" | "Week" | "Month" | "Year" | "manual";
-    monthPickerClassName?:string;
-
-
+interface IRangeProps extends Omit<CalendarProps2, "onChange"> {
+  isOpenDropdown?: boolean;
+  additionalElement?: IAdditionalElementType[];
+  calendarType?: "jalali" | "gregorian";
+  defaultValue?: IDate;
+  value?: IDate;
+  onError?: (e: string) => void;
+  handleSubmit?: (e: HandleParams) => void;
+  handleReject?: () => void;
+  onChange?: (e: HandleParams) => void;
+  onCompareDateChange?: (e: HandleParams) => void;
+  isShowNavigationButton?: boolean;
+  primaryColor?: string;
+  backgroundColor?: string;
+  tertiaryColor?: string;
+  dateClassName?: string;
+  buttonClassName?: string;
+  dropdownWidth?: number;
+  dropdownHeight?: number;
+  label?: "Date" | "تاریخ";
+  className?: string;
+  disabled?: boolean;
+  highlightColor?: string;
+  periodClassName?: string;
+  periodListClassName?: string;
+  showComparison?: boolean;
+  accentColor?: string;
+  neutralColor?: string;
+  tabClassName?: string;
+  activeTable?: "Day" | "Week" | "Month" | "Year" | "manual";
+  monthPickerClassName?: string;
 }
-
-export function RangePicker( props :IRangeProps  ) {
+export function RangePicker(props: IRangeProps) {
   const {
     isOpenDropdown = false,
     additionalElement,
@@ -87,8 +84,7 @@ export function RangePicker( props :IRangeProps  ) {
     label = props.calendarType == "gregorian" ? "Date" : "تاریخ",
     className,
     disabled,
-    highlightColor = "#f4f4f4",
-    componentStep = ESteps.manual,
+    highlightColor = "#cacaca",
     periodClassName = "",
     periodListClassName = "",
     showComparison = true,
@@ -154,9 +150,7 @@ export function RangePicker( props :IRangeProps  ) {
       : locale === "fa"
       ? "انتخاب تاریخ"
       : "Choose date";
-  const isInitialRender = useRef(true);
-  const prevDate = useRef(date);
-  const prevCompareDate = useRef(compareDate);
+ 
   const [showDate, setShowDate] = useState<ISubmittedData>({
     date: {
       from:
@@ -166,7 +160,7 @@ export function RangePicker( props :IRangeProps  ) {
       to: moment().locale(locale).startOf("day").valueOf(),
     },
     compareDate: null,
-    Data: null, // or any default value you want for Data
+    Data: null,  
   });
 
   const handleAccept = () => {
@@ -237,63 +231,32 @@ export function RangePicker( props :IRangeProps  ) {
     }
   }, [counter]);
   useEffect(() => {
-    const hasCompareDateChanged =
-      compareDate?.from !== prevCompareDate.current?.from ||
-      compareDate?.to !== prevCompareDate.current?.to;
-    if (onCompareDateChange && compareDate && hasCompareDateChanged) {
-      onCompareDateChange({
-        type: "compareRange",
-        Data: { date, compareDate },
-      });
+    if (compareDate) {
+      onCompareDateChange?.({type:"compare",Data:{date:date,compareDate:compareDate}})
       setShowDate((prev) => ({
         ...prev,
-        compareDate,
+        ompareDate:compareDate,
       }));
     }
-    prevCompareDate.current = compareDate;
-    const hasDateChanged =
-      date?.from !== prevDate.current?.from ||
-      date?.to !== prevDate.current?.to;
-    if (isInitialRender.current) {
-      isInitialRender.current = false;
-    } else if (hasDateChanged && onChange) {
-      const isEmpty = !date && !compareDate;
-      const isInvalidDateTo = date?.to == null || Number.isNaN(date?.to);
-      const isInvalid = date?.from && isInvalidDateTo;
-      if (!(isEmpty || isInvalid)) {
-        console.log(date, value);
-        if (!Number.isNaN(date?.from)) {
-          const dateFromValue = !(
-            new Date(date?.from!).valueOf() ==
-              new Date(value?.from!).valueOf() ||
-            new Date(date?.to!).valueOf() == new Date(value?.to!).valueOf()
-          );
-          if (dateFromValue && new Date(date?.to as number).valueOf() > 0) {
-            onChange({ type, Data: { date, compareDate } });
-          }
-        }
-      }
-    }
-    prevDate.current = date;
-  }, [date]);
-  useEffect(() => {
-    if (customData) {
-      onChange?.({ type, Data: { customData } });
-    }
-  }, [customData]);
+  }, [compareDate]);
+ 
+  const handleChange = (e: HandleParams) => {
+      setDate(e.Data?.date as IDate);
+      // if (e.Data?.date?.to == 0) return;
+      onChange?.(e);
+  };
   const mainContentProps: IMainContentProps = {
     activeCompareStep,
-    date,
+    defaultValue: date,
+    value: date,
     highlightColor,
-    onChange,
+    onChange: handleChange,
     primaryColor,
     setActiveCompareStep,
     setCompareDate,
     setCounter,
-    setDate,
     setStep,
     setZone,
-    componentStep,
     neutralColor,
     periodClassName,
     periodListClassName,
@@ -312,6 +275,21 @@ export function RangePicker( props :IRangeProps  ) {
     setType,
   };
 
+  useEffect(() => {
+    if(!value){return}else if (value == null) {
+      setDate({ from: null, to: null });
+      setShowDate((prev) => ({
+        ...prev,
+        date: { from: null, to: null },
+      }));
+    } else {
+      setDate({ from: value.from, to: value.to });
+      setShowDate((prev) => ({
+        ...prev,
+        date: { from: value.from, to: value.to },
+      }));
+    }
+  }, [value]);
   return (
     <>
       {match ? (

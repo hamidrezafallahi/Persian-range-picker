@@ -75,7 +75,6 @@ export interface CalendarProps2 extends IColorProps {
   WeekHeaderStyle?: React.CSSProperties;
   specialDays?: number[];
   disabledDays?: number[];
-
   calendarBaseWidth?: number;
   containerClassName?: string;
   datePickerHeaderClassName?: string;
@@ -270,7 +269,7 @@ export interface IBaseProps extends IRangeOptions {
   componentStep?: ESteps;
   open?: boolean;
   setOpen?: Dispatch<SetStateAction<boolean>>;
-  type?: "range" | "compareRange";
+  type?: "range" | "compare";
   setType?: Dispatch<SetStateAction<string>>;
   activeTable?: "Day" | "Week" | "Month" | "Year" | "manual";
   disabled?: boolean;

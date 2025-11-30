@@ -24,17 +24,17 @@ import {
 export interface IMainContentProps {
   step: ESteps;
   zone: ITimeZone;
-  date: IDate;
+  value: IDate;
+  defaultValue: IDate;
   locale: TLocale;
-  setDate: Dispatch<SetStateAction<IDate>>;
+  // setDate: Dispatch<SetStateAction<IDate>>;
   setStep: Dispatch<SetStateAction<ESteps>>;
   setZone: Dispatch<SetStateAction<ITimeZone>>;
   setCompareDate: Dispatch<SetStateAction<IDate | null>>;
   onChange: (e: HandleParams) => void;
-  componentStep: ESteps;
   setCounter: Dispatch<SetStateAction<number>>;
   activeCompareStep: ESteps | null;
-  setActiveCompareStep: Dispatch<SetStateAction<ESteps|null>>;
+  setActiveCompareStep: Dispatch<SetStateAction<ESteps | null>>;
   showComparison: boolean;
   periodClassName: string;
   primaryColor: string;
@@ -74,11 +74,11 @@ const MainContent = ({ ...props }: IMainContentProps) => {
     setType,
     activeTable = "manual",
     activeCompareStep,
-    date,
+    value,
+    defaultValue,
     highlightColor,
     neutralColor,
     onChange,
-    setDate,
     periodClassName,
     primaryColor,
     showComparison,
@@ -92,9 +92,18 @@ const MainContent = ({ ...props }: IMainContentProps) => {
   const handleTabChange = (key: ITab["key"]) => {
     setActiveTab(key);
   };
-  const handleChange = (key: ITab["key"], value: unknown) => {
-    const defaultKeys = ["day", "week", "month", "season", "year", "manual"];
-    if (!defaultKeys.includes(key.toLowerCase())) {
+  const handleChange = (key: ITab["key"], value: any) => {
+    const defaultKeys = [
+      "day",
+      "week",
+      "month",
+      "season",
+      "year",
+      "manual",
+      "range",
+    ];
+    if (!defaultKeys.includes(key)) {
+      console.log("here");
       setActiveCompareStep?.(null);
       setCompareDate?.(null);
       setCounter?.(0);
@@ -103,12 +112,26 @@ const MainContent = ({ ...props }: IMainContentProps) => {
       setStep?.(ESteps.custom);
       setCustomData(value);
       setType?.(key);
+      onChange?.({
+        type: key,
+        Data: value as Record<string, unknown>,
+      });
+    } else {
+      if (key === "manual") {
+        onChange?.(value as HandleParams);
+      } else {
+        onChange?.({
+          type: key,
+          Data: { date: value.Data },
+        } as HandleParams);
+      }
     }
   };
   const otherProps = {
     accentColor,
     activeCompareStep,
-    date,
+    value,
+    defaultValue,
     highlightColor,
     locale,
     neutralColor,
@@ -118,7 +141,6 @@ const MainContent = ({ ...props }: IMainContentProps) => {
     setActiveCompareStep,
     setCompareDate,
     setCounter,
-    setDate,
     setStep,
     setZone,
     showComparison,
@@ -128,24 +150,25 @@ const MainContent = ({ ...props }: IMainContentProps) => {
     onError,
     monthPickerClassName,
   };
+
   const tabs: ITab[] = [
     {
-      key: "Day",
+      key: "day",
       label: locale == "fa" ? "روز" : "day",
       content: <PeriodList {...otherProps} componentStep={ESteps.day} />,
     },
     {
-      key: "Week",
+      key: "week",
       label: locale == "fa" ? "هفته" : "week",
       content: <PeriodList {...otherProps} componentStep={ESteps.week} />,
     },
     {
-      key: "Month",
+      key: "month",
       label: locale == "fa" ? "ماه" : "month",
       content: <PeriodList {...otherProps} componentStep={ESteps.month} />,
     },
     {
-      key: "Year",
+      key: "year",
       label: locale == "fa" ? "سال" : "year",
       content: <PeriodList {...otherProps} componentStep={ESteps.year} />,
     },

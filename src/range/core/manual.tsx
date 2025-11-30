@@ -11,6 +11,8 @@ import { Calendar } from '../persianDatePicker';
 import { ESteps } from '../persianDatePicker/enum';
 import {
   CalendarProps2,
+  DateValue,
+  HandleParams,
   ITimeZone,
 } from '../persianDatePicker/type';
 import MaskRange from './maskRange';
@@ -20,16 +22,17 @@ import type {
   TLocale,
 } from './type';
 
-interface IProps extends CalendarProps2 {
+export interface IManualProps extends Omit<CalendarProps2, "onChange"> {
   step: ESteps;
   zone: ITimeZone;
-  date: IDate;
+  value: IDate;
+  defaultValue: IDate;
   locale: TLocale;
-  onError?:(e:string)=>void
+  onError?: (e: string) => void;
   activeCompareStep: ESteps | null;
   setStep: Dispatch<SetStateAction<ESteps>>;
   setCompareDate: Dispatch<SetStateAction<IDate | null>>;
-  setDate: Dispatch<SetStateAction<IDate>>;
+  // setDate: Dispatch<SetStateAction<IDate>>;
   setActiveCompareStep: Dispatch<SetStateAction<ESteps | null>>;
   setZone: Dispatch<SetStateAction<ITimeZone>>;
   componentStep: ESteps;
@@ -39,13 +42,15 @@ interface IProps extends CalendarProps2 {
   neutralColor: string;
   primaryColor: string;
   tertiaryColor: string;
+  onChange: (e: HandleParams) => void;
 }
 
-const Manual = (props: IProps) => {
+const Manual = (props: IManualProps) => {
   const {
-    date,
+    value,
+    defaultValue,
+    onChange,
     locale = "fa",
-    setDate,
     setZone,
     setStep,
     onError,
@@ -62,8 +67,8 @@ const Manual = (props: IProps) => {
     primaryColor,
     tertiaryColor,
   } = props;
-  console.log(date);
   const switchHandler = () => {};
+
   return (
     <div
       className={`
@@ -76,32 +81,32 @@ const Manual = (props: IProps) => {
     `}
     >
       <MonthPicker
-        {...props}
         monthPickerClassName={monthPickerClassName}
-        dateFromOutside={date!}
+        dateFromOutside={value!}
         onDateChange={(e: IDate) => {
-          setDate?.(e);
+          onChange?.({ type: "range", Data: { date: e } });
           setZone?.("manual");
           setStep?.(ESteps.manual);
         }}
         locale={locale}
       />
       <MaskRange
-        date={date}
+        date={value}
         onError={onError}
         locale={locale}
-        setDate={(e: IDate) => {
-          setDate?.(e);
-          setZone?.("manual");
-          setStep?.(ESteps.manual);
+        onDateChange={(e: IDate) => {
+          onChange?.({ type: "range", Data: { date: e } });
+          setZone("manual");
+          setStep(ESteps.manual);
         }}
       />
       <Calendar
         {...props}
-        value={date}
+        value={value}
+        defaultValue={defaultValue}
         model="range"
-        onChange={(e: IDate) => {
-          setDate?.(e);
+        onChange={(e: DateValue) => {
+          onChange?.({ type: "range", Data: { date: e } });
           setZone?.("manual");
           setStep?.(ESteps.manual);
         }}
@@ -109,7 +114,7 @@ const Manual = (props: IProps) => {
       {showComparison && (
         <Comparison
           switchHandler={switchHandler}
-          date={date}
+          date={value}
           activeCompareStep={activeCompareStep}
           componentStep={componentStep}
           locale={locale}

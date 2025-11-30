@@ -21,9 +21,9 @@ import {
 interface IPeriodList {
   step: ESteps;
   zone: ITimeZone;
-  date: IDate;
+  value: IDate;
   locale: TLocale;
-  setDate: Dispatch<SetStateAction<IDate>>;
+  // setDate: Dispatch<SetStateAction<IDate>>;
   setStep: Dispatch<SetStateAction<ESteps>>;
   setZone: Dispatch<SetStateAction<ITimeZone>>;
   setCompareDate: Dispatch<SetStateAction<IDate | null>>;
@@ -43,11 +43,10 @@ interface IPeriodList {
 function PeriodList({ ...props }: IPeriodList) {
   const {
     onChange,
-    setDate,
     setStep,
     setZone,
     componentStep,
-    date,
+    value,
     locale = "fa",
     setCounter,
     activeCompareStep,
@@ -63,7 +62,7 @@ function PeriodList({ ...props }: IPeriodList) {
     tertiaryColor = "#939393", //رنگ سوم، معمولاً برای جزئیات یا عناصر کم‌اهمیت‌تر   -  رنگ متن
     neutralColor = "#9cc5f1", //رنگ خنثی، اغلب برای پس‌زمینه یا متن - آبی کمرنگ
   } = props;
-  console.log(date);
+
 
   const period: ITimeSections[] = [
     {
@@ -135,12 +134,11 @@ function PeriodList({ ...props }: IPeriodList) {
   ];
   const timeHandler = (item: ITimeSections) => {
     setStep?.(item.step);
-    setDate?.(item.value);
     setZone?.(item.timeZone);
     setActiveCompareStep?.(null);
     setCompareDate?.(null);
     setCounter?.(0);
-    onChange?.({ type: "date", Data: item.value });
+    onChange?.({ type: "range", Data: item.value });
   };
   const filteredPeriod = period.filter(
     (item) =>
@@ -149,7 +147,7 @@ function PeriodList({ ...props }: IPeriodList) {
   );
   const switchHandler = () => {
     setStep?.(filteredPeriod[0].step);
-    setDate?.(filteredPeriod[0].value);
+    onChange?.({ type: "date", Data: filteredPeriod[0].value });
     setZone?.(filteredPeriod[0].timeZone);
     setActiveCompareStep?.(null);
     setCounter?.(0);
@@ -159,7 +157,7 @@ function PeriodList({ ...props }: IPeriodList) {
     <>
       {filteredPeriod.map((item, index) => {
         const active =
-          date!.from == item.value.from && date!.to == item.value.to;
+          value!.from == item.value.from && value!.to == item.value.to;
         const stringDateFrom = new Date(item.value.from).toLocaleDateString(
           `${locale == "fa" ? "fa-IR" : "en-UK"}`,
           {
@@ -231,7 +229,7 @@ function PeriodList({ ...props }: IPeriodList) {
       {showComparison && (
         <Comparison
           switchHandler={switchHandler}
-          date={date}
+          date={value}
           activeCompareStep={activeCompareStep}
           componentStep={componentStep}
           locale={locale}

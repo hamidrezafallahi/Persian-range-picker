@@ -5,17 +5,17 @@ import { IDate } from '../range/core/type';
 
 export default function DemoComponent() {
   const [val, setVal] = useState<any>();
-  const time ={from: 1764534600000, to: 1765312200000} 
+  const time = { from: 1764534600000, to: 1765312200000 };
   //new Date(1765133698040).toISOString()//
-  // {from: 1764534600000, to: 1765312200000} 
+  // {from: 1764534600000, to: 1765312200000}
   // //[1765053000000,1765139400000,1765398600000];
- 
+
   return (
     <>
       <button
         onClick={() => {
-            //setVal(null)
-          setVal({from:null,to:null});
+          //setVal(null)
+          setVal({ from: null, to: null });
         }}
       >
         set null
@@ -24,7 +24,7 @@ export default function DemoComponent() {
         onClick={() => {
           // setVal(1764404009040)
           //setVal([1765830600000, 1765917000000, 1766089800000])
-          setVal({from: 1765744200000, to: 1766003400000});
+          setVal({from: 1764621000000, to: 1765830600000});
         }}
       >
         set rand
@@ -80,8 +80,8 @@ export default function DemoComponent() {
           // )}
           // icon ={false}
         />*/}
-      </div> 
-      
+      </div>
+
       {/* <TimePicker
         // exportType="timeStamp"
         onChange={(e) => {
@@ -204,7 +204,7 @@ export default function DemoComponent() {
         disabledDays={[1763325000000, 1763497800000]}
         //  calendarType='gregorian'
         // selectableCols
-        renderDayContent={({ day, isSpecial,timestamp }) => (
+        renderDayContent={({ day, isSpecial, timestamp }) => (
           <>
             <span
               style={{

@@ -494,7 +494,6 @@ export const Calendar: FC<CalendarProps2> = ({
     0: 6, // جمعه
   };
   const renderCalendar = (year: number, month: number) => {
-
     const days = getCalendarDays(year, month);
     const weekNames =
       locale === "fa"
