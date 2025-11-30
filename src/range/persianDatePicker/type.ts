@@ -33,8 +33,86 @@ export interface IColorProps {
   highlightColor?: string;
   neutralColor?: string;
 }
+export interface CalendarState {
+  year: number;
+  month: number;
+  view: CalendarViews;
+  hoveredDay: number | null;
+  date: number | null;
+  range: { from: number | null; to: number | null };
+  mode: "date" | "range";
+  multiple: number[];
+}
+export interface RangePickerProps extends Omit<CalendarProps, "onChange"> {
+  isOpenDropdown?: boolean;
+  additionalElement?: IAdditionalElementType[];
+  calendarType?: "jalali" | "gregorian";
+  defaultValue?: IDate;
+  value?: IDate;
+  onError?: (e: string) => void;
+  handleSubmit?: (e: HandleParams) => void;
+  handleReject?: () => void;
+  onChange?: (e: HandleParams) => void;
+  onCompareDateChange?: (e: HandleParams) => void;
+  isShowNavigationButton?: boolean;
+  primaryColor?: string;
+  backgroundColor?: string;
+  tertiaryColor?: string;
+  dateClassName?: string;
+  buttonClassName?: string;
+  dropdownWidth?: number;
+  dropdownHeight?: number;
+  label?: "Date" | "تاریخ";
+  className?: string;
+  disabled?: boolean;
+  highlightColor?: string;
+  periodClassName?: string;
+  periodListClassName?: string;
+  showComparison?: boolean;
+  accentColor?: string;
+  neutralColor?: string;
+  tabClassName?: string;
+  activeTable?: "Day" | "Week" | "Month" | "Year" | "manual";
+  monthPickerClassName?: string;
+}
+export interface CustomSwitchProps {
+  checked: boolean;
+  disabled?: boolean;
+  onChange?: () => void;
+  className?: string;
+}
+export interface UseRenderPositionOptionsProps<T extends HTMLElement> {
+  buttonRef: React.RefObject<T | null>;
+  popupRef: React.RefObject<T | null>;
+  offset?: number;
+  onClickOutSide?:()=>void
+  setIsOpen: Dispatch<SetStateAction<boolean>>;
+  isOpen: boolean;
+}
+export interface IManualProps extends Omit<CalendarProps, "onChange"> {
+  step: ESteps;
+  zone: ITimeZone;
+  value: IDate;
+  defaultValue: IDate;
+  locale: TLocale;
+  onError?: (e: string) => void;
+  activeCompareStep: ESteps | null;
+  setStep: Dispatch<SetStateAction<ESteps>>;
+  setCompareDate: Dispatch<SetStateAction<IDate | null>>;
+  // setDate: Dispatch<SetStateAction<IDate>>;
+  setActiveCompareStep: Dispatch<SetStateAction<ESteps | null>>;
+  setZone: Dispatch<SetStateAction<ITimeZone>>;
+  componentStep: ESteps;
+  showComparison: boolean;
+  monthPickerClassName?: string;
+  accentColor: string;
+  neutralColor: string;
+  primaryColor: string;
+  tertiaryColor: string;
+  onChange: (e: HandleParams) => void;
+}
 
-export interface CalendarProps2 extends IColorProps {
+export interface CalendarProps extends IColorProps {
   manualContainerRef?: RefObject<HTMLDivElement | null>;
   onChange?: (e: DateValue) => void;
   model?: "range" | "date";
@@ -99,7 +177,7 @@ export interface CalendarProps2 extends IColorProps {
 
 }
 
-export interface DesktopProps2 extends CalendarProps2, Omit<ITimePickerProps, "onChange"> {
+export interface DatePickerProps extends CalendarProps, Omit<ITimePickerProps, "onChange"> {
   showTime?: boolean
   chooseTodayClassName?: string
   showTimeFormat?: string
@@ -356,26 +434,9 @@ export interface ISubmittedData {
   compareDate: IDate | null;
   Data: unknown;
 }
-export interface IRangePickerProps
-  extends Omit<IRangeOptions, "defaultValue" | "onChange">,
-  Omit<Date, "defaultValue" | "onChange"> {
-  label?: boolean | ReactNode | string;
-  dropdownWidth?: number;
-  dropdownHeight?: number;
-  locale?: TLocale;
-  disabled?: boolean;
-  onNavigateChange?: (date: IDate, compareDate: IDate | null) => void;
-  componentStep?: ESteps;
-  open?: boolean;
-  setOpen?: Dispatch<SetStateAction<boolean>>;
-  type?: string;
-  setType?: Dispatch<SetStateAction<string>>;
-  activeTable?: "Day" | "Week" | "Month" | "Year" | "manual";
-  defaultValue?: IDate;
-  onChange?: (e: HandleParams) => void;
-}
+ 
 interface BaseCalendarProps
-  extends Omit<CalendarProps2, | "locale" | "onDateChange" | "defaultValue" | "value"> {
+  extends Omit<CalendarProps, | "locale" | "onDateChange" | "defaultValue" | "value"> {
   model?: "date" | "range"
   locale?: TLocale;
   specialDays?: number[];

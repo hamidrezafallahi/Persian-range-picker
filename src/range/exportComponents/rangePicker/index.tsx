@@ -20,48 +20,15 @@ import { DownTriangle } from '../../icons/DownTriangle';
 import { MenuArrowBack } from '../../icons/MenuArrowBack';
 import { ESteps } from '../../persianDatePicker/enum';
 import {
-  CalendarProps2,
   HandleParams,
-  IAdditionalElementType,
   ISubmittedData,
   ITimeZone,
+  RangePickerProps,
 } from '../../persianDatePicker/type';
 import { useMediaQuery } from '../useMediaQuery';
 import { useRenderPosition } from '../useRenderPosition';
 
-interface IRangeProps extends Omit<CalendarProps2, "onChange"> {
-  isOpenDropdown?: boolean;
-  additionalElement?: IAdditionalElementType[];
-  calendarType?: "jalali" | "gregorian";
-  defaultValue?: IDate;
-  value?: IDate;
-  onError?: (e: string) => void;
-  handleSubmit?: (e: HandleParams) => void;
-  handleReject?: () => void;
-  onChange?: (e: HandleParams) => void;
-  onCompareDateChange?: (e: HandleParams) => void;
-  isShowNavigationButton?: boolean;
-  primaryColor?: string;
-  backgroundColor?: string;
-  tertiaryColor?: string;
-  dateClassName?: string;
-  buttonClassName?: string;
-  dropdownWidth?: number;
-  dropdownHeight?: number;
-  label?: "Date" | "تاریخ";
-  className?: string;
-  disabled?: boolean;
-  highlightColor?: string;
-  periodClassName?: string;
-  periodListClassName?: string;
-  showComparison?: boolean;
-  accentColor?: string;
-  neutralColor?: string;
-  tabClassName?: string;
-  activeTable?: "Day" | "Week" | "Month" | "Year" | "manual";
-  monthPickerClassName?: string;
-}
-export function RangePicker(props: IRangeProps) {
+export function RangePicker(props: RangePickerProps) {
   const {
     isOpenDropdown = false,
     additionalElement,

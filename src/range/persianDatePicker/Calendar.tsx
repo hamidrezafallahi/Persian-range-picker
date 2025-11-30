@@ -19,25 +19,17 @@ import {
 import MonthPicker from './monthPicker';
 import {
   CalendarAction,
-  CalendarProps2,
+  CalendarProps,
+  CalendarState,
 } from './type';
 import YearPicker from './yearPicker';
 
 const todayTimestamp = new Date().setHours(0, 0, 0, 0);
 const today = jmoment();
 
-interface CalendarState {
-  year: number;
-  month: number;
-  view: CalendarViews;
-  hoveredDay: number | null;
-  date: number | null;
-  range: { from: number | null; to: number | null };
-  mode: "date" | "range";
-  multiple: number[];
-}
 
-export const Calendar: FC<CalendarProps2> = ({
+
+export const Calendar: FC<CalendarProps> = ({
   onChange,
   model = "date",
   locale = "fa",

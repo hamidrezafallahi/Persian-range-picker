@@ -19,7 +19,7 @@ import { ClearIcon } from '../../icons/ClearIcon';
 import { MenuArrowBack } from '../../icons/MenuArrowBack';
 import { Calendar } from '../../persianDatePicker';
 import {
-  DesktopProps2,
+  DatePickerProps,
   TUnit,
 } from '../../persianDatePicker/type';
 import { Mask } from '../mask';
@@ -28,7 +28,7 @@ import { useMediaQuery } from '../useMediaQuery';
 import { useRenderPosition } from '../useRenderPosition';
 import { DesktopTimePicker } from './desktopTimePicker';
 
-export function DatePicker({ ...props }: DesktopProps2) {
+export function DatePicker({ ...props }: DatePickerProps) {
   const {
     defaultValue,
     onChange,

@@ -1,17 +1,6 @@
-import {
-  type Dispatch,
-  type SetStateAction,
-  useEffect,
-} from 'react';
+import { useEffect } from 'react';
 
-interface UseRenderPositionOptions<T extends HTMLElement> {
-  buttonRef: React.RefObject<T | null>;
-  popupRef: React.RefObject<T | null>;
-  offset?: number;
-  onClickOutSide?:()=>void
-  setIsOpen: Dispatch<SetStateAction<boolean>>;
-  isOpen: boolean;
-}
+import { UseRenderPositionOptionsProps } from '../../persianDatePicker/type';
 
 export function useRenderPosition<T extends HTMLElement = HTMLElement>({
   buttonRef,
@@ -20,7 +9,7 @@ export function useRenderPosition<T extends HTMLElement = HTMLElement>({
   onClickOutSide,
   offset = 4,
   isOpen = false,
-}: UseRenderPositionOptions<T>): void {
+}: UseRenderPositionOptionsProps<T>): void {
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (

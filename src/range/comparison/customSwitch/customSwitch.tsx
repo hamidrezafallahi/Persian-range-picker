@@ -1,11 +1,7 @@
-import style from "../../../main.module.css";
-interface IProps {
-  checked: boolean;
-  disabled?: boolean;
-  onChange?: () => void;
-  className?: string;
-}
-function CustomSwitch({ ...props }: IProps) {
+import style from '../../../main.module.css';
+import { CustomSwitchProps } from '../../persianDatePicker/type';
+
+function CustomSwitch({ ...props }: CustomSwitchProps) {
   const { checked, className, disabled, onChange } = props;
 
   return (

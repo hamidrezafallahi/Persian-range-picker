@@ -27,7 +27,6 @@ export interface IMainContentProps {
   value: IDate;
   defaultValue: IDate;
   locale: TLocale;
-  // setDate: Dispatch<SetStateAction<IDate>>;
   setStep: Dispatch<SetStateAction<ESteps>>;
   setZone: Dispatch<SetStateAction<ITimeZone>>;
   setCompareDate: Dispatch<SetStateAction<IDate | null>>;

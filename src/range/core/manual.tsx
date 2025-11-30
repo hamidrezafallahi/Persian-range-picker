@@ -1,49 +1,16 @@
 // import type { ChangeEvent } from "react";
 
-import {
-  Dispatch,
-  SetStateAction,
-} from 'react';
-
 import style from '../../main.module.css';
 import Comparison from '../comparison';
 import { Calendar } from '../persianDatePicker';
 import { ESteps } from '../persianDatePicker/enum';
 import {
-  CalendarProps2,
   DateValue,
-  HandleParams,
-  ITimeZone,
+  IManualProps,
 } from '../persianDatePicker/type';
 import MaskRange from './maskRange';
 import MonthPicker from './monthPicker';
-import type {
-  IDate,
-  TLocale,
-} from './type';
-
-export interface IManualProps extends Omit<CalendarProps2, "onChange"> {
-  step: ESteps;
-  zone: ITimeZone;
-  value: IDate;
-  defaultValue: IDate;
-  locale: TLocale;
-  onError?: (e: string) => void;
-  activeCompareStep: ESteps | null;
-  setStep: Dispatch<SetStateAction<ESteps>>;
-  setCompareDate: Dispatch<SetStateAction<IDate | null>>;
-  // setDate: Dispatch<SetStateAction<IDate>>;
-  setActiveCompareStep: Dispatch<SetStateAction<ESteps | null>>;
-  setZone: Dispatch<SetStateAction<ITimeZone>>;
-  componentStep: ESteps;
-  showComparison: boolean;
-  monthPickerClassName?: string;
-  accentColor: string;
-  neutralColor: string;
-  primaryColor: string;
-  tertiaryColor: string;
-  onChange: (e: HandleParams) => void;
-}
+import type { IDate } from './type';
 
 const Manual = (props: IManualProps) => {
   const {
