@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
-import { RangePicker } from '../range';
-import { IDate } from '../range/core/type';
+import { IDate } from '../core/type';
+import { RangePicker } from '../rangePicker';
 
 export default function DemoComponent() {
   const [val, setVal] = useState<any>();
@@ -232,14 +232,14 @@ export default function DemoComponent() {
             {name}
           </span>
         )}
-        onError={(e) => {
+        onError={(e:string) => {
           console.log(e);
         }}
-        onChange={(e) => {
+        onChange={(e:any) => {
           console.log(e);
           setVal(e.Data?.date as IDate);
         }}
-        onCompareDateChange={(e) => {
+        onCompareDateChange={(e:any) => {
           console.log(e);
         }}
       />

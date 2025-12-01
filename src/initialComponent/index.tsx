@@ -3,6 +3,7 @@ import {
   useState,
 } from 'react';
 
+import { TickIcon } from '../assets/icons/TickIcon';
 import dateP from '../assets/images/dateP.png';
 import maskP from '../assets/images/maskP.png';
 import rangePic from '../assets/images/rangeP.png';
@@ -17,13 +18,10 @@ import rangeVid from '../assets/video/range1.mp4';
 import rangeVidE from '../assets/video/rangeE.mp4';
 import Time from '../assets/video/time.mp4';
 import timeVidE from '../assets/video/timeE.mp4';
-import {
-  DatePicker,
-  RangePicker,
-  TimePicker,
-} from '../range';
-import { Mask } from '../range/exportComponents/mask';
-import { TickIcon } from '../range/icons/TickIcon';
+import { DatePicker } from '../datePicker';
+import { Mask } from '../mask';
+import { RangePicker } from '../rangePicker';
+import { TimePicker } from '../timePicker';
 
 const SECTION_KEYS = [
   "QuickStart",
@@ -165,7 +163,7 @@ const TEXT: Record<"fa" | "en", LanguageText> = {
         component: (
           <RangePicker
             calendarType="jalali"
-            onChange={(e) => console.log("RangePicker has changed", e)}
+            onChange={(e:any) => console.log("RangePicker has changed", e)}
             exportType="timeStamp"
             showComparison
           />
@@ -181,7 +179,7 @@ const TEXT: Record<"fa" | "en", LanguageText> = {
             showTime
             showSecond
             isTodaySelectPreset
-            onChange={(e) => console.log(e)}
+            onChange={(e:any) => console.log(e)}
             calendarType="jalali"
             exportType="timeStamp"
           />
@@ -251,7 +249,7 @@ const TEXT: Record<"fa" | "en", LanguageText> = {
             showSecond
             showMask
             isTodaySelectPreset
-            onChange={(e) => console.log(e)}
+            onChange={(e:any) => console.log(e)}
             calendarType="gregorian"
             exportType="timeStamp"
           />
