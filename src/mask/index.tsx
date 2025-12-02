@@ -30,7 +30,7 @@ export function Mask({ ...props }: MaskProps) {
   const {
     defaultValue,
     value,
-    calendarType = "shamsi",
+    calendarType = "jalali",
     onError,
     inputClassName,
     maskClassName,
@@ -49,10 +49,10 @@ export function Mask({ ...props }: MaskProps) {
     exportType = "IsoString",
     MaskFontStyle = { fontSize: "14px", fontFamily: "unset" },
   } = props;
-  const locale = calendarType == "shamsi" ? "fa" : "en";
+  const locale = calendarType == "jalali" ? "fa" : "en";
   const myFont = MaskFontStyle?.fontFamily
     ? MaskFontStyle?.fontFamily
-    : calendarType == "shamsi"
+    : calendarType == "jalali"
     ? "IRANSans"
     : calendarType == "gregorian"
     ? "unset"

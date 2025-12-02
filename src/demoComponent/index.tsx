@@ -1,12 +1,11 @@
 import { useState } from 'react';
 
-import { IDate } from '../core/type';
-import { RangePicker } from '../rangePicker';
+import { DatePicker } from '../datePicker';
 
 export default function DemoComponent() {
   const [val, setVal] = useState<any>();
-  const time = { from: 1764534600000, to: 1765312200000 };
-  //new Date(1765133698040).toISOString()//
+  const time = new Date(1765133698040).toISOString()
+  //{ from: 1764534600000, to: 1765312200000 };
   // {from: 1764534600000, to: 1765312200000}
   // //[1765053000000,1765139400000,1765398600000];
 
@@ -15,16 +14,16 @@ export default function DemoComponent() {
       <button
         onClick={() => {
           //setVal(null)
-          setVal({ from: null, to: null });
+          setVal(null);
         }}
       >
         set null
       </button>
       <button
         onClick={() => {
-          // setVal(1764404009040)
+          setVal(1764404009040)
           //setVal([1765830600000, 1765917000000, 1766089800000])
-          setVal({from: 1764621000000, to: 1765830600000});
+          // setVal({from: 1764621000000, to: 1765830600000});
         }}
       >
         set rand
@@ -32,7 +31,7 @@ export default function DemoComponent() {
       <div
       // style={{padding:"12px"}}
       >
-        {/* <DatePicker
+        <DatePicker
           onChange={(e) => {
             setVal(e);
             console.log(e);
@@ -42,13 +41,13 @@ export default function DemoComponent() {
 
           }}
           // calendarType='gregorian'
-          defaultValue={time}
+          // defaultValue={time}
           value={val}
           showMask
-          allowClear
-          selectableCols
-          specialDays={[1762288200000, 1763411400000]}
-          disabledDays={[1763325000000, 1763497800000]}
+          // allowClear
+          // selectableCols
+          // specialDays={[1762288200000, 1763411400000]}
+          // disabledDays={[1763325000000, 1763497800000]}
 
           // renderDayContent={({ day, isSpecial, isColSelected }) => (
           //   <>
@@ -79,7 +78,7 @@ export default function DemoComponent() {
           //   </span>
           // )}
           // icon ={false}
-        />*/}
+        />
       </div>
 
       {/* <TimePicker
@@ -197,7 +196,7 @@ export default function DemoComponent() {
               )}
       /> */}
 
-      <RangePicker
+      {/* <RangePicker
         defaultValue={time}
         value={val as IDate}
         specialDays={[1762288200000, 1763411400000]}
@@ -242,7 +241,7 @@ export default function DemoComponent() {
         onCompareDateChange={(e:any) => {
           console.log(e);
         }}
-      />
+      /> */}
     </>
   );
 }

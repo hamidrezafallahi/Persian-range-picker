@@ -102,7 +102,6 @@ const MainContent = ({ ...props }: IMainContentProps) => {
       "range",
     ];
     if (!defaultKeys.includes(key)) {
-      console.log("here");
       setActiveCompareStep?.(null);
       setCompareDate?.(null);
       setCounter?.(0);

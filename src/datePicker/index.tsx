@@ -45,7 +45,7 @@ export function DatePicker({ ...props }: DatePickerProps) {
     showSecond = false,
     showMask = false,
     disabled = false,
-    placeholder = props.calendarType === "gregorian"
+    placeholder = props.calendarType === "jalali"
       ? "Choose date"
       : "انتخاب تاریخ",
     Style,
@@ -299,6 +299,7 @@ export function DatePicker({ ...props }: DatePickerProps) {
                   defaultValue={defaultValue}
                   allowClear={false}
                   exportType="timeStamp"
+                  calendarType={isFa?'jalali':"gregorian"}
                   onMaskChange={changeHandler as (e: any) => void}
                   Style={{ width: "112px" }}
                 />

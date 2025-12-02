@@ -6,14 +6,16 @@ export { TimePicker } from './timePicker';
 export { useRenderPosition } from './useRenderPosition';
 export { useMediaQuery } from './useMediaQuery';
 ////////////////////////////////////////////////////////////////////////////////////
-export type { ExportType, TLocale } from './core/type';
+export type { ExportType, IDate, TLocale } from './core/type';
 export type {
   AdditionalElementType,
   CalendarProps,
   CalendarType,
   DatePickerProps,
+  DateValue,
   HandleParams,
   ISubmittedData,
+  MaskProps,
   RangePickerProps,
   TimePickerProps,
 } from './persianDatePicker/type';

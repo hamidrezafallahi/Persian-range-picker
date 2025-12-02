@@ -24,7 +24,7 @@ export const TimePicker = ({ ...props }: TimePickerProps) => {
     defaultValue,
     value,
     onChange,
-    calendarType = "shamsi",
+    calendarType = "jalali",
     containerClassName,
     okButtonClassName,
     nowButtonClassName,
@@ -45,7 +45,7 @@ export const TimePicker = ({ ...props }: TimePickerProps) => {
   const buttonRef = useRef<HTMLButtonElement>(null);
   const popupRef = useRef<HTMLDivElement>(null);
   const [open, setOpen] = useState(false);
-  const locale = calendarType == "shamsi" ? "fa" : "en";
+  const locale = calendarType == "jalali" ? "fa" : "en";
   const isFa = locale === "fa";
 
   const initValue: number | null = (() => {
