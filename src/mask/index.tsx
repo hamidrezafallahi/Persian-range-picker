@@ -436,9 +436,7 @@ export function Mask({ ...props }: MaskProps) {
           onMaskChange?.(
             exportType == "IsoString"
               ? locale == "fa"
-                ? moment(changeToTimestamp(fullValue, locale)).format(
-                    "YYYY-MM-DDTHH:mm:ss.SSSZ"
-                  )
+                ? moment(changeToTimestamp(fullValue, locale)).format("YYYY-MM-DDTHH:mm:ss.SSSZ").replace(/[۰-۹]/g, d => "۰۱۲۳۴۵۶۷۸۹".indexOf(d).toString())
                 : moment
                     .utc(changeToTimestamp(fullValue, locale))
                     .format("YYYY-MM-DDTHH:mm:ss.SSSZ")
@@ -481,7 +479,7 @@ export function Mask({ ...props }: MaskProps) {
               ? locale == "fa"
                 ? moment(changeToTimestamp(temp, locale)).format(
                     "YYYY-MM-DDTHH:mm:ss.SSSZ"
-                  )
+                  ).replace(/[۰-۹]/g, d => "۰۱۲۳۴۵۶۷۸۹".indexOf(d).toString())
                 : moment
                     .utc(changeToTimestamp(temp, locale))
                     .format("YYYY-MM-DDTHH:mm:ss.SSSZ")
@@ -607,7 +605,7 @@ export function Mask({ ...props }: MaskProps) {
                 ? locale == "fa"
                   ? moment(
                       changeToTimestamp(fullValueRef.current, locale)
-                    ).format("YYYY-MM-DDTHH:mm:ss.SSSZ")
+                    ).format("YYYY-MM-DDTHH:mm:ss.SSSZ").replace(/[۰-۹]/g, d => "۰۱۲۳۴۵۶۷۸۹".indexOf(d).toString())
                   : moment
                       .utc(changeToTimestamp(fullValueRef.current, locale))
                       .format("YYYY-MM-DDTHH:mm:ss.SSSZ")
@@ -668,7 +666,7 @@ export function Mask({ ...props }: MaskProps) {
                 ? locale == "fa"
                   ? moment(changeToTimestamp(temp, locale)).format(
                       "YYYY-MM-DDTHH:mm:ss.SSSZ"
-                    )
+                    ).replace(/[۰-۹]/g, d => "۰۱۲۳۴۵۶۷۸۹".indexOf(d).toString())
                   : moment
                       .utc(changeToTimestamp(temp, locale))
                       .format("YYYY-MM-DDTHH:mm:ss.SSSZ")

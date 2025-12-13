@@ -284,6 +284,7 @@ export const Calendar: FC<CalendarProps> = ({
       } else {
         dispatchState({ type: "SET_DATE", payload: timestamp });
         onChange?.(timestamp);
+
       }
     },
     [model, handleRangeSelection, onChange]
@@ -310,7 +311,7 @@ export const Calendar: FC<CalendarProps> = ({
             ? jmoment(
                 `${prevYear}/${prevMonth + 1}/${prevDays - i + 1}`,
                 "jYYYY/jM/jD"
-              ).format()
+              ).startOf("day").valueOf()
             : `${prevYear}/${prevMonth + 1}/${prevDays - i + 1}`
         );
 
@@ -325,7 +326,7 @@ export const Calendar: FC<CalendarProps> = ({
     for (let i = 1; i <= daysInMonth; i++) {
       const date = new Date(
         locale === "fa"
-          ? jmoment(`${year}/${month + 1}/${i}`, "jYYYY/jM/jD").format()
+          ? jmoment(`${year}/${month + 1}/${i}`, "jYYYY/jM/jD").startOf("day").valueOf()
           : `${year}/${month + 1}/${i}`
       );
       days.push({ timestamp: date.setHours(0, 0, 0, 0), currentMonth: true });
@@ -337,9 +338,10 @@ export const Calendar: FC<CalendarProps> = ({
       const nextYear = month === 11 ? year + 1 : year;
       const date = new Date(
         locale === "fa"
-          ? jmoment(`${nextYear}/${nextMonth + 1}/${i}`, "jYYYY/jM/jD").format()
+          ? jmoment(`${nextYear}/${nextMonth + 1}/${i}`, "jYYYY/jM/jD").startOf("day").valueOf()
           : `${nextYear}/${nextMonth + 1}/${i}`
       );
+ 
       days.push({ timestamp: date.setHours(0, 0, 0, 0), currentMonth: false });
     }
 
@@ -380,6 +382,7 @@ export const Calendar: FC<CalendarProps> = ({
         state.range.to &&
         day.timestamp > state.range.from &&
         day.timestamp < state.range.to;
+        
       return (
         <div
           key={index}
@@ -493,13 +496,13 @@ export const Calendar: FC<CalendarProps> = ({
         : ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
     const handleWeekDaySelect = (e: any, weekdayIndex: number) => {
       e.preventDefault();
-
       const filtered = days.filter((d) => {
         if (!d.currentMonth) return false;
         const date = new Date(d.timestamp);
         if (locale === "en") {
           return date.getDay() === weekdayIndex;
         }
+        
         const jDay = jmoment(date).day();
         const expected = jalaliMap[weekdayIndex as 0 | 1 | 2 | 3 | 4 | 5 | 6];
         return jDay === expected;
@@ -586,8 +589,9 @@ export const Calendar: FC<CalendarProps> = ({
           style={{ minWidth: "24px" }}
           dir={locale === "fa" ? "rtl" : "ltr"}
         >
-          {days.map((d, i) =>
-            renderDayFn ? renderDayFn(d, i) : renderDay(d, i)
+          {days.map((d, i) =>{
+          return  renderDayFn ? renderDayFn(d, i) : renderDay(d, i)
+        }
           )}
         </div>
       </>

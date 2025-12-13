@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
 import { DatePicker } from '../datePicker';
+import { Calendar } from '../persianDatePicker';
 
 export default function DemoComponent() {
   const [val, setVal] = useState<any>();
@@ -36,16 +37,19 @@ export default function DemoComponent() {
             setVal(e);
             console.log(e);
           }}
+          // disabled
           onClear={() => {
             setVal(null);
 
           }}
           // calendarType='gregorian'
-          // defaultValue={time}
+          defaultValue={time}
           value={val}
           showMask
           // allowClear
           // selectableCols
+          // selectMultiple
+          exportType='IsoString'
           // specialDays={[1762288200000, 1763411400000]}
           // disabledDays={[1763325000000, 1763497800000]}
 
@@ -102,12 +106,12 @@ export default function DemoComponent() {
           console.log(e);
         }}
       /> */}
-      {/* <div style={{ padding: "12px" }}>
+      <div style={{ padding: "12px" }}>
         <Calendar
-        // selectMultiple
+        selectMultiple
           // model="range"
           // disablePreviousDays
-          // selectableCols
+          selectableCols
           defaultValue={time}
           // locale="fa"
           value={val}
@@ -160,7 +164,7 @@ export default function DemoComponent() {
           //   </span>
           // )}
         />
-      </div> */}
+      </div>
       {/*<Calendar
         model="range"
         // disablePreviousDays

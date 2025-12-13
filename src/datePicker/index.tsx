@@ -57,6 +57,7 @@ export function DatePicker({ ...props }: DatePickerProps) {
     hourStep = 1,
     minuteStep = 1,
     secondStep = 1,
+    selectMultiple = false,
   } = props;
   const { match } = useMediaQuery("XSUP");
   const locale = calendarType == "jalali" ? "fa" : "en";
@@ -96,8 +97,8 @@ export function DatePicker({ ...props }: DatePickerProps) {
       if (exportType == "IsoString") {
         onChange?.(
           locale == "fa"
-            ? moment(e).format("YYYY-MM-DDTHH:mm:ss.SSSZ")
-            : moment.utc(e).format("YYYY-MM-DDTHH:mm:ss.SSSZ")
+            ? moment(e).format("YYYY-MM-DDTHH:mm:ss.SSSZ").replace(/[۰-۹]/g, d => "۰۱۲۳۴۵۶۷۸۹".indexOf(d).toString())
+            : moment.utc(e).toISOString()
         );
       } else {
         locale == "fa" ? moment(e).valueOf() : moment.utc(e).valueOf();
@@ -107,10 +108,11 @@ export function DatePicker({ ...props }: DatePickerProps) {
   const handleSubmit = () => {
     const finalDate = showTime ? showDate : moment(showDate).valueOf();
     if (exportType == "IsoString") {
+
       onChange?.(
         isFa
-          ? moment(finalDate).format("YYYY-MM-DDTHH:mm:ss.SSSZ")
-          : moment.utc(finalDate).format("YYYY-MM-DDTHH:mm:ss.SSSZ")
+          ? moment(finalDate).format("YYYY-MM-DDTHH:mm:ss.SSSZ").replace(/[۰-۹]/g, d => "۰۱۲۳۴۵۶۷۸۹".indexOf(d).toString())
+          : moment.utc(finalDate).toISOString()
       );
     } else {
       onChange?.(
@@ -134,8 +136,8 @@ export function DatePicker({ ...props }: DatePickerProps) {
         if (exportType === "IsoString") {
           onChange?.(
             isFa
-              ? moment(finalDate).format("YYYY-MM-DDTHH:mm:ss.SSSZ")
-              : moment.utc(finalDate).format("YYYY-MM-DDTHH:mm:ss.SSSZ")
+              ? moment(finalDate).format("YYYY-MM-DDTHH:mm:ss.SSSZ").replace(/[۰-۹]/g, d => "۰۱۲۳۴۵۶۷۸۹".indexOf(d).toString())
+              : moment.utc(finalDate).toISOString()
           );
         } else {
           onChange?.(
@@ -213,6 +215,9 @@ export function DatePicker({ ...props }: DatePickerProps) {
           ? moment(value).locale("fa").startOf("day").valueOf()
           : moment(value).utc().startOf("day").valueOf()
       );
+    } else if (Array.isArray(value)) {
+      setTitle(isFa ? "چند روز" : "multy days");
+      setShowDate(null);
     } else {
       setTitle(placeholder);
       setShowDate(null);
@@ -286,7 +291,7 @@ export function DatePicker({ ...props }: DatePickerProps) {
             ) : (
               <>{icon && <span>{icon}</span>}</>
             )}
-            {showMask ? (
+            {showMask && !selectMultiple ? (
               <div
                 onClick={(e) => {
                   e.stopPropagation();
@@ -299,7 +304,7 @@ export function DatePicker({ ...props }: DatePickerProps) {
                   defaultValue={defaultValue}
                   allowClear={false}
                   exportType="timeStamp"
-                  calendarType={isFa?'jalali':"gregorian"}
+                  calendarType={isFa ? "jalali" : "gregorian"}
                   onMaskChange={changeHandler as (e: any) => void}
                   Style={{ width: "112px" }}
                 />

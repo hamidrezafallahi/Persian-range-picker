@@ -91,7 +91,7 @@ export const TimePicker = ({ ...props }: TimePickerProps) => {
       if (exportType == "IsoString") {
         onChange?.(
           locale == "fa"
-            ? moment(time).format("YYYY-MM-DDTHH:mm:ss.SSSZ")
+            ? moment(time).format("YYYY-MM-DDTHH:mm:ss.SSSZ").replace(/[۰-۹]/g, d => "۰۱۲۳۴۵۶۷۸۹".indexOf(d).toString())
             : moment.utc(time).format("YYYY-MM-DDTHH:mm:ss.SSSZ")
         );
       } else {
