@@ -89,7 +89,7 @@ const DatePickerHeader: FC<Props> = ({
           onClick={() => onViewChange(CalendarViews.YEAR)}
           style={{ fontSize: "14px", color: tertiaryColor }}
         >
-          {convertToPersianNumbers(year.toString())}
+          {locale == "fa" ? convertToPersianNumbers(year.toString()):year.toString()}
         </span>
       </div>
       <div

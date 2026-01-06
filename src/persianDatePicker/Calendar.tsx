@@ -678,6 +678,7 @@ export const Calendar: FC<CalendarProps> = ({
           yearPickerClassName={yearPickerClassName}
           secondaryColor={secondaryColor}
           backgroundColor={backgroundColor}
+          locale={locale}
         />
       )}
     </div>

@@ -1,6 +1,6 @@
 {
   "name": "react-persian-range-picker",
-  "version": "1.0.29",
+  "version": "1.0.30",
   "license": "MIT",
   "type": "module",
   "main": "dist/persian-range-picker.umd.js",

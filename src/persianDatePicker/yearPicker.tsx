@@ -8,6 +8,7 @@ import {
 
 import { LeftChevron } from '../assets/icons/LeftChevron';
 import { RightChevron } from '../assets/icons/RightChevron';
+import { TLocale } from '../core/type';
 import style from '../main.module.css';
 import { convertToPersianNumbers } from './helper';
 
@@ -18,6 +19,7 @@ interface Props {
   backgroundColor?: string;
   secondaryColor?: string;
   primaryColor?: string;
+  locale?:TLocale
 }
 
 const YearPicker: FC<Props> = ({
@@ -27,6 +29,7 @@ const YearPicker: FC<Props> = ({
   backgroundColor = "#fff", //رنگ پس‌زمینه کلی یا نواحی بزرگ
   secondaryColor = "#585858", //رنگ فرعی یا مکمل برای تأکید ثانویه   - متن #585858   ,
   primaryColor = "#000", //رنگ اصلی (برای دکمه‌ها، لینک‌ها یا تأکید اصلی برند)
+  locale="fa"
 }) => {
   const [page, setPage] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -84,11 +87,7 @@ const YearPicker: FC<Props> = ({
               ${style.font_bold}
               ${style.text_sm}
             `}
-          >{`${convertToPersianNumbers(
-            yearList[0].toString()
-          )} - ${convertToPersianNumbers(
-            yearList[yearList.length - 1].toString()
-          )}`}</span>
+          >{`${locale == "fa" ? convertToPersianNumbers(yearList[0].toString()):yearList[0].toString()} - ${locale == "fa"?convertToPersianNumbers(yearList[yearList.length - 1].toString()):yearList[yearList.length - 1].toString()}`}</span>
         </div>
         <div onClick={() => changePageHandler(-1)}>
           <RightChevron secondaryColor={secondaryColor} />
@@ -131,7 +130,7 @@ const YearPicker: FC<Props> = ({
   ${style.text_sm}
 `}
             >
-              {convertToPersianNumbers(year.toString())}
+              {locale == "fa" ? convertToPersianNumbers(year.toString()):year.toString()}
             </span>
           </div>
         ))}
