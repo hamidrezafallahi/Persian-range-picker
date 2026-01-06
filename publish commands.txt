@@ -2,10 +2,14 @@ yarn build
 yarn pack 
 npm login
 go to npm site and make a access token by bypass and full access then make a copy from it 
-notepad $env:USERPROFILE\.npmrc
+notepad $env:USERPROFILE\.npmrc Or c/users/h.fallahi/.npmrc
 after opening note pad replace the token you got from npmjs with notepad text token part 
 npm publish --access public
 
 
 
 
+npm config delete //registry.npmjs.org/:_authToken
+npm config list
+npm config set //registry.npmjs.org/:_authToken=NEW_TOKEN
+npm whoami

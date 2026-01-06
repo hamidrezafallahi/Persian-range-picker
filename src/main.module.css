@@ -697,7 +697,7 @@
 }
 
 .justify_center {
-  justify-content: center;
+  justify-content: center !important;
 }
 .justify_between {
   justify-content: space-between;
