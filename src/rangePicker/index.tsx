@@ -60,6 +60,8 @@ export function RangePicker(props: RangePickerProps) {
     tabClassName = "",
     activeTable,
     monthPickerClassName,
+    buttonStyle,
+    renderPosition,
   } = props;
   const locale = calendarType == "jalali" ? "fa" : "en";
   const isFa = locale === "fa";
@@ -89,7 +91,7 @@ export function RangePicker(props: RangePickerProps) {
   const [compareDate, setCompareDate] = useState<IDate | null>(null);
   const [counter, setCounter] = useState(0);
   const [activeCompareStep, setActiveCompareStep] = useState<ESteps | null>(
-    null
+    null,
   );
   const [step, setStep] = useState<ESteps>(366);
   const [zone, setZone] = useState<ITimeZone>("manual");
@@ -106,8 +108,8 @@ export function RangePicker(props: RangePickerProps) {
         ? toPersianDigits(moment(fromTimestamp).format("jYYYY/jMM/jDD"))
         : moment(fromTimestamp).format("YYYY/MM/DD")
       : locale === "fa"
-      ? "انتخاب تاریخ"
-      : "Choose date";
+        ? "انتخاب تاریخ"
+        : "Choose date";
 
   const DateTo =
     toTimestamp > 0
@@ -115,9 +117,9 @@ export function RangePicker(props: RangePickerProps) {
         ? toPersianDigits(moment(toTimestamp).format("jYYYY/jMM/jDD"))
         : moment(toTimestamp).format("YYYY/MM/DD")
       : locale === "fa"
-      ? "انتخاب تاریخ"
-      : "Choose date";
- 
+        ? "انتخاب تاریخ"
+        : "Choose date";
+
   const [showDate, setShowDate] = useState<ISubmittedData>({
     date: {
       from:
@@ -127,7 +129,7 @@ export function RangePicker(props: RangePickerProps) {
       to: moment().locale(locale).startOf("day").valueOf(),
     },
     compareDate: null,
-    Data: null,  
+    Data: null,
   });
 
   const handleAccept = () => {
@@ -153,7 +155,7 @@ export function RangePicker(props: RangePickerProps) {
               locale == "fa"
                 ? "تاریخ پایان نمی‌تواند زودتر از تاریخ آغاز باشد."
                 : "The end date must not be earlier than the start date."
-            }`
+            }`,
           );
         }
       }
@@ -184,6 +186,9 @@ export function RangePicker(props: RangePickerProps) {
     popupRef: popupRef,
     setIsOpen: setOpen ?? (() => {}),
     isOpen: open ?? false,
+    position: renderPosition?.position,
+    align: renderPosition?.align,
+    offset: renderPosition?.offset,
   });
 
   const handleDropdown = () => {
@@ -199,18 +204,21 @@ export function RangePicker(props: RangePickerProps) {
   }, [counter]);
   useEffect(() => {
     if (compareDate) {
-      onCompareDateChange?.({type:"compare",Data:{date:date,compareDate:compareDate}})
+      onCompareDateChange?.({
+        type: "compare",
+        Data: { date: date, compareDate: compareDate },
+      });
       setShowDate((prev) => ({
         ...prev,
-        ompareDate:compareDate,
+        compareDate: compareDate,
       }));
     }
   }, [compareDate]);
- 
+
   const handleChange = (e: HandleParams) => {
-      setDate(e.Data?.date as IDate);
-      // if (e.Data?.date?.to == 0) return;
-      onChange?.(e);
+    setDate(e.Data?.date as IDate);
+    // if (e.Data?.date?.to == 0) return;
+    onChange?.(e);
   };
   const mainContentProps: IMainContentProps = {
     activeCompareStep,
@@ -243,7 +251,9 @@ export function RangePicker(props: RangePickerProps) {
   };
 
   useEffect(() => {
-    if(!value){return}else if (value == null) {
+    if (!value) {
+      return;
+    } else if (value == null) {
       setDate({ from: null, to: null });
       setShowDate((prev) => ({
         ...prev,
@@ -264,8 +274,7 @@ export function RangePicker(props: RangePickerProps) {
           className={`
       ${style.flex}
       ${style.flex_col}
-      ${style.justify_center}
-      ${style.w_fit}
+       ${style.w_fit}
       ${label ? style.h_14 : style.h_8}
       ${style.relative}
       ${buttonClassName}
@@ -277,6 +286,7 @@ export function RangePicker(props: RangePickerProps) {
           <div className={`${style.flex} ${style.gap_2}  `}>
             <button
               type="button"
+              style={buttonStyle}
               className={`
             ${style.flex}
             ${style.justify_between}
@@ -308,8 +318,10 @@ export function RangePicker(props: RangePickerProps) {
             </button>
             {zone !== "manual" && isShowNavigationButton && (
               <NavigateButton
+                buttonStyle={buttonStyle}
                 compareDate={compareDate}
                 setDate={setDate}
+                onChange={onChange}
                 setCompareDate={setCompareDate}
                 step={step}
                 zone={zone}
@@ -380,7 +392,7 @@ export function RangePicker(props: RangePickerProps) {
                   </div>
                 </div>
               </div>,
-              document.body
+              document.body,
             )}
         </div>
       ) : (
@@ -435,8 +447,10 @@ export function RangePicker(props: RangePickerProps) {
 
           {zone !== "manual" && isShowNavigationButton && (
             <NavigateButton
+              buttonStyle={buttonStyle}
               compareDate={compareDate}
               setDate={setDate}
+              onChange={onChange}
               setCompareDate={setCompareDate}
               step={step}
               zone={zone}
@@ -486,7 +500,7 @@ export function RangePicker(props: RangePickerProps) {
                 </div>
                 <MainContent {...mainContentProps} />
               </div>,
-              document.body
+              document.body,
             )}
         </div>
       )}

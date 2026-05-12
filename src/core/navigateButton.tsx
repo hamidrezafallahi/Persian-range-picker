@@ -22,12 +22,14 @@ function NavigateButton({ ...props }: NavigationProps) {
     step,
     zone,
     setDate,
+    onChange,
     counter,
     setCounter,
     activeCompareStep,
     compareDate,
     setCompareDate,
-    locale = "fa",       
+    locale = "fa",
+    buttonStyle,
   } = props;
   const containerRef = useRef<HTMLDivElement>(null);
   const [dir, setDir] = useState<"ltr" | "rtl">("ltr");
@@ -36,11 +38,12 @@ function NavigateButton({ ...props }: NavigationProps) {
       if (counter! < 0) {
         const { from, to } = calculateDate(step!, zone!, counter! + 1, locale);
         setDate?.({ from, to });
+        onChange?.({ type: ESteps[step], Data: { date: { from, to } } });
         setCounter?.((prev) => (prev += 1));
         const templatePeriods = period(
           calculateDate(step!, zone!, counter! + 1, locale),
           locale,
-          zone!
+          zone!,
         );
         templatePeriods.map((item) => {
           const active = item.step == activeCompareStep;
@@ -56,11 +59,15 @@ function NavigateButton({ ...props }: NavigationProps) {
       }
     } else if (phase == "decrement") {
       setDate?.(calculateDate(step!, zone!, counter! - 1, locale));
+      onChange?.({
+        type: ESteps[step],
+        Data: { date: calculateDate(step!, zone!, counter! - 1, locale) },
+      });
 
       const templatePeriods = period(
         calculateDate(step!, zone!, counter! - 1, locale),
         locale,
-        zone!
+        zone!,
       );
       templatePeriods.map((item) => {
         const active = item.step == activeCompareStep;
@@ -88,10 +95,12 @@ function NavigateButton({ ...props }: NavigationProps) {
     }
   }, []);
   return (
-    <div className={`${style.flex} ${style.gap_2}  ${dir === "ltr" ? style.flex_row : style.flex_row_reverse}`} ref={containerRef} 
-    
+    <div
+      className={`${style.flex} ${style.gap_2}  ${dir === "ltr" ? style.flex_row : style.flex_row_reverse}`}
+      ref={containerRef}
     >
       <button
+        style={buttonStyle}
         className={`${style.px_1} ${style.border_none} ${style.xs_border} ${style.rounded_md} ${style.bg_white}`}
         disabled={step == ESteps.manual}
         type="button"
@@ -99,9 +108,10 @@ function NavigateButton({ ...props }: NavigationProps) {
           stepChangeHandler("decrement");
         }}
       >
-         <LeftChevron />
+        <LeftChevron />
       </button>
       <button
+        style={buttonStyle}
         className={`${style.px_1} ${style.border_none} ${style.xs_border} ${style.rounded_md} ${style.bg_white} `}
         disabled={step == ESteps.manual}
         type="button"
@@ -109,7 +119,7 @@ function NavigateButton({ ...props }: NavigationProps) {
           stepChangeHandler("increment");
         }}
       >
-         <RightChevron />
+        <RightChevron />
       </button>
     </div>
   );
@@ -120,7 +130,7 @@ export const calculateDate = (
   step: ESteps,
   zone: ITimeZone,
   counter: number,
-  locale: TLocale
+  locale: TLocale,
 ) => {
   let from = (
     locale === "fa" ? moment().startOf("jYear") : moment().startOf("year")

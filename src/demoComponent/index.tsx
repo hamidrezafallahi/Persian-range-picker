@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 import { DatePicker } from '../datePicker';
-import { Calendar } from '../persianDatePicker';
+import { RangePicker } from '../rangePicker';
 
 export default function DemoComponent() {
   const [val, setVal] = useState<any>();
@@ -107,10 +107,10 @@ export default function DemoComponent() {
         }}
       /> */}
       <div style={{ padding: "12px" }}>
-        <Calendar
+        {/* <Calendar
         selectMultiple
-          // model="range"
-          // disablePreviousDays
+          model="range"
+          disablePreviousDays
           selectableCols
           defaultValue={time}
           // locale="fa"
@@ -119,51 +119,51 @@ export default function DemoComponent() {
             console.log(e);
             setVal(e);
           }}
-          // exportType="timeStamp"
-          // specialDays={[1764534600000, 1766003400000]}
-          // disabledDays={[1765139400000, 1765312200000]}
+          exportType="timeStamp"
+          specialDays={[1764534600000, 1766003400000]}
+          disabledDays={[1765139400000, 1765312200000]}
 
-          // renderDayContent={({ day, isSpecial, isColSelected }) => (
-          //   <>
-          //     <span
-          //       style={{
-          //         color: isSpecial ? "red" : isColSelected ? "#fff" : undefined,
-          //         fontWeight: isSpecial ? "bold" : "normal",
-          //       }}
-          //       >
-          //       {day}
-          //     </span>
-          //   </>
-          // )}
-          // renderDayStyle={({ isSpecial, isSelected ,isInRange,isToday,isDisabled,}) => ({
-          //   background: isSpecial ? "rgba(255,0,0,0.1)" : isSelected ? "#0af" :isInRange ? "rgba(33,150,243,0.2)": isToday ? "rgba(22, 187, 36, 0.98)":  isDisabled ? "rgba(255, 0, 0, 1)": "",
-          //   borderRadius: "8px",
-          //   width: "48px",
-          //   height: "48px",
-          // })}
-          // renderColStyle={({ isSelectedCol }) => ({
-          //   background: isSelectedCol ? "rgba(255,0,0,0.1)" : "",
-          //   borderRadius: "8px",
-          //   width: "48px",
-          //   height: "48px",
-          // })}
-          // renderColContent={({ name, isSelectedCol }) => (
-          //   <span
-          //     style={{
-          //       color: isSelectedCol ? "#fff" : undefined,
-          //       background: isSelectedCol ? "#767676ff" : undefined,
-          //       width: "24px",
-          //       height: "24px",
-          //       borderRadius: "8px",
-          //       display: "flex",
-          //       justifyContent: "center",
-          //       alignItems: "center",
-          //     }}
-          //   >
-          //     {name}
-          //   </span>
-          // )}
-        />
+          renderDayContent={({ day, isSpecial, isColSelected }) => (
+            <>
+              <span
+                style={{
+                  color: isSpecial ? "red" : isColSelected ? "#fff" : undefined,
+                  fontWeight: isSpecial ? "bold" : "normal",
+                }}
+                >
+                {day}
+              </span>
+            </>
+          )}
+          renderDayStyle={({ isSpecial, isSelected ,isInRange,isToday,isDisabled,}) => ({
+            background: isSpecial ? "rgba(255,0,0,0.1)" : isSelected ? "#0af" :isInRange ? "rgba(33,150,243,0.2)": isToday ? "rgba(22, 187, 36, 0.98)":  isDisabled ? "rgba(255, 0, 0, 1)": "",
+            borderRadius: "8px",
+            width: "48px",
+            height: "48px",
+          })}
+          renderColStyle={({ isSelectedCol }) => ({
+            background: isSelectedCol ? "rgba(255,0,0,0.1)" : "",
+            borderRadius: "8px",
+            width: "48px",
+            height: "48px",
+          })}
+          renderColContent={({ name, isSelectedCol }) => (
+            <span
+              style={{
+                color: isSelectedCol ? "#fff" : undefined,
+                background: isSelectedCol ? "#767676ff" : undefined,
+                width: "24px",
+                height: "24px",
+                borderRadius: "8px",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              {name}
+            </span>
+          )}
+        /> */}
       </div>
       {/*<Calendar
         model="range"
@@ -200,9 +200,9 @@ export default function DemoComponent() {
               )}
       /> */}
 
-      {/* <RangePicker
-        defaultValue={time}
-        value={val as IDate}
+      <RangePicker
+        // defaultValue={time}
+        // value={val as IDate}
         specialDays={[1762288200000, 1763411400000]}
         disabledDays={[1763325000000, 1763497800000]}
         //  calendarType='gregorian'
@@ -238,14 +238,14 @@ export default function DemoComponent() {
         onError={(e:string) => {
           console.log(e);
         }}
-        onChange={(e:any) => {
-          console.log(e);
-          setVal(e.Data?.date as IDate);
-        }}
+        // onChange={(e:any) => {
+        //   console.log(e);
+        //   setVal(e.Data?.date as IDate);
+        // }}
         onCompareDateChange={(e:any) => {
           console.log(e);
         }}
-      /> */}
+      />
     </>
   );
 }

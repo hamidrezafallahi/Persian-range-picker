@@ -56,10 +56,13 @@ export interface CalendarState {
   multiple: number[];
 }
 
+
 // =========================
 // Range Picker Props
 // =========================
 export interface RangePickerProps extends Omit<CalendarProps, "onChange"> {
+  buttonStyle?: React.CSSProperties
+  renderPosition?: { offset?: number, align?: PopupAlign, position?: PopupPosition }
   isOpenDropdown?: boolean;
   additionalElement?: AdditionalElementType[];
   calendarType?: CalendarType;
@@ -93,7 +96,7 @@ export interface RangePickerProps extends Omit<CalendarProps, "onChange"> {
   dropdownWidth?: number;
   dropdownHeight?: number;
 
-  label?: "Date" | "تاریخ";
+  label?: "Date" | "تاریخ" | boolean;
   className?: string;
   disabled?: boolean;
   highlightColor?: string;
@@ -115,6 +118,9 @@ export interface CustomSwitchProps {
 // =========================
 // Popup Position Hook Options
 // =========================
+
+export type PopupPosition = 'auto' | 'top' | 'bottom';
+export type PopupAlign = 'start' | 'center' | 'end';
 export interface UseRenderPositionOptionsProps<T extends HTMLElement> {
   buttonRef: RefObject<T | null>;
   popupRef: RefObject<T | null>;
@@ -122,6 +128,8 @@ export interface UseRenderPositionOptionsProps<T extends HTMLElement> {
   onClickOutSide?: () => void;
   setIsOpen: Dispatch<SetStateAction<boolean>>;
   isOpen: boolean;
+  position?: PopupPosition;
+  align?: PopupAlign;
 }
 
 // =========================
@@ -150,7 +158,6 @@ export interface IManualProps extends Omit<CalendarProps, "onChange"> {
   showComparison: boolean;
 
   monthPickerClassName?: string;
-
   // Colors
   accentColor: string;
   neutralColor: string;
@@ -397,6 +404,8 @@ export interface AdditionalElementType {
 export interface NavigationProps {
   step: ESteps;
   zone: ITimeZone;
+  onChange?: (e: HandleParams) => void
+  buttonStyle?: React.CSSProperties
 
   setDate: Dispatch<SetStateAction<IDate>>;
   setCounter: Dispatch<SetStateAction<number>>;
