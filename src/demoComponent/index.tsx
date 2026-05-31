@@ -5,10 +5,26 @@ import { RangePicker } from '../rangePicker';
 
 export default function DemoComponent() {
   const [val, setVal] = useState<any>();
-  const time = new Date(1765133698040).toISOString()
+  const time = new Date(1765133698040).toISOString();
   //{ from: 1764534600000, to: 1765312200000 };
   // {from: 1764534600000, to: 1765312200000}
   // //[1765053000000,1765139400000,1765398600000];
+  // const HandleSubmitDate = (type, date) => {
+  //   console.log(type, date);
+  // };
+  // const template: AdditionalElementType[] = [
+  //   {
+  //     key: "financial",
+  //     label: "سال مالی",
+  //     content: (
+  //       <FinancialYear
+  //         onChange={(e) => {
+  //           HandleSubmitDate("financial", e);
+  //         }}
+  //       />
+  //     ),
+  //   },
+  // ];
 
   return (
     <>
@@ -22,7 +38,7 @@ export default function DemoComponent() {
       </button>
       <button
         onClick={() => {
-          setVal(1764404009040)
+          setVal(1764404009040);
           //setVal([1765830600000, 1765917000000, 1766089800000])
           // setVal({from: 1764621000000, to: 1765830600000});
         }}
@@ -40,7 +56,6 @@ export default function DemoComponent() {
           // disabled
           onClear={() => {
             setVal(null);
-
           }}
           // calendarType='gregorian'
           defaultValue={time}
@@ -49,7 +64,7 @@ export default function DemoComponent() {
           // allowClear
           // selectableCols
           // selectMultiple
-          exportType='IsoString'
+          exportType="IsoString"
           // specialDays={[1762288200000, 1763411400000]}
           // disabledDays={[1763325000000, 1763497800000]}
 
@@ -207,6 +222,7 @@ export default function DemoComponent() {
         disabledDays={[1763325000000, 1763497800000]}
         //  calendarType='gregorian'
         // selectableCols
+        exportType="IsoString"
         renderDayContent={({ day, isSpecial, timestamp }) => (
           <>
             <span
@@ -235,17 +251,29 @@ export default function DemoComponent() {
             {name}
           </span>
         )}
-        onError={(e:string) => {
+        onError={(e: string) => {
           console.log(e);
         }}
-        // onChange={(e:any) => {
-        //   console.log(e);
-        //   setVal(e.Data?.date as IDate);
-        // }}
-        onCompareDateChange={(e:any) => {
+        onChange={(e: any) => {
+          console.log(e);
+          // setVal(e.Data?.date as IDate);
+        }}
+        onCompareDateChange={(e: any) => {
           console.log(e);
         }}
+        // additionalElement={template}
       />
     </>
   );
 }
+const FinancialYear = ({ onChange }: { onChange: (e: any) => void }) => {
+  return (
+    <button
+      onClick={() => {
+        onChange?.({ yearIds: [1, 2, 3], compareYearIds: [3, 4, 5] });
+      }}
+    >
+      test
+    </button>
+  );
+};

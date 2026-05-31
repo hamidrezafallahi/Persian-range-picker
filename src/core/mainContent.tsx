@@ -17,6 +17,7 @@ import {
 import Manual from './manual';
 import PeriodList from './periodList';
 import {
+  ExportType,
   IDate,
   TLocale,
 } from './type';
@@ -31,6 +32,7 @@ export interface IMainContentProps {
   setZone: Dispatch<SetStateAction<ITimeZone>>;
   setCompareDate: Dispatch<SetStateAction<IDate | null>>;
   onChange: (e: HandleParams) => void;
+  exportType?: ExportType;
   setCounter: Dispatch<SetStateAction<number>>;
   activeCompareStep: ESteps | null;
   setActiveCompareStep: Dispatch<SetStateAction<ESteps | null>>;
@@ -85,6 +87,7 @@ const MainContent = ({ ...props }: IMainContentProps) => {
     tertiaryColor,
     zone,
     monthPickerClassName,
+    exportType,
   } = props;
 
   const [activeTab, setActiveTab] = useState<string>(activeTable);
@@ -147,6 +150,7 @@ const MainContent = ({ ...props }: IMainContentProps) => {
     zone,
     onError,
     monthPickerClassName,
+    exportType
   };
 
   const tabs: ITab[] = [
@@ -212,8 +216,8 @@ const MainContent = ({ ...props }: IMainContentProps) => {
               ${style.rounded_md}
               ${periodListClassName} 
               ${style.font_medium} ${style.text_right} ${style.text_nowrap} ${
-              style.text_sm
-            } 
+                style.text_sm
+              } 
               ${
                 activeTab === tab.key
                   ? locale === "fa"
@@ -222,8 +226,8 @@ const MainContent = ({ ...props }: IMainContentProps) => {
                   : `${style.text_gray_500} ${style.hover_text_gray_700}`
               }
               ${style.flex} ${style.justify_center} ${style.xs_justify_start} ${
-              style.xs_gap_3
-            } ${style.items_center}
+                style.xs_gap_3
+              } ${style.items_center}
             `}
           >
             {tab.label}
@@ -251,7 +255,7 @@ const MainContent = ({ ...props }: IMainContentProps) => {
               {
                 onChange: (value: unknown) =>
                   handleChange(currentTab.key, value),
-              }
+              },
             );
           })()}
       </div>

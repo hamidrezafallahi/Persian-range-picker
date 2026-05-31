@@ -57,6 +57,7 @@ export function RangePicker(props: RangePickerProps) {
     showComparison = true,
     accentColor = "#2563eb",
     neutralColor = "#9cc5f1",
+    exportType = "IsoString",
     tabClassName = "",
     activeTable,
     monthPickerClassName,
@@ -216,15 +217,21 @@ export function RangePicker(props: RangePickerProps) {
   }, [compareDate]);
 
   const handleChange = (e: HandleParams) => {
-    setDate(e.Data?.date as IDate);
-    // if (e.Data?.date?.to == 0) return;
-    onChange?.(e);
+
+    if (
+      ["day", "week", "month", "season", "year","range"].includes(e.type)
+    ) {
+      setDate(e.Data?.date as IDate);
+      // if (e.Data?.date?.to == 0) return;
+      onChange?.(e);
+    }
   };
   const mainContentProps: IMainContentProps = {
     activeCompareStep,
     defaultValue: date,
     value: date,
     highlightColor,
+    exportType,
     onChange: handleChange,
     primaryColor,
     setActiveCompareStep,
@@ -461,7 +468,7 @@ export function RangePicker(props: RangePickerProps) {
             />
           )}
 
-          {/* مودال */}
+          {/* مدال */}
           {open &&
             createPortal(
               <div

@@ -14,17 +14,15 @@ import type {
 
 interface IProps {
   date?: IDate;
-onDateChange?: (e: IDate) => void;
+  onDateChange?: (e: IDate) => void;
   locale?: TLocale;
-  onError?: (e:string)=>void;
-
+  onError?: (e: string) => void;
 }
 function MaskRange({ ...props }: IProps) {
-  const {onError}=props
+  const { onError } = props;
   const [error, setError] = useState<"from" | "to" | null>(null);
 
   const { date, onDateChange, locale } = props;
-
   const handleChange = (e: IDate["from"], name: "from" | "to") => {
     if (name === "from") {
       if (date?.to && e && e > date.to) {
@@ -45,20 +43,25 @@ function MaskRange({ ...props }: IProps) {
       } else {
         endOfDate = moment(e).utc().endOf("day").valueOf();
       }
+
       onDateChange?.({ from: date?.from, to: endOfDate });
     }
   };
-  useEffect(()=>{
-    if(error !==null){
-      if(error==="from"){
+  useEffect(() => {
+    if (error !== null) {
+      if (error === "from") {
         onError?.(
-          locale == "fa"? "ناریخ شروع نمیتواند بعد از تاریخ پایان باشد":"The start date cannot be after the end date."
-        )
-      }else {
-        locale == "fa"? "تاریخ پایان نمیتواند قبل از تاریخ شروع ست شود":"End date cannot be set before start date."
+          locale == "fa"
+            ? "ناریخ شروع نمیتواند بعد از تاریخ پایان باشد"
+            : "The start date cannot be after the end date.",
+        );
+      } else {
+        locale == "fa"
+          ? "تاریخ پایان نمیتواند قبل از تاریخ شروع ست شود"
+          : "End date cannot be set before start date.";
       }
     }
-  },[error])
+  }, [error]);
   return (
     <div
       className={`

@@ -14,6 +14,7 @@ import {
 } from '../persianDatePicker/type';
 import { getTimestampsForPeriod } from './helper';
 import {
+  ExportType,
   IDate,
   TLocale,
 } from './type';
@@ -39,6 +40,7 @@ interface IPeriodList {
   accentColor: string;
   tertiaryColor: string;
   neutralColor: string;
+  exportType?: ExportType;
 }
 function PeriodList({ ...props }: IPeriodList) {
   const {
@@ -61,13 +63,14 @@ function PeriodList({ ...props }: IPeriodList) {
     accentColor = "#2563eb", // تأکیدی (برای جلب توجه، مثلاً نوتیفیکیشن‌ها یا CTAها)- آبی
     tertiaryColor = "#939393", //رنگ سوم، معمولاً برای جزئیات یا عناصر کم‌اهمیت‌تر   -  رنگ متن
     neutralColor = "#9cc5f1", //رنگ خنثی، اغلب برای پس‌زمینه یا متن - آبی کمرنگ
+    exportType
   } = props;
 
 
   const period: TimeSections[] = [
     {
       title: locale == "fa" ? "امروز" : "Today",
-      value: getTimestampsForPeriod("today", locale),
+      value: getTimestampsForPeriod("today", locale) ,
       step: ESteps.day,
       timeZone: "today",
     },
