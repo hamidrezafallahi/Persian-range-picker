@@ -29,6 +29,7 @@ export type DateValue =
   | null; // Multiple date
 
 export type ExportType = "timeStamp" | "IsoString";
+/** @see ExportType in core/type — timeStamp (Unix ms) and IsoString (ISO 8601) are both industry-standard. */
 export type CalendarType = "jalali" | "gregorian";
 
 export interface ColorProps {
@@ -234,9 +235,12 @@ export interface CalendarProps extends ColorProps {
 // =========================
 // DatePicker Props
 // =========================
+/** Single-date picker output (timestamp ms or ISO string). */
+export type DatePickerValue = number | string | null;
+
 export interface DatePickerProps
-  extends CalendarProps,
-  Omit<TimePickerProps, "onChange"> {
+  extends Omit<CalendarProps, "onChange" | "value" | "defaultValue" | "model">,
+  Omit<TimePickerProps, "onChange" | "value" | "defaultValue"> {
   showTime?: boolean;
   chooseTodayClassName?: string;
   showTimeFormat?: string;
@@ -244,18 +248,23 @@ export interface DatePickerProps
   isTodaySelectPreset?: boolean;
   showMask?: boolean;
   allowClear?: boolean;
-
   onClear?: () => void;
+
+  value?: DatePickerValue;
+  defaultValue?: DatePickerValue;
+  /** Fires with timestamp or ISO string depending on `exportType`; `null` when cleared/invalid. */
+  onChange?: (value: DatePickerValue) => void;
 }
 
 // =========================
 // TimePicker Props
 // =========================
 export interface TimePickerProps extends ColorProps {
-  defaultValue?: DateValue;
-  value?: DateValue;
+  defaultValue?: number | string | null;
+  value?: number | string | null;
 
-  onChange?: (e: number | string) => void;
+  /** Timestamp (ms) or ISO string based on `exportType`. */
+  onChange?: (value: number | string | null) => void;
 
   calendarType?: CalendarType;
   className?: string;
@@ -294,43 +303,19 @@ export interface TimeSections {
 }
 
 // =========================
-// Mask Props
+// Mask Props (canonical definition in src/mask/types.ts)
 // =========================
-export interface MaskProps extends ColorProps {
-  maskClassName?: string;
-  defaultValue?: DateValue;
-  value?: DateValue;
-
-  onError?: (e: string) => void;
-  onMaskChange?: (e: DateValue) => void;
-
-  calendarType?: CalendarType;
-
-  inputClassName?: string;
-  suffix?: ReactNode | boolean;
-  prefix?: ReactNode | boolean;
-
-  maskHeight?: number;
-
-  MaskFontStyle?: Pick<
-    React.CSSProperties,
-    "fontFamily" | "fontSize" | "color"
-  >;
-
-  ErrorClass?: string;
-
-  allowClear?: boolean;
-  onClear?: () => void;
-
-  dir?: "ltr" | "rtl";
-  disabled?: boolean;
-
-  maskPlaceHolder?: string;
-  isTodaySelectPreset?: boolean;
-  exportType?: ExportType;
-
-  Style?: React.CSSProperties;
-}
+export type {
+  MaskErrorTarget,
+  MaskFontStyle,
+  MaskInputValue,
+  MaskMode,
+  MaskOutputValue,
+  MaskParts,
+  MaskProps,
+  MaskSegment,
+} from '../mask/types';
+export { MaskMode as MaskModeConst } from '../mask/types';
 
 // =========================
 // Desktop Time Picker

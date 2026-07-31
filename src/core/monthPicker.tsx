@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import moment from 'moment-jalaali';
+import moment from '../dateEngine';
 
 import style from '../main.module.css';
 import { getTimestamp } from './helper';

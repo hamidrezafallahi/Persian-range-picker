@@ -320,7 +320,7 @@ See the images below for usage patterns, modes, and visual examples of the compo
 
 ## ✨ ویژگی‌ها
 
-- تنها وابستگی: `moment-jalaali` (و تایپ‌های آن)
+- تنها وابستگی تاریخ: `jalaali-js` (سبک و دقیق، الگوریتم Borkowski)
 - انتخاب بازه زمانی به‌صورت واکنش‌گرا (Responsive)
 - پشتیبانی کامل از React 18 و 19
 - طراحی سبک، تمیز و قابل کاستوم‌سازی

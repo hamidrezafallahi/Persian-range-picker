@@ -1,4 +1,4 @@
-import moment from 'moment-jalaali';
+import moment from '../dateEngine';
 
 import { ESteps } from '../persianDatePicker/enum';
 import {

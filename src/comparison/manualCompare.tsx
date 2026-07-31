@@ -5,7 +5,7 @@ import {
   useState,
 } from 'react';
 
-import moment from 'moment-jalaali';
+import moment from '../dateEngine';
 
 import { TickIcon } from '../assets/icons/TickIcon';
 import {

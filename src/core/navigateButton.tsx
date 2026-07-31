@@ -4,7 +4,7 @@ import {
   useState,
 } from 'react';
 
-import moment from 'moment-jalaali';
+import moment from '../dateEngine';
 
 import { LeftChevron } from '../assets/icons/LeftChevron';
 import { RightChevron } from '../assets/icons/RightChevron';

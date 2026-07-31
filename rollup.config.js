@@ -14,7 +14,7 @@ export default {
       globals: {
         react: "React",
         "react-dom": "ReactDOM",
-        "moment-jalaali": "moment",
+        "jalaali-js": "jalaali",
         "react/jsx-runtime": "jsxRuntime",
       },
       sourcemap: true,
@@ -24,7 +24,7 @@ export default {
       format: "esm",
     },
   ],
-  external: ["react", "react-dom", "moment-jalaali", "moment",'react/jsx-runtime'],
+  external: ["react", "react-dom", "jalaali-js", "react/jsx-runtime"],
   plugins: [
     resolve(),
     commonjs(),

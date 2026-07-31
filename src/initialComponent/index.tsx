@@ -74,8 +74,8 @@ const TEXT: Record<"fa" | "en", LanguageText> = {
               بنابراین ظاهر اکثر المان‌ها قابل تغییر است.
             </p>
             <p>
-              برای تبدیل تاریخ، تنها به یک کتابخانه وابسته هستید:
-              <code>moment-jalaali</code>. دیگر نیازی به ابزارهای متفرقه ندارید.
+              برای تبدیل تاریخ، تنها به یک کتابخانه سبک وابسته هستید:
+              <code>jalaali-js</code>. محاسبات جلالی با همان الگوریتم دقیق Borkowski انجام می‌شود.
             </p>
             <p>
               از همه همکارانی که در توسعه‌ی این ابزار مشارکت داشتند، سپاسگزاریم.
@@ -296,8 +296,8 @@ const TEXT: Record<"fa" | "en", LanguageText> = {
               easily changeable.
             </p>
             <p>
-              For date conversion, you only depend on one library:
-              <code>moment-jalaali</code>. No need for other external tools.
+              For date conversion, you only depend on one lightweight library:
+              <code>jalaali-js</code>. Jalali math uses the same accurate Borkowski algorithm.
             </p>
             <p>
               We are grateful to all contributors who helped develop this tool.

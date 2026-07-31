@@ -5,7 +5,7 @@ import {
   useReducer,
 } from 'react';
 
-import jmoment from 'moment-jalaali';
+import jmoment from '../dateEngine';
 
 import style from '../main.module.css';
 import DataPickerBody from './dataPickerBody';

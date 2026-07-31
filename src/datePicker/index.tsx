@@ -5,7 +5,7 @@ import {
 } from 'react';
 import { createPortal } from 'react-dom';
 
-import moment from 'moment-jalaali';
+import moment from '../dateEngine';
 
 import { CalenderIcon } from '../assets/icons/CalenderIcon';
 import { ClearIcon } from '../assets/icons/ClearIcon';
@@ -92,8 +92,18 @@ export function DatePicker({ ...props }: DatePickerProps) {
   });
 
   const handleDropdown = () => setIsOpen((prev) => !prev);
-  const changeHandler = (e: string | number | IDate | number[] | string[]) => {
+  const changeHandler = (e: number | string | null) => {
+    if (e === null || e === undefined) {
+      setShowDate(null);
+      onChange?.(null);
+      return;
+    }
     if (typeof e === "number" || typeof e === "string") {
+      const ts =
+        typeof e === "number" ? e : moment(e).valueOf();
+      setShowDate(
+        showTime ? ts : moment(ts).startOf("day").valueOf()
+      );
       if (exportType == "IsoString") {
         onChange?.(
           locale == "fa"
@@ -101,7 +111,9 @@ export function DatePicker({ ...props }: DatePickerProps) {
             : moment.utc(e).toISOString()
         );
       } else {
-        locale == "fa" ? moment(e).valueOf() : moment.utc(e).valueOf();
+        onChange?.(
+          locale == "fa" ? moment(e).valueOf() : moment.utc(e).valueOf()
+        );
       }
     }
   };
@@ -155,7 +167,7 @@ export function DatePicker({ ...props }: DatePickerProps) {
     setShowDate(timestamp);
   };
 
-  const handleClear = (e: any) => {
+  const handleClear = (e: React.MouseEvent) => {
     e.stopPropagation();
     setShowDate(null);
     onClear?.();
@@ -299,14 +311,15 @@ export function DatePicker({ ...props }: DatePickerProps) {
                 }}
               >
                 <Mask
-                  {...props}
-                  value={value}
-                  defaultValue={defaultValue}
+                  value={value ?? undefined}
+                  defaultValue={defaultValue ?? undefined}
                   allowClear={false}
                   exportType="timeStamp"
                   calendarType={isFa ? "jalali" : "gregorian"}
-                  onMaskChange={changeHandler as (e: any) => void}
+                  onMaskChange={changeHandler}
                   Style={{ width: "112px" }}
+                  tertiaryColor={tertiaryColor}
+                  highlightColor={highlightColor}
                 />
               </div>
             ) : (
