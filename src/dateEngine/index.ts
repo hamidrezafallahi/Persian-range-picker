@@ -288,6 +288,9 @@ export class PDate {
   }
 
   private getJalali() {
+    if (!this.isValid()) {
+      return { jy: NaN, jm: NaN, jd: NaN };
+    }
     return toJalaali(this.getY(), this.getM() + 1, this.getD());
   }
 
@@ -619,6 +622,9 @@ export class PDate {
   }
 
   format(fmt: string): string {
+    if (!this.isValid()) {
+      return 'Invalid date';
+    }
     const j = this.getJalali();
     const map: Record<string, string> = {
       jYYYY: String(j.jy),

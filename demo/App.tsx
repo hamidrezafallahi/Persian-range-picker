@@ -1,5 +1,5 @@
-import { InitialComponent } from '../src/initialComponent/index';
+ import  DemoComponent  from '../src/demoComponent/index';
 
 export default function App() {
-  return <InitialComponent />;
+  return <div><DemoComponent /></div>;
 }

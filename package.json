@@ -41,7 +41,8 @@
   },
   "homepage": "https://github.com/hamidrezafallahi/persian-range-picker#readme",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --config demo/vite.config.ts",
+    "dev:docs": "vite",
     "build:types": "tsc --emitDeclarationOnly",
     "build:js": "rollup -c",
     "build": "npm run build:js && npm run build:types",
