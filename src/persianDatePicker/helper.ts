@@ -1,4 +1,4 @@
-import jmoment from 'moment-jalaali';
+import jmoment from '../dateEngine';
 
 import type { TLocale } from '../core/type';
 

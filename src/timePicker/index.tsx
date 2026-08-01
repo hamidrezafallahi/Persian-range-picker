@@ -5,7 +5,7 @@ import React, {
 } from 'react';
 import { createPortal } from 'react-dom';
 
-import moment from 'moment-jalaali';
+import moment from '../dateEngine';
 
 import { CalenderIcon } from '../assets/icons/CalenderIcon';
 import { toPersianDigits } from '../core/helper';

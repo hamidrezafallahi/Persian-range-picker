@@ -8,14 +8,20 @@ export { useMediaQuery } from './useMediaQuery';
 ////////////////////////////////////////////////////////////////////////////////////
 export type { ExportType, IDate, TLocale } from './core/type';
 export type {
+  MaskInputValue,
+  MaskOutputValue,
+  MaskMode,
+  MaskProps,
+} from './mask/types';
+export type {
   AdditionalElementType,
   CalendarProps,
   CalendarType,
   DatePickerProps,
+  DatePickerValue,
   DateValue,
   HandleParams,
   ISubmittedData,
-  MaskProps,
   RangePickerProps,
   TimePickerProps,
 } from './persianDatePicker/type';

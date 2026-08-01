@@ -4,7 +4,7 @@ import React, {
   useState,
 } from 'react';
 
-import moment from 'moment-jalaali';
+import moment from '../dateEngine';
 
 import { toPersianDigits } from '../core/helper';
 import style from '../main.module.css';
