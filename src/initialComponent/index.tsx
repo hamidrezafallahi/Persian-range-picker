@@ -56,38 +56,102 @@ type LanguageText = {
 
 const NPM_URL = 'https://www.npmjs.com/package/react-persian-range-picker';
 const GITHUB_URL = 'https://github.com/hamidrezafallahi/Persian-range-picker';
+const SITE_URL = 'https://hamidrezafallahi.github.io/Persian-range-picker/';
+const OG_IMAGE =
+  'https://raw.githubusercontent.com/hamidrezafallahi/Persian-range-picker/refs/heads/main/public/assets/calendar-range-picker.PNG';
 const INSTALL_CMD = 'npm i react-persian-range-picker';
+
+const THEME = {
+  primaryColor: '#1c39bb',
+  accentColor: '#1c39bb',
+  highlightColor: '#e8ecfa',
+  neutralColor: '#8fa0e8',
+  backgroundColor: '#ffffff',
+  tertiaryColor: '#5b6594',
+} as const;
 
 const SEO = {
   fa: {
-    title: 'Persian Range Picker | انتخابگر تاریخ و بازه شمسی برای React',
+    title: 'Persian Range Picker | انتخابگر بازه و مقایسه تاریخ شمسی برای React',
     description:
-      'کتابخانه React برای DatePicker، RangePicker مقایسه‌ای، Mask ورودی کیبوردی و TimePicker با پشتیبانی بومی تقویم جلالی و میلادی.',
-    h1: 'انتخابگر تاریخ و بازه شمسی برای React',
+      'کتابخانه React برای مقایسه بازه زمانی (مشابه Dynamics/Analytics) در ERP و داشبوردها؛ با ناوبری هم‌زمان بازه اصلی و مقایسه، DatePicker جلالی، Mask و TimePicker.',
+    h1: 'مقایسه بازه زمانی شمسی برای React و ERP',
     lead:
-      'DatePicker، RangePicker با مقایسه بازه، Mask کیبوردی و TimePicker — سبک، TypeScript-ready و سازگار با React 18 و 19.',
+      'RangePicker مقایسه‌ای به سبک Google Dynamics برای پروژه‌های بزرگ و ERP — با ناوبری گامی که بازه اصلی و بازه مقایسه را هم‌زمان جابه‌جا می‌کند؛ به‌همراه DatePicker، Mask و TimePicker جلالی/میلادی.',
     docs: 'مستندات زنده',
     playground: 'نمایش زنده کامپوننت',
     live: 'Live',
-    features: ['جلالی + میلادی', 'مقایسه بازه', 'ماسک کیبورد', 'وابستگی کم'],
+    features: ['مقایسه بازه ERP', 'ناوبری هم‌زمان', 'جلالی + میلادی', 'وابستگی کم'],
     ctaDocs: 'شروع از معرفی',
     ctaNpm: 'مشاهده در npm',
     ctaGithub: 'سورس در GitHub',
+    previewLabel: 'پیش‌نمایش زنده',
+    liveGalleryTitle: 'نمایش زنده کامپوننت‌ها',
+    liveGalleryLead: 'Range مقایسه‌ای، Date، Mask و Time — همه قابل‌تعامل.',
+    liveLabels: {
+      range: 'بازه + مقایسه',
+      date: 'تاریخ',
+      mask: 'ماسک',
+      time: 'زمان',
+    },
+    copied: 'کپی شد',
+    copy: 'کپی',
+    highlightsTitle: 'چرا این کتابخانه؟',
+    highlights: [
+      {
+        title: 'مقایسه بازه سازمانی',
+        text: 'الگوی مشابه Google Dynamics برای داشبورد، گزارش و ERPهای بزرگ.',
+      },
+      {
+        title: 'ناوبری هم‌زمان',
+        text: 'یک گام عقب/جلو روی بازه اصلی و بازه مقایسه با هم — قابلیتی فراتر از Dynamics.',
+      },
+      {
+        title: 'جلالی‌محور و سبک',
+        text: 'تقویم شمسی از هسته + Mask کیبوردی؛ فقط وابسته به jalaali-js.',
+      },
+    ],
   },
   en: {
-    title: 'Persian Range Picker | Jalali date & range picker for React',
+    title: 'Persian Range Picker | Jalali range comparison picker for React',
     description:
-      'React Jalali/Gregorian DatePicker, analytics-style RangePicker with compare, keyboard Mask, and TimePicker. Lightweight and TypeScript-ready.',
-    h1: 'Jalali date & range picker for React',
+      'React library for date-range comparison (Dynamics/Analytics-style) in ERP and dashboards — synced period navigation for primary + compare ranges, plus Jalali DatePicker, Mask, and TimePicker.',
+    h1: 'Jalali range comparison for React & ERP',
     lead:
-      'DatePicker, compare-ready RangePicker, keyboard Mask, and TimePicker — built for dashboards, forms, and enterprise apps on React 18/19.',
+      'Dynamics-inspired comparative RangePicker for enterprise dashboards and ERP — with step navigation that moves the primary range and compare range together. Includes Jalali/Gregorian DatePicker, Mask, and TimePicker.',
     docs: 'Live docs',
     playground: 'Interactive playground',
     live: 'Live',
-    features: ['Jalali + Gregorian', 'Compare ranges', 'Keyboard mask', 'Tiny deps'],
+    features: ['ERP range compare', 'Synced navigation', 'Jalali + Gregorian', 'Tiny deps'],
     ctaDocs: 'Read introduction',
     ctaNpm: 'View on npm',
     ctaGithub: 'GitHub source',
+    previewLabel: 'Live preview',
+    liveGalleryTitle: 'Live component gallery',
+    liveGalleryLead: 'Comparative Range, Date, Mask, and Time — all interactive.',
+    liveLabels: {
+      range: 'Range + compare',
+      date: 'Date',
+      mask: 'Mask',
+      time: 'Time',
+    },
+    copied: 'Copied',
+    copy: 'Copy',
+    highlightsTitle: 'Why this library?',
+    highlights: [
+      {
+        title: 'Enterprise compare UX',
+        text: 'Dynamics/Analytics-style period comparison for ERP, BI, and large dashboards.',
+      },
+      {
+        title: 'Synced step navigation',
+        text: 'Move primary and compare ranges together in one step — beyond typical Dynamics pickers.',
+      },
+      {
+        title: 'Jalali-native & light',
+        text: 'Shamsi-first engine with keyboard Mask; only jalaali-js as a runtime date dependency.',
+      },
+    ],
   },
 } as const;
 
@@ -102,7 +166,8 @@ const TEXT: Record<'fa' | 'en', LanguageText> = {
           <>
             <p>
               این کتابخانه برای پاسخ به نیاز برنامه‌نویسان ایرانی جهت انتخاب تاریخ
-              شمسی طراحی شده است. با پشتیبانی از هر دو نوع تاریخ
+              شمسی و به‌ویژه <strong>مقایسه بازه زمانی در ERP و داشبوردهای سازمانی</strong>
+              طراحی شده است. با پشتیبانی از هر دو نوع تاریخ
               <strong> میلادی (Gregorian) و شمسی (Shamsi)</strong>، می‌توانید نوع
               تقویم را با یک پارامتر ساده تغییر دهید.
             </p>
@@ -116,32 +181,37 @@ const TEXT: Record<'fa' | 'en', LanguageText> = {
               <code>jalaali-js</code>. محاسبات جلالی با الگوریتم دقیق Borkowski
               انجام می‌شود.
             </p>
-            <h4>انتخاب بازه‌ی زمانی مقایسه‌ای</h4>
+            <h3>مقایسه بازه به سبک Dynamics / Analytics</h3>
             <p>
-              یکی از مهم‌ترین قابلیت‌ها، مقایسه‌ی یک بازه با بازه دیگر است —
-              مشابه الگوی Google Analytics، با پشتیبانی بومی تقویم شمسی.
+              هستهٔ محصول، مقایسه‌ی یک بازه با بازه دیگر است — مشابه الگوی
+              Google Dynamics و Google Analytics، با پشتیبانی بومی تقویم شمسی و
+              مناسب فیلترهای ERP.
             </p>
             <ul>
               <li>مقایسه داده روزانه با روز یا هفته قبل</li>
               <li>بررسی روند فروش فصل جاری نسبت به سال گذشته</li>
+              <li>
+                ناوبری گامی که بازه اصلی و بازه مقایسه را <strong>هم‌زمان</strong> جابه‌جا
+                می‌کند (قابلیتی فراتر از بسیاری از pickerهای enterprise)
+              </li>
             </ul>
-            <h4>
+            <h3>
               <TickIcon /> انتخاب تاریخ
-            </h4>
+            </h3>
             <p>
               DatePicker با Mask قابل ویرایش و پشتیبانی از
               <strong> TimePicker </strong> دقت تا ثانیه می‌دهد.
             </p>
-            <h4>
+            <h3>
               <TickIcon /> نگارنده تاریخ (ماسک)
-            </h4>
+            </h3>
             <p>
               تایپ مستقیم در قالب مشخص، ناوبری کیبورد، تشخیص روزهای ماه و جلوگیری
               از مقدار غیرمجاز.
             </p>
-            <h4>
+            <h3>
               <TickIcon /> هوک نمایش المان شناور
-            </h4>
+            </h3>
             <p>
               هوک سبک برای Dropdown/Tooltip با جلوگیری از بیرون‌زدگی — بدون وابستگی
               به popper.
@@ -160,6 +230,7 @@ const TEXT: Record<'fa' | 'en', LanguageText> = {
             onChange={(e) => console.log('RangePicker has changed', e)}
             exportType="timeStamp"
             showComparison
+            {...THEME}
           />
         ),
       },
@@ -177,11 +248,21 @@ const TEXT: Record<'fa' | 'en', LanguageText> = {
             onChange={(e) => console.log(e)}
             calendarType="jalali"
             exportType="timeStamp"
+            primaryColor={THEME.primaryColor}
+            highlightColor={THEME.highlightColor}
+            tertiaryColor={THEME.tertiaryColor}
           />
         ),
       },
       Mask: {
-        component: <Mask calendarType="jalali" allowClear />,
+        component: (
+          <Mask
+            calendarType="jalali"
+            allowClear
+            primaryColor={THEME.primaryColor}
+            highlightColor={THEME.highlightColor}
+          />
+        ),
         title: 'ورودی تاریخ',
         desc: 'ماسک ورودی فقط قالب معتبر را می‌پذیرد و یکپارچگی داده را حفظ می‌کند.',
         video: MaskVid,
@@ -197,6 +278,8 @@ const TEXT: Record<'fa' | 'en', LanguageText> = {
             calendarType="jalali"
             onChange={(e) => console.log(e)}
             showSecond
+            primaryColor={THEME.primaryColor}
+            highlightColor={THEME.highlightColor}
           />
         ),
       },
@@ -219,8 +302,10 @@ const TEXT: Record<'fa' | 'en', LanguageText> = {
         desc: (
           <>
             <p>
-              Built for Persian (Jalali) date selection in React, with first-class
-              support for both <strong>Gregorian and Shamsi</strong> calendars.
+              Built for Persian (Jalali) date selection in React — and especially
+              for <strong>enterprise range comparison in ERP and dashboards</strong> —
+              with first-class support for both <strong>Gregorian and Shamsi</strong>{' '}
+              calendars.
             </p>
             <p>
               Unlike converters bolted onto Gregorian engines, this library is
@@ -230,32 +315,37 @@ const TEXT: Record<'fa' | 'en', LanguageText> = {
               Date math depends on one lightweight package: <code>jalaali-js</code>{' '}
               (Borkowski algorithm).
             </p>
-            <h4>Comparative date ranges</h4>
+            <h3>Dynamics / Analytics-style compare</h3>
             <p>
-              Compare one period with another — analytics-style UX with native
-              Jalali support.
+              The product core is comparing one period with another — similar to
+              Google Dynamics and Analytics UX — with native Jalali support for
+              ERP filters and BI screens.
             </p>
             <ul>
               <li>Daily metrics vs yesterday or last week</li>
               <li>Seasonal sales vs the same season last year</li>
+              <li>
+                Step navigation that moves the <strong>primary and compare</strong>{' '}
+                ranges together (beyond many enterprise pickers)
+              </li>
             </ul>
-            <h4>
+            <h3>
               <TickIcon /> Date picker
-            </h4>
+            </h3>
             <p>
               Masked input plus optional <strong>TimePicker</strong> down to the
               second.
             </p>
-            <h4>
+            <h3>
               <TickIcon /> Masked date input
-            </h4>
+            </h3>
             <p>
               Keyboard-friendly segments, month-length awareness, and invalid-entry
               prevention.
             </p>
-            <h4>
+            <h3>
               <TickIcon /> Floating element hook
-            </h4>
+            </h3>
             <p>
               Dependency-light positioning for dropdowns and tooltips with overflow
               prevention.
@@ -274,6 +364,7 @@ const TEXT: Record<'fa' | 'en', LanguageText> = {
             onChange={(e) => console.log('RangePicker has changed', e)}
             exportType="timeStamp"
             showComparison
+            {...THEME}
           />
         ),
       },
@@ -291,11 +382,21 @@ const TEXT: Record<'fa' | 'en', LanguageText> = {
             onChange={(e) => console.log(e)}
             calendarType="gregorian"
             exportType="timeStamp"
+            primaryColor={THEME.primaryColor}
+            highlightColor={THEME.highlightColor}
+            tertiaryColor={THEME.tertiaryColor}
           />
         ),
       },
       Mask: {
-        component: <Mask calendarType="gregorian" allowClear />,
+        component: (
+          <Mask
+            calendarType="gregorian"
+            allowClear
+            primaryColor={THEME.primaryColor}
+            highlightColor={THEME.highlightColor}
+          />
+        ),
         title: 'Mask',
         desc: 'Constrained date typing that prevents common format errors.',
         video: MaskVid,
@@ -311,6 +412,8 @@ const TEXT: Record<'fa' | 'en', LanguageText> = {
             calendarType="gregorian"
             onChange={(e) => console.log(e)}
             showSecond
+            primaryColor={THEME.primaryColor}
+            highlightColor={THEME.highlightColor}
           />
         ),
       },
@@ -325,38 +428,85 @@ const TEXT: Record<'fa' | 'en', LanguageText> = {
   },
 };
 
+function ensureMeta(
+  name: string,
+  content: string,
+  attr: 'name' | 'property' = 'name'
+) {
+  let el = document.head.querySelector(
+    `meta[${attr}="${name}"]`
+  ) as HTMLMetaElement | null;
+  if (!el) {
+    el = document.createElement('meta');
+    el.setAttribute(attr, name);
+    document.head.appendChild(el);
+  }
+  el.content = content;
+}
+
+function ensureLink(rel: string, href: string, hreflang?: string) {
+  const selector = hreflang
+    ? `link[rel="${rel}"][hreflang="${hreflang}"]`
+    : `link[rel="${rel}"]:not([hreflang])`;
+  let el = document.head.querySelector(selector) as HTMLLinkElement | null;
+  if (!el) {
+    el = document.createElement('link');
+    el.rel = rel;
+    if (hreflang) el.hreflang = hreflang;
+    document.head.appendChild(el);
+  }
+  el.href = href;
+}
+
 export function InitialComponent() {
   const [lang, setLang] = useState<'fa' | 'en'>('fa');
   const [activeSection, setActiveSection] = useState<SectionKey>('QuickStart');
+  const [copied, setCopied] = useState(false);
   const seo = SEO[lang];
   const sections = TEXT[lang].sections;
   const active = sections[activeSection];
 
   const jsonLd = useMemo(
     () =>
-      JSON.stringify({
-        '@context': 'https://schema.org',
-        '@type': 'SoftwareApplication',
-        name: 'react-persian-range-picker',
-        applicationCategory: 'DeveloperApplication',
-        operatingSystem: 'Web',
-        offers: {
-          '@type': 'Offer',
-          price: '0',
-          priceCurrency: 'USD',
+      JSON.stringify([
+        {
+          '@context': 'https://schema.org',
+          '@type': 'SoftwareApplication',
+          name: 'react-persian-range-picker',
+          applicationCategory: 'DeveloperApplication',
+          operatingSystem: 'Web',
+          softwareVersion: '1.0.36',
+          offers: {
+            '@type': 'Offer',
+            price: '0',
+            priceCurrency: 'USD',
+          },
+          description: seo.description,
+          url: SITE_URL,
+          downloadUrl: NPM_URL,
+          codeRepository: GITHUB_URL,
+          license: 'https://opensource.org/licenses/MIT',
+          screenshot: OG_IMAGE,
+          author: {
+            '@type': 'Person',
+            name: 'Hamidreza Fallahi',
+            url: 'https://github.com/hamidrezafallahi',
+          },
+          sameAs: [NPM_URL, GITHUB_URL],
+          programmingLanguage: ['TypeScript', 'JavaScript'],
+          keywords:
+            'React, Jalali, Persian date picker, range picker, Shamsi calendar, TimePicker, date mask',
         },
-        description: seo.description,
-        url: GITHUB_URL,
-        author: {
-          '@type': 'Person',
-          name: 'Hamidreza Fallahi',
-          url: 'https://github.com/hamidrezafallahi',
+        {
+          '@context': 'https://schema.org',
+          '@type': 'WebSite',
+          name: 'Persian Range Picker',
+          url: SITE_URL,
+          inLanguage: [lang === 'fa' ? 'fa-IR' : 'en-US'],
+          description: seo.description,
         },
-        programmingLanguage: 'TypeScript',
-        keywords:
-          'React, Jalali, Persian date picker, range picker, Shamsi calendar, TimePicker, date mask',
-      }),
-    [seo.description]
+      ]),
+    [lang, seo.description]
   );
 
   useEffect(() => {
@@ -364,23 +514,34 @@ export function InitialComponent() {
     document.documentElement.dir = lang === 'fa' ? 'rtl' : 'ltr';
     document.title = seo.title;
 
-    const ensureMeta = (name: string, content: string, attr: 'name' | 'property' = 'name') => {
-      let el = document.head.querySelector(`meta[${attr}="${name}"]`) as HTMLMetaElement | null;
-      if (!el) {
-        el = document.createElement('meta');
-        el.setAttribute(attr, name);
-        document.head.appendChild(el);
-      }
-      el.content = content;
-    };
-
     ensureMeta('description', seo.description);
+    ensureMeta(
+      'keywords',
+      lang === 'fa'
+        ? 'انتخابگر تاریخ شمسی, تقویم جلالی React, range picker, Jalali datepicker, TimePicker, date mask, react-persian-range-picker'
+        : 'Persian date picker, Jalali datepicker, Shamsi React, range picker, compare range, TimePicker, date mask, react-persian-range-picker'
+    );
+    ensureMeta('robots', 'index,follow,max-image-preview:large');
+    ensureMeta('theme-color', '#1c39bb');
+
     ensureMeta('og:title', seo.title, 'property');
     ensureMeta('og:description', seo.description, 'property');
     ensureMeta('og:type', 'website', 'property');
+    ensureMeta('og:url', SITE_URL, 'property');
+    ensureMeta('og:image', OG_IMAGE, 'property');
+    ensureMeta('og:image:alt', 'Persian Jalali range picker UI', 'property');
+    ensureMeta('og:site_name', 'Persian Range Picker', 'property');
+    ensureMeta('og:locale', lang === 'fa' ? 'fa_IR' : 'en_US', 'property');
+
     ensureMeta('twitter:card', 'summary_large_image');
     ensureMeta('twitter:title', seo.title);
     ensureMeta('twitter:description', seo.description);
+    ensureMeta('twitter:image', OG_IMAGE);
+
+    ensureLink('canonical', SITE_URL);
+    ensureLink('alternate', SITE_URL, 'fa');
+    ensureLink('alternate', SITE_URL, 'en');
+    ensureLink('alternate', SITE_URL, 'x-default');
   }, [lang, seo.description, seo.title]);
 
   useEffect(() => {
@@ -395,6 +556,16 @@ export function InitialComponent() {
     script.textContent = jsonLd;
   }, [jsonLd]);
 
+  const copyInstall = async () => {
+    try {
+      await navigator.clipboard.writeText(INSTALL_CMD);
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 1600);
+    } catch {
+      setCopied(false);
+    }
+  };
+
   return (
     <div className={`${styles.page} ${lang === 'en' ? styles.pageEn : ''}`}>
       <a className={styles.srOnly} href="#main-docs">
@@ -403,7 +574,11 @@ export function InitialComponent() {
 
       <div className={styles.shell}>
         <header className={styles.topbar}>
-          <a className={styles.brandMark} href={GITHUB_URL} aria-label="react-persian-range-picker">
+          <a
+            className={styles.brandMark}
+            href={SITE_URL}
+            aria-label="react-persian-range-picker"
+          >
             <span className={styles.logo} aria-hidden />
             <span className={styles.brandText}>
               <span className={styles.brandName}>Persian Range Picker</span>
@@ -463,7 +638,17 @@ export function InitialComponent() {
                 </a>
               </div>
 
-              <code className={styles.install}>{INSTALL_CMD}</code>
+              <div className={styles.installRow}>
+                <code className={styles.install}>{INSTALL_CMD}</code>
+                <button
+                  type="button"
+                  className={styles.copyBtn}
+                  onClick={copyInstall}
+                  aria-label={seo.copy}
+                >
+                  {copied ? seo.copied : seo.copy}
+                </button>
+              </div>
 
               <div className={styles.chips} aria-label="features">
                 {seo.features.map((item) => (
@@ -473,6 +658,182 @@ export function InitialComponent() {
                 ))}
               </div>
             </div>
+
+            <aside className={styles.heroStage} aria-label={seo.previewLabel}>
+              <div className={styles.stageChrome}>
+                <span className={styles.stageDot} />
+                <span className={styles.stageDot} />
+                <span className={styles.stageDot} />
+                <span className={styles.stageLabel}>{seo.previewLabel}</span>
+              </div>
+              <div className={styles.stageBody}>
+                <div className={styles.stageStack}>
+                  <div className={styles.stageItem}>
+                    <span className={styles.stageItemLabel}>{seo.liveLabels.range}</span>
+                    <RangePicker
+                      calendarType={lang === 'fa' ? 'jalali' : 'gregorian'}
+                      exportType="timeStamp"
+                      showComparison
+                      isShowNavigationButton
+                      {...THEME}
+                    />
+                  </div>
+                  <div className={styles.stageItem}>
+                    <span className={styles.stageItemLabel}>{seo.liveLabels.date}</span>
+                    <DatePicker
+                      calendarType={lang === 'fa' ? 'jalali' : 'gregorian'}
+                      exportType="timeStamp"
+                      showMask
+                      allowClear
+                      primaryColor={THEME.primaryColor}
+                      highlightColor={THEME.highlightColor}
+                      tertiaryColor={THEME.tertiaryColor}
+                    />
+                  </div>
+                  <div className={styles.stageRow}>
+                    <div className={styles.stageItem}>
+                      <span className={styles.stageItemLabel}>{seo.liveLabels.mask}</span>
+                      <Mask
+                        calendarType={lang === 'fa' ? 'jalali' : 'gregorian'}
+                        allowClear
+                        primaryColor={THEME.primaryColor}
+                        highlightColor={THEME.highlightColor}
+                      />
+                    </div>
+                    <div className={styles.stageItem}>
+                      <span className={styles.stageItemLabel}>{seo.liveLabels.time}</span>
+                      <TimePicker
+                        calendarType={lang === 'fa' ? 'jalali' : 'gregorian'}
+                        exportType="timeStamp"
+                        showSecond
+                        primaryColor={THEME.primaryColor}
+                        highlightColor={THEME.highlightColor}
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </aside>
+          </div>
+        </section>
+
+        <section className={styles.liveGallery} aria-labelledby="live-gallery-title">
+          <div className={styles.liveGalleryHead}>
+            <div>
+              <h2 id="live-gallery-title" className={styles.liveGalleryTitle}>
+                {seo.liveGalleryTitle}
+              </h2>
+              <p className={styles.liveGalleryLead}>{seo.liveGalleryLead}</p>
+            </div>
+            <span className={styles.liveBadge}>
+              <span className={styles.liveDot} aria-hidden />
+              {seo.live}
+            </span>
+          </div>
+          <div className={styles.liveGalleryGrid}>
+            <article className={styles.liveCard}>
+              <header className={styles.liveCardHead}>
+                <h3>{seo.liveLabels.range}</h3>
+                <button
+                  type="button"
+                  className={styles.liveCardLink}
+                  onClick={() => setActiveSection('Range')}
+                >
+                  {sections.Range.title}
+                </button>
+              </header>
+              <div className={styles.liveCardBody}>
+                <RangePicker
+                  calendarType={lang === 'fa' ? 'jalali' : 'gregorian'}
+                  exportType="timeStamp"
+                  showComparison
+                  isShowNavigationButton
+                  {...THEME}
+                />
+              </div>
+            </article>
+            <article className={styles.liveCard}>
+              <header className={styles.liveCardHead}>
+                <h3>{seo.liveLabels.date}</h3>
+                <button
+                  type="button"
+                  className={styles.liveCardLink}
+                  onClick={() => setActiveSection('Date')}
+                >
+                  {sections.Date.title}
+                </button>
+              </header>
+              <div className={styles.liveCardBody}>
+                <DatePicker
+                  calendarType={lang === 'fa' ? 'jalali' : 'gregorian'}
+                  exportType="timeStamp"
+                  showTime
+                  showSecond
+                  showMask
+                  allowClear
+                  isTodaySelectPreset
+                  primaryColor={THEME.primaryColor}
+                  highlightColor={THEME.highlightColor}
+                  tertiaryColor={THEME.tertiaryColor}
+                />
+              </div>
+            </article>
+            <article className={styles.liveCard}>
+              <header className={styles.liveCardHead}>
+                <h3>{seo.liveLabels.mask}</h3>
+                <button
+                  type="button"
+                  className={styles.liveCardLink}
+                  onClick={() => setActiveSection('Mask')}
+                >
+                  {sections.Mask.title}
+                </button>
+              </header>
+              <div className={styles.liveCardBody}>
+                <Mask
+                  calendarType={lang === 'fa' ? 'jalali' : 'gregorian'}
+                  allowClear
+                  isTodaySelectPreset
+                  primaryColor={THEME.primaryColor}
+                  highlightColor={THEME.highlightColor}
+                />
+              </div>
+            </article>
+            <article className={styles.liveCard}>
+              <header className={styles.liveCardHead}>
+                <h3>{seo.liveLabels.time}</h3>
+                <button
+                  type="button"
+                  className={styles.liveCardLink}
+                  onClick={() => setActiveSection('timepicker')}
+                >
+                  {sections.timepicker.title}
+                </button>
+              </header>
+              <div className={styles.liveCardBody}>
+                <TimePicker
+                  calendarType={lang === 'fa' ? 'jalali' : 'gregorian'}
+                  exportType="timeStamp"
+                  showSecond
+                  primaryColor={THEME.primaryColor}
+                  highlightColor={THEME.highlightColor}
+                />
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <section className={styles.highlights} aria-labelledby="highlights-title">
+          <h2 id="highlights-title" className={styles.highlightsTitle}>
+            {seo.highlightsTitle}
+          </h2>
+          <div className={styles.highlightGrid}>
+            {seo.highlights.map((item) => (
+              <article key={item.title} className={styles.highlightCard}>
+                <h3 className={styles.highlightName}>{item.title}</h3>
+                <p className={styles.highlightText}>{item.text}</p>
+              </article>
+            ))}
           </div>
         </section>
 
@@ -510,22 +871,35 @@ export function InitialComponent() {
                         muted
                         src={active.video}
                         title={`${active.title} demo video`}
+                        aria-label={`${active.title} demo video`}
                       />
                     </div>
                   )}
                   {active.image && (
                     <div className={styles.mediaFrame}>
-                      <img src={active.image} alt={`${active.title} preview`} />
+                      <img
+                        src={active.image}
+                        alt={`${active.title} — react-persian-range-picker preview`}
+                        loading="lazy"
+                      />
                     </div>
                   )}
                   {active.image1 && (
                     <div className={styles.mediaFrame}>
-                      <img src={active.image1} alt={`${active.title} preview 2`} />
+                      <img
+                        src={active.image1}
+                        alt={`${active.title} alternate preview`}
+                        loading="lazy"
+                      />
                     </div>
                   )}
                   {active.image2 && (
                     <div className={styles.mediaFrame}>
-                      <img src={active.image2} alt={`${active.title} preview 3`} />
+                      <img
+                        src={active.image2}
+                        alt={`${active.title} placement preview`}
+                        loading="lazy"
+                      />
                     </div>
                   )}
                 </div>
@@ -535,7 +909,7 @@ export function InitialComponent() {
                 <section className={styles.playground} aria-label={seo.playground}>
                   <div className={styles.playgroundLabel}>
                     <span>{seo.playground}</span>
-                    <span style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}>
+                    <span className={styles.liveBadge}>
                       <span className={styles.liveDot} aria-hidden />
                       {seo.live}
                     </span>

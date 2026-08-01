@@ -424,12 +424,10 @@ export const Calendar: FC<CalendarProps> = ({
               opacity: isDisabled ? 0.5 : day.currentMonth ? 1 : 0,
               color:
                 isTo || isFrom || isSelected ? backgroundColor : tertiaryColor,
-              border: isToday ? `2px solid ${secondaryColor}` : "none",
+              border: isToday ? `2px solid ${primaryColor}` : "none",
               background:
-                isTo || isFrom
-                  ? secondaryColor
-                  : isSelected
-                  ? tertiaryColor
+                isTo || isFrom || isSelected
+                  ? primaryColor
                   : isInRange || isHoveredDay
                   ? highlightColor
                   : "",
@@ -582,7 +580,7 @@ export const Calendar: FC<CalendarProps> = ({
                       position: "relative",
                       color: isSelectedCol ? backgroundColor : tertiaryColor,
                       border: "none",
-                      background: isSelectedCol ? secondaryColor : "",
+                      background: isSelectedCol ? primaryColor : "",
                       fontSize: "14px",
                     }}
                   >
@@ -731,6 +729,7 @@ export const Calendar: FC<CalendarProps> = ({
             onChangeYear={shiftYear}
             currentYear={state.year}
             tertiaryColor={tertiaryColor}
+            primaryColor={primaryColor}
             secondaryColor={secondaryColor}
             backgroundColor={backgroundColor}
           />

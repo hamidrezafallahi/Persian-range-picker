@@ -56,7 +56,7 @@ export function RangePicker(props: RangePickerProps) {
     periodClassName = "",
     periodListClassName = "",
     showComparison = true,
-    accentColor = "#2563eb",
+    accentColor,
     neutralColor = "#9cc5f1",
     exportType = "IsoString",
     tabClassName = "",
@@ -65,6 +65,7 @@ export function RangePicker(props: RangePickerProps) {
     buttonStyle,
     renderPosition,
   } = props;
+  const resolvedAccent = accentColor ?? primaryColor;
   const locale = calendarType == "jalali" ? "fa" : "en";
   const isFa = locale === "fa";
   const initValue: IDate = (() => {
@@ -285,7 +286,7 @@ export function RangePicker(props: RangePickerProps) {
     periodClassName,
     periodListClassName,
     showComparison,
-    accentColor,
+    accentColor: resolvedAccent,
     tabClassName,
     activeTable,
     monthPickerClassName,

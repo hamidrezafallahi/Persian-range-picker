@@ -22,6 +22,7 @@ interface Props {
   backgroundColor?: string;
   secondaryColor?: string;
   tertiaryColor?: string;
+  primaryColor?: string;
 }
 
 const MonthPicker: FC<Props> = ({
@@ -33,6 +34,7 @@ const MonthPicker: FC<Props> = ({
   monthPickerClassName,
   backgroundColor = '#fff',
   secondaryColor = '#585858',
+  primaryColor = '#000',
 }) => {
   const monthList = months[locale];
   const containerRef = useRef<HTMLDivElement>(null);
@@ -100,7 +102,7 @@ const MonthPicker: FC<Props> = ({
             onClick={() => onSelectMonth(index)}
             className={`${style.rounded} ${style.flex} ${style.justify_center} ${style.items_center} ${style.border_none} ${style.w_full} ${style.h_full}`}
             style={{
-              backgroundColor: currentMonth === index ? secondaryColor : 'transparent',
+              backgroundColor: currentMonth === index ? primaryColor : 'transparent',
               color: currentMonth === index ? backgroundColor : secondaryColor,
               fontWeight: currentMonth === index ? 500 : 400,
               cursor: 'pointer',

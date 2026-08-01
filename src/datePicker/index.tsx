@@ -37,6 +37,9 @@ export function DatePicker({ ...props }: DatePickerProps) {
     primaryColor = "#000",
     tertiaryColor = "#939393",
     highlightColor = "#f4f4f4",
+    backgroundColor = "#fff",
+    secondaryColor,
+    accentColor,
     calendarBaseWidth = 256,
     showTime = false,
     className,
@@ -173,6 +176,7 @@ export function DatePicker({ ...props }: DatePickerProps) {
     const active = moment(showDate).locale(locale).get(unit);
     return Array.from({ length: Math.ceil(count / step) }, (_, i) => {
       const val = i * step;
+      const isActive = active === val;
       return (
         <button
           key={val}
@@ -186,14 +190,13 @@ export function DatePicker({ ...props }: DatePickerProps) {
             ${styles.w_6}
             ${styles.aspect_square}
             ${styles.border_none}
-
-            ${
-              active === val
-                ? `${styles.pointer_events_auto} ${styles.opacity_100} ${styles.text_gray123}`
-                : ""
-            }
           `}
-          style={{ color: tertiaryColor, fontSize: "14px" }}
+          style={{
+            color: isActive ? backgroundColor : tertiaryColor,
+            backgroundColor: isActive ? primaryColor : "transparent",
+            fontSize: "14px",
+            fontWeight: isActive ? 500 : 400,
+          }}
         >
           {isFa ? toPersianDigits(pad(val)) : pad(val)}
         </button>
@@ -300,6 +303,7 @@ export function DatePicker({ ...props }: DatePickerProps) {
                     Style={{ width: "112px" }}
                     tertiaryColor={tertiaryColor}
                     highlightColor={highlightColor}
+                    primaryColor={primaryColor}
                     disabled={disabled}
                   />
                 </div>

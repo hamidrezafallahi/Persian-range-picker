@@ -33,6 +33,9 @@ const Manual = (props: IManualProps) => {
     neutralColor,
     primaryColor,
     tertiaryColor,
+    highlightColor,
+    secondaryColor,
+    backgroundColor,
   } = props;
   const switchHandler = () => {};
 
@@ -56,6 +59,11 @@ const Manual = (props: IManualProps) => {
           setStep?.(ESteps.manual);
         }}
         locale={locale}
+        primaryColor={primaryColor}
+        secondaryColor={secondaryColor}
+        backgroundColor={backgroundColor}
+        highlightColor={highlightColor}
+        tertiaryColor={tertiaryColor}
       />
       <MaskRange
         date={value}

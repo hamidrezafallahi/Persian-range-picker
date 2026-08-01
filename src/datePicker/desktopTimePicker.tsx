@@ -11,16 +11,16 @@ import style from '../main.module.css';
 import { DesktopTimePickerProps } from '../persianDatePicker/type';
 import { TimeColumns } from '../timePicker/timeColumns';
 
-type TUnit = "hour" | "minute" | "second";
-
-
+type TUnit = 'hour' | 'minute' | 'second';
 
 export const DesktopTimePicker: React.FC<DesktopTimePickerProps> = ({
   defaultValue,
-  calendarType = "jalali",
+  calendarType = 'jalali',
   containerClassName,
   displayButtonCount = 6,
-  tertiaryColor = "#939393",
+  tertiaryColor = '#939393',
+  primaryColor = '#000',
+  backgroundColor = '#fff',
   hourStep = 1,
   minuteStep = 1,
   secondStep = 1,
@@ -29,7 +29,7 @@ export const DesktopTimePicker: React.FC<DesktopTimePickerProps> = ({
 }) => {
   const [time, setTime] = useState<number | null>(null);
   const buttonRefs = useRef<(HTMLButtonElement | null)[]>([]);
-  const locale = calendarType == "jalali" ? "fa" : "en";
+  const locale = calendarType == 'jalali' ? 'fa' : 'en';
 
   const renderHeight =
     displayButtonCount * (buttonRefs.current[0]?.offsetHeight ?? 24) +
@@ -42,11 +42,12 @@ export const DesktopTimePicker: React.FC<DesktopTimePickerProps> = ({
     setTime(updated.valueOf());
   };
   const renderOptions = (count: number, unit: TUnit, step = 1) => {
-    const pad = (num: number) => num.toString().padStart(2, "0");
+    const pad = (num: number) => num.toString().padStart(2, '0');
 
     const active = moment(time).locale(locale).get(unit);
     return Array.from({ length: Math.ceil(count / step) }, (_, i) => {
       const val = i * step;
+      const isActive = active === val;
 
       return (
         <button
@@ -64,18 +65,18 @@ export const DesktopTimePicker: React.FC<DesktopTimePickerProps> = ({
             ${style.text_center}
             ${style.cursor_pointer}
               ${style.border_none}
-            ${
-              active === val
-                ? `${style.pointer_events_auto} ${style.opacity_100} ${style.text_gray123} ${style.text_sm}`
-                : ""
-            }
           `}
           ref={(el) => {
             buttonRefs.current[i] = el;
           }}
-          style={{ color: tertiaryColor, fontSize: "14px" }}
+          style={{
+            color: isActive ? backgroundColor : tertiaryColor,
+            backgroundColor: isActive ? primaryColor : 'transparent',
+            fontSize: '14px',
+            fontWeight: isActive ? 500 : 400,
+          }}
         >
-          {locale == "fa" ? toPersianDigits(pad(val)) : pad(val)}
+          {locale == 'fa' ? toPersianDigits(pad(val)) : pad(val)}
         </button>
       );
     });
@@ -94,7 +95,7 @@ export const DesktopTimePicker: React.FC<DesktopTimePickerProps> = ({
   return (
     <>
       <div
-        style={{ paddingTop: "12px", paddingBottom: "12px"  }}
+        style={{ paddingTop: '12px', paddingBottom: '12px' }}
         className={`
           ${style.flex} 
           ${style.justify_center} 
@@ -107,11 +108,11 @@ export const DesktopTimePicker: React.FC<DesktopTimePickerProps> = ({
             renderOptions(
               count,
               unit,
-              unit === "hour"
+              unit === 'hour'
                 ? hourStep
-                : unit === "minute"
-                ? minuteStep
-                : secondStep
+                : unit === 'minute'
+                  ? minuteStep
+                  : secondStep
             )
           }
           hourStep={hourStep}

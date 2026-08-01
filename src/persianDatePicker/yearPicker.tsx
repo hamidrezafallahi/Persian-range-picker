@@ -126,7 +126,7 @@ const YearPicker: FC<Props> = ({
             onClick={() => onSelectYear(year)}
             className={`${style.rounded} ${style.flex} ${style.justify_center} ${style.items_center} ${style.border_none} ${style.w_full} ${style.h_full}`}
             style={{
-              backgroundColor: year === currentYear ? secondaryColor : 'transparent',
+              backgroundColor: year === currentYear ? primaryColor : 'transparent',
               color: year === currentYear ? backgroundColor : secondaryColor,
               fontWeight: year === currentYear ? 500 : 400,
               cursor: 'pointer',

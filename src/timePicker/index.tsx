@@ -35,6 +35,8 @@ export const TimePicker = ({ ...props }: TimePickerProps) => {
     placeholder = "انتخاب زمان",
     tertiaryColor = "#939393",
     highlightColor = "#f4f4f4",
+    primaryColor = "#000",
+    backgroundColor = "#fff",
     format = "HH:mm:ss",
     showSecond = false,
     showNow = true,
@@ -132,6 +134,7 @@ export const TimePicker = ({ ...props }: TimePickerProps) => {
 
     return Array.from({ length: Math.ceil(count / step) }, (_, i) => {
       const val = i * step;
+      const isActive = active === val;
       return (
         <button
           key={val}
@@ -148,16 +151,16 @@ export const TimePicker = ({ ...props }: TimePickerProps) => {
             ${style.text_center}
             ${style.cursor_pointer}
               ${style.border_none}
-            ${
-              active === val
-                ? `${style.pointer_events_auto} ${style.opacity_100} ${style.text_gray123} ${style.text_sm}`
-                : ""
-            }
           `}
           ref={(el) => {
             buttonRefs.current[i] = el;
           }}
-          style={{ color: tertiaryColor, fontSize: "14px" }}
+          style={{
+            color: isActive ? backgroundColor : tertiaryColor,
+            backgroundColor: isActive ? primaryColor : "transparent",
+            fontSize: "14px",
+            fontWeight: isActive ? 500 : 400,
+          }}
         >
           {locale == "fa" ? toPersianDigits(pad(val)) : pad(val)}
         </button>
@@ -289,9 +292,9 @@ export const TimePicker = ({ ...props }: TimePickerProps) => {
                     ${okButtonClassName}
                   `}
                     style={{
-                      background: "black",
-                      borderColor: "black",
-                      color: "white",
+                      background: primaryColor,
+                      borderColor: primaryColor,
+                      color: backgroundColor,
                     }}
                   >
                     {locale === "fa" ? "تایید" : "OK"}
@@ -375,9 +378,9 @@ export const TimePicker = ({ ...props }: TimePickerProps) => {
                       ${okButtonClassName}
                     `}
                       style={{
-                        background: "black",
-                        borderColor: "black",
-                        color: "white",
+                        background: primaryColor,
+                        borderColor: primaryColor,
+                        color: backgroundColor,
                       }}
                     >
                       {locale === "fa" ? "تایید" : "OK"}
