@@ -1,4 +1,4 @@
-name: Deploy static content to Pages
+name: Deploy demo to GitHub Pages
 
 on:
   push:
@@ -19,28 +19,32 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 20
+          cache: yarn
 
       - name: Install dependencies
-        run: npm install
+        run: yarn install --frozen-lockfile
 
-      - name: Build with Vite
-        run: npm run build
+      - name: Build demo site
+        # Library `npm run build` outputs package bundles (no index.html).
+        # GitHub Pages must serve the Vite demo from demo/dist.
+        run: yarn build:demo
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
-      - name:
+      - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./dist
+          path: ./demo/dist
 
       - name: Deploy to GitHub Pages
         id: deployment
