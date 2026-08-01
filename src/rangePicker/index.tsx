@@ -36,8 +36,8 @@ export function RangePicker(props: RangePickerProps) {
     defaultValue,
     value,
     onError,
-    handleSubmit,
-    handleReject,
+    onSubmit,
+    onReject,
     onChange,
     onCompareDateChange,
     isShowNavigationButton = true,
@@ -136,11 +136,11 @@ export function RangePicker(props: RangePickerProps) {
   const handleAccept = () => {
     if (date) {
       if (date.from && date.to && date.from < date.to) {
-        if (handleSubmit) {
+        if (onSubmit) {
           if (type == "range") {
-            handleSubmit({ type, Data: { date, compareDate } });
+            onSubmit({ type, Data: { date, compareDate } });
           } else {
-            handleSubmit({ type, Data: { customData } });
+            onSubmit({ type, Data: { customData } });
           }
         }
         setShowDate({
@@ -161,11 +161,11 @@ export function RangePicker(props: RangePickerProps) {
         }
       }
     } else {
-      if (handleSubmit) {
+      if (onSubmit) {
         if (type == "range") {
-          handleSubmit({ type, Data: { date, compareDate } });
+          onSubmit({ type, Data: { date, compareDate } });
         } else {
-          handleSubmit({ type, Data: { customData } });
+          onSubmit({ type, Data: { customData } });
         }
       }
       setShowDate({ date: date!, compareDate, Data: customData });
@@ -177,8 +177,8 @@ export function RangePicker(props: RangePickerProps) {
     setDate?.(showDate?.date);
     setStep?.(366);
     setCompareDate?.(showDate.compareDate);
-    if (handleReject) {
-      handleReject();
+    if (onReject) {
+      onReject();
     }
   };
 

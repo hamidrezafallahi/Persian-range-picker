@@ -74,8 +74,8 @@ export interface RangePickerProps extends Omit<CalendarProps, "onChange"> {
   onCompareDateChange?: (e: HandleParams) => void;
   onError?: (e: string) => void;
 
-  handleSubmit?: (e: HandleParams) => void;
-  handleReject?: () => void;
+  onSubmit?: (e: HandleParams) => void;
+  onReject?: () => void;
 
   isShowNavigationButton?: boolean;
 

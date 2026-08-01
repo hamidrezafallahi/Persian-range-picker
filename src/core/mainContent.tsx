@@ -95,6 +95,7 @@ const MainContent = ({ ...props }: IMainContentProps) => {
     setActiveTab(key);
   };
   const handleChange = (key: ITab["key"], value: any) => {
+ 
     const defaultKeys = [
       "day",
       "week",

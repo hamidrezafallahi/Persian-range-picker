@@ -261,6 +261,11 @@ export default function DemoComponent() {
         onCompareDateChange={(e: any) => {
           console.log(e);
         }}
+        onSubmit={(e: any) => {
+          console.log(e);
+        }}
+ 
+        
         // additionalElement={template}
       />
     </>
