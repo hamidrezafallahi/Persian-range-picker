@@ -532,6 +532,16 @@ export class PDate {
         break;
       case 'jMonth': {
         const j = this.getJalali();
+        if (
+          !Number.isFinite(j.jy) ||
+          !Number.isFinite(j.jm) ||
+          j.jy < -61 ||
+          j.jy > 3177 ||
+          j.jm < 1 ||
+          j.jm > 12
+        ) {
+          break;
+        }
         const last = jalaaliMonthLength(j.jy, j.jm);
         this._d = new Date(
           jalaliToTimestamp(j.jy, j.jm, last, 23, 59, 59, 999, this._utc)
@@ -540,6 +550,9 @@ export class PDate {
       }
       case 'jYear': {
         const j = this.getJalali();
+        if (!Number.isFinite(j.jy) || j.jy < -61 || j.jy > 3177) {
+          break;
+        }
         const last = jalaaliMonthLength(j.jy, 12);
         this._d = new Date(
           jalaliToTimestamp(j.jy, 12, last, 23, 59, 59, 999, this._utc)

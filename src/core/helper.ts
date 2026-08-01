@@ -36,45 +36,56 @@ export const getTimestampsForPeriod = (period: ITimeZone, locale: string) => {
         .valueOf();
       break;
     case "thisWeek":
-      if (locale == "fa" && moment().locale("fa").clone().day() == 6) {
-        from = moment().locale("fa").clone().day(6).startOf("day").valueOf();
-        to = moment().locale("fa").clone().day(6).endOf("day").valueOf();
+      if (locale === "fa") {
+        if (moment().locale("fa").clone().day() == 6) {
+          from = moment().locale("fa").clone().day(6).startOf("day").valueOf();
+          to = moment().locale("fa").clone().day(6).endOf("day").valueOf();
+        } else {
+          from = moment().locale("fa").clone().day(-1).startOf("day").valueOf();
+          to = moment().locale("fa").clone().endOf("day").valueOf();
+        }
       } else {
-        from = moment().locale("fa").clone().day(-1).startOf("day").valueOf();
-        to = moment().locale("fa").clone().endOf("day").valueOf();
+        // Gregorian week: Sunday → today
+        from = moment.utc().day(0).startOf("day").valueOf();
+        to = moment.utc().endOf("day").valueOf();
       }
       break;
     case "lastWeek":
-      if (locale == "fa" && moment().locale("fa").clone().day() == 6) {
-        from = moment()
-          .locale("fa")
-          .clone()
-          .day(6)
-          .subtract(7, "day")
-          .startOf("day")
-          .valueOf();
-        to = moment()
-          .locale("fa")
-          .clone()
-          .day(6)
-          .subtract(1, "day")
-          .endOf("day")
-          .valueOf();
+      if (locale === "fa") {
+        if (moment().locale("fa").clone().day() == 6) {
+          from = moment()
+            .locale("fa")
+            .clone()
+            .day(6)
+            .subtract(7, "day")
+            .startOf("day")
+            .valueOf();
+          to = moment()
+            .locale("fa")
+            .clone()
+            .day(6)
+            .subtract(1, "day")
+            .endOf("day")
+            .valueOf();
+        } else {
+          from = moment()
+            .locale("fa")
+            .clone()
+            .day(-1)
+            .subtract(7, "day")
+            .startOf("day")
+            .valueOf();
+          to = moment()
+            .locale("fa")
+            .clone()
+            .day(-1)
+            .subtract(1, "day")
+            .endOf("day")
+            .valueOf();
+        }
       } else {
-        from = moment()
-          .locale("fa")
-          .clone()
-          .day(-1)
-          .subtract(7, "day")
-          .startOf("day")
-          .valueOf();
-        to = moment()
-          .locale("fa")
-          .clone()
-          .day(-1)
-          .subtract(1, "day")
-          .endOf("day")
-          .valueOf();
+        from = moment.utc().day(0).subtract(7, "day").startOf("day").valueOf();
+        to = moment.utc().day(0).subtract(1, "day").endOf("day").valueOf();
       }
       break;
     case "last7Days":
@@ -208,7 +219,7 @@ export const backwardStep: { [key in ESteps]: number } = {
   [ESteps.day]: 86400000,
   [ESteps.week]: 86400000 * 7,
   [ESteps.month]: 86400000 * 30,
-  [ESteps.season]: 6400000 * 30 * 3,
+  [ESteps.season]: 86400000 * 90,
   [ESteps.year]: 86400000 * 365,
   [ESteps.manual]: 86400000, //Number(date.to) - Number(date.from),
   [ESteps.custom]: 6,

@@ -1,4 +1,5 @@
 import moment from '../dateEngine';
+import { formatExport } from '../core/formatExport';
 import type { ExportType, TLocale } from '../core/type';
 import type { MaskErrorTarget, MaskInputValue, MaskOutputValue, MaskParts } from './types';
 
@@ -120,14 +121,41 @@ export function getEndOfMonth(
   onError: ((message: string) => void) | undefined,
   index: MaskErrorTarget
 ): number {
+  const invalid =
+    !Number.isFinite(year) ||
+    !Number.isFinite(month) ||
+    month < 1 ||
+    month > 12 ||
+    (locale === 'fa' && (year < -61 || year > 3177));
+
+  if (invalid) {
+    if (index === 2) {
+      onError?.(
+        locale === 'fa'
+          ? 'سال و ماه را اصلاح کنید'
+          : 'Please check year and month'
+      );
+    }
+    return 1;
+  }
+
   if (locale === 'fa') {
-    const jMoment = moment(`${year}/${month}/01`, 'jYYYY/jM/jD');
-    const last = jMoment.endOf('jMonth').jDate();
-    if (Number.isNaN(last)) {
+    try {
+      const jMoment = moment(`${year}/${month}/01`, 'jYYYY/jM/jD');
+      if (!jMoment.isValid()) {
+        if (index === 2) onError?.('سال و ماه را اصلاح کنید');
+        return 1;
+      }
+      const last = jMoment.endOf('jMonth').jDate();
+      if (Number.isNaN(last)) {
+        if (index === 2) onError?.('سال و ماه را اصلاح کنید');
+        return 1;
+      }
+      return last;
+    } catch {
       if (index === 2) onError?.('سال و ماه را اصلاح کنید');
       return 1;
     }
-    return last;
   }
 
   const gMoment = moment(`${year}-${month}-01`, 'YYYY-M-D');
@@ -145,18 +173,7 @@ export function formatMaskExport(
   locale: TLocale,
   exportType: ExportType
 ): MaskOutputValue {
-  if (exportType === 'IsoString') {
-    if (locale === 'fa') {
-      return moment(timestamp)
-        .format('YYYY-MM-DDTHH:mm:ss.SSSZ')
-        .replace(/[۰-۹]/g, (d) => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d).toString());
-    }
-    return moment.utc(timestamp).format('YYYY-MM-DDTHH:mm:ss.SSSZ');
-  }
-
-  return locale === 'fa'
-    ? moment(timestamp).valueOf()
-    : moment.utc(timestamp).valueOf();
+  return formatExport(timestamp, locale, exportType);
 }
 
 export function todayTimestamp(locale: TLocale): number {

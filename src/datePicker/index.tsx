@@ -11,11 +11,12 @@ import { CalenderIcon } from '../assets/icons/CalenderIcon';
 import { ClearIcon } from '../assets/icons/ClearIcon';
 import { MenuArrowBack } from '../assets/icons/MenuArrowBack';
 import { Footer } from '../core/footer';
+import { formatExport } from '../core/formatExport';
 import {
   getTimestamp,
   toPersianDigits,
 } from '../core/helper';
-import { IDate } from '../core/type';
+import { IDate, TLocale } from '../core/type';
 import styles from '../main.module.css';
 import { Mask } from '../mask';
 import { Calendar } from '../persianDatePicker';
@@ -92,6 +93,9 @@ export function DatePicker({ ...props }: DatePickerProps) {
   });
 
   const handleDropdown = () => setIsOpen((prev) => !prev);
+  const emitChange = (ts: number) => {
+    onChange?.(formatExport(ts, locale as TLocale, exportType));
+  };
   const changeHandler = (e: number | string | null) => {
     if (e === null || e === undefined) {
       setShowDate(null);
@@ -104,33 +108,17 @@ export function DatePicker({ ...props }: DatePickerProps) {
       setShowDate(
         showTime ? ts : moment(ts).startOf("day").valueOf()
       );
-      if (exportType == "IsoString") {
-        onChange?.(
-          locale == "fa"
-            ? moment(e).format("YYYY-MM-DDTHH:mm:ss.SSSZ").replace(/[۰-۹]/g, d => "۰۱۲۳۴۵۶۷۸۹".indexOf(d).toString())
-            : moment.utc(e).toISOString()
-        );
-      } else {
-        onChange?.(
-          locale == "fa" ? moment(e).valueOf() : moment.utc(e).valueOf()
-        );
-      }
+      emitChange(ts);
     }
   };
   const handleSubmit = () => {
-    const finalDate = showTime ? showDate : moment(showDate).valueOf();
-    if (exportType == "IsoString") {
-
-      onChange?.(
-        isFa
-          ? moment(finalDate).format("YYYY-MM-DDTHH:mm:ss.SSSZ").replace(/[۰-۹]/g, d => "۰۱۲۳۴۵۶۷۸۹".indexOf(d).toString())
-          : moment.utc(finalDate).toISOString()
-      );
-    } else {
-      onChange?.(
-        isFa ? moment(finalDate).valueOf() : moment.utc(finalDate).valueOf()
-      );
+    if (showDate == null) {
+      setContent("Date");
+      setIsOpen(false);
+      return;
     }
+    const finalDate = showTime ? showDate : moment(showDate).valueOf();
+    emitChange(finalDate);
     setContent("Date");
     setIsOpen(false);
   };
@@ -145,22 +133,16 @@ export function DatePicker({ ...props }: DatePickerProps) {
         : moment(rawTimestamp).startOf("day").valueOf();
       setShowDate(finalDate);
       if (!showTime) {
-        if (exportType === "IsoString") {
-          onChange?.(
-            isFa
-              ? moment(finalDate).format("YYYY-MM-DDTHH:mm:ss.SSSZ").replace(/[۰-۹]/g, d => "۰۱۲۳۴۵۶۷۸۹".indexOf(d).toString())
-              : moment.utc(finalDate).toISOString()
-          );
-        } else {
-          onChange?.(
-            isFa ? moment(finalDate).valueOf() : moment.utc(finalDate).valueOf()
-          );
-        }
+        emitChange(finalDate);
+        setIsOpen(false);
+      } else {
+        // Keep dropdown open so user can pick time; mobile switches to Time pane.
+        setContent("Time");
       }
     } else {
       setShowDate(null);
+      setIsOpen(false);
     }
-    setIsOpen(false);
   };
 
   const handleSetTime = (timestamp: number) => {
@@ -170,6 +152,7 @@ export function DatePicker({ ...props }: DatePickerProps) {
   const handleClear = (e: React.MouseEvent) => {
     e.stopPropagation();
     setShowDate(null);
+    onChange?.(null);
     onClear?.();
     setTitle(placeholder);
   };
@@ -222,19 +205,21 @@ export function DatePicker({ ...props }: DatePickerProps) {
       (value !== undefined && typeof value === "string") ||
       typeof value === "number"
     ) {
+      const parsed = isFa
+        ? moment(value).locale("fa")
+        : moment(value).utc();
       setShowDate(
-        isFa
-          ? moment(value).locale("fa").startOf("day").valueOf()
-          : moment(value).utc().startOf("day").valueOf()
+        showTime ? parsed.valueOf() : parsed.startOf("day").valueOf()
       );
     } else if (Array.isArray(value)) {
       setTitle(isFa ? "چند روز" : "multy days");
       setShowDate(null);
-    } else {
+    } else if (value === null) {
       setTitle(placeholder);
       setShowDate(null);
     }
-  }, [value]);
+    // uncontrolled: leave showDate alone when value is undefined
+  }, [value, isFa, showTime, placeholder]);
 
   useEffect(() => {
     if (showDate && showDate !== null) {
@@ -257,18 +242,17 @@ export function DatePicker({ ...props }: DatePickerProps) {
           : placeholder;
 
       setTitle(isFa ? persian : gregorian);
+    } else {
+      setTitle(placeholder);
     }
-  }, [showDate, dynamicFormat, showTime, placeholder]);
+  }, [showDate, dynamicFormat, showTime, placeholder, isFa]);
 
   return (
     <>
       {match ? (
         <>
-          <button
-            disabled={disabled}
-            ref={buttonRef as React.RefObject<HTMLButtonElement>}
-            onClick={handleDropdown}
-            type="button"
+          <div
+            ref={buttonRef as React.RefObject<HTMLDivElement>}
             className={`${styles.flex} ${styles.justify_between} ${
               styles.items_center
             } ${styles.gap_1} ${styles.px_2}   ${styles.rounded_md} ${
@@ -280,14 +264,18 @@ export function DatePicker({ ...props }: DatePickerProps) {
             style={{
               ...Style,
               backgroundColor: highlightColor,
-              cursor: disabled ? "not-allowed" : "pointer",
+              cursor: disabled ? "not-allowed" : "default",
               fontSize: "14px",
             }}
           >
-            {allowClear ? (
-              <span
-                onClick={handleClear}
-                className={`
+            {showMask && !selectMultiple ? (
+              <>
+                {allowClear && (
+                  <button
+                    type="button"
+                    disabled={disabled}
+                    onClick={handleClear}
+                    className={`
   ${styles.flex}
   ${styles.justify_center}
   ${styles.items_center}
@@ -295,48 +283,82 @@ export function DatePicker({ ...props }: DatePickerProps) {
   ${styles.m_0}
   ${styles.rounded_full}
   ${styles.border_none}
-  ${styles.items_center}
   `}
-              >
-                <ClearIcon />
-              </span>
+                    aria-label="clear date"
+                  >
+                    <ClearIcon />
+                  </button>
+                )}
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <Mask
+                    value={value !== undefined ? value : showDate ?? undefined}
+                    defaultValue={defaultValue ?? undefined}
+                    allowClear={false}
+                    exportType="timeStamp"
+                    calendarType={isFa ? "jalali" : "gregorian"}
+                    onMaskChange={changeHandler}
+                    Style={{ width: "112px" }}
+                    tertiaryColor={tertiaryColor}
+                    highlightColor={highlightColor}
+                    disabled={disabled}
+                  />
+                </div>
+                <button
+                  type="button"
+                  disabled={disabled}
+                  onClick={handleDropdown}
+                  className={`${styles.flex} ${styles.justify_center} ${styles.items_center} ${styles.border_none} ${styles.p_1}`}
+                  style={{
+                    background: "transparent",
+                    cursor: disabled ? "not-allowed" : "pointer",
+                  }}
+                  aria-label="open calendar"
+                  aria-expanded={isOpen}
+                >
+                  {icon ?? <CalenderIcon />}
+                </button>
+              </>
             ) : (
-              <>{icon && <span>{icon}</span>}</>
-            )}
-            {showMask && !selectMultiple ? (
-              <div
-                onClick={(e) => {
-                  e.stopPropagation();
-                  e.preventDefault();
+              <button
+                type="button"
+                disabled={disabled}
+                onClick={handleDropdown}
+                className={`${styles.flex} ${styles.justify_between} ${styles.items_center} ${styles.gap_1} ${styles.w_full} ${styles.h_full} ${styles.border_none} ${styles.px_0}`}
+                style={{
+                  background: "transparent",
+                  cursor: disabled ? "not-allowed" : "pointer",
+                  color: tertiaryColor,
                 }}
               >
-                <Mask
-                  value={value ?? undefined}
-                  defaultValue={defaultValue ?? undefined}
-                  allowClear={false}
-                  exportType="timeStamp"
-                  calendarType={isFa ? "jalali" : "gregorian"}
-                  onMaskChange={changeHandler}
-                  Style={{ width: "112px" }}
-                  tertiaryColor={tertiaryColor}
-                  highlightColor={highlightColor}
-                />
-              </div>
-            ) : (
-              <>
+                {allowClear ? (
+                  <span
+                    onClick={handleClear}
+                    className={`
+  ${styles.flex}
+  ${styles.justify_center}
+  ${styles.items_center}
+  ${styles.p_1}
+  ${styles.m_0}
+  ${styles.rounded_full}
+  ${styles.border_none}
+  `}
+                  >
+                    <ClearIcon />
+                  </span>
+                ) : (
+                  <>{icon && <span>{icon}</span>}</>
+                )}
                 {title && (
                   <div
                     className={` ${styles.text_start} ${styles.text_gray_gray7} `}
-                    style={{
-                      color: tertiaryColor,
-                    }}
+                    style={{ color: tertiaryColor, flex: 1 }}
                   >
                     {title}
                   </div>
                 )}
-              </>
+              </button>
             )}
-          </button>
+          </div>
           {isOpen &&
             createPortal(
               <div
@@ -370,6 +392,7 @@ export function DatePicker({ ...props }: DatePickerProps) {
                     locale={isFa ? "fa" : "en"}
                     model="date"
                     calendarBaseWidth={calendarBaseWidth}
+                    value={value !== undefined ? value : showDate ?? undefined}
                     onChange={(e) => {
                       handleDateChange(e as number);
                     }}
@@ -408,7 +431,11 @@ export function DatePicker({ ...props }: DatePickerProps) {
                       <DesktopTimePicker
                         {...props}
                         displayButtonCount={5}
-                        defaultValue={new Date(showDate as any).valueOf()}
+                        defaultValue={
+                          showDate != null
+                            ? new Date(showDate).valueOf()
+                            : undefined
+                        }
                         onGetValue={handleSetTime}
                       />
                     </div>
@@ -418,7 +445,7 @@ export function DatePicker({ ...props }: DatePickerProps) {
                 <Footer
                   setIsOpen={setIsOpen}
                   setShowDate={setShowDate}
-                  showDate={new Date(showDate as any).valueOf()}
+                  showDate={showDate}
                   locale={isFa ? "fa" : "en"}
                   primaryColor={primaryColor}
                   highlightColor={highlightColor}
@@ -492,6 +519,7 @@ export function DatePicker({ ...props }: DatePickerProps) {
                       {...props}
                       locale={isFa ? "fa" : "en"}
                       model="date"
+                      value={value !== undefined ? value : showDate ?? undefined}
                       onChange={(e) => {
                         handleDateChange(e as number);
                       }}
@@ -580,7 +608,7 @@ export function DatePicker({ ...props }: DatePickerProps) {
                 >
                   <Footer
                     setShowDate={setShowDate}
-                    showDate={new Date(showDate as any).valueOf()}
+                    showDate={showDate}
                     locale={locale}
                     primaryColor={primaryColor}
                     highlightColor={highlightColor}
@@ -588,7 +616,7 @@ export function DatePicker({ ...props }: DatePickerProps) {
                     showTime={showTime}
                     onTodayButton={() => setIsOpen(false)}
                     onSubmit={handleSubmit}
-                    onChange={onChange}
+                    onChange={changeHandler}
                   />
                 </div>
               </div>,

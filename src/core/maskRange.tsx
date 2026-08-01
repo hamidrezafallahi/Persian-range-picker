@@ -77,18 +77,6 @@ function MaskRange({ date, onDateChange, locale = 'fa', onError }: MaskRangeProp
       className={`${style.w_full} ${style.flex} ${style.items_center} ${style.justify_around} ${style.gap_2}`}
     >
       <Mask
-        onMaskChange={(e) => handleChange(e, 'to')}
-        value={date?.to as number | string | null | undefined}
-        maskClassName={`${style.w_32}`}
-        Style={{ border: error === 'to' ? '1px solid red' : undefined }}
-        prefix={false}
-        suffix={false}
-        calendarType={locale === 'fa' ? 'jalali' : 'gregorian'}
-        onError={() => setError('to')}
-        exportType="timeStamp"
-      />
-      <div>{'_'}</div>
-      <Mask
         onMaskChange={(e) => handleChange(e, 'from')}
         value={date?.from as number | string | null | undefined}
         maskClassName={`${style.w_32}`}
@@ -97,6 +85,18 @@ function MaskRange({ date, onDateChange, locale = 'fa', onError }: MaskRangeProp
         suffix={false}
         calendarType={locale === 'fa' ? 'jalali' : 'gregorian'}
         onError={() => setError('from')}
+        exportType="timeStamp"
+      />
+      <div>{'_'}</div>
+      <Mask
+        onMaskChange={(e) => handleChange(e, 'to')}
+        value={date?.to as number | string | null | undefined}
+        maskClassName={`${style.w_32}`}
+        Style={{ border: error === 'to' ? '1px solid red' : undefined }}
+        prefix={false}
+        suffix={false}
+        calendarType={locale === 'fa' ? 'jalali' : 'gregorian'}
+        onError={() => setError('to')}
         exportType="timeStamp"
       />
     </div>

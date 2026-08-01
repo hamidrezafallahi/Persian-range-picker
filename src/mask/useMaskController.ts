@@ -80,16 +80,16 @@ export function useMaskController({
   const modeRef = useRef(mode);
   const baseValueRef = useRef(baseValue);
 
-  const rootRef = useRef<HTMLDivElement | null>(null);
-  const focusRef = useRef<HTMLDivElement | null>(null);
-  const fullContainerRef = useRef<HTMLDivElement | null>(null);
-  const yearInputRef = useRef<HTMLInputElement | null>(null);
-  const monthInputRef = useRef<HTMLInputElement | null>(null);
-  const dayInputRef = useRef<HTMLInputElement | null>(null);
-  const fullInputRef = useRef<HTMLInputElement | null>(null);
-  const span0 = useRef<HTMLSpanElement | null>(null);
-  const span1 = useRef<HTMLSpanElement | null>(null);
-  const span2 = useRef<HTMLSpanElement | null>(null);
+  const rootRef = useRef<HTMLDivElement>(null);
+  const focusRef = useRef<HTMLDivElement>(null);
+  const fullContainerRef = useRef<HTMLDivElement>(null);
+  const yearInputRef = useRef<HTMLInputElement>(null);
+  const monthInputRef = useRef<HTMLInputElement>(null);
+  const dayInputRef = useRef<HTMLInputElement>(null);
+  const fullInputRef = useRef<HTMLInputElement>(null);
+  const span0 = useRef<HTMLSpanElement>(null);
+  const span1 = useRef<HTMLSpanElement>(null);
+  const span2 = useRef<HTMLSpanElement>(null);
   const spanRefs = [span0, span1, span2];
 
   const clickCount = useRef(0);
@@ -167,7 +167,7 @@ export function useMaskController({
   );
 
   const validateSegment = useCallback(
-    (raw: string, ref: RefObject<HTMLInputElement | null>): boolean => {
+    (raw: string, ref: RefObject<HTMLInputElement>): boolean => {
       if (!ref.current) return false;
       const name = ref.current.name;
       const target = segmentIndex(name);
@@ -199,21 +199,20 @@ export function useMaskController({
 
       setErrorTargets((prev) => prev.filter((item) => item !== target));
 
-      if (name !== 'day' && rootRef.current) {
-        const focusable = Array.from(
-          rootRef.current.querySelectorAll('input')
-        ).sort((a, b) => a.tabIndex - b.tabIndex);
-        const active =
-          document.activeElement instanceof HTMLInputElement
-            ? document.activeElement
-            : null;
-        const index = active ? focusable.indexOf(active) : -1;
-        if (index >= 0 && index + 1 < focusable.length) {
-          const next = focusable[index + 1];
-          next.focus();
-          next.select();
-        }
-      }
+      const focusAndSelect = (ref: RefObject<HTMLInputElement>) => {
+        const el = ref.current;
+        if (!el) return;
+        el.focus();
+        // Controlled inputs re-render after setParts; select after paint.
+        setTimeout(() => {
+          el.focus();
+          el.select();
+        }, 0);
+      };
+
+      if (name === 'year') focusAndSelect(monthInputRef);
+      else if (name === 'month') focusAndSelect(dayInputRef);
+
       return true;
     },
     [invalidMessage, locale, onError]
@@ -253,19 +252,25 @@ export function useMaskController({
     setErrorTargets((prev) => prev.filter((item) => item !== 3));
 
     if (e.target.name === 'year') {
-      setParts((prev) => [newValue, prev[1], prev[2]]);
+      const nextParts: MaskParts = [newValue, partsRef.current[1], partsRef.current[2]];
+      partsRef.current = nextParts;
+      setParts(nextParts);
       setErrorTargets((prev) => prev.filter((item) => item !== 0));
       if (newValue.length === 4) validateSegment(newValue, yearInputRef);
       return;
     }
     if (e.target.name === 'month') {
-      setParts((prev) => [prev[0], newValue, prev[2]]);
+      const nextParts: MaskParts = [partsRef.current[0], newValue, partsRef.current[2]];
+      partsRef.current = nextParts;
+      setParts(nextParts);
       setErrorTargets((prev) => prev.filter((item) => item !== 1));
       if (newValue.length === 2) validateSegment(newValue, monthInputRef);
       return;
     }
     if (e.target.name === 'day') {
-      setParts((prev) => [prev[0], prev[1], newValue]);
+      const nextParts: MaskParts = [partsRef.current[0], partsRef.current[1], newValue];
+      partsRef.current = nextParts;
+      setParts(nextParts);
       setErrorTargets((prev) => prev.filter((item) => item !== 2));
       if (newValue.length === 2) validateSegment(newValue, dayInputRef);
       return;
@@ -380,8 +385,14 @@ export function useMaskController({
     }
 
     if (event.key === 'Backspace' && activeElement instanceof HTMLInputElement) {
-      if (activeElement.value.length === 0 && activeElement.tabIndex > 0) {
-        moveToPreviousInput();
+      if (activeElement.value.length === 0) {
+        if (activeElement.name === 'day') {
+          monthInputRef.current?.focus();
+        } else if (activeElement.name === 'month') {
+          yearInputRef.current?.focus();
+        } else {
+          moveToPreviousInput();
+        }
       } else if (activeElement.value.length === 1) {
         activeElement.select();
       }
@@ -391,13 +402,32 @@ export function useMaskController({
   const handleClear = useCallback(() => {
     setMode(MaskMode.Display);
     setBaseValue(null);
-    setParts(initialParts);
-    const compact = partsToCompact(initialParts);
-    setCompactValue(compact);
-    compactRef.current = compact;
+    const empty: MaskParts = ['', '', ''];
+    setParts(empty);
+    setCompactValue('');
+    compactRef.current = '';
     setErrorTargets([]);
+    emitChange(null);
     onClear?.();
-  }, [initialParts, onClear]);
+  }, [emitChange, onClear]);
+
+  const clearExternalValue = useCallback(() => {
+    setMode(MaskMode.Display);
+    setBaseValue(null);
+    const empty: MaskParts = ['', '', ''];
+    setParts(empty);
+    setCompactValue('');
+    compactRef.current = '';
+    setErrorTargets([]);
+  }, []);
+
+  const activateSeparatedOnYear = useCallback(() => {
+    setMode(MaskMode.Separated);
+    setTimeout(() => {
+      yearInputRef.current?.focus();
+      yearInputRef.current?.select();
+    }, 0);
+  }, []);
 
   const handleTripleClick = (e: React.MouseEvent<HTMLElement>) => {
     const target = e.target as HTMLInputElement;
@@ -420,7 +450,7 @@ export function useMaskController({
     e.stopPropagation();
     setMode(MaskMode.Separated);
     const name = e.currentTarget.dataset.name;
-    const focusLater = (ref: RefObject<HTMLInputElement | null>) => {
+    const focusLater = (ref: RefObject<HTMLInputElement>) => {
       ref.current?.focus();
       setTimeout(() => ref.current?.select(), 0);
     };
@@ -441,7 +471,7 @@ export function useMaskController({
 
   useEffect(() => {
     if (value === null) {
-      handleClear();
+      clearExternalValue();
       return;
     }
     const nextTs = resolveMaskTimestamp(value as MaskInputValue);
@@ -453,7 +483,7 @@ export function useMaskController({
     compactRef.current = compact;
     setParts(nextParts);
     setBaseValue(nextTs);
-  }, [value, locale, handleClear]);
+  }, [value, locale, clearExternalValue]);
 
   useEffect(() => {
     if (mode === MaskMode.Full) {
@@ -526,6 +556,7 @@ export function useMaskController({
     handleChange,
     handleKeyDown,
     handleClear,
+    activateSeparatedOnYear,
     handleTripleClick,
     handleSegmentMouseDown,
     handleFocusFull,

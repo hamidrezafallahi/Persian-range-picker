@@ -14,9 +14,10 @@ import {
   getTimestamp,
   toPersianDigits,
 } from '../core/helper';
+import { formatIDateExport } from '../core/formatExport';
 import MainContent, { IMainContentProps } from '../core/mainContent';
 import NavigateButton from '../core/navigateButton';
-import type { IDate } from '../core/type';
+import type { IDate, TLocale } from '../core/type';
 import style from '../main.module.css';
 import { ESteps } from '../persianDatePicker/enum';
 import {
@@ -138,7 +139,17 @@ export function RangePicker(props: RangePickerProps) {
       if (date.from && date.to && date.from < date.to) {
         if (onSubmit) {
           if (type == "range") {
-            onSubmit({ type, Data: { date, compareDate } });
+            onSubmit({
+              type,
+              Data: {
+                date: formatIDateExport(date, locale as TLocale, exportType)!,
+                compareDate: formatIDateExport(
+                  compareDate,
+                  locale as TLocale,
+                  exportType
+                ),
+              },
+            });
           } else {
             onSubmit({ type, Data: { customData } });
           }
@@ -163,7 +174,17 @@ export function RangePicker(props: RangePickerProps) {
     } else {
       if (onSubmit) {
         if (type == "range") {
-          onSubmit({ type, Data: { date, compareDate } });
+          onSubmit({
+            type,
+            Data: {
+              date: formatIDateExport(date, locale as TLocale, exportType)!,
+              compareDate: formatIDateExport(
+                compareDate,
+                locale as TLocale,
+                exportType
+              ),
+            },
+          });
         } else {
           onSubmit({ type, Data: { customData } });
         }
@@ -207,7 +228,14 @@ export function RangePicker(props: RangePickerProps) {
     if (compareDate) {
       onCompareDateChange?.({
         type: "compare",
-        Data: { date: date, compareDate: compareDate },
+        Data: {
+          date: formatIDateExport(date, locale as TLocale, exportType)!,
+          compareDate: formatIDateExport(
+            compareDate,
+            locale as TLocale,
+            exportType
+          ),
+        },
       });
       setShowDate((prev) => ({
         ...prev,
@@ -222,8 +250,22 @@ export function RangePicker(props: RangePickerProps) {
       ["day", "week", "month", "season", "year","range"].includes(e.type)
     ) {
       setDate(e.Data?.date as IDate);
-      // if (e.Data?.date?.to == 0) return;
-      onChange?.(e);
+      onChange?.({
+        ...e,
+        Data: {
+          ...e.Data,
+          date: formatIDateExport(
+            e.Data?.date as IDate,
+            locale as TLocale,
+            exportType
+          )!,
+          compareDate: formatIDateExport(
+            (e.Data?.compareDate as IDate) ?? compareDate,
+            locale as TLocale,
+            exportType
+          ),
+        },
+      });
     }
   };
   const mainContentProps: IMainContentProps = {
@@ -258,21 +300,22 @@ export function RangePicker(props: RangePickerProps) {
   };
 
   useEffect(() => {
-    if (!value) {
+    if (value === undefined) {
       return;
-    } else if (value == null) {
+    }
+    if (value === null) {
       setDate({ from: null, to: null });
       setShowDate((prev) => ({
         ...prev,
         date: { from: null, to: null },
       }));
-    } else {
-      setDate({ from: value.from, to: value.to });
-      setShowDate((prev) => ({
-        ...prev,
-        date: { from: value.from, to: value.to },
-      }));
+      return;
     }
+    setDate({ from: value.from, to: value.to });
+    setShowDate((prev) => ({
+      ...prev,
+      date: { from: value.from, to: value.to },
+    }));
   }, [value]);
   return (
     <>
@@ -328,7 +371,7 @@ export function RangePicker(props: RangePickerProps) {
                 buttonStyle={buttonStyle}
                 compareDate={compareDate}
                 setDate={setDate}
-                onChange={onChange}
+                onChange={handleChange}
                 setCompareDate={setCompareDate}
                 step={step}
                 zone={zone}
@@ -457,7 +500,7 @@ export function RangePicker(props: RangePickerProps) {
               buttonStyle={buttonStyle}
               compareDate={compareDate}
               setDate={setDate}
-              onChange={onChange}
+              onChange={handleChange}
               setCompareDate={setCompareDate}
               step={step}
               zone={zone}

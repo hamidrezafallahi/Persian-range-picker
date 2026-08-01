@@ -69,7 +69,7 @@ export interface RangePickerProps extends Omit<CalendarProps, "onChange"> {
   calendarType?: CalendarType;
 
   defaultValue?: IDate;
-  value?: IDate;
+  value?: IDate | null;
 
   onChange?: (e: HandleParams) => void;
   onCompareDateChange?: (e: HandleParams) => void;
@@ -123,8 +123,8 @@ export interface CustomSwitchProps {
 export type PopupPosition = 'auto' | 'top' | 'bottom';
 export type PopupAlign = 'start' | 'center' | 'end';
 export interface UseRenderPositionOptionsProps<T extends HTMLElement> {
-  buttonRef: RefObject<T | null>;
-  popupRef: RefObject<T | null>;
+  buttonRef: RefObject<T>;
+  popupRef: RefObject<T>;
   offset?: number;
   onClickOutSide?: () => void;
   setIsOpen: Dispatch<SetStateAction<boolean>>;
@@ -170,7 +170,7 @@ export interface IManualProps extends Omit<CalendarProps, "onChange"> {
 // Calendar Props
 // =========================
 export interface CalendarProps extends ColorProps {
-  manualContainerRef?: RefObject<HTMLDivElement | null>;
+  manualContainerRef?: RefObject<HTMLDivElement>;
 
   model?: "range" | "date";
   value?: DateValue;
@@ -424,6 +424,16 @@ export type CalendarAction =
   | { type: "CHANGE_HOVERED_DAY"; payload: number | null }
   | { type: "HOVER"; payload: any }
   | { type: "CHANGE_YEAR"; payload: number }
+  | {
+      type: "SYNC_VALUE";
+      payload: {
+        year?: number;
+        month?: number;
+        date?: number | null;
+        range?: { from: number | null; to: number | null };
+        multiple?: number[];
+      };
+    }
   | { type: "SHIFT_YEAR"; payload: number }
   | { type: "SHIFT_MONTH"; payload: { year: number; month: number } }
   | { type: "CHANGE_MONTH"; payload: number }

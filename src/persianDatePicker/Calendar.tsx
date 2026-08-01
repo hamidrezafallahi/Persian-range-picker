@@ -17,6 +17,7 @@ import {
   isEqualDays,
 } from './helper';
 import MonthPicker from './monthPicker';
+import { CALENDAR_PANEL_HEIGHT } from './constants';
 import {
   CalendarAction,
   CalendarProps,
@@ -148,6 +149,16 @@ export const Calendar: FC<CalendarProps> = ({
         return { ...state, hoveredDay: action.payload };
       case "CHANGE_YEAR":
         return { ...state, year: action.payload, view: CalendarViews.MONTH };
+      case "SYNC_VALUE":
+        return {
+          ...state,
+          year: action.payload.year ?? state.year,
+          month: action.payload.month ?? state.month,
+          date:
+            action.payload.date !== undefined ? action.payload.date : state.date,
+          range: action.payload.range ?? state.range,
+          multiple: action.payload.multiple ?? state.multiple,
+        };
       case "SHIFT_YEAR":
         return {
           ...state,
@@ -287,7 +298,7 @@ export const Calendar: FC<CalendarProps> = ({
 
       }
     },
-    [model, handleRangeSelection, onChange]
+    [model, handleRangeSelection, onChange, selectMultiple, state.multiple]
   );
 
   // -------------------------------
@@ -598,43 +609,89 @@ export const Calendar: FC<CalendarProps> = ({
     );
   };
   useEffect(() => {
-    if (value !== undefined) {
-      if (model === "date") {
-        if (selectMultiple && Array.isArray(value)) {
-          dispatchState({
-            type: "SET_MULTIPLE_BY_ARRAY",
-            payload: { multiple: value.map((v) => new Date(v).valueOf()) },
-          });
-        } else {
-          dispatchState({
-            type: "SET_DATE",
-            payload: new Date(value as number).valueOf(),
-          });
-        }
+    if (value === undefined) return;
+
+    if (value === null) {
+      if (model === "range") {
+        dispatchState({ type: "RESET_RANGE" });
+      } else if (selectMultiple) {
+        dispatchState({
+          type: "SET_MULTIPLE_BY_ARRAY",
+          payload: { multiple: [] },
+        });
       } else {
-        if (typeof value === "object" && !Array.isArray(value)) {
-          dispatchState({
-            type: "SET_RANGE",
-            payload: {
-              from: value?.from != null ? new Date(value.from).valueOf() : null,
-              to: value?.to != null ? new Date(value.to).valueOf() : null,
-            },
-          });
-        }
+        dispatchState({ type: "SET_DATE", payload: null });
+      }
+      return;
+    }
+
+    if (model === "date") {
+      if (selectMultiple && Array.isArray(value)) {
+        dispatchState({
+          type: "SET_MULTIPLE_BY_ARRAY",
+          payload: { multiple: value.map((v) => new Date(v).valueOf()) },
+        });
+        return;
+      }
+
+      if (!Array.isArray(value) && typeof value !== "object") {
+        const ts = new Date(value as number).valueOf();
+        if (Number.isNaN(ts)) return;
+        const m = locale === "fa" ? jmoment(ts) : jmoment.utc(ts);
+        dispatchState({
+          type: "SYNC_VALUE",
+          payload: {
+            year: locale === "fa" ? m.jYear() : m.year(),
+            month: locale === "fa" ? m.jMonth() : m.month(),
+            date: ts,
+          },
+        });
+      }
+      return;
+    }
+
+    if (typeof value === "object" && !Array.isArray(value)) {
+      const fromTs =
+        value?.from != null ? new Date(value.from).valueOf() : null;
+      const toTs = value?.to != null ? new Date(value.to).valueOf() : null;
+      const anchor = fromTs ?? toTs;
+      if (anchor != null && !Number.isNaN(anchor)) {
+        const m = locale === "fa" ? jmoment(anchor) : jmoment.utc(anchor);
+        dispatchState({
+          type: "SYNC_VALUE",
+          payload: {
+            year: locale === "fa" ? m.jYear() : m.year(),
+            month: locale === "fa" ? m.jMonth() : m.month(),
+            range: { from: fromTs, to: toTs },
+          },
+        });
+      } else {
+        dispatchState({
+          type: "SET_RANGE",
+          payload: { from: fromTs, to: toTs },
+        });
       }
     }
-  }, [value]);
+  }, [value, model, selectMultiple, locale]);
 
   // -------------------------------
   // MAIN RENDER
   // -------------------------------
   return (
     <div
-      className={`${style.flex} ${style.flex_col} ${style.items_center} ${style.w_full} ${style.h_fit} ${containerClassName}`}
-      style={{ width: calendarBaseWidth }}
+      className={`${style.flex} ${style.flex_col} ${style.items_center} ${style.w_full} ${containerClassName}`}
+      style={{
+        width: calendarBaseWidth,
+        height: CALENDAR_PANEL_HEIGHT,
+        minHeight: CALENDAR_PANEL_HEIGHT,
+        overflow: 'hidden',
+      }}
     >
       {state.view === CalendarViews.DAY && (
-        <>
+        <div
+          className={`${style.flex} ${style.flex_col} ${style.w_full} ${style.h_full}`}
+          style={{ minHeight: 0 }}
+        >
           <DatePickerHeader
             datePickerHeaderClassName={datePickerHeaderClassName}
             year={state.year}
@@ -647,39 +704,54 @@ export const Calendar: FC<CalendarProps> = ({
             secondaryColor={secondaryColor}
           />
           <hr className={`${style.mt_2} ${style.border} ${style.w_full}`} />
-          <DataPickerBody
-            year={state.year}
-            month={state.month}
-            renderMonthBody={renderCalendar}
-            locale={locale}
-            datePickerBodyClassName={datePickerBodyClassName}
-          />
-        </>
+          <div
+            className={`${style.flex} ${style.flex_col} ${style.w_full}`}
+            style={{ flex: 1, minHeight: 0, overflow: 'hidden' }}
+          >
+            <DataPickerBody
+              year={state.year}
+              month={state.month}
+              renderMonthBody={renderCalendar}
+              locale={locale}
+              datePickerBodyClassName={datePickerBodyClassName}
+            />
+          </div>
+        </div>
       )}
 
       {state.view === CalendarViews.MONTH && (
-        <MonthPicker
-          currentMonth={state.month}
-          locale={locale}
-          onSelectMonth={changeMonth}
-          onChangeYear={shiftYear}
-          currentYear={state.year}
-          tertiaryColor={tertiaryColor}
-          secondaryColor={secondaryColor}
-          backgroundColor={backgroundColor}
-        />
+        <div
+          className={`${style.w_full} ${style.h_full}`}
+          style={{ minHeight: 0 }}
+        >
+          <MonthPicker
+            currentMonth={state.month}
+            locale={locale}
+            onSelectMonth={changeMonth}
+            onChangeYear={shiftYear}
+            currentYear={state.year}
+            tertiaryColor={tertiaryColor}
+            secondaryColor={secondaryColor}
+            backgroundColor={backgroundColor}
+          />
+        </div>
       )}
 
       {state.view === CalendarViews.YEAR && (
-        <YearPicker
-          currentYear={state.year}
-          primaryColor={primaryColor}
-          onSelectYear={changeYear}
-          yearPickerClassName={yearPickerClassName}
-          secondaryColor={secondaryColor}
-          backgroundColor={backgroundColor}
-          locale={locale}
-        />
+        <div
+          className={`${style.w_full} ${style.h_full}`}
+          style={{ minHeight: 0 }}
+        >
+          <YearPicker
+            currentYear={state.year}
+            primaryColor={primaryColor}
+            onSelectYear={changeYear}
+            yearPickerClassName={yearPickerClassName}
+            secondaryColor={secondaryColor}
+            backgroundColor={backgroundColor}
+            locale={locale}
+          />
+        </div>
       )}
     </div>
   );

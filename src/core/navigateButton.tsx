@@ -164,36 +164,46 @@ export const calculateDate = (
     }
   } else if (step == ESteps.week) {
     if (zone == "thisWeek") {
-      if (
-        locale == "fa" &&
-        moment().locale("fa").day() == 6 &&
-        locale == "fa"
-      ) {
-        from = moment()
-          .locale("fa")
-          .clone()
-          .day(6)
-          .startOf("day")
-          .subtract(7 * Math.abs(counter), "day")
-          .valueOf();
-        to = moment()
-          .locale("fa")
-          .clone()
-          .day(6)
-          .endOf("day")
-          .subtract(7 * Math.abs(counter), "day")
-          .valueOf();
+      if (locale === "fa") {
+        if (moment().locale("fa").day() == 6) {
+          from = moment()
+            .locale("fa")
+            .clone()
+            .day(6)
+            .startOf("day")
+            .subtract(7 * Math.abs(counter), "day")
+            .valueOf();
+          to = moment()
+            .locale("fa")
+            .clone()
+            .day(6)
+            .endOf("day")
+            .subtract(7 * Math.abs(counter), "day")
+            .valueOf();
+        } else {
+          from = moment()
+            .locale("fa")
+            .clone()
+            .day(-1)
+            .startOf("day")
+            .subtract(7 * Math.abs(counter), "day")
+            .valueOf();
+          to = moment()
+            .locale("fa")
+            .clone()
+            .endOf("day")
+            .subtract(7 * Math.abs(counter), "day")
+            .valueOf();
+        }
       } else {
-        from = moment()
-          .locale(locale)
-          .clone()
-          .day(-1)
+        from = moment
+          .utc()
+          .day(0)
           .startOf("day")
           .subtract(7 * Math.abs(counter), "day")
           .valueOf();
-        to = moment()
-          .locale(locale)
-          .clone()
+        to = moment
+          .utc()
           .endOf("day")
           .subtract(7 * Math.abs(counter), "day")
           .valueOf();
@@ -214,7 +224,7 @@ export const calculateDate = (
           .endOf("day")
           .subtract(1 + 7 * Math.abs(counter), "day")
           .valueOf();
-      } else {
+      } else if (locale === "fa") {
         from = moment()
           .locale(locale)
           .clone()
@@ -228,21 +238,20 @@ export const calculateDate = (
           .endOf("day")
           .subtract(1 + 7 * Math.abs(counter), "day")
           .valueOf();
+      } else {
+        from = moment
+          .utc()
+          .day(0)
+          .subtract(7 + 7 * Math.abs(counter), "day")
+          .startOf("day")
+          .valueOf();
+        to = moment
+          .utc()
+          .day(0)
+          .subtract(1 + 7 * Math.abs(counter), "day")
+          .endOf("day")
+          .valueOf();
       }
-      from = moment()
-        .locale(locale)
-        .clone()
-        .day(-1)
-        .subtract(7 + 7 * Math.abs(counter), "day")
-        .startOf("day")
-        .valueOf();
-      to = moment()
-        .locale(locale)
-        .clone()
-        .day(-1)
-        .subtract(1 + 7 * Math.abs(counter), "day")
-        .endOf("day")
-        .valueOf();
     } else if (zone == "last7Days") {
       from = moment()
         .locale(locale)

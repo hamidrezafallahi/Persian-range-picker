@@ -39,7 +39,10 @@
   "bugs": {
     "url": "https://github.com/hamidrezafallahi/Persian-range-picker/issues"
   },
-  "homepage": "https://github.com/hamidrezafallahi/persian-range-picker#readme",
+  "homepage": "https://hamidrezafallahi.github.io/Persian-range-picker/",
+  "engines": {
+    "node": ">=16"
+  },
   "scripts": {
     "dev": "vite --config demo/vite.config.ts",
     "dev:docs": "vite",
@@ -52,14 +55,16 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "clean:generated": "powershell -ExecutionPolicy Bypass -File scripts/clean-generated.ps1",
-    "test:date": "tsx scripts/parity-check.mjs"
+    "test": "node ./node_modules/vitest/vitest.mjs run",
+    "test:watch": "node ./node_modules/vitest/vitest.mjs",
+    "test:date": "node ./node_modules/vitest/vitest.mjs run src/dateEngine"
   },
   "dependencies": {
-    "jalaali-js": "^2.0.0"
+    "jalaali-js": "^1.2.0 || ^2.0.0"
   },
   "peerDependencies": {
-    "react": "^18.0.0 || ^19.0.0",
-    "react-dom": "^18.0.0 || ^19.0.0"
+    "react": "^17.0.0 || ^18.0.0 || ^19.0.0",
+    "react-dom": "^17.0.0 || ^18.0.0 || ^19.0.0"
   },
   "peerDependenciesMeta": {
     "react": {
@@ -70,27 +75,27 @@
     }
   },
   "devDependencies": {
-    "@eslint/js": "^9.25.0",
-    "@rollup/plugin-commonjs": "^28.0.3",
-    "@rollup/plugin-node-resolve": "^16.0.1",
-    "@types/node": "^24.2.1",
-    "@types/react": "^19.1.2",
-    "@types/react-dom": "^19.1.2",
-    "@vitejs/plugin-react-swc": "^3.9.0",
-    "eslint": "^9.25.0",
-    "eslint-plugin-react-hooks": "^5.2.0",
-    "eslint-plugin-react-refresh": "^0.4.19",
-    "gh-pages": "^6.3.0",
-    "globals": "^16.0.0",
-    "react": "^18.0.0 || ^19.0.0",
-    "react-dom": "^18.0.0 || ^19.0.0",
-    "rollup": "^4.41.1",
+    "@rollup/plugin-commonjs": "^25.0.8",
+    "@rollup/plugin-node-resolve": "^15.3.1",
+    "@testing-library/dom": "^8.20.1",
+    "@testing-library/jest-dom": "6.9.1",
+    "@testing-library/react": "^12.1.5",
+    "@testing-library/user-event": "^13.5.0",
+    "@types/node": "^18.19.68",
+    "@types/react": "^17.0.83",
+    "@types/react-dom": "^17.0.26",
+    "@vitejs/plugin-react-swc": "^3.7.2",
+    "gh-pages": "^5.0.0",
+    "jsdom": "^22.1.0",
+    "postcss": "^8.4.49",
+    "react": "17.0.2",
+    "react-dom": "17.0.2",
+    "rollup": "^3.29.5",
     "rollup-plugin-postcss": "^4.0.2",
     "rollup-plugin-typescript2": "^0.36.0",
-    "tsx": "^4.23.1",
-    "typescript": "~5.8.3",
-    "typescript-eslint": "^8.30.1",
-    "vite": "^6.3.5"
+    "typescript": "~5.4.5",
+    "vite": "^5.4.11",
+    "vitest": "^1.6.1"
   },
   "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
 }

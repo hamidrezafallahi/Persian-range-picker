@@ -8,7 +8,9 @@ import { createPortal } from 'react-dom';
 import moment from '../dateEngine';
 
 import { CalenderIcon } from '../assets/icons/CalenderIcon';
+import { formatExport } from '../core/formatExport';
 import { toPersianDigits } from '../core/helper';
+import type { TLocale } from '../core/type';
 import style from '../main.module.css';
 import {
   TimePickerProps,
@@ -88,17 +90,7 @@ export const TimePicker = ({ ...props }: TimePickerProps) => {
   const handleSubmit = () => {
 
     if (time && time > 0) {
-      if (exportType == "IsoString") {
-        onChange?.(
-          locale == "fa"
-            ? moment(time).format("YYYY-MM-DDTHH:mm:ss.SSSZ").replace(/[۰-۹]/g, d => "۰۱۲۳۴۵۶۷۸۹".indexOf(d).toString())
-            : moment.utc(time).format("YYYY-MM-DDTHH:mm:ss.SSSZ")
-        );
-      } else {
-        onChange?.(
-          locale == "fa" ? moment(time).valueOf() : moment.utc(time).valueOf()
-        );
-      }
+      onChange?.(formatExport(time, locale as TLocale, exportType));
     }
     setOpen(false);
   };
@@ -174,6 +166,10 @@ export const TimePicker = ({ ...props }: TimePickerProps) => {
   };
 
   useEffect(() => {
+    if (value === null) {
+      setTime(null);
+      return;
+    }
     if (
       value !== undefined &&
       moment(value as number|string).valueOf() !== moment(time).valueOf()

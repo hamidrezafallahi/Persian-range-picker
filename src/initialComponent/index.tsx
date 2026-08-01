@@ -1,11 +1,13 @@
 import {
   type ReactNode,
+  useEffect,
+  useMemo,
   useState,
 } from 'react';
 
 import { TickIcon } from '../assets/icons/TickIcon';
 import dateP from '../assets/images/dateP.png';
-import maskP from '../assets/images/maskP.png';
+import maskP from '../assets/images/maskp.png';
 import rangePic from '../assets/images/rangeP.png';
 import timeP from '../assets/images/timeP.png';
 import useR from '../assets/images/useR.png';
@@ -22,16 +24,19 @@ import { DatePicker } from '../datePicker';
 import { Mask } from '../mask';
 import { RangePicker } from '../rangePicker';
 import { TimePicker } from '../timePicker';
+import styles from './styles.module.css';
 
 const SECTION_KEYS = [
-  "QuickStart",
-  "Range",
-  "Date",
-  "Mask",
-  "timepicker",
-  "rendersideHook",
+  'QuickStart',
+  'Range',
+  'Date',
+  'Mask',
+  'timepicker',
+  'rendersideHook',
 ] as const;
+
 type SectionKey = (typeof SECTION_KEYS)[number];
+
 type SectionContent = {
   title: string;
   desc: string | ReactNode;
@@ -49,20 +54,57 @@ type LanguageText = {
   };
 };
 
-const TEXT: Record<"fa" | "en", LanguageText> = {
+const NPM_URL = 'https://www.npmjs.com/package/react-persian-range-picker';
+const GITHUB_URL = 'https://github.com/hamidrezafallahi/Persian-range-picker';
+const INSTALL_CMD = 'npm i react-persian-range-picker';
+
+const SEO = {
+  fa: {
+    title: 'Persian Range Picker | انتخابگر تاریخ و بازه شمسی برای React',
+    description:
+      'کتابخانه React برای DatePicker، RangePicker مقایسه‌ای، Mask ورودی کیبوردی و TimePicker با پشتیبانی بومی تقویم جلالی و میلادی.',
+    h1: 'انتخابگر تاریخ و بازه شمسی برای React',
+    lead:
+      'DatePicker، RangePicker با مقایسه بازه، Mask کیبوردی و TimePicker — سبک، TypeScript-ready و سازگار با React 18 و 19.',
+    docs: 'مستندات زنده',
+    playground: 'نمایش زنده کامپوننت',
+    live: 'Live',
+    features: ['جلالی + میلادی', 'مقایسه بازه', 'ماسک کیبورد', 'وابستگی کم'],
+    ctaDocs: 'شروع از معرفی',
+    ctaNpm: 'مشاهده در npm',
+    ctaGithub: 'سورس در GitHub',
+  },
+  en: {
+    title: 'Persian Range Picker | Jalali date & range picker for React',
+    description:
+      'React Jalali/Gregorian DatePicker, analytics-style RangePicker with compare, keyboard Mask, and TimePicker. Lightweight and TypeScript-ready.',
+    h1: 'Jalali date & range picker for React',
+    lead:
+      'DatePicker, compare-ready RangePicker, keyboard Mask, and TimePicker — built for dashboards, forms, and enterprise apps on React 18/19.',
+    docs: 'Live docs',
+    playground: 'Interactive playground',
+    live: 'Live',
+    features: ['Jalali + Gregorian', 'Compare ranges', 'Keyboard mask', 'Tiny deps'],
+    ctaDocs: 'Read introduction',
+    ctaNpm: 'View on npm',
+    ctaGithub: 'GitHub source',
+  },
+} as const;
+
+const TEXT: Record<'fa' | 'en', LanguageText> = {
   fa: {
     sections: {
-      content: "محتوا را از فهرست انتخاب کنید.",
-      image: "تصویر",
+      content: 'محتوا را از فهرست انتخاب کنید.',
+      image: 'تصویر',
       QuickStart: {
-        title: "معرفی کتابخانه",
+        title: 'معرفی کتابخانه',
         desc: (
           <>
             <p>
-              این کتابخانه برای پاسخ به نیاز برنامه‌نویسان ایرانی جهت انتخاب
-              تاریخ شمسی طراحی شده است. با پشتیبانی از هر دو نوع تاریخ
-              <strong> میلادی (Gregorian) و شمسی (Shamsi)</strong>، شما
-              می‌توانید نوع تقویم را با یک پارامتر ساده تغییر دهید.
+              این کتابخانه برای پاسخ به نیاز برنامه‌نویسان ایرانی جهت انتخاب تاریخ
+              شمسی طراحی شده است. با پشتیبانی از هر دو نوع تاریخ
+              <strong> میلادی (Gregorian) و شمسی (Shamsi)</strong>، می‌توانید نوع
+              تقویم را با یک پارامتر ساده تغییر دهید.
             </p>
             <p>
               برخلاف بسیاری از کتابخانه‌ها که تاریخ میلادی را به‌صورت لحظه‌ای به
@@ -70,150 +112,98 @@ const TEXT: Record<"fa" | "en", LanguageText> = {
               می‌کند.
             </p>
             <p>
-              هدف ما ساده‌سازی تجربه کاربری و فراهم‌کردن امکان شخصی‌سازی بالاست،
-              بنابراین ظاهر اکثر المان‌ها قابل تغییر است.
-            </p>
-            <p>
               برای تبدیل تاریخ، تنها به یک کتابخانه سبک وابسته هستید:
-              <code>jalaali-js</code>. محاسبات جلالی با همان الگوریتم دقیق Borkowski انجام می‌شود.
+              <code>jalaali-js</code>. محاسبات جلالی با الگوریتم دقیق Borkowski
+              انجام می‌شود.
             </p>
+            <h4>انتخاب بازه‌ی زمانی مقایسه‌ای</h4>
             <p>
-              از همه همکارانی که در توسعه‌ی این ابزار مشارکت داشتند، سپاسگزاریم.
-            </p>
-
-            <br />
-            <h4> انتخاب بازه‌ی زمانی مقایسه‌ای</h4>
-            <p>
-              یکی از مهم‌ترین قابلیت‌های این ابزار، مقایسه‌ی یک بازه‌ی زمانی با
-              بازه‌ی دیگر است. به‌عنوان مثال:
+              یکی از مهم‌ترین قابلیت‌ها، مقایسه‌ی یک بازه با بازه دیگر است —
+              مشابه الگوی Google Analytics، با پشتیبانی بومی تقویم شمسی.
             </p>
             <ul>
-              <li>
-                مقایسه‌ی داده‌های روزانه آزمایشگاهی با روز گذشته یا هفته‌ی قبل
-              </li>
-              <li>بررسی روند فروش شرکت در فصل جاری نسبت به سال گذشته</li>
+              <li>مقایسه داده روزانه با روز یا هفته قبل</li>
+              <li>بررسی روند فروش فصل جاری نسبت به سال گذشته</li>
             </ul>
-            <p>
-              دو دکمه‌ی مجزا برای جابه‌جایی بازه اصلی و بازه‌ی مقایسه‌ای در نظر
-              گرفته شده است.
-            </p>
-
-            <p>
-              این کتابخانه مشابه انتخاب بازه زمانی در ابزار معروف{" "}
-              <strong>Google Analytics</strong> طراحی شده است، که به شما امکان
-              انتخاب و مقایسه بازه‌های زمانی را به صورت مجزا و ساده می‌دهد.
-              تفاوت اصلی در پشتیبانی بومی از تقویم شمسی و امکانات پیشرفته‌تر در
-              انتخاب تاریخ و زمان است.
-            </p>
-
             <h4>
-              {" "}
               <TickIcon /> انتخاب تاریخ
             </h4>
             <p>
-              المان انتخاب تاریخ دارای قابلیت نمایش تاریخ به‌صورت قابل ویرایش
-              (Mask) و پشتیبانی از
-              <strong> TimePicker </strong> است. کاربر می‌تواند تاریخ را دقیق تا
-              ثانیه انتخاب کند.
+              DatePicker با Mask قابل ویرایش و پشتیبانی از
+              <strong> TimePicker </strong> دقت تا ثانیه می‌دهد.
             </p>
-
             <h4>
-              {" "}
-              <TickIcon /> انتخاب زمان
-            </h4>
-            <p>
-              این المان فقط برای انتخاب زمان طراحی شده و در صورت دریافت تاریخ،
-              زمان همان را تغییر می‌دهد. در غیر این‌صورت، زمان تاریخ فعلی را
-              تغییر می‌دهد.
-            </p>
-
-            <h4>
-              {" "}
               <TickIcon /> نگارنده تاریخ (ماسک)
             </h4>
             <p>
-              با تایپ مستقیم تاریخ در فرمت مشخص‌شده، کاربر می‌تواند از کیبورد
-              نیز برای کم/زیاد کردن مقادیر استفاده کند. این ورودی به صورت هوشمند
-              تعداد روزهای هر ماه را تشخیص می‌دهد و از ورود مقدار غیرمجاز
-              جلوگیری می‌کند.
+              تایپ مستقیم در قالب مشخص، ناوبری کیبورد، تشخیص روزهای ماه و جلوگیری
+              از مقدار غیرمجاز.
             </p>
-
             <h4>
-              {" "}
               <TickIcon /> هوک نمایش المان شناور
             </h4>
             <p>
-              یک هوک قدرتمند و بدون وابستگی برای نمایش محتوای شناور (مثل
-              Dropdown یا Tooltip) در کنار یک المان خاص. مشابه رفتار
-              <code>react-popper</code> عمل می‌کند و قابلیت سفارشی‌سازی کامل
-              دارد.
+              هوک سبک برای Dropdown/Tooltip با جلوگیری از بیرون‌زدگی — بدون وابستگی
+              به popper.
             </p>
           </>
         ),
-
-        video: undefined,
-        image: undefined,
-        component: undefined,
       },
       Range: {
-        title: "محدوده زمانی",
-        desc: "محدوده زمانی ابزاری است که به شما اجازه می‌دهد یک بازه از تاریخ‌ها یا زمان‌ها را برای عملیات فیلتر، گزارش‌گیری یا تنظیمات انتخاب کنید. این ابزار مخصوصاً برای فرم‌ها یا صفحه‌های گزارش بسیار کاربردی است.",
+        title: 'محدوده زمانی',
+        desc: 'بازه تاریخ را برای فیلتر، گزارش‌گیری یا تنظیمات انتخاب کنید؛ مناسب داشبوردها و فرم‌های تحلیلی.',
         video: rangeVid,
         image: rangePic,
         component: (
           <RangePicker
             calendarType="jalali"
-            onChange={(e:any) => console.log("RangePicker has changed", e)}
+            onChange={(e) => console.log('RangePicker has changed', e)}
             exportType="timeStamp"
             showComparison
           />
         ),
       },
       Date: {
-        title: "تاریخ ",
-        desc: "این انتخابگر تاریخ طراحی شده تا به ساده‌ترین شکل ممکن تاریخ‌ها را در قالب شمسی یا میلادی انتخاب کنید. پشتیبانی از زمان و ثانیه نیز به شما دقت بیشتری در انتخاب می‌دهد.",
+        title: 'تاریخ',
+        desc: 'انتخاب تاریخ شمسی یا میلادی با پشتیبانی زمان و Mask ورودی.',
         image: dateP,
         video: dateVid,
         component: (
           <DatePicker
             showTime
             showSecond
+            showMask
             isTodaySelectPreset
-            onChange={(e:any) => console.log(e)}
+            onChange={(e) => console.log(e)}
             calendarType="jalali"
             exportType="timeStamp"
           />
         ),
       },
       Mask: {
-        component: <Mask calendarType="jalali" />,
-        title: "ورودی تاریخ",
-        desc: "ورودی تاریخ با ماسک باعث می‌شود کاربر تنها در قالب خاصی بتواند مقدار وارد کند. این قابلیت از بروز خطاهای متداول جلوگیری می‌کند و یکپارچگی داده‌ها را حفظ می‌کند.",
+        component: <Mask calendarType="jalali" allowClear />,
+        title: 'ورودی تاریخ',
+        desc: 'ماسک ورودی فقط قالب معتبر را می‌پذیرد و یکپارچگی داده را حفظ می‌کند.',
         video: MaskVid,
         image: maskP,
       },
       timepicker: {
-        title: "انتخابگر زمان",
-        desc: "این ابزار انتخاب زمان، به شما اجازه می‌دهد ساعت و دقیقه (و در صورت نیاز ثانیه) را به راحتی انتخاب کنید. مناسب برای فرم‌های رزرو، قرار ملاقات و تنظیم هشدارهاست.",
+        title: 'انتخابگر زمان',
+        desc: 'ساعت، دقیقه و ثانیه — مناسب رزرو، قرار ملاقات و هشدار.',
         video: Time,
         image: timeP,
         component: (
           <TimePicker
             calendarType="jalali"
-            onChange={(e:any) => console.log(e)}
+            onChange={(e) => console.log(e)}
             showSecond
           />
         ),
       },
       rendersideHook: {
-        title: "هوک رندر جانبی",
-        desc: ` یک هوک قدرتمند برای کنترل موقعیت عناصر مانند تولتیپ‌ها، منوها و پنجره‌های بازشو است.
-ویژگی‌های کلیدی آن شامل این موارد است:
-  ، مدیریت خودکار موقعیت و جابجایی هوشمندانه
-  ، جلوگیری از بیرون‌زدگی محتوا از صفحه (prevent overflow)
-  ، پشتیبانی از موقعیت‌های مختلف (بالا، پایین، چپ، راست و ...)
-  ، امکان تعیین فاصله دلخواه (offset) و margin
- ، عملکرد سریع، سبک و بدون وابستگی به فریم‌ورک خاص`,
+        title: 'هوک رندر جانبی',
+        desc: `هوک کنترل موقعیت برای tooltip، منو و popup:
+مدیریت خودکار موقعیت، جلوگیری از overflow، پشتیبانی از بالا/پایین/چپ/راست، offset قابل تنظیم، سبک و بدون وابستگی سنگین.`,
         image: useR,
         image1: useR1,
         image2: useR2,
@@ -222,25 +212,74 @@ const TEXT: Record<"fa" | "en", LanguageText> = {
   },
   en: {
     sections: {
-      content: "choose content from the menu.",
-      image: "Image",
+      content: 'Choose content from the menu.',
+      image: 'Image',
+      QuickStart: {
+        title: 'Introduction',
+        desc: (
+          <>
+            <p>
+              Built for Persian (Jalali) date selection in React, with first-class
+              support for both <strong>Gregorian and Shamsi</strong> calendars.
+            </p>
+            <p>
+              Unlike converters bolted onto Gregorian engines, this library is
+              Jalali-native from the ground up.
+            </p>
+            <p>
+              Date math depends on one lightweight package: <code>jalaali-js</code>{' '}
+              (Borkowski algorithm).
+            </p>
+            <h4>Comparative date ranges</h4>
+            <p>
+              Compare one period with another — analytics-style UX with native
+              Jalali support.
+            </p>
+            <ul>
+              <li>Daily metrics vs yesterday or last week</li>
+              <li>Seasonal sales vs the same season last year</li>
+            </ul>
+            <h4>
+              <TickIcon /> Date picker
+            </h4>
+            <p>
+              Masked input plus optional <strong>TimePicker</strong> down to the
+              second.
+            </p>
+            <h4>
+              <TickIcon /> Masked date input
+            </h4>
+            <p>
+              Keyboard-friendly segments, month-length awareness, and invalid-entry
+              prevention.
+            </p>
+            <h4>
+              <TickIcon /> Floating element hook
+            </h4>
+            <p>
+              Dependency-light positioning for dropdowns and tooltips with overflow
+              prevention.
+            </p>
+          </>
+        ),
+      },
       Range: {
-        title: "Range",
-        desc: "The time range tool allows you to select a range of dates or times for filtering operations, reporting, or settings. This tool is especially useful for forms or report pages.",
+        title: 'Range',
+        desc: 'Select date ranges for filters, reports, and settings — ideal for analytics UIs.',
         video: rangeVidE,
         image: rangePic,
         component: (
           <RangePicker
             calendarType="gregorian"
-            onChange={(e) => console.log("RangePicker has changed", e)}
+            onChange={(e) => console.log('RangePicker has changed', e)}
             exportType="timeStamp"
             showComparison
           />
         ),
       },
       Date: {
-        title: "Date",
-        desc: "This date picker is designed to let you select dates in either the Shamsi or Gregorian format in the simplest way possible. Support for time and seconds also gives you greater precision in selection.",
+        title: 'Date',
+        desc: 'Pick Jalali or Gregorian dates with optional time and mask input.',
         image: dateP,
         video: dateVidE,
         component: (
@@ -249,145 +288,35 @@ const TEXT: Record<"fa" | "en", LanguageText> = {
             showSecond
             showMask
             isTodaySelectPreset
-            onChange={(e:any) => console.log(e)}
+            onChange={(e) => console.log(e)}
             calendarType="gregorian"
             exportType="timeStamp"
           />
         ),
       },
       Mask: {
-        component: <Mask calendarType="gregorian" />,
-        title: "Mask",
-        desc: "The masked date input ensures that users can only enter values in a specific format. This feature helps prevent common errors and maintains data consistency.",
+        component: <Mask calendarType="gregorian" allowClear />,
+        title: 'Mask',
+        desc: 'Constrained date typing that prevents common format errors.',
         video: MaskVid,
         image: maskP,
       },
       timepicker: {
-        title: "Time Picker",
-        desc: "This time picker tool allows you to easily select hours and minutes (and seconds if needed). It's ideal for reservation forms, appointments, and setting reminders.",
+        title: 'Time Picker',
+        desc: 'Hours, minutes, and seconds for bookings, meetings, and alerts.',
         image: timeP,
         video: timeVidE,
         component: (
           <TimePicker
             calendarType="gregorian"
-            onChange={(e:any) => console.log(e)}
+            onChange={(e) => console.log(e)}
             showSecond
           />
         ),
       },
-      QuickStart: {
-        title: "Introduction",
-        desc: (
-          <>
-            <p>
-              This library is designed to meet the needs of Iranian developers
-              for selecting Persian (Jalali) dates. Supporting both
-              <strong> Gregorian and Shamsi calendars</strong>, you can easily
-              switch calendar types with a simple parameter.
-            </p>
-            <p>
-              Unlike many libraries that convert Gregorian dates to Jalali on
-              the fly, this library is built natively around the Jalali calendar
-              from the ground up.
-            </p>
-            <p>
-              Our goal is to simplify user experience and provide extensive
-              customization options, so the appearance of most components is
-              easily changeable.
-            </p>
-            <p>
-              For date conversion, you only depend on one lightweight library:
-              <code>jalaali-js</code>. Jalali math uses the same accurate Borkowski algorithm.
-            </p>
-            <p>
-              We are grateful to all contributors who helped develop this tool.
-            </p>
-
-            <br />
-            <h4>Comparative Date Range Selection</h4>
-            <p>
-              One of the key features of this tool is comparing one date range
-              with another. For example:
-            </p>
-            <ul>
-              <li>
-                Comparing daily lab data with the previous day or last week
-              </li>
-              <li>
-                Reviewing company sales trends in the current season versus last
-                year
-              </li>
-            </ul>
-            <p>
-              Separate buttons are provided to navigate the main date range and
-              the comparison range.
-            </p>
-
-            <p>
-              This library is designed similarly to the Date Range Picker in the
-              well-known <strong>Google Analytics</strong> tool, allowing users
-              to select and compare date ranges separately and easily. The main
-              difference lies in native support for the Jalali calendar and
-              advanced date and time selection features.
-            </p>
-
-            <h4>
-              {" "}
-              <TickIcon /> Date Picker
-            </h4>
-            <p>
-              The date picker component supports editable masked input and
-              <strong> TimePicker </strong>, allowing users to select date and
-              time down to the second.
-            </p>
-
-            <h4>
-              {" "}
-              <TickIcon /> Time Picker
-            </h4>
-            <p>
-              This component is designed solely for time selection. If provided
-              with a date, it modifies the time part; otherwise, it changes the
-              current date's time.
-            </p>
-
-            <h4>
-              {" "}
-              <TickIcon /> Masked Date Input
-            </h4>
-            <p>
-              By typing the date directly in the specified format, users can
-              also use the keyboard to increase/decrease values. The input
-              smartly detects the number of days in each month and prevents
-              invalid entries.
-            </p>
-
-            <h4>
-              {" "}
-              <TickIcon /> Floating Element Hook
-            </h4>
-            <p>
-              A powerful, dependency-free hook to display floating content (like
-              Dropdown or Tooltip) next to a target element. It behaves
-              similarly to
-              <code>react-popper</code> and is fully customizable.
-            </p>
-          </>
-        ),
-
-        video: undefined,
-        image: undefined,
-      },
       rendersideHook: {
-        title: "Render Side Hook",
-        desc: `A powerful hook for controlling the position of elements such as tooltips, menus, and popups.
-
-Key features include:
-- Automatic position management with smart repositioning
-- Prevention of content overflow from the screen
-- Support for multiple positions (top, bottom, left, right, etc.)
-- Customizable offset and margin
-- Fast, lightweight, and framework-agnostic performance.`,
+        title: 'Render side hook',
+        desc: `Position tooltips, menus, and popups with automatic placement, overflow prevention, multi-side support, customizable offset, and a lightweight footprint.`,
         image: useR,
         image1: useR1,
         image2: useR2,
@@ -397,218 +326,248 @@ Key features include:
 };
 
 export function InitialComponent() {
-  const [lang, setLang] = useState<"fa" | "en">("fa");
-  const [activeSection, setActiveSection] = useState<SectionKey | null>(
-    "QuickStart"
-  );
+  const [lang, setLang] = useState<'fa' | 'en'>('fa');
+  const [activeSection, setActiveSection] = useState<SectionKey>('QuickStart');
+  const seo = SEO[lang];
   const sections = TEXT[lang].sections;
+  const active = sections[activeSection];
 
-  const handleLangToggle = () => {
-    const newLang = lang === "fa" ? "en" : "fa";
-    setLang(newLang);
-    document
-      .getElementById("container")
-      ?.classList.toggle("rtl", newLang === "fa");
-    document
-      .getElementById("container")
-      ?.classList.toggle("ltr", newLang === "en");
-  };
+  const jsonLd = useMemo(
+    () =>
+      JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'SoftwareApplication',
+        name: 'react-persian-range-picker',
+        applicationCategory: 'DeveloperApplication',
+        operatingSystem: 'Web',
+        offers: {
+          '@type': 'Offer',
+          price: '0',
+          priceCurrency: 'USD',
+        },
+        description: seo.description,
+        url: GITHUB_URL,
+        author: {
+          '@type': 'Person',
+          name: 'Hamidreza Fallahi',
+          url: 'https://github.com/hamidrezafallahi',
+        },
+        programmingLanguage: 'TypeScript',
+        keywords:
+          'React, Jalali, Persian date picker, range picker, Shamsi calendar, TimePicker, date mask',
+      }),
+    [seo.description]
+  );
+
+  useEffect(() => {
+    document.documentElement.lang = lang === 'fa' ? 'fa' : 'en';
+    document.documentElement.dir = lang === 'fa' ? 'rtl' : 'ltr';
+    document.title = seo.title;
+
+    const ensureMeta = (name: string, content: string, attr: 'name' | 'property' = 'name') => {
+      let el = document.head.querySelector(`meta[${attr}="${name}"]`) as HTMLMetaElement | null;
+      if (!el) {
+        el = document.createElement('meta');
+        el.setAttribute(attr, name);
+        document.head.appendChild(el);
+      }
+      el.content = content;
+    };
+
+    ensureMeta('description', seo.description);
+    ensureMeta('og:title', seo.title, 'property');
+    ensureMeta('og:description', seo.description, 'property');
+    ensureMeta('og:type', 'website', 'property');
+    ensureMeta('twitter:card', 'summary_large_image');
+    ensureMeta('twitter:title', seo.title);
+    ensureMeta('twitter:description', seo.description);
+  }, [lang, seo.description, seo.title]);
+
+  useEffect(() => {
+    const id = 'prp-software-jsonld';
+    let script = document.getElementById(id) as HTMLScriptElement | null;
+    if (!script) {
+      script = document.createElement('script');
+      script.id = id;
+      script.type = 'application/ld+json';
+      document.head.appendChild(script);
+    }
+    script.textContent = jsonLd;
+  }, [jsonLd]);
 
   return (
-    <div
-      id="container"
-      style={{
-        width: "99dvw",
-        height: "95vh",
-        padding:0,
-        margin:0,
-        display: "flex",
-        direction: lang === "fa" ? "rtl" : "ltr",
-        fontFamily: "sans-serif",
-      }}
-    >
-      {/* Sidebar */}
-      <div
-        style={{
-          width: "240px",
-          backgroundColor: "#1f1f1f",
-          color: "#fff",
-          padding: "1.5rem 1rem",
-          display: "flex",
-          flexDirection: "column",
-          gap: "0.75rem",
-          boxShadow: "4px 0 10px rgba(0,0,0,0.1)",
-        }}
-      >
-        <button
-          onClick={handleLangToggle}
-          className=""
-          type="button"
-          style={{
-            padding: "0.5rem",
-            backgroundColor: "#4a90e2",
-            border: "none",
-            color: "white",
-            borderRadius: "6px",
-            cursor: "pointer",
-            fontWeight: "bold",
-          }}
-        >
-          {lang === "fa" ? "English" : "فارسی"}
-        </button>
+    <div className={`${styles.page} ${lang === 'en' ? styles.pageEn : ''}`}>
+      <a className={styles.srOnly} href="#main-docs">
+        {lang === 'fa' ? 'پرش به محتوا' : 'Skip to content'}
+      </a>
 
-        {SECTION_KEYS.map((key) => (
-          <button
-            key={key}
-            onClick={() => setActiveSection(key)}
-            type="button"
-            style={{
-              padding: "0.6rem 0.5rem",
-              backgroundColor: activeSection === key ? "#4a90e2" : "#2c2c2c",
-              color: "#fff",
-              border: "none",
-              borderRadius: "4px",
-              cursor: "pointer",
-              textAlign: "start",
-            }}
-          >
-            {sections[key].title}
-          </button>
-        ))}
-      </div>
+      <div className={styles.shell}>
+        <header className={styles.topbar}>
+          <a className={styles.brandMark} href={GITHUB_URL} aria-label="react-persian-range-picker">
+            <span className={styles.logo} aria-hidden />
+            <span className={styles.brandText}>
+              <span className={styles.brandName}>Persian Range Picker</span>
+              <span className={styles.brandSub}>react-persian-range-picker</span>
+            </span>
+          </a>
 
-      {/* Main Content */}
-      <div
-        style={{
-          flex: 1,
-          backgroundColor: "#f8f9fa",
-          padding: "2rem",
-          overflowY: "auto",
-        }}
-      >
-        {activeSection ? (
-          <div
-            style={{
-              backgroundColor: "#fff",
-              borderRadius: "12px",
-              padding: "2rem",
-              boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
-              lineHeight: 1.8,
-            }}
-          >
-            <h2
-              style={{
-                fontSize: "1.75rem",
-                color: "#222",
-                marginBottom: "1rem",
-              }}
+          <div className={styles.topActions}>
+            <a className={styles.linkBtn} href={NPM_URL} target="_blank" rel="noreferrer">
+              npm
+            </a>
+            <a className={styles.linkBtn} href={GITHUB_URL} target="_blank" rel="noreferrer">
+              GitHub
+            </a>
+            <button
+              type="button"
+              className={styles.langBtn}
+              onClick={() => setLang((prev) => (prev === 'fa' ? 'en' : 'fa'))}
             >
-              {sections[activeSection].title}
-            </h2>
-            <p
-              style={{
-                color: "#444",
-                fontSize: "1rem",
-                marginBottom: "1.5rem",
-              }}
-            >
-              {sections[activeSection].desc}
-            </p>
-
-            {sections[activeSection].video && (
-              <div
-                style={{
-                  padding: "1rem",
-                  backgroundColor: "#f0f0f0",
-                }}
-              >
-                <video
-                  autoPlay
-                  loop
-                  playsInline
-                  muted
-                  src={sections[activeSection].video}
-                  style={{
-                    borderRadius: "8px",
-                    marginBottom: "1.5rem",
-                  }}
-                />
-              </div>
-            )}
-
-            {sections[activeSection].image && (
-              <div
-                style={{
-                  padding: "1rem",
-                  backgroundColor: "#f0f0f0",
-                }}
-              >
-                <img
-                  alt="preview"
-                  src={sections[activeSection].image}
-                  style={{
-                    width: "60%",
-                    borderRadius: "8px",
-                    marginBottom: "1.5rem",
-                  }}
-                />
-              </div>
-            )}
-            {sections[activeSection].image1 && (
-              <div
-                style={{
-                  padding: "1rem",
-                  backgroundColor: "#f0f0f0",
-                }}
-              >
-                <img
-                  alt="preview"
-                  src={sections[activeSection].image1}
-                  style={{
-                    width: "60%",
-                    borderRadius: "8px",
-                    marginBottom: "1.5rem",
-                  }}
-                />
-              </div>
-            )}
-            {sections[activeSection].image2 && (
-              <div
-                style={{
-                  padding: "1rem",
-                  backgroundColor: "#f0f0f0",
-                }}
-              >
-                <img
-                  alt="preview"
-                  src={sections[activeSection].image2}
-                  style={{
-                    width: "60%",
-                    borderRadius: "8px",
-                    marginBottom: "1.5rem",
-                  }}
-                />
-              </div>
-            )}
-
-            {sections[activeSection].component && (
-              <div
-                style={{
-                  padding: "1rem",
-                  backgroundColor: "#f0f0f0",
-                  display: "flex",
-                  justifyContent: "end",
-                }}
-              >
-                {sections[activeSection].component}
-              </div>
-            )}
+              {lang === 'fa' ? 'English' : 'فارسی'}
+            </button>
           </div>
-        ) : (
-          <div style={{ color: "#777", fontSize: "1.2rem" }}>
-            {sections.content}
+        </header>
+
+        <section className={styles.hero} aria-labelledby="hero-title">
+          <div className={styles.heroGrid}>
+            <div>
+              <p className={styles.eyebrow}>Jalali · Gregorian · React</p>
+              <h1 id="hero-title" className={styles.h1}>
+                {seo.h1}
+              </h1>
+              <p className={styles.lead}>{seo.lead}</p>
+
+              <div className={styles.ctaRow}>
+                <button
+                  type="button"
+                  className={`${styles.cta} ${styles.ctaPrimary}`}
+                  onClick={() => setActiveSection('QuickStart')}
+                >
+                  {seo.ctaDocs}
+                </button>
+                <a
+                  className={`${styles.cta} ${styles.ctaGhost}`}
+                  href={NPM_URL}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  {seo.ctaNpm}
+                </a>
+                <a
+                  className={`${styles.cta} ${styles.ctaGhost}`}
+                  href={GITHUB_URL}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  {seo.ctaGithub}
+                </a>
+              </div>
+
+              <code className={styles.install}>{INSTALL_CMD}</code>
+
+              <div className={styles.chips} aria-label="features">
+                {seo.features.map((item) => (
+                  <span key={item} className={styles.chip}>
+                    {item}
+                  </span>
+                ))}
+              </div>
+            </div>
           </div>
-        )}
+        </section>
+
+        <div className={styles.layout}>
+          <nav className={styles.side} aria-label={seo.docs}>
+            <p className={styles.sideLabel}>{seo.docs}</p>
+            {SECTION_KEYS.map((key) => (
+              <button
+                key={key}
+                type="button"
+                className={`${styles.navBtn} ${
+                  activeSection === key ? styles.navBtnActive : ''
+                }`}
+                onClick={() => setActiveSection(key)}
+                aria-current={activeSection === key ? 'page' : undefined}
+              >
+                {sections[key].title}
+              </button>
+            ))}
+          </nav>
+
+          <main id="main-docs" className={styles.main}>
+            <article className={styles.panel} key={`${lang}-${activeSection}`}>
+              <h2 className={styles.sectionTitle}>{active.title}</h2>
+              <div className={styles.bodyCopy}>{active.desc}</div>
+
+              {(active.video || active.image || active.image1 || active.image2) && (
+                <div className={styles.mediaStack}>
+                  {active.video && (
+                    <div className={styles.mediaFrame}>
+                      <video
+                        autoPlay
+                        loop
+                        playsInline
+                        muted
+                        src={active.video}
+                        title={`${active.title} demo video`}
+                      />
+                    </div>
+                  )}
+                  {active.image && (
+                    <div className={styles.mediaFrame}>
+                      <img src={active.image} alt={`${active.title} preview`} />
+                    </div>
+                  )}
+                  {active.image1 && (
+                    <div className={styles.mediaFrame}>
+                      <img src={active.image1} alt={`${active.title} preview 2`} />
+                    </div>
+                  )}
+                  {active.image2 && (
+                    <div className={styles.mediaFrame}>
+                      <img src={active.image2} alt={`${active.title} preview 3`} />
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {active.component && (
+                <section className={styles.playground} aria-label={seo.playground}>
+                  <div className={styles.playgroundLabel}>
+                    <span>{seo.playground}</span>
+                    <span style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}>
+                      <span className={styles.liveDot} aria-hidden />
+                      {seo.live}
+                    </span>
+                  </div>
+                  <div className={styles.playgroundBody}>{active.component}</div>
+                </section>
+              )}
+            </article>
+
+            <footer className={styles.footer}>
+              <span>
+                MIT · {lang === 'fa' ? 'ساخته‌شده توسط' : 'Built by'}{' '}
+                <a href="https://github.com/hamidrezafallahi" target="_blank" rel="noreferrer">
+                  Hamidreza Fallahi
+                </a>
+              </span>
+              <span>
+                <a href={NPM_URL} target="_blank" rel="noreferrer">
+                  npm
+                </a>
+                {' · '}
+                <a href={GITHUB_URL} target="_blank" rel="noreferrer">
+                  GitHub
+                </a>
+                {' · '}
+                <a href={`${GITHUB_URL}#readme`} target="_blank" rel="noreferrer">
+                  README
+                </a>
+              </span>
+            </footer>
+          </main>
+        </div>
       </div>
     </div>
   );

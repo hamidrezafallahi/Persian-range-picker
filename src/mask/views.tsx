@@ -15,6 +15,8 @@ interface MaskDisplayViewProps {
   baseValue: number | null;
   placeholder?: string;
   fontStyle?: MaskFontStyle;
+  disabled?: boolean;
+  onActivate?: () => void;
 }
 
 export function MaskDisplayView({
@@ -23,26 +25,58 @@ export function MaskDisplayView({
   baseValue,
   placeholder,
   fontStyle,
+  disabled = false,
+  onActivate,
 }: MaskDisplayViewProps) {
+  const faFont = locale === 'fa' ? style.font_Number_Farsi : '';
+
   return (
     <div
-      className={`${style.flex} ${style.justify_center} ${style.gap_1} ${style.w_full} ${style.items_center}`}
-      style={{ ...fontStyle }}
+      role="button"
+      tabIndex={disabled ? -1 : 0}
+      aria-label={placeholder ?? '____/__/__'}
+      className={`${style.flex} ${style.justify_center} ${style.gap_1} ${style.w_full} ${style.items_center} ${faFont}`}
+      style={{ ...fontStyle, outline: 'none', cursor: disabled ? 'not-allowed' : 'text' }}
+      onFocus={() => {
+        if (!disabled) onActivate?.();
+      }}
+      onClick={() => {
+        if (!disabled) onActivate?.();
+      }}
+      onKeyDown={(e) => {
+        if (disabled) return;
+        if (e.key === 'Enter' || e.key === ' ' || e.key === 'ArrowDown') {
+          e.preventDefault();
+          onActivate?.();
+          return;
+        }
+        // Typing a digit while focused activates edit mode
+        if (/^[0-9۰-۹]$/.test(e.key)) {
+          e.preventDefault();
+          onActivate?.();
+        }
+      }}
     >
       {baseValue == null ? (
         <div>{placeholder ?? '____/__/__'}</div>
       ) : (
         <>
           <div>
-            {locale === 'fa' ? toPersianDigits(parts[0]) : parts[0] || '____'}
+            {locale === 'fa'
+              ? toPersianDigits(parts[0] || '____')
+              : parts[0] || '____'}
           </div>
           <div>{'/'}</div>
           <div>
-            {locale === 'fa' ? toPersianDigits(parts[1]) : parts[1] || '__'}
+            {locale === 'fa'
+              ? toPersianDigits(parts[1] || '__')
+              : parts[1] || '__'}
           </div>
           <div>{'/'}</div>
           <div>
-            {locale === 'fa' ? toPersianDigits(parts[2]) : parts[2] || '__'}
+            {locale === 'fa'
+              ? toPersianDigits(parts[2] || '__')
+              : parts[2] || '__'}
           </div>
         </>
       )}
@@ -56,9 +90,9 @@ interface MaskSeparatedViewProps {
   fontSize: number;
   fontStyle?: MaskFontStyle;
   inputClassName?: string;
-  yearRef: RefObject<HTMLInputElement | null>;
-  monthRef: RefObject<HTMLInputElement | null>;
-  dayRef: RefObject<HTMLInputElement | null>;
+  yearRef: RefObject<HTMLInputElement>;
+  monthRef: RefObject<HTMLInputElement>;
+  dayRef: RefObject<HTMLInputElement>;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onClick: (e: React.MouseEvent<HTMLElement>) => void;
   onKeyDown: (e: React.KeyboardEvent<HTMLInputElement>) => void;
@@ -100,7 +134,6 @@ export function MaskSeparatedView({
       <input
         type="text"
         name="year"
-        tabIndex={0}
         autoComplete="off"
         ref={yearRef}
         value={parts[0]}
@@ -129,7 +162,6 @@ export function MaskSeparatedView({
       <input
         type="text"
         name="month"
-        tabIndex={1}
         autoComplete="off"
         ref={monthRef}
         value={parts[1]}
@@ -157,7 +189,6 @@ export function MaskSeparatedView({
       <input
         type="text"
         name="day"
-        tabIndex={2}
         ref={dayRef}
         value={parts[2]}
         autoComplete="off"
@@ -182,9 +213,9 @@ interface MaskFullViewProps {
   errorClass?: string;
   errorTargets: number[];
   maskHeight: number;
-  fullContainerRef: RefObject<HTMLDivElement | null>;
-  fullInputRef: RefObject<HTMLInputElement | null>;
-  spanRefs: RefObject<HTMLSpanElement | null>[];
+  fullContainerRef: RefObject<HTMLDivElement>;
+  fullInputRef: RefObject<HTMLInputElement>;
+  spanRefs: RefObject<HTMLSpanElement>[];
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onKeyDown: (e: React.KeyboardEvent<HTMLInputElement>) => void;
   onFocusFull: () => void;

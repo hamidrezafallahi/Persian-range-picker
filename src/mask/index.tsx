@@ -42,7 +42,7 @@ export function Mask(props: MaskProps) {
     maskPlaceHolder,
     isTodaySelectPreset = false,
     exportType = 'IsoString',
-    MaskFontStyle = { fontSize: '14px', fontFamily: 'unset' },
+    MaskFontStyle,
     defaultValue,
     value,
     Style,
@@ -50,12 +50,16 @@ export function Mask(props: MaskProps) {
 
   const locale = getLocaleFromCalendar(calendarType);
 
+  // Keep standalone Mask and DatePicker-embedded Mask visually identical.
+  // Avoid `unset`/inherit — <button> UA styles otherwise diverge from <div>.
+  const defaultFaFont = 'Tahoma, "Segoe UI", sans-serif';
   const resolvedFontStyle = useMemo(
     () => ({
+      fontSize: '14px',
       ...MaskFontStyle,
       fontFamily:
         MaskFontStyle?.fontFamily ??
-        (calendarType === 'gregorian' ? 'unset' : 'IRANSans'),
+        (calendarType === 'gregorian' ? 'inherit' : defaultFaFont),
     }),
     [MaskFontStyle, calendarType]
   );
@@ -90,6 +94,7 @@ export function Mask(props: MaskProps) {
     handleChange,
     handleKeyDown,
     handleClear,
+    activateSeparatedOnYear,
     handleTripleClick,
     handleSegmentMouseDown,
     handleFocusFull,
@@ -117,6 +122,8 @@ export function Mask(props: MaskProps) {
           backgroundColor: highlightColor,
           pointerEvents: disabled ? 'none' : 'auto',
           userSelect: disabled ? 'none' : 'auto',
+          fontFamily: resolvedFontStyle.fontFamily,
+          fontSize: resolvedFontStyle.fontSize,
           ...Style,
         }}
       >
@@ -153,6 +160,8 @@ export function Mask(props: MaskProps) {
                 baseValue={baseValue}
                 placeholder={maskPlaceHolder}
                 fontStyle={resolvedFontStyle}
+                disabled={disabled}
+                onActivate={activateSeparatedOnYear}
               />
             ) : (
               <MaskSeparatedView
