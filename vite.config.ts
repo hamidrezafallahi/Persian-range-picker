@@ -11,11 +11,12 @@ export default defineConfig({
       fileName: (format) => `persian-range-picker.${format}.js`,
     },
     rollupOptions: {
-      external: ["react", "react-dom"], // React جدا بمونه و تکراری نشه
+      external: ["react", "react-dom", "jalaali-js"],
       output: {
         globals: {
           react: "React",
           "react-dom": "ReactDOM",
+          "jalaali-js": "jalaali",
         },
       },
     },

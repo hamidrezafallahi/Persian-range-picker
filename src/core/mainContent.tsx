@@ -64,7 +64,7 @@ const MainContent = ({ ...props }: IMainContentProps) => {
     additionalElement = [],
     periodListClassName,
     tabClassName,
-    accentColor = "#2563eb",
+    accentColor,
     locale = "fa",
     setStep,
     setZone,
@@ -90,11 +90,14 @@ const MainContent = ({ ...props }: IMainContentProps) => {
     exportType,
   } = props;
 
+  const brandAccent = accentColor || primaryColor;
+
   const [activeTab, setActiveTab] = useState<string>(activeTable);
   const handleTabChange = (key: ITab["key"]) => {
     setActiveTab(key);
   };
   const handleChange = (key: ITab["key"], value: any) => {
+ 
     const defaultKeys = [
       "day",
       "week",
@@ -129,7 +132,7 @@ const MainContent = ({ ...props }: IMainContentProps) => {
     }
   };
   const otherProps = {
-    accentColor,
+    accentColor: brandAccent,
     activeCompareStep,
     value,
     defaultValue,
@@ -204,8 +207,8 @@ const MainContent = ({ ...props }: IMainContentProps) => {
         {tabs.map((tab) => (
           <button
             style={{
-              color: activeTab === tab.key ? accentColor : "",
-              // border: activeTab === tab.key ? accentColor : "",
+              color: activeTab === tab.key ? brandAccent : "",
+              // border: activeTab === tab.key ? brandAccent : "",
             }}
             key={tab.key}
             onClick={() => handleTabChange(tab.key)}

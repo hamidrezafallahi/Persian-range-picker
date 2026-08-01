@@ -1,4 +1,4 @@
-import jmoment from 'moment-jalaali';
+import jmoment from '../dateEngine';
 
 import type { TLocale } from '../core/type';
 
@@ -29,7 +29,12 @@ export const getFirstDayIndexInMonth = (
   if (locale === "en") {
     dayName = jmoment([year, month, 1]).format("ddd");
   } else {
-    dayName = jmoment(`${year}-${month + 1}-01`, "jYYYY-jMM-jDD").format("ddd");
+    // month is 0-indexed; use jM (1–2 digits) — jMM requires zero-padded month
+    // and fails for values like "1405-5-01", producing Invalid Date.
+    dayName = jmoment(
+      `${year}/${month + 1}/1`,
+      "jYYYY/jM/jD"
+    ).format("ddd");
   }
   const dayOrder =
     locale === "fa"

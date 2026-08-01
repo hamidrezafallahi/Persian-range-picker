@@ -18,5 +18,16 @@
     "strict": true,
     "types": ["node"]
   },
-  "include": ["src"]
+  "include": ["src"],
+  "exclude": [
+    "src/**/__tests__/**",
+    "src/test/**",
+    "src/demoComponent/**",
+    "src/initialComponent/**",
+    "src/main.tsx",
+    "**/*.test.ts",
+    "**/*.test.tsx",
+    "**/*.spec.ts",
+    "**/*.spec.tsx"
+  ]
 }

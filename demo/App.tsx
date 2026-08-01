@@ -1,4 +1,4 @@
-import { InitialComponent } from '../src/initialComponent/index';
+import { InitialComponent } from '../src/initialComponent';
 
 export default function App() {
   return <InitialComponent />;

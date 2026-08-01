@@ -5,10 +5,12 @@ import React, {
 } from 'react';
 import { createPortal } from 'react-dom';
 
-import moment from 'moment-jalaali';
+import moment from '../dateEngine';
 
 import { CalenderIcon } from '../assets/icons/CalenderIcon';
+import { formatExport } from '../core/formatExport';
 import { toPersianDigits } from '../core/helper';
+import type { TLocale } from '../core/type';
 import style from '../main.module.css';
 import {
   TimePickerProps,
@@ -33,6 +35,8 @@ export const TimePicker = ({ ...props }: TimePickerProps) => {
     placeholder = "انتخاب زمان",
     tertiaryColor = "#939393",
     highlightColor = "#f4f4f4",
+    primaryColor = "#000",
+    backgroundColor = "#fff",
     format = "HH:mm:ss",
     showSecond = false,
     showNow = true,
@@ -88,17 +92,7 @@ export const TimePicker = ({ ...props }: TimePickerProps) => {
   const handleSubmit = () => {
 
     if (time && time > 0) {
-      if (exportType == "IsoString") {
-        onChange?.(
-          locale == "fa"
-            ? moment(time).format("YYYY-MM-DDTHH:mm:ss.SSSZ").replace(/[۰-۹]/g, d => "۰۱۲۳۴۵۶۷۸۹".indexOf(d).toString())
-            : moment.utc(time).format("YYYY-MM-DDTHH:mm:ss.SSSZ")
-        );
-      } else {
-        onChange?.(
-          locale == "fa" ? moment(time).valueOf() : moment.utc(time).valueOf()
-        );
-      }
+      onChange?.(formatExport(time, locale as TLocale, exportType));
     }
     setOpen(false);
   };
@@ -140,6 +134,7 @@ export const TimePicker = ({ ...props }: TimePickerProps) => {
 
     return Array.from({ length: Math.ceil(count / step) }, (_, i) => {
       const val = i * step;
+      const isActive = active === val;
       return (
         <button
           key={val}
@@ -156,16 +151,16 @@ export const TimePicker = ({ ...props }: TimePickerProps) => {
             ${style.text_center}
             ${style.cursor_pointer}
               ${style.border_none}
-            ${
-              active === val
-                ? `${style.pointer_events_auto} ${style.opacity_100} ${style.text_gray123} ${style.text_sm}`
-                : ""
-            }
           `}
           ref={(el) => {
             buttonRefs.current[i] = el;
           }}
-          style={{ color: tertiaryColor, fontSize: "14px" }}
+          style={{
+            color: isActive ? backgroundColor : tertiaryColor,
+            backgroundColor: isActive ? primaryColor : "transparent",
+            fontSize: "14px",
+            fontWeight: isActive ? 500 : 400,
+          }}
         >
           {locale == "fa" ? toPersianDigits(pad(val)) : pad(val)}
         </button>
@@ -174,6 +169,10 @@ export const TimePicker = ({ ...props }: TimePickerProps) => {
   };
 
   useEffect(() => {
+    if (value === null) {
+      setTime(null);
+      return;
+    }
     if (
       value !== undefined &&
       moment(value as number|string).valueOf() !== moment(time).valueOf()
@@ -293,9 +292,9 @@ export const TimePicker = ({ ...props }: TimePickerProps) => {
                     ${okButtonClassName}
                   `}
                     style={{
-                      background: "black",
-                      borderColor: "black",
-                      color: "white",
+                      background: primaryColor,
+                      borderColor: primaryColor,
+                      color: backgroundColor,
                     }}
                   >
                     {locale === "fa" ? "تایید" : "OK"}
@@ -379,9 +378,9 @@ export const TimePicker = ({ ...props }: TimePickerProps) => {
                       ${okButtonClassName}
                     `}
                       style={{
-                        background: "black",
-                        borderColor: "black",
-                        color: "white",
+                        background: primaryColor,
+                        borderColor: primaryColor,
+                        color: backgroundColor,
                       }}
                     >
                       {locale === "fa" ? "تایید" : "OK"}

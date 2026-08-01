@@ -4,7 +4,7 @@ import type {
   SetStateAction,
 } from 'react';
 
-import moment from 'moment-jalaali';
+import moment from '../dateEngine';
 
 import style from '../main.module.css';
 import { TLocale } from './type';
@@ -95,7 +95,10 @@ export const Footer = ({ ...props }: IFooter) => {
           className={`${style.flex} ${style.justify_between} ${style.w_full} ${style.px_2} `}
         >
           <NowButton handleSelect={handleSelect} />
-          <SubmitTimeButton handleSelect={handleSelect} />
+          <SubmitTimeButton
+            handleSelect={handleSelect}
+            primaryColor={primaryColor}
+          />
         </div>
       ) : (
         <button
@@ -125,16 +128,20 @@ const NowButton = ({ ...props }) => {
 };
 
 const SubmitTimeButton = ({ ...props }) => {
-  const { handleSelect, okButtonClassName = "" } = props;
+  const {
+    handleSelect,
+    okButtonClassName = "",
+    primaryColor = "#000",
+  } = props;
   return (
     <button
       onClick={() => handleSelect("submit")}
       type="button"
       className={`${style.p_2} ${style.px_3} ${style.border} ${style.rounded_md} ${okButtonClassName}`}
       style={{
-        background: "black",
-        borderColor: "black",
-        color: "white",
+        background: primaryColor,
+        borderColor: primaryColor,
+        color: "#fff",
       }}
     >
       Ok

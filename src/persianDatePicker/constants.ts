@@ -79,3 +79,6 @@ export {
   persianMonthToGeorgian,
   PmonthMap,
 };
+
+/** Fixed shell height so DAY / MONTH / YEAR views don't jump. */
+export const CALENDAR_PANEL_HEIGHT = 328;

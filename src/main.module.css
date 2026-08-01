@@ -1,13 +1,6 @@
- @font-face {
-    font-family: "IRANSans";
-    src: url("./assets/fonts/IRANSansWeb\(FaNum\).eot") format("eot"),
-      url("./assets/fonts/IRANSansWeb(FaNum).woff") format("woff"),
-      url("./assets/fonts/IRANSansWeb(FaNum).ttf") format("truetype");
-    font-weight: normal;
-    font-style: normal;
-  }
+/* Optional Farsi numeral font — host apps can override .font_Number_Farsi */
 .font_Number_Farsi{
-  font-family:"IRANSans" !important;
+    font-family: Tahoma, "Segoe UI", sans-serif !important;
 }  
 .switch {
   position: relative;

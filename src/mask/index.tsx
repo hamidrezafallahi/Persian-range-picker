@@ -1,36 +1,31 @@
-import React, {
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
-
-import moment from 'moment-jalaali';
+import { useMemo } from 'react';
 
 import { ClearIcon } from '../assets/icons/ClearIcon';
-import {
-  getTimestamp,
-  toPersianDigits,
-} from '../core/helper';
-import type {
-  IDate,
-  TLocale,
-} from '../core/type';
+import { toPersianDigits } from '../core/helper';
 import style from '../main.module.css';
-import { MaskProps } from '../persianDatePicker/type';
+import type { MaskProps } from './types';
+import { MaskMode } from './types';
+import { useMaskController } from './useMaskController';
+import { formatDisplayMask, getLocaleFromCalendar } from './utils';
+import {
+  MaskDisplayView,
+  MaskFullView,
+  MaskSeparatedView,
+} from './views';
 
-type TimeZone = "year" | "month" | "day";
 const defaultErrorClass = `${style.border_red_700}`;
-const convertPersianToEnglishNumbers = (input: string): string => {
-  const persian = "۰۱۲۳۴۵۶۷۸۹";
-  const english = "0123456789";
-  return input.replace(/[۰-۹]/g, (d) => english[persian.indexOf(d)] || d);
-};
-export function Mask({ ...props }: MaskProps) {
+
+/**
+ * Mask — Jalali/Gregorian date input with three interaction modes:
+ * 1. Display (read-only)
+ * 2. Separated year / month / day fields
+ * 3. Full select-all compact editor (triple-click)
+ *
+ * Works standalone or embedded inside DatePicker desktop trigger.
+ */
+export function Mask(props: MaskProps) {
   const {
-    defaultValue,
-    value,
-    calendarType = "jalali",
+    calendarType = 'jalali',
     onError,
     inputClassName,
     maskClassName,
@@ -41,701 +36,72 @@ export function Mask({ ...props }: MaskProps) {
     onClear,
     prefix,
     ErrorClass = defaultErrorClass,
-    tertiaryColor = "#939393",
-    highlightColor = "#f4f4f4",
+    tertiaryColor = '#939393',
+    highlightColor = '#f4f4f4',
     disabled = false,
     maskPlaceHolder,
     isTodaySelectPreset = false,
-    exportType = "IsoString",
-    MaskFontStyle = { fontSize: "14px", fontFamily: "unset" },
+    exportType = 'IsoString',
+    MaskFontStyle,
+    defaultValue,
+    value,
+    Style,
   } = props;
-  const locale = calendarType == "jalali" ? "fa" : "en";
-  const myFont = MaskFontStyle?.fontFamily
-    ? MaskFontStyle?.fontFamily
-    : calendarType == "jalali"
-    ? "IRANSans"
-    : calendarType == "gregorian"
-    ? "unset"
-    : "IRANSans";
 
-  const initialTemp = timestampToDateNumbers(
+  const locale = getLocaleFromCalendar(calendarType);
+
+  // Keep standalone Mask and DatePicker-embedded Mask visually identical.
+  // Avoid `unset`/inherit — <button> UA styles otherwise diverge from <div>.
+  const defaultFaFont = 'Tahoma, "Segoe UI", sans-serif';
+  const resolvedFontStyle = useMemo(
+    () => ({
+      fontSize: '14px',
+      ...MaskFontStyle,
+      fontFamily:
+        MaskFontStyle?.fontFamily ??
+        (calendarType === 'gregorian' ? 'inherit' : defaultFaFont),
+    }),
+    [MaskFontStyle, calendarType]
+  );
+
+  const controller = useMaskController({
+    value,
+    defaultValue,
+    onMaskChange,
+    onError,
+    onClear,
+    exportType,
+    isTodaySelectPreset,
+    MaskFontStyle: resolvedFontStyle,
     locale,
-    getTimestamp(defaultValue as number | string)
-  );
+  });
 
-  const [separatedValue, setSeparatedValue] = useState(initialTemp);
-  const today =
-    locale == "fa"
-      ? moment().startOf("day").valueOf()
-      : moment().utc().startOf("day").valueOf();
+  const {
+    mode,
+    parts,
+    baseValue,
+    compactValue,
+    errorTargets,
+    fontSize,
+    rootRef,
+    focusRef,
+    fullContainerRef,
+    yearInputRef,
+    monthInputRef,
+    dayInputRef,
+    fullInputRef,
+    spanRefs,
+    handleChange,
+    handleKeyDown,
+    handleClear,
+    activateSeparatedOnYear,
+    handleTripleClick,
+    handleSegmentMouseDown,
+    handleFocusFull,
+  } = controller;
 
-  const [baseValue, setBaseValue] = useState<IDate["from"] | null>(
-    defaultValue
-      ? getTimestamp(defaultValue as number | string)
-      : isTodaySelectPreset
-      ? today
-      : null
-  );
-
-  const [fullValue, setFullValue] = useState<string>(
-    `${initialTemp[0]}${initialTemp[1]}${initialTemp[2]}`
-  );
-
-  const fullValueRef = useRef<string>(
-    `${initialTemp[0]}${initialTemp[1]}${initialTemp[2]}`
-  );
-  const [isEdit, setIsEdit] = useState<0 | 1 | 2>(0);
-  const editModeRef = useRef<0 | 1 | 2>(null);
-  const separatedValueRef = useRef(initialTemp);
-  const [errorTarget, setErrorTarget] = useState<number[]>([]);
-  const errors = useRef<number[]>([]);
-  const focusRef = useRef<HTMLDivElement | null>(null);
-  const fullRef = useRef<HTMLInputElement | null>(null);
-  const yearInputRef = useRef<HTMLInputElement | null>(null);
-  const monthInputRef = useRef<HTMLInputElement | null>(null);
-  const dayInputRef = useRef<HTMLInputElement | null>(null);
-  const fullInputRef = useRef<HTMLInputElement>(null);
-  const span0 = useRef<HTMLSpanElement | null>(null);
-  const span1 = useRef<HTMLSpanElement | null>(null);
-  const span2 = useRef<HTMLSpanElement | null>(null);
-  const spanRefs = [span0, span1, span2];
-  const clickCount = useRef(0);
-  const clickTimer = useRef<ReturnType<typeof setTimeout> | undefined>(
-    undefined
-  );
-  const message = locale == "fa" ? "تاریخ نا معتبر است " : "Date is invalid";
-  errors.current = errorTarget;
-  separatedValueRef.current = separatedValue;
-  editModeRef.current = isEdit;
-  const formatFullValueToTimeStamp = (FullValue: string) => {
-    let changeToTimestamp = null;
-    if (locale == "en") {
-      changeToTimestamp = moment(FullValue, "YYYYMMDD").valueOf();
-    } else {
-      changeToTimestamp = moment(FullValue, "jYYYYjMMjDD").valueOf();
-    }
-    return changeToTimestamp;
-  };
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const rawValue = e.target.value;
-    const newValue = convertPersianToEnglishNumbers(rawValue).replace(
-      /\D/g,
-      ""
-    );
-    if (errorTarget.includes(3)) {
-      setErrorTarget((prev) => {
-        return [...prev.filter((item) => item !== 3)];
-      });
-    }
-    if (e.target.name == "year") {
-      setSeparatedValue((prev) => {
-        const newState = [...prev];
-        newState[0] = newValue;
-        return newState;
-      });
-      if (errorTarget.includes(0)) {
-        setErrorTarget((prev) => {
-          return [...prev.filter((item) => item !== 0)];
-        });
-      }
-      if (newValue.length == 4) {
-        validSeparatedValue(
-          newValue,
-          locale,
-          yearInputRef as React.RefObject<HTMLInputElement>,
-          onError as () => void
-        );
-      }
-      // }
-    } else if (e.target.name == "month") {
-      setSeparatedValue((prev) => {
-        const newState = [...prev];
-        newState[1] = newValue;
-        return newState;
-      });
-      if (errorTarget.includes(1)) {
-        setErrorTarget((prev) => {
-          return [...prev.filter((item) => item !== 1)];
-        });
-      }
-      if (newValue.length == 2) {
-        validSeparatedValue(
-          newValue,
-          locale,
-          monthInputRef as React.RefObject<HTMLInputElement>,
-          onError as () => void
-        );
-      }
-    } else if (e.target.name == "day") {
-      setSeparatedValue((prev) => {
-        const newState = [...prev];
-        newState[2] = newValue;
-        return newState;
-      });
-      if (errorTarget.includes(2)) {
-        setErrorTarget((prev) => {
-          return [...prev.filter((item) => item !== 2)];
-        });
-      }
-      if (newValue.length == 2) {
-        validSeparatedValue(
-          newValue,
-          locale,
-          dayInputRef as React.RefObject<HTMLInputElement>,
-          onError as () => void
-        );
-      }
-    } else if (e.target.name == "full") {
-      setFullValue(newValue);
-      fullValueRef.current = newValue;
-      if (errorTarget.includes(3)) {
-        setErrorTarget((prev) => {
-          return [...prev.filter((item) => item !== 3)];
-        });
-      }
-      if (newValue.length == 8) {
-        if (!checkDateByRegex(formatFullValueToTimeStamp(newValue), locale)) {
-          onError?.(message);
-          setErrorTarget((prev) => [...prev.filter((item) => item !== 3), 3]);
-        }
-      }
-    }
-  };
-  const handleFocusFullInput = () => {
-    if (fullInputRef.current) {
-      fullInputRef.current.select();
-    }
-  };
-  const formatInputValue = (value: string) => {
-    const year = value.slice(0, 4).padEnd(4, "_");
-    const month = value.slice(4, 6).padEnd(2, "_");
-    const day = value.slice(6, 8).padEnd(2, "_");
-    return `${year}/${month}/${day}`;
-  };
-  function handleCount(
-    value: string,
-    arrow: React.KeyboardEvent<HTMLInputElement>["key"],
-    index: number
-  ) {
-    const cleanedValue = convertPersianToEnglishNumbers(value.trim());
-    const numValue = Number(cleanedValue);
-    const isUp = arrow === "ArrowUp";
-    const change = isUp ? 1 : -1;
-    const newVal = numValue + change;
-    const clamp = (val: number, min: number, max: number) =>
-      Math.min(Math.max(val, min), max);
-    const pad = (val: number) => val.toString().padStart(2, "0");
-
-    switch (index) {
-      case 0: {
-        // Year
-        const min = 0;
-        const max = 9999;
-        return clamp(newVal, min, max).toString();
-      }
-      case 1: {
-        // Month
-        const min = 1;
-        const max = 12;
-        return pad(clamp(newVal, min, max));
-      }
-      case 2: {
-        // Day
-        const min = 1;
-        const max = getEndOfMonth(
-          Number(separatedValue[0]),
-          Number(separatedValue[1]),
-          locale,
-          onError,
-          index
-        );
-        return pad(clamp(newVal, min, max));
-      }
-      default:
-        return value;
-    }
-  }
-
-  function validSeparatedValue(
-    value: string,
-    locale: TLocale,
-    ref: React.RefObject<HTMLInputElement>,
-    onError: (e: string) => void
-  ): boolean {
-    const num = Number(value);
-    const name: TimeZone = ref.current.name as TimeZone;
-    const target =
-      name == "year" ? 0 : name == "month" ? 1 : name == "day" ? 2 : 3;
-    const ranges = {
-      year: { min: 0, max: 9999 },
-      month: { min: 1, max: 12 },
-
-      day: {
-        min: 1,
-        max: getEndOfMonth(
-          Number(separatedValueRef.current[0]),
-          Number(separatedValueRef.current[1]),
-          locale,
-          onError,
-          target
-        ),
-      },
-    };
-
-    const { min, max } = ranges[name];
-    if (num < min || num > max) {
-      ref.current.select();
-      setErrorTarget((prev) => [
-        ...prev.filter((item) => item !== target),
-        target,
-      ]);
-      if (target !== 2) {
-        onError?.(message);
-      }
-      return false;
-    } else {
-      setErrorTarget((prev) => {
-        return [...prev.filter((item) => item !== target)];
-      });
-      if (name !== "day") {
-        const focusable = Array.from(document.querySelectorAll("input")).sort(
-          (a, b) => a.tabIndex - b.tabIndex
-        );
-
-        const active =
-          document.activeElement instanceof HTMLInputElement
-            ? document.activeElement
-            : null;
-        const index = focusable.indexOf(active as HTMLInputElement);
-        if ((index + 1) % focusable.length !== 0) {
-          const next = focusable[(index + 1) % focusable.length];
-          next.focus();
-          next.select();
-        }
-      }
-      return true;
-    }
-  }
-  function validFullValue(
-    fullValue: string, // e.g. "14040231"
-    locale: TLocale,
-    onError: (e: string) => void
-  ): boolean {
-    if (fullValue.length !== 8 || isNaN(Number(fullValue))) {
-      onError("Invalid input format");
-      return false;
-    }
-
-    const year = Number(fullValue.slice(0, 4));
-    const month = Number(fullValue.slice(4, 6));
-    const day = Number(fullValue.slice(6, 8));
-
-    const ranges = {
-      year: { min: 0, max: 9999 },
-      month: { min: 1, max: 12 },
-      day: {
-        min: 1,
-        max: getEndOfMonth(year, month, locale, onError, 3),
-      },
-    };
-
-    const fields = [
-      { label: "year", value: year },
-      { label: "month", value: month },
-      { label: "day", value: day },
-    ];
-
-    for (const field of fields) {
-      const { min, max } = ranges[field.label as keyof typeof ranges];
-      if (field.value < min || field.value > max) {
-        onError(`${field.label} is out of range`);
-        fullInputRef.current?.select?.();
-        const target =
-          field.label == "year" ? 0 : field.label == "month" ? 1 : 2;
-        setErrorTarget((prev) => [
-          ...prev.filter((item) => item !== 3),
-          3,
-          target,
-        ]);
-        return false;
-      }
-    }
-    setErrorTarget([]);
-    return true;
-  }
-
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    const activeElement = document.activeElement as HTMLInputElement;
-    if (event.key == "ArrowRight" || event.key == "ArrowLeft") {
-      if (activeElement instanceof HTMLInputElement) {
-        if (event.key == "ArrowRight") {
-          if (
-            activeElement.name == "year" &&
-            yearInputRef.current?.selectionEnd == 4
-          ) {
-            monthInputRef.current?.focus();
-            monthInputRef.current?.select();
-            event.preventDefault();
-          } else if (
-            activeElement.name == "month" &&
-            monthInputRef.current?.selectionEnd == 2
-          ) {
-            dayInputRef.current?.focus();
-            dayInputRef.current?.select();
-
-            event.preventDefault();
-          }
-        } else if (event.key == "ArrowLeft") {
-          if (
-            activeElement.name == "day" &&
-            dayInputRef.current?.selectionEnd == 0
-          ) {
-            monthInputRef.current?.focus();
-            monthInputRef.current?.select();
-            event.preventDefault();
-          } else if (
-            activeElement.name == "month" &&
-            monthInputRef.current?.selectionEnd == 0
-          ) {
-            yearInputRef.current?.focus();
-            yearInputRef.current?.select();
-            event.preventDefault();
-          }
-        }
-      }
-    }
-
-    if (event.key == "ArrowUp" || event.key == "ArrowDown") {
-      event.preventDefault();
-      if (activeElement instanceof HTMLInputElement) {
-        const target =
-          activeElement.name == "year"
-            ? 0
-            : activeElement.name == "month"
-            ? 1
-            : 2;
-        setSeparatedValue((prev) => {
-          const newState = [...prev];
-          newState[target] = handleCount(newState[target], event.key, target);
-          return newState;
-        });
-        setErrorTarget((prev) => {
-          return [...prev.filter((item) => item !== target)];
-        });
-      }
-    }
-
-    if (event.key === "Enter") {
-      if (activeElement?.name == "full") {
-        if (
-          validFullValue(fullValue, locale, onError ?? (() => {})) &&
-          checkDateByRegex(formatFullValueToTimeStamp(fullValue), locale)
-        ) {
-          setBaseValue(changeToTimestamp(fullValue, locale));
-          onMaskChange?.(
-            exportType == "IsoString"
-              ? locale == "fa"
-                ? moment(changeToTimestamp(fullValue, locale)).format("YYYY-MM-DDTHH:mm:ss.SSSZ").replace(/[۰-۹]/g, d => "۰۱۲۳۴۵۶۷۸۹".indexOf(d).toString())
-                : moment
-                    .utc(changeToTimestamp(fullValue, locale))
-                    .format("YYYY-MM-DDTHH:mm:ss.SSSZ")
-              : locale == "fa"
-              ? moment(changeToTimestamp(fullValue, locale)).valueOf()
-              : moment.utc(changeToTimestamp(fullValue, locale)).valueOf()
-          );
-          setIsEdit(0);
-        } else {
-          onMaskChange?.(null);
-        }
-      } else {
-        if (
-          validSeparatedValue(
-            yearInputRef.current!.value,
-            locale,
-            yearInputRef as React.RefObject<HTMLInputElement>,
-            onError ?? (() => {})
-          ) &&
-          validSeparatedValue(
-            monthInputRef.current!.value,
-            locale,
-            monthInputRef as React.RefObject<HTMLInputElement>,
-            onError ?? (() => {})
-          ) &&
-          validSeparatedValue(
-            dayInputRef.current!.value,
-            locale,
-            dayInputRef as React.RefObject<HTMLInputElement>,
-            onError ?? (() => {})
-          )
-        ) {
-          const temp =
-            yearInputRef.current!.value.toString() +
-            monthInputRef.current!.value.toString() +
-            dayInputRef.current!.value.toString();
-          setBaseValue(changeToTimestamp(temp, locale));
-          onMaskChange?.(
-            exportType == "IsoString"
-              ? locale == "fa"
-                ? moment(changeToTimestamp(temp, locale)).format(
-                    "YYYY-MM-DDTHH:mm:ss.SSSZ"
-                  ).replace(/[۰-۹]/g, d => "۰۱۲۳۴۵۶۷۸۹".indexOf(d).toString())
-                : moment
-                    .utc(changeToTimestamp(temp, locale))
-                    .format("YYYY-MM-DDTHH:mm:ss.SSSZ")
-              : locale == "fa"
-              ? moment(changeToTimestamp(temp, locale)).valueOf()
-              : moment.utc(changeToTimestamp(temp, locale)).valueOf()
-          );
-          setIsEdit(0);
-        } else {
-          onMaskChange?.(null);
-          onError?.(message);
-        }
-      }
-    }
-
-    if (event.key === "Backspace") {
-      if (activeElement instanceof HTMLInputElement) {
-        if (activeElement.value.length == 0) {
-          if (activeElement.tabIndex > 0) {
-            moveToPreviousTabindex();
-          }
-        } else if (activeElement.value.length == 1) {
-          activeElement.select();
-        }
-      }
-    }
-  };
-
-  function moveToPreviousTabindex() {
-    const focusable = Array.from(document.querySelectorAll("input")).sort(
-      (a, b) => a.tabIndex - b.tabIndex
-    );
-
-    const active =
-      document.activeElement instanceof HTMLInputElement
-        ? document.activeElement
-        : null;
-    const index = focusable.indexOf(active as HTMLInputElement);
-
-    if (index > 0) {
-      const prev = focusable[index - 1];
-      prev.focus();
-    }
-  }
-  const handleClearMask = () => {
-    setIsEdit(0);
-    setBaseValue(null);
-    setSeparatedValue(initialTemp);
-    setFullValue(`${initialTemp[0]}${initialTemp[1]}${initialTemp[2]}`);
-    onClear?.();
-    //  onMaskChange?.(null);
-  };
-  const handleClick = (e: React.MouseEvent<HTMLElement>) => {
-    const target = e.target as HTMLInputElement;
-    if (target.name !== "full") {
-      clickCount.current += 1;
-      if (clickCount.current === 3) {
-        setIsEdit(2);
-
-        clearTimeout(clickTimer.current);
-        clickCount.current = 0;
-        return;
-      }
-    }
-    clearTimeout(clickTimer.current);
-    clickTimer.current = setTimeout(() => {
-      clickCount.current = 0;
-    }, 500);
-  };
-  const handleFocusOnRelatedInputElement = (
-    e: React.MouseEvent<HTMLSpanElement>
-  ) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setIsEdit(1);
-    if (e.currentTarget.dataset.name == "year") {
-      yearInputRef.current?.focus();
-      yearInputRef.current?.select();
-      setTimeout(() => {
-        yearInputRef.current?.select();
-      }, 0);
-    } else if (e.currentTarget.dataset.name == "month") {
-      monthInputRef.current?.focus();
-      setTimeout(() => {
-        monthInputRef.current?.select();
-      }, 0);
-    } else if (e.currentTarget.dataset.name == "day") {
-      dayInputRef.current?.focus();
-      setTimeout(() => {
-        dayInputRef.current?.select();
-      }, 0);
-    }
-  };
-  useEffect(() => {
-    if (isEdit == 2) {
-      fullInputRef.current?.focus();
-      fullInputRef.current?.select();
-    }
-
-    const handleClickOutside = (event: MouseEvent) => {
-      if (fullRef?.current?.contains(event.target as Node) === true) {
-        return;
-      } else if (focusRef?.current?.contains(event.target as Node) === true) {
-        setIsEdit(1);
-      } else {
-        if (isEdit == 2) {
-          if (
-            validFullValue(fullValueRef.current, locale, onError ?? (() => {}))
-          ) {
-            const year = convertPersianToEnglishNumbers(
-              fullValueRef.current.slice(0, 4)
-            );
-            const month = convertPersianToEnglishNumbers(
-              fullValueRef.current.slice(4, 6)
-            );
-            const day = convertPersianToEnglishNumbers(
-              fullValueRef.current.slice(6, 8)
-            );
-            setSeparatedValue([year, month, day]);
-            setBaseValue(changeToTimestamp(fullValueRef.current, locale));
-            onMaskChange?.(
-              exportType == "IsoString"
-                ? locale == "fa"
-                  ? moment(
-                      changeToTimestamp(fullValueRef.current, locale)
-                    ).format("YYYY-MM-DDTHH:mm:ss.SSSZ").replace(/[۰-۹]/g, d => "۰۱۲۳۴۵۶۷۸۹".indexOf(d).toString())
-                  : moment
-                      .utc(changeToTimestamp(fullValueRef.current, locale))
-                      .format("YYYY-MM-DDTHH:mm:ss.SSSZ")
-                : locale == "fa"
-                ? moment(
-                    changeToTimestamp(fullValueRef.current, locale)
-                  ).valueOf()
-                : moment
-                    .utc(changeToTimestamp(fullValueRef.current, locale))
-                    .valueOf()
-            );
-          } else {
-            setErrorTarget((prev) => [...prev.filter((item) => item !== 3), 3]);
-            const year = convertPersianToEnglishNumbers(
-              fullValueRef.current.slice(0, 4)
-            );
-            const month = convertPersianToEnglishNumbers(
-              fullValueRef.current.slice(4, 6)
-            );
-            const day = convertPersianToEnglishNumbers(
-              fullValueRef.current.slice(6, 8)
-            );
-            setSeparatedValue([year, month, day]);
-          }
-        }
-        if (
-          yearInputRef.current &&
-          monthInputRef.current &&
-          dayInputRef.current
-        ) {
-          const temp =
-            yearInputRef.current.value.toString() +
-            monthInputRef.current.value.toString() +
-            dayInputRef.current.value.toString();
-          if (
-            validSeparatedValue(
-              yearInputRef.current.value,
-              locale,
-              yearInputRef as React.RefObject<HTMLInputElement>,
-              onError as () => void
-            ) &&
-            validSeparatedValue(
-              monthInputRef.current.value,
-              locale,
-              monthInputRef as React.RefObject<HTMLInputElement>,
-              onError as () => void
-            ) &&
-            validSeparatedValue(
-              dayInputRef.current.value,
-              locale,
-              dayInputRef as React.RefObject<HTMLInputElement>,
-              onError as () => void
-            )
-          ) {
-            setBaseValue(changeToTimestamp(temp, locale));
-            onMaskChange?.(
-              exportType == "IsoString"
-                ? locale == "fa"
-                  ? moment(changeToTimestamp(temp, locale)).format(
-                      "YYYY-MM-DDTHH:mm:ss.SSSZ"
-                    ).replace(/[۰-۹]/g, d => "۰۱۲۳۴۵۶۷۸۹".indexOf(d).toString())
-                  : moment
-                      .utc(changeToTimestamp(temp, locale))
-                      .format("YYYY-MM-DDTHH:mm:ss.SSSZ")
-                : locale == "fa"
-                ? moment(changeToTimestamp(temp, locale)).valueOf()
-                : moment.utc(changeToTimestamp(temp, locale)).valueOf()
-            );
-          } else {
-            onMaskChange?.(null);
-            onError?.(message);
-          }
-        }
-        setIsEdit(0);
-      }
-    };
-    const handleClickOnInput = (event: MouseEvent) => {
-      if (yearInputRef.current?.contains(event.target as Node) === true) {
-        yearInputRef.current.focus();
-      } else if (
-        monthInputRef.current?.contains(event.target as Node) === true
-      ) {
-        monthInputRef.current.focus();
-      } else {
-        dayInputRef.current?.focus();
-      }
-    };
-    document.addEventListener("mouseup", handleClickOnInput);
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.addEventListener("mouseup", handleClickOnInput);
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [isEdit]);
-  useEffect(() => {
-    const [year, month, day] = separatedValue;
-    const temp = `${year}${month}${day}`.substring(0, 8);
-    setFullValue(temp);
-    fullValueRef.current = temp;
-  }, [separatedValue]);
-  useEffect(() => {
-    if (value === null) {
-      handleClearMask();
-    } else if (value && getTimestamp(value as number | string) !== baseValue) {
-      const dateValues = timestampToDateNumbers(
-        locale,
-        getTimestamp(value as number | string)
-      );
-      const [year, month, day] = dateValues;
-      const temp = `${convertPersianToEnglishNumbers(
-        year
-      )}${convertPersianToEnglishNumbers(
-        month
-      )}${convertPersianToEnglishNumbers(day)}`.substring(0, 8);
-      setFullValue(temp);
-      fullValueRef.current = temp;
-      setSeparatedValue([
-        convertPersianToEnglishNumbers(year).toString(),
-        convertPersianToEnglishNumbers(month).toString(),
-        convertPersianToEnglishNumbers(day).toString(),
-      ]);
-      setBaseValue(getTimestamp(value as number | string)!);
-    }
-  }, [value]);
-  const fontSize = useMemo(() => {
-    const raw = MaskFontStyle?.fontSize;
-    return typeof raw === "string" ? parseFloat(raw) : raw ?? 14;
-  }, [isEdit]);
   return (
-    <div style={{ cursor: disabled ? "not-allowed" : "auto" }}>
+    <div ref={rootRef} style={{ cursor: disabled ? 'not-allowed' : 'auto' }}>
       <div
         className={`
           ${style.flex}
@@ -746,435 +112,110 @@ export function Mask({ ...props }: MaskProps) {
           ${style.w_full}
           ${style.xs_w_40}
           ${style.px_1}
-          ${maskClassName}
-          ${errorTarget.length > 0 ? ErrorClass : ""}
-`}
+          ${maskClassName ?? ''}
+          ${errorTargets.length > 0 ? ErrorClass : ''}
+        `}
         style={{
-          border: errorTarget.length > 0 ? "1px solid red" : undefined,
+          border: errorTargets.length > 0 ? '1px solid red' : undefined,
           height: `${maskHeight}px`,
           color: tertiaryColor,
           backgroundColor: highlightColor,
-          pointerEvents: disabled ? "none" : "auto",
-          userSelect: disabled ? "none" : "auto",
-          ...props.Style,
+          pointerEvents: disabled ? 'none' : 'auto',
+          userSelect: disabled ? 'none' : 'auto',
+          fontFamily: resolvedFontStyle.fontFamily,
+          fontSize: resolvedFontStyle.fontSize,
+          ...Style,
         }}
       >
         {allowClear ? (
           <button
-            onClick={handleClearMask}
+            type="button"
+            onClick={handleClear}
             className={`
-  ${style.flex}
-  ${style.justify_center}
-  ${style.items_center}
-  ${style.p_1}
-  ${style.m_0}
-  ${style.rounded_full}
-  ${style.border_none}
-  ${style.items_center}
-  `}
+              ${style.flex}
+              ${style.justify_center}
+              ${style.items_center}
+              ${style.p_1}
+              ${style.m_0}
+              ${style.rounded_full}
+              ${style.border_none}
+            `}
           >
             <ClearIcon />
           </button>
         ) : (
           suffix && <div>{suffix}</div>
         )}
-        {isEdit !== 2 ? (
+
+        {mode !== MaskMode.Full ? (
           <div
             ref={focusRef}
             className={`${style.flex} ${style.justify_center} ${style.w_full} ${style.items_center}`}
             dir="ltr"
           >
-            {isEdit == 0 ? (
-              <div
-                className={`
-                  ${style.flex} 
-                  ${style.justify_center} 
-                  ${style.gap_1} 
-                  ${style.w_full}  
-                  ${style.items_center} 
-                `}
-                style={{ ...MaskFontStyle }}
-              >
-                {baseValue == null ? (
-                  <div>{maskPlaceHolder ?? "____/__/__"}</div>
-                ) : (
-                  <>
-                    <div>
-                      {locale == "fa"
-                        ? toPersianDigits(separatedValue[0])
-                        : separatedValue[0] || "____"}
-                    </div>
-                    <div>{"/"}</div>
-                    <div>
-                      {locale == "fa"
-                        ? toPersianDigits(separatedValue[1])
-                        : separatedValue[1] || "__"}
-                    </div>
-                    <div>{"/"}</div>
-                    <div>
-                      {locale == "fa"
-                        ? toPersianDigits(separatedValue[2])
-                        : separatedValue[2] || "__"}
-                    </div>
-                  </>
-                )}
-              </div>
+            {mode === MaskMode.Display ? (
+              <MaskDisplayView
+                locale={locale}
+                parts={parts}
+                baseValue={baseValue}
+                placeholder={maskPlaceHolder}
+                fontStyle={resolvedFontStyle}
+                disabled={disabled}
+                onActivate={activateSeparatedOnYear}
+              />
             ) : (
-              <div
-                className={`
-                ${style.flex} 
-                ${style.justify_center} 
-                ${style.items_center} 
-                ${style.w_full} 
-              `}
-                // style={{ gap: "2px" }}
-              >
-                <input
-                  type="text"
-                  name="year"
-                  tabIndex={0}
-                  autoComplete="off"
-                  ref={yearInputRef}
-                  value={separatedValue[0]}
-                  onChange={handleChange}
-                  onClick={handleClick}
-                  onKeyDown={handleKeyDown}
-                  maxLength={4}
-                  minLength={4}
-                  className={`${
-                    locale === "fa" && style.font_Number_Farsi
-                  } ${inputClassName}`}
-                  style={{
-                    width: (4 * fontSize) / 2 + 8,
-                    fontSize: fontSize,
-                    color: MaskFontStyle.color,
-                    fontFamily: MaskFontStyle?.fontFamily,
-                    border: "none",
-                    outline: "none",
-                    background: "transparent",
-                  }}
-                  placeholder="____"
-                />
-                <span
-                  style={{
-                    userSelect: "none",
-                    pointerEvents: "none",
-                    width: fontSize / 2, ////////////////////////////////////////////here
-                    fontSize: fontSize,
-                    color: MaskFontStyle.color,
-                    fontFamily: MaskFontStyle.fontFamily,
-                    // paddingRight: "1px",
-                    // paddingLeft: "2px",
-                  }}
-                  className={` ${inputClassName}`}
-                >
-                  /
-                </span>
-                <input
-                  type="text"
-                  name="month"
-                  tabIndex={1}
-                  autoComplete="off"
-                  ref={monthInputRef}
-                  value={separatedValue[1]}
-                  onChange={handleChange}
-                  onClick={handleClick}
-                  onKeyDown={handleKeyDown}
-                  maxLength={2}
-                  minLength={2}
-                  className={`${
-                    locale === "fa" && style.font_Number_Farsi
-                  } ${inputClassName}`}
-                  style={{
-                    width: (2 * fontSize) / 2 + 6, ////////////////////////////////////////////here
-                    border: "none",
-                    outline: "none",
-                    background: "transparent",
-                    fontSize: fontSize,
-                    color: MaskFontStyle.color,
-                    fontFamily: MaskFontStyle?.fontFamily,
-                  }}
-                  placeholder="__"
-                />
-                <span
-                  style={{
-                    userSelect: "none",
-                    pointerEvents: "none",
-                    fontSize: fontSize,
-                    color: MaskFontStyle.color,
-                    fontFamily: MaskFontStyle.fontFamily,
-                    width: fontSize / 2,
-                    // width: "1ch",
-                    // paddingRight: "1px",
-                    // paddingLeft: "1px",
-                  }}
-                >
-                  /
-                </span>
-                <input
-                  type="text"
-                  name="day"
-                  tabIndex={2}
-                  ref={dayInputRef}
-                  value={separatedValue[2]}
-                  autoComplete="off"
-                  onChange={handleChange}
-                  onClick={handleClick}
-                  onKeyDown={handleKeyDown}
-                  maxLength={2}
-                  minLength={2}
-                  className={`${
-                    locale === "fa" && style.font_Number_Farsi
-                  } ${inputClassName}`}
-                  style={{
-                    fontSize: fontSize,
-                    color: MaskFontStyle.color,
-                    fontFamily: MaskFontStyle?.fontFamily,
-                    width: (2 * fontSize) / 2 + 6,
-                    border: "none",
-                    outline: "none",
-                    background: "transparent",
-                  }}
-                  placeholder="__"
-                />
-              </div>
+              <MaskSeparatedView
+                locale={locale}
+                parts={parts}
+                fontSize={fontSize}
+                fontStyle={resolvedFontStyle}
+                inputClassName={inputClassName}
+                yearRef={yearInputRef}
+                monthRef={monthInputRef}
+                dayRef={dayInputRef}
+                onChange={handleChange}
+                onClick={handleTripleClick}
+                onKeyDown={handleKeyDown}
+              />
             )}
           </div>
         ) : (
-          <div
-            ref={fullRef}
-            className={`
-              ${style.relative} 
-              ${style.flex} 
-              ${style.justify_center} 
-              ${style.w_full} 
-              ${style.text_base} 
-              ${style.p_2}
-            `}
-            style={{ height: `${maskHeight}px` }}
-            dir="ltr"
-          >
-            <input
-              id="full"
-              type="text"
-              name="full"
-              ref={fullInputRef}
-              onFocus={() => {
-                handleFocusFullInput();
-              }}
-              autoComplete="off"
-              value={fullValue}
-              onChange={handleChange}
-              onKeyDown={handleKeyDown}
-              maxLength={8}
-              minLength={8}
-              className={`${style.opacity_0} ${style.w_full}`}
-              style={{
-                width: (8 * fontSize) / 2,
-                fontSize: fontSize,
-                color: MaskFontStyle.color,
-                fontFamily: MaskFontStyle.fontFamily,
-              }}
-            />
-            <div
-              className={`
-  ${style.z_10}
-  ${style.absolute}
-  ${style.inset_0}
-  ${style.mx_auto}
-  ${style.text_base}
-  ${style.flex}
-  ${style.justify_center}
-  ${style.items_center}
-  ${inputClassName ?? ""}
-`}
-              onKeyDown={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-              }}
-              style={{
-                display: "flex",
-                // gap: "3px",
-                fontSize: fontSize,
-                // height: `${maskHeight}px`,
-                // userSelect: "none",
-                // pointerEvents: "none",
-              }}
-            >
-              {formatInputValue(fullValue)
-                .split("/")
-                .map((item, index) => {
-                  return (
-                    <React.Fragment key={index}>
-                      <span
-                        data-name={
-                          index == 0 ? "year" : index == 1 ? "month" : "day"
-                        }
-                        ref={spanRefs[index]}
-                        onMouseDown={handleFocusOnRelatedInputElement}
-                        className={`
-                          ${style.selected_text} 
-                          ${inputClassName}
-                        `}
-                        style={{
-                          // userSelect: "none",
-                          // pointerEvents: "none",
-                          fontSize: fontSize,
-                          color: MaskFontStyle.color,
-                          fontFamily: MaskFontStyle.fontFamily,
-                        }}
-                      >
-                        <span
-                          style={{ lineHeight: "10px" }}
-                          className={`
-                            ${style.selected_text}
-                            ${errorTarget.includes(index) ? ErrorClass : ""}
-                          `}
-                        >
-                          {locale == "fa" ? toPersianDigits(item) : item}
-                        </span>
-                      </span>
-                      {index !== 2 && (
-                        <span
-                          style={{
-                            width: fontSize / 2 + 6,
-                            height: fontSize + 1,
-                          }}
-                          className={`
-                            ${style.flex}
-                            ${style.justify_center}
-                            ${style.items_center}
-                            ${style.selected_text}
-                          `}
-                        >
-                          /
-                        </span>
-                      )}
-                    </React.Fragment>
-                  );
-                })}
-            </div>
-          </div>
+          <MaskFullView
+            compactValue={compactValue}
+            fontSize={fontSize}
+            fontStyle={resolvedFontStyle}
+            inputClassName={inputClassName}
+            errorClass={ErrorClass}
+            errorTargets={errorTargets}
+            maskHeight={maskHeight}
+            fullContainerRef={fullContainerRef}
+            fullInputRef={fullInputRef}
+            spanRefs={spanRefs}
+            onChange={handleChange}
+            onKeyDown={handleKeyDown}
+            onFocusFull={handleFocusFull}
+            onSegmentMouseDown={handleSegmentMouseDown}
+            formatDisplay={formatDisplayMask}
+            renderDigit={(item) =>
+              locale === 'fa' ? toPersianDigits(item) : item
+            }
+          />
         )}
+
         <div>{prefix && prefix}</div>
       </div>
     </div>
   );
 }
 
-function timestampToDateNumbers(locale: TLocale, timestamp?: number) {
-  if (timestamp == undefined || timestamp == 0) {
-    const year =
-      locale == "fa" ? moment().format("jYYYY") : moment().format("YYYY");
-    const month =
-      locale == "fa" ? moment().format("jMM") : moment().format("MM");
-    const day =
-      locale == "fa"
-        ? moment().locale(locale).format("jDD")
-        : moment().locale(locale).format("DD");
-    return [
-      convertPersianToEnglishNumbers(year),
-      convertPersianToEnglishNumbers(month),
-      convertPersianToEnglishNumbers(day),
-    ];
-  } else {
-    const year =
-      locale == "fa"
-        ? moment(timestamp).format("jYYYY")
-        : moment(timestamp).format("YYYY");
-    const month =
-      locale == "fa"
-        ? moment(timestamp).format("jMM")
-        : moment(timestamp).format("MM");
-    const day =
-      locale == "fa"
-        ? moment(timestamp).locale(locale).format("jDD")
-        : moment(timestamp).locale(locale).format("DD");
-    return [
-      convertPersianToEnglishNumbers(year),
-      convertPersianToEnglishNumbers(month),
-      convertPersianToEnglishNumbers(day),
-    ];
-  }
-}
-function checkDateByRegex(timestamp: number, locale: TLocale) {
-  const gregorianRegex = /^\d{4}\/(0[1-9]|1[0-2])\/(0[1-9]|[12][0-9]|3[01])$/;
-  const shamsiRegex = /^\d{4}\/(0[1-9]|1[0-2])\/(0[1-9]|[12][0-9]|3[01])$/;
-
-  if (locale == "fa") {
-    const jDate = moment(timestamp).format("jYYYY/jMM/jDD");
-    const isShamsiValid = shamsiRegex.test(jDate);
-    return isShamsiValid;
-  } else {
-    const gDate = moment(timestamp).format("YYYY/MM/DD");
-    const isGregorianValid = gregorianRegex.test(gDate);
-    return isGregorianValid;
-  }
-}
-function changeToTimestamp(fullvalue: string, locale: TLocale) {
-  let changeToTimestamp = new Date().valueOf();
-  switch (fullvalue.length) {
-    case 0:
-      break;
-    case 1:
-    case 2:
-    case 3:
-    case 4:
-      changeToTimestamp =
-        locale == "fa"
-          ? moment(fullvalue, "jYYYY").valueOf()
-          : moment(fullvalue, "YYYY").valueOf();
-      break;
-    case 5:
-    case 6:
-      changeToTimestamp =
-        locale == "fa"
-          ? moment(fullvalue, "jYYYYjMM").valueOf()
-          : moment(fullvalue, "YYYYMM").valueOf();
-      break;
-    case 7:
-    case 8:
-      changeToTimestamp =
-        locale == "fa"
-          ? moment(fullvalue, "jYYYYjMMjDD").valueOf()
-          : moment(fullvalue, "YYYYMMDD").valueOf();
-      break;
-    default:
-      break;
-  }
-  return changeToTimestamp;
-}
-
-function getEndOfMonth(
-  year: number,
-  month: number,
-  locale: TLocale,
-  onError: ((e: string) => void) | undefined,
-  index: 0 | 1 | 2 | 3
-): number {
-  if (locale == "fa") {
-    // ساختن تاریخ شمسی و گرفتن روز آخر ماه
-    const jMoment = moment(`${year}/${month}/01`, "jYYYY/jM/jD");
-    if (Number.isNaN(jMoment.endOf("jMonth").jDate())) {
-      if (index == 2) {
-        onError?.("سال و ماه را اصلاح کنید");
-      }
-      return 1; // فقط روز آخر را می‌دهد
-    } else {
-      return jMoment.endOf("jMonth").jDate(); // فقط روز آخر را می‌دهد
-    }
-  } else {
-    const gMoment = moment(`${year}-${month}-01`, "YYYY-M-D");
-
-    if (Number.isNaN(gMoment.endOf("month").date())) {
-      if (index == 2) {
-        onError?.("Please check year and month");
-      }
-
-      return 1; // فقط روز آخر را می‌دهد
-    } else {
-      return gMoment.endOf("month").date(); // فقط روز آخر را می‌دهد
-    }
-    // ساختن تاریخ میلادی و گرفتن روز آخر ماه
-  }
-}
+export type {
+  MaskErrorTarget,
+  MaskFontStyle,
+  MaskInputValue,
+  MaskMode,
+  MaskOutputValue,
+  MaskParts,
+  MaskProps,
+  MaskSegment,
+} from './types';
+export { MaskMode as MaskModeEnum } from './types';

@@ -22,6 +22,7 @@ interface Props {
   backgroundColor?: string;
   secondaryColor?: string;
   tertiaryColor?: string;
+  primaryColor?: string;
 }
 
 const MonthPicker: FC<Props> = ({
@@ -31,87 +32,85 @@ const MonthPicker: FC<Props> = ({
   currentYear,
   onChangeYear,
   monthPickerClassName,
-  backgroundColor = "#fff", //رنگ پس‌زمینه کلی یا نواحی بزرگ
-  //tertiaryColor = "#939393", //رنگ سوم، معمولاً برای جزئیات یا عناصر کم‌اهمیت‌تر   -  رنگ متن
-  secondaryColor = "#585858", //رنگ فرعی یا مکمل برای تأکید ثانویه- متن #585858   ,
+  backgroundColor = '#fff',
+  secondaryColor = '#585858',
+  primaryColor = '#000',
 }) => {
   const monthList = months[locale];
-
   const containerRef = useRef<HTMLDivElement>(null);
-  const [dir, setDir] = useState<"ltr" | "rtl">("ltr");
+  const [dir, setDir] = useState<'ltr' | 'rtl'>('ltr');
+
   useEffect(() => {
     if (containerRef.current) {
       const computedDir = getComputedStyle(containerRef.current).direction;
-      setDir(computedDir === "rtl" ? "rtl" : "ltr");
+      setDir(computedDir === 'rtl' ? 'rtl' : 'ltr');
     }
   }, []);
+
   return (
-    <div className={`${style.h_full} `}  ref={containerRef}   >
+    <div
+      ref={containerRef}
+      className={`${style.w_full} ${style.h_full} ${style.flex} ${style.flex_col}`}
+      style={{ minHeight: 0 }}
+    >
       <div
         className={`
-  ${style.w_full}
-  ${style.flex}
-  ${dir === "ltr" ? style.flex_row : style.flex_row_reverse}
-  ${style.justify_between}
-`}
+          ${style.w_full}
+          ${style.flex}
+          ${style.h_6}
+          ${style.items_center}
+          ${dir === 'ltr' ? style.flex_row : style.flex_row_reverse}
+          ${style.justify_between}
+        `}
       >
-        <div onClick={() => onChangeYear(1)}>
+        <div onClick={() => onChangeYear(1)} style={{ cursor: 'pointer' }}>
           <LeftChevron secondaryColor={secondaryColor} />
         </div>
         <div>
           <span
-            className={`
-  ${style.font_bold}
-  ${style.text_sm}
-`}
+            className={`${style.font_bold} ${style.text_sm}`}
             style={{ color: secondaryColor }}
           >
-            {convertToPersianNumbers(currentYear.toString())}
+            {locale === 'fa'
+              ? convertToPersianNumbers(currentYear.toString())
+              : currentYear.toString()}
           </span>
         </div>
-        <div onClick={() => onChangeYear(-1)}>
+        <div onClick={() => onChangeYear(-1)} style={{ cursor: 'pointer' }}>
           <RightChevron secondaryColor={secondaryColor} />
         </div>
       </div>
+
       <div
-        className={`
-  ${style.w_full}
-  ${style.flex}
-  ${style.flex_wrap}
-  ${style.gap_x_2}
-  ${style.gap_y_5}
-  ${style.justify_center}
-  ${style.items_center}
-  ${style.pt_5}
-  ${monthPickerClassName}
-`}
+        className={`${style.w_full} ${monthPickerClassName ?? ''}`}
+        style={{
+          flex: 1,
+          minHeight: 0,
+          display: 'grid',
+          gridTemplateColumns: 'repeat(3, 1fr)',
+          gridTemplateRows: 'repeat(4, 1fr)',
+          gap: 8,
+          paddingTop: 12,
+          alignItems: 'stretch',
+          justifyItems: 'stretch',
+        }}
       >
         {monthList.map((month, index) => (
-          <div
-            style={{
-              backgroundColor: currentMonth === index ? secondaryColor : "",
-              color: currentMonth === index ? backgroundColor : secondaryColor,
-              fontWeight: currentMonth === index ? "  500 " : "",
-            }}
+          <button
+            type="button"
             key={index}
-            className={`
-              ${style.w_20}
-              ${style.h_9}
-              ${style.rounded}
-              ${style.flex}
-              ${style.justify_center}
-              ${style.items_center}
-            `}
             onClick={() => onSelectMonth(index)}
+            className={`${style.rounded} ${style.flex} ${style.justify_center} ${style.items_center} ${style.border_none} ${style.w_full} ${style.h_full}`}
+            style={{
+              backgroundColor: currentMonth === index ? primaryColor : 'transparent',
+              color: currentMonth === index ? backgroundColor : secondaryColor,
+              fontWeight: currentMonth === index ? 500 : 400,
+              cursor: 'pointer',
+              fontSize: 14,
+            }}
           >
-            <span
-              className={`
-  ${style.text_sm}
-`}
-            >
-              {month}
-            </span>
-          </div>
+            {month}
+          </button>
         ))}
       </div>
     </div>
