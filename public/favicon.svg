@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Persian Range Picker">
+  <defs>
+    <linearGradient id="bg" x1="8" y1="4" x2="56" y2="60" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#2f4fd0"/>
+      <stop offset="1" stop-color="#152a8f"/>
+    </linearGradient>
+    <linearGradient id="head" x1="16" y1="14" x2="48" y2="24" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#4f6fff"/>
+      <stop offset="1" stop-color="#1c39bb"/>
+    </linearGradient>
+    <filter id="soft" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="1.2" stdDeviation="1.2" flood-color="#0b1d66" flood-opacity="0.28"/>
+    </filter>
+  </defs>
+
+  <!-- app tile -->
+  <rect x="4" y="4" width="56" height="56" rx="14" fill="url(#bg)"/>
+
+  <!-- calendar card -->
+  <g filter="url(#soft)">
+    <rect x="15" y="16" width="34" height="36" rx="7" fill="#ffffff"/>
+    <rect x="15" y="16" width="34" height="11" rx="7" fill="url(#head)"/>
+    <rect x="15" y="22" width="34" height="5" fill="url(#head)"/>
+
+    <!-- rings -->
+    <rect x="23" y="12" width="4" height="10" rx="2" fill="#e8eefc"/>
+    <rect x="37" y="12" width="4" height="10" rx="2" fill="#e8eefc"/>
+    <rect x="23.7" y="12.7" width="2.6" height="8.6" rx="1.3" fill="#9aa8d6"/>
+    <rect x="37.7" y="12.7" width="2.6" height="8.6" rx="1.3" fill="#9aa8d6"/>
+
+    <!-- day cells -->
+    <g fill="#d7deef">
+      <rect x="20" y="31" width="5" height="5" rx="1.4"/>
+      <rect x="27" y="31" width="5" height="5" rx="1.4"/>
+      <rect x="34" y="31" width="5" height="5" rx="1.4"/>
+      <rect x="41" y="31" width="5" height="5" rx="1.4"/>
+
+      <rect x="20" y="38" width="5" height="5" rx="1.4"/>
+      <rect x="41" y="38" width="5" height="5" rx="1.4"/>
+
+      <rect x="20" y="45" width="5" height="5" rx="1.4"/>
+      <rect x="27" y="45" width="5" height="5" rx="1.4"/>
+      <rect x="34" y="45" width="5" height="5" rx="1.4"/>
+      <rect x="41" y="45" width="5" height="5" rx="1.4"/>
+    </g>
+
+    <!-- selected range -->
+    <rect x="25.5" y="36.6" width="15" height="7.8" rx="3.9" fill="#b7d0ff" opacity="0.95"/>
+    <rect x="27" y="38" width="5" height="5" rx="1.4" fill="#3b82f6"/>
+    <rect x="34" y="38" width="5" height="5" rx="1.4" fill="#2563eb"/>
+  </g>
+</svg>
