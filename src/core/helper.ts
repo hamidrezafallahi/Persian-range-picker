@@ -134,14 +134,15 @@ export const getTimestampsForPeriod = (period: ITimeZone, locale: string) => {
           ? moment()
               .locale(locale)
               .clone()
-              .endOf("jMonth")
+              // endOf then subtract keeps day-of-month and truncates (Mehr→Shahrivar 30).
               .subtract(1, "jMonth")
+              .endOf("jMonth")
               .valueOf()
           : moment()
               .locale(locale)
               .clone()
-              .endOf("month")
               .subtract(1, "month")
+              .endOf("month")
               .valueOf();
       break;
     case "last30Days":
