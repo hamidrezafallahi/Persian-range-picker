@@ -126,6 +126,9 @@ export function MaskSeparatedView({
   onKeyDown,
 }: MaskSeparatedViewProps) {
   const faFont = locale === 'fa' ? style.font_Number_Farsi : '';
+  // Match Display/Full: show Unicode Persian digits in edit mode (font alone is not enough on <input>).
+  const display = (raw: string) =>
+    locale === 'fa' ? toPersianDigits(raw) : raw;
 
   return (
     <div
@@ -136,7 +139,7 @@ export function MaskSeparatedView({
         name="year"
         autoComplete="off"
         ref={yearRef}
-        value={parts[0]}
+        value={display(parts[0])}
         onChange={onChange}
         onClick={onClick}
         onKeyDown={onKeyDown}
@@ -164,7 +167,7 @@ export function MaskSeparatedView({
         name="month"
         autoComplete="off"
         ref={monthRef}
-        value={parts[1]}
+        value={display(parts[1])}
         onChange={onChange}
         onClick={onClick}
         onKeyDown={onKeyDown}
@@ -190,7 +193,7 @@ export function MaskSeparatedView({
         type="text"
         name="day"
         ref={dayRef}
-        value={parts[2]}
+        value={display(parts[2])}
         autoComplete="off"
         onChange={onChange}
         onClick={onClick}

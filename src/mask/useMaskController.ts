@@ -171,7 +171,8 @@ export function useMaskController({
       if (!ref.current) return false;
       const name = ref.current.name;
       const target = segmentIndex(name);
-      const num = Number(raw);
+      // DOM may show Persian digits in Separated mode; normalize before Number().
+      const num = Number(toLatinDigits(raw));
       const dayMax = getEndOfMonth(
         Number(partsRef.current[0]),
         Number(partsRef.current[1]),
@@ -226,10 +227,14 @@ export function useMaskController({
     ) {
       return false;
     }
+    const year = toLatinDigits(yearInputRef.current.value);
+    const month = toLatinDigits(monthInputRef.current.value);
+    const day = toLatinDigits(dayInputRef.current.value);
+
     const ok =
-      validateSegment(yearInputRef.current.value, yearInputRef) &&
-      validateSegment(monthInputRef.current.value, monthInputRef) &&
-      validateSegment(dayInputRef.current.value, dayInputRef);
+      validateSegment(year, yearInputRef) &&
+      validateSegment(month, monthInputRef) &&
+      validateSegment(day, dayInputRef);
 
     if (!ok) {
       emitChange(null);
@@ -237,10 +242,7 @@ export function useMaskController({
       return false;
     }
 
-    const compact =
-      yearInputRef.current.value +
-      monthInputRef.current.value +
-      dayInputRef.current.value;
+    const compact = year + month + day;
     const ts = changeToTimestamp(compact, locale);
     setBaseValue(ts);
     emitChange(ts);
