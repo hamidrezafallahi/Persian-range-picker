@@ -1,4 +1,4 @@
-import path from "path";
+﻿import path from "path";
 import { defineConfig } from "vite";
 
 import react from "@vitejs/plugin-react-swc";
@@ -6,7 +6,7 @@ import react from "@vitejs/plugin-react-swc";
 export default defineConfig(({ command }) => ({
   root: __dirname,
   // gh-pages needs the repo base path; local `yarn dev:demo` must use `/`
-  base: command === "build" ? "/Persian-range-picker/" : "/",
+  base: command === "build" ? "/react-persian-range-picker/" : "/",
   plugins: [react()],
   resolve: {
     alias: {

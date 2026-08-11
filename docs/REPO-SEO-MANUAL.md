@@ -1,4 +1,4 @@
-# GitHub repo SEO (manual steps)
+﻿# GitHub repo SEO (manual steps)
 
 Do these in the GitHub UI (Settings / About). Agents cannot reliably change them without your token.
 
@@ -7,7 +7,7 @@ Do these in the GitHub UI (Settings / About). Agents cannot reliably change them
 - **Description:**  
   `Jalali / Persian date picker & range picker for React — DatePicker, compare ranges, TimePicker`
 - **Website:**  
-  `https://hamidrezafallahi.github.io/Persian-range-picker/`
+  `https://hamidrezafallahi.github.io/react-persian-range-picker/`
 - **Topics** (add all):
   - `react`
   - `typescript`
@@ -38,10 +38,10 @@ Only do this when you are ready to redeploy Pages with the new base path.
 
 ## 3) Google Search Console
 
-1. Add property: `https://hamidrezafallahi.github.io/Persian-range-picker/`
+1. Add property: `https://hamidrezafallahi.github.io/react-persian-range-picker/`
 2. Verify (HTML meta tag or DNS if custom domain)
 3. Submit sitemap:  
-   `https://hamidrezafallahi.github.io/Persian-range-picker/sitemap.xml`
+   `https://hamidrezafallahi.github.io/react-persian-range-picker/sitemap.xml`
 4. URL Inspection → Request indexing for:
    - `/`
    - `/guide/`

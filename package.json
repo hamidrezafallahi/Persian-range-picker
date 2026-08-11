@@ -1,4 +1,4 @@
-{
+﻿{
   "name": "react-persian-range-picker",
   "version": "1.1.0",
   "license": "MIT",
@@ -51,12 +51,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/hamidrezafallahi/Persian-range-picker.git"
+    "url": "https://github.com/hamidrezafallahi/react-persian-range-picker.git"
   },
   "bugs": {
-    "url": "https://github.com/hamidrezafallahi/Persian-range-picker/issues"
+    "url": "https://github.com/hamidrezafallahi/react-persian-range-picker/issues"
   },
-  "homepage": "https://hamidrezafallahi.github.io/Persian-range-picker/",
+  "homepage": "https://hamidrezafallahi.github.io/react-persian-range-picker/",
   "engines": {
     "node": ">=16"
   },

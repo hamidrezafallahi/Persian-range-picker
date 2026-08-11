@@ -1,8 +1,8 @@
-# React Jalali / Persian Date Picker & Range Picker
+﻿# React Jalali / Persian Date Picker & Range Picker
 
 [![npm version](https://img.shields.io/npm/v/react-persian-range-picker.svg)](https://www.npmjs.com/package/react-persian-range-picker)
 [![npm downloads](https://img.shields.io/npm/dm/react-persian-range-picker.svg)](https://www.npmjs.com/package/react-persian-range-picker)
-[![license](https://img.shields.io/npm/l/react-persian-range-picker.svg)](https://github.com/hamidrezafallahi/Persian-range-picker/blob/main/LICENSE)
+[![license](https://img.shields.io/npm/l/react-persian-range-picker.svg)](https://github.com/hamidrezafallahi/react-persian-range-picker/blob/main/LICENSE)
 [![React](https://img.shields.io/badge/React-18%20%7C%2019-61dafb)](https://react.dev/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-ready-3178c6)](https://www.typescriptlang.org/)
 
@@ -308,13 +308,13 @@ Use `formatExport` / `formatIDateExport` when you need the same mapping outside 
 ## Demo
 
 **Live demo (GitHub Pages):**  
-[https://hamidrezafallahi.github.io/Persian-range-picker/](https://hamidrezafallahi.github.io/Persian-range-picker/)
+[https://hamidrezafallahi.github.io/react-persian-range-picker/](https://hamidrezafallahi.github.io/react-persian-range-picker/)
 
 **Docs & articles (crawlable HTML):**
 
-- [Install guide](https://hamidrezafallahi.github.io/Persian-range-picker/guide/)
-- [English article](https://hamidrezafallahi.github.io/Persian-range-picker/blog/en/)
-- [مقاله فارسی](https://hamidrezafallahi.github.io/Persian-range-picker/blog/fa/)
+- [Install guide](https://hamidrezafallahi.github.io/react-persian-range-picker/guide/)
+- [English article](https://hamidrezafallahi.github.io/react-persian-range-picker/blog/en/)
+- [مقاله فارسی](https://hamidrezafallahi.github.io/react-persian-range-picker/blog/fa/)
 - npm: [`react-persian-range-picker`](https://www.npmjs.com/package/react-persian-range-picker)
 
 Local playground:
@@ -332,21 +332,21 @@ yarn deploy:demo
 Preview assets:
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/hamidrezafallahi/Persian-range-picker/refs/heads/main/public/assets/calendar-range-picker.PNG" width="700" alt="Persian Jalali range picker desktop UI"/>
+  <img src="https://raw.githubusercontent.com/hamidrezafallahi/react-persian-range-picker/refs/heads/main/public/assets/calendar-range-picker.PNG" width="700" alt="Persian Jalali range picker desktop UI"/>
 </p>
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/hamidrezafallahi/Persian-range-picker/refs/heads/main/public/assets/desktop-gregorian.PNG" width="700" alt="Gregorian date range picker desktop"/>
+  <img src="https://raw.githubusercontent.com/hamidrezafallahi/react-persian-range-picker/refs/heads/main/public/assets/desktop-gregorian.PNG" width="700" alt="Gregorian date range picker desktop"/>
 </p>
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/hamidrezafallahi/Persian-range-picker/refs/heads/main/public/assets/mobile-range-picker.PNG" width="320" alt="Mobile Persian range picker fullscreen"/>
-  <img src="https://raw.githubusercontent.com/hamidrezafallahi/Persian-range-picker/refs/heads/main/public/assets/mobile-compare-range.PNG" width="320" alt="Mobile compare date ranges"/>
+  <img src="https://raw.githubusercontent.com/hamidrezafallahi/react-persian-range-picker/refs/heads/main/public/assets/mobile-range-picker.PNG" width="320" alt="Mobile Persian range picker fullscreen"/>
+  <img src="https://raw.githubusercontent.com/hamidrezafallahi/react-persian-range-picker/refs/heads/main/public/assets/mobile-compare-range.PNG" width="320" alt="Mobile compare date ranges"/>
 </p>
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/hamidrezafallahi/Persian-range-picker/refs/heads/main/public/assets/mask.PNG" width="300" alt="Persian date input mask"/>
-  <img src="https://raw.githubusercontent.com/hamidrezafallahi/Persian-range-picker/refs/heads/main/public/assets/time-picker.PNG" width="300" alt="React time picker columns"/>
+  <img src="https://raw.githubusercontent.com/hamidrezafallahi/react-persian-range-picker/refs/heads/main/public/assets/mask.PNG" width="300" alt="Persian date input mask"/>
+  <img src="https://raw.githubusercontent.com/hamidrezafallahi/react-persian-range-picker/refs/heads/main/public/assets/time-picker.PNG" width="300" alt="React time picker columns"/>
 </p>
 
 ---
@@ -370,11 +370,11 @@ Crawlable pages (better for Google than SPA-only content):
 
 | Page | URL |
 |------|-----|
-| Demo | https://hamidrezafallahi.github.io/Persian-range-picker/ |
-| Guide | https://hamidrezafallahi.github.io/Persian-range-picker/guide/ |
-| Article EN | https://hamidrezafallahi.github.io/Persian-range-picker/blog/en/ |
-| Article FA | https://hamidrezafallahi.github.io/Persian-range-picker/blog/fa/ |
-| Sitemap | https://hamidrezafallahi.github.io/Persian-range-picker/sitemap.xml |
+| Demo | https://hamidrezafallahi.github.io/react-persian-range-picker/ |
+| Guide | https://hamidrezafallahi.github.io/react-persian-range-picker/guide/ |
+| Article EN | https://hamidrezafallahi.github.io/react-persian-range-picker/blog/en/ |
+| Article FA | https://hamidrezafallahi.github.io/react-persian-range-picker/blog/fa/ |
+| Sitemap | https://hamidrezafallahi.github.io/react-persian-range-picker/sitemap.xml |
 
 Repo SEO checklist: [`docs/SEO-CHECKLIST.md`](./docs/SEO-CHECKLIST.md) · Manual GitHub steps: [`docs/REPO-SEO-MANUAL.md`](./docs/REPO-SEO-MANUAL.md)
 
@@ -430,7 +430,7 @@ import { DatePicker } from 'react-persian-range-picker';
 
 ### دمو زنده
 
-[https://hamidrezafallahi.github.io/Persian-range-picker/](https://hamidrezafallahi.github.io/Persian-range-picker/)
+[https://hamidrezafallahi.github.io/react-persian-range-picker/](https://hamidrezafallahi.github.io/react-persian-range-picker/)
 
 ### توسعه محلی
 
@@ -448,6 +448,6 @@ yarn build:demo && yarn deploy:demo  # انتشار GitHub Pages
 
 MIT © [Hamidreza Fallahi](https://github.com/hamidrezafallahi)
 
-Repository: [github.com/hamidrezafallahi/Persian-range-picker](https://github.com/hamidrezafallahi/Persian-range-picker)  
-Issues: [GitHub Issues](https://github.com/hamidrezafallahi/Persian-range-picker/issues)  
+Repository: [github.com/hamidrezafallahi/react-persian-range-picker](https://github.com/hamidrezafallahi/react-persian-range-picker)  
+Issues: [GitHub Issues](https://github.com/hamidrezafallahi/react-persian-range-picker/issues)  
 npm: [react-persian-range-picker](https://www.npmjs.com/package/react-persian-range-picker)

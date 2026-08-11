@@ -1,4 +1,4 @@
-# از انتخاب تاریخ ساده تا مقایسه بازه در ERP: معرفی `react-persian-range-picker`
+﻿# از انتخاب تاریخ ساده تا مقایسه بازه در ERP: معرفی `react-persian-range-picker`
 
 > **مناسب انتشار در:** ویرگول، مدیوم فارسی، هکروون، کانال‌های تلگرام فرانت‌اند، LinkedIn، انجمن‌های React فارسی  
 > **کلمات کلیدی:** انتخابگر تاریخ شمسی React، DatePicker جلالی، RangePicker، مقایسه بازه زمانی، ماسک تاریخ، TimePicker، تقویم شمسی کبیسه، ERP
@@ -230,9 +230,9 @@ export function SalesFilter() {
 
 ## لینک‌ها
 
-- **دمو زنده:** [GitHub Pages](https://hamidrezafallahi.github.io/Persian-range-picker/)
+- **دمو زنده:** [GitHub Pages](https://hamidrezafallahi.github.io/react-persian-range-picker/)
 - **npm:** [react-persian-range-picker](https://www.npmjs.com/package/react-persian-range-picker)
-- **GitHub:** [Persian-range-picker](https://github.com/hamidrezafallahi/Persian-range-picker)
+- **GitHub:** [react-persian-range-picker](https://github.com/hamidrezafallahi/react-persian-range-picker)
 - **نویسنده:** [Hamidreza Fallahi](https://github.com/hamidrezafallahi)
 
 ---

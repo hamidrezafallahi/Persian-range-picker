@@ -1,4 +1,4 @@
-import {
+﻿import {
   type ReactNode,
   useEffect,
   useMemo,
@@ -55,10 +55,10 @@ type LanguageText = {
 };
 
 const NPM_URL = 'https://www.npmjs.com/package/react-persian-range-picker';
-const GITHUB_URL = 'https://github.com/hamidrezafallahi/Persian-range-picker';
-const SITE_URL = 'https://hamidrezafallahi.github.io/Persian-range-picker/';
+const GITHUB_URL = 'https://github.com/hamidrezafallahi/react-persian-range-picker';
+const SITE_URL = 'https://hamidrezafallahi.github.io/react-persian-range-picker/';
 const OG_IMAGE =
-  'https://raw.githubusercontent.com/hamidrezafallahi/Persian-range-picker/refs/heads/main/public/assets/calendar-range-picker.PNG';
+  'https://raw.githubusercontent.com/hamidrezafallahi/react-persian-range-picker/refs/heads/main/public/assets/calendar-range-picker.PNG';
 const INSTALL_CMD = 'npm i react-persian-range-picker';
 
 const THEME = {

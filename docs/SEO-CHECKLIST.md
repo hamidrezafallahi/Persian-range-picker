@@ -1,4 +1,4 @@
-# SEO Checklist — Jalali / Persian date picker (React)
+﻿# SEO Checklist — Jalali / Persian date picker (React)
 
 Status legend: ✅ done in repo · ⏳ needs deploy/publish · 👤 you must do manually
 
@@ -77,7 +77,7 @@ Search these after Pages deploy + ~1–7 days:
 "react-persian-range-picker"
 site:npmjs.com react-persian-range-picker
 site:hamidrezafallahi.github.io react-persian-range-picker
-site:github.com/hamidrezafallahi Persian-range-picker
+site:github.com/hamidrezafallahi react-persian-range-picker
 ```
 
 Also use Search Console → URL Inspection → Request indexing.

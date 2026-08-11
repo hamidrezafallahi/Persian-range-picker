@@ -1,4 +1,4 @@
-# From Simple Date Picking to ERP Range Comparison in React (Jalali + Gregorian)
+﻿# From Simple Date Picking to ERP Range Comparison in React (Jalali + Gregorian)
 
 > **Best for:** Dev.to, Hashnode, Medium, Reddit r/reactjs / r/javascript, LinkedIn, Hacker News “Show HN” (short pitch), Product Hunt (later)  
 > **Keywords:** React Jalali date picker, Persian calendar React, Shamsi datepicker, date range comparison, ERP range picker, keyboard date mask, TimePicker, leap year Jalali
@@ -235,9 +235,9 @@ Yes — types ship with the package.
 
 ## Links
 
-- **Live demo:** [GitHub Pages](https://hamidrezafallahi.github.io/Persian-range-picker/)
+- **Live demo:** [GitHub Pages](https://hamidrezafallahi.github.io/react-persian-range-picker/)
 - **npm:** [react-persian-range-picker](https://www.npmjs.com/package/react-persian-range-picker)
-- **Source:** [GitHub repository](https://github.com/hamidrezafallahi/Persian-range-picker)
+- **Source:** [GitHub repository](https://github.com/hamidrezafallahi/react-persian-range-picker)
 - **Author:** [Hamidreza Fallahi](https://github.com/hamidrezafallahi)
 
 ---
@@ -251,4 +251,4 @@ If your React app needs **enterprise range comparison** — especially with Jala
 npm i react-persian-range-picker
 ```
 
-**Demo:** https://hamidrezafallahi.github.io/Persian-range-picker/
+**Demo:** https://hamidrezafallahi.github.io/react-persian-range-picker/

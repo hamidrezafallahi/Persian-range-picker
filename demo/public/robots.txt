@@ -1,4 +1,4 @@
-User-agent: *
+﻿User-agent: *
 Allow: /
 
-Sitemap: https://hamidrezafallahi.github.io/Persian-range-picker/sitemap.xml
+Sitemap: https://hamidrezafallahi.github.io/react-persian-range-picker/sitemap.xml
