@@ -140,7 +140,7 @@ const MainContent = ({ ...props }: IMainContentProps) => {
           type: key,
           Data: alreadyWrapped
             ? (data as { date: IDate })
-            : { date: data as IDate },
+            : { date: data as unknown as IDate },
         } as HandleParams);
       }
     }
