@@ -141,7 +141,8 @@ function PeriodList({ ...props }: IPeriodList) {
     setActiveCompareStep?.(null);
     setCompareDate?.(null);
     setCounter?.(0);
-    onChange?.({ type: "range", Data: item.value });
+    // RangePicker.handleChange reads e.Data.date — not a bare { from, to }.
+    onChange?.({ type: "range", Data: { date: item.value } });
   };
   const filteredPeriod = period.filter(
     (item) =>
@@ -150,7 +151,10 @@ function PeriodList({ ...props }: IPeriodList) {
   );
   const switchHandler = () => {
     setStep?.(filteredPeriod[0].step);
-    onChange?.({ type: "date", Data: filteredPeriod[0].value });
+    onChange?.({
+      type: "range",
+      Data: { date: filteredPeriod[0].value },
+    });
     setZone?.(filteredPeriod[0].timeZone);
     setActiveCompareStep?.(null);
     setCounter?.(0);

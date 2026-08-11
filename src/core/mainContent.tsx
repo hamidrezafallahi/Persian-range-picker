@@ -124,9 +124,23 @@ const MainContent = ({ ...props }: IMainContentProps) => {
       if (key === "manual") {
         onChange?.(value as HandleParams);
       } else {
+        // PeriodList emits HandleParams with Data: { date: IDate }.
+        // Older callers may still pass a bare IDate as Data — wrap once only.
+        const incoming = value as HandleParams;
+        const data = incoming?.Data;
+        const alreadyWrapped =
+          !!data &&
+          typeof data === "object" &&
+          "date" in data &&
+          (data as { date?: unknown }).date != null &&
+          typeof (data as { date: unknown }).date === "object" &&
+          "from" in ((data as { date: object }).date as object);
+
         onChange?.({
           type: key,
-          Data: { date: value.Data },
+          Data: alreadyWrapped
+            ? (data as { date: IDate })
+            : { date: data as IDate },
         } as HandleParams);
       }
     }
