@@ -289,7 +289,7 @@ export const TimePicker = ({ ...props }: TimePickerProps) => {
                       color: backgroundColor,
                     }}
                   >
-                    {locale === "fa" ? "تایید" : "OK"}
+                    {locale === "fa" ? "ثبت" : "OK"}
                   </button>
                 </div>
               </div>
@@ -376,7 +376,7 @@ export const TimePicker = ({ ...props }: TimePickerProps) => {
                         color: backgroundColor,
                       }}
                     >
-                      {locale === "fa" ? "تایید" : "OK"}
+                      {locale === "fa" ? "ثبت" : "OK"}
                     </button>
                   </div>
                 </div>

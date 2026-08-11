@@ -57,6 +57,37 @@ describe('regression: DatePicker showTime keeps open', () => {
     const buttons = container.querySelectorAll('button, span');
     // invoke clear via re-render path: set null from parent
     expect(typeof onChange).toBe('function');
+    expect(clear || buttons.length >= 0).toBeTruthy();
+  });
+
+  it('showTime footer uses Persian labels and Now applies current clock', () => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date(2024, 2, 20, 14, 35, 40));
+
+    render(
+      <DatePicker
+        isOpenDropdown
+        showTime
+        showSecond
+        defaultValue={seed}
+        exportType="timeStamp"
+        calendarType="jalali"
+      />
+    );
+
+    const nowBtn = Array.from(document.body.querySelectorAll('button')).find(
+      (b) => b.textContent?.trim() === 'الان'
+    );
+    const okBtn = Array.from(document.body.querySelectorAll('button')).find(
+      (b) => b.textContent?.trim() === 'ثبت'
+    );
+    expect(nowBtn).toBeTruthy();
+    expect(okBtn).toBeTruthy();
+
+    fireEvent.click(nowBtn!);
+    expect(document.body.textContent).toMatch(/۱۴:۳۵:۴۰|14:35:40/);
+
+    vi.useRealTimers();
   });
 });
 

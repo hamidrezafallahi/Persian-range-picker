@@ -338,6 +338,8 @@ export interface DesktopTimePickerProps extends ColorProps {
   onChange?: (e: number) => void;
 
   showSecond?: boolean;
+  /** Share with Footer `timeColumnsIdPrefix` so Now can scroll the same columns. */
+  idPrefix?: string;
 }
 
 // =========================

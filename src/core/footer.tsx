@@ -71,12 +71,15 @@ export const Footer = ({ ...props }: IFooter) => {
         .set("minute", now.minute())
         .set("second", now.second());
 
-      setShowDate( updated.valueOf() );
-      if (timeColumnsIdPrefix) {
+      const next = updated.valueOf();
+      setShowDate(next);
+      // Defer scroll until after React commits DesktopTimePicker/TimeColumns DOM.
+      requestAnimationFrame(() => {
+        if (!timeColumnsIdPrefix) return;
         scrollTimeColumn(timeColumnsIdPrefix, "hour", now.hour());
         scrollTimeColumn(timeColumnsIdPrefix, "minute", now.minute());
         scrollTimeColumn(timeColumnsIdPrefix, "second", now.second());
-      }
+      });
       onNowButton?.();
     } else if (key === "submit") {
       onSubmit?.();
@@ -90,10 +93,11 @@ export const Footer = ({ ...props }: IFooter) => {
         <div
           className={`${style.flex} ${style.justify_between} ${style.w_full} ${style.px_2} `}
         >
-          <NowButton handleSelect={handleSelect} />
+          <NowButton handleSelect={handleSelect} locale={locale} />
           <SubmitTimeButton
             handleSelect={handleSelect}
             primaryColor={primaryColor}
+            locale={locale}
           />
         </div>
       ) : (
@@ -110,25 +114,37 @@ export const Footer = ({ ...props }: IFooter) => {
   );
 };
 
-const NowButton = ({ ...props }) => {
-  const { handleSelect, nowButtonClassName = "" } = props;
+const NowButton = ({
+  handleSelect,
+  locale = "fa",
+  nowButtonClassName = "",
+}: {
+  handleSelect: (key: "today" | "now" | "submit") => void;
+  locale?: TLocale;
+  nowButtonClassName?: string;
+}) => {
   return (
     <button
       className={`${style.p_2} ${style.px_3} ${style.border} ${style.rounded_md} ${nowButtonClassName}`}
       onClick={() => handleSelect("now")}
       type="button"
     >
-      now
+      {locale === "fa" ? "الان" : "Now"}
     </button>
   );
 };
 
-const SubmitTimeButton = ({ ...props }) => {
-  const {
-    handleSelect,
-    okButtonClassName = "",
-    primaryColor = "#000",
-  } = props;
+const SubmitTimeButton = ({
+  handleSelect,
+  locale = "fa",
+  okButtonClassName = "",
+  primaryColor = "#000",
+}: {
+  handleSelect: (key: "today" | "now" | "submit") => void;
+  locale?: TLocale;
+  okButtonClassName?: string;
+  primaryColor?: string;
+}) => {
   return (
     <button
       onClick={() => handleSelect("submit")}
@@ -140,7 +156,7 @@ const SubmitTimeButton = ({ ...props }) => {
         color: "#fff",
       }}
     >
-      Ok
+      {locale === "fa" ? "ثبت" : "OK"}
     </button>
   );
 };

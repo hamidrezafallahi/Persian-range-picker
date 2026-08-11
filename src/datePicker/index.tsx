@@ -438,6 +438,7 @@ export function DatePicker({ ...props }: DatePickerProps) {
                       <DesktopTimePicker
                         {...props}
                         displayButtonCount={5}
+                        idPrefix={timeColumnsIdPrefix}
                         defaultValue={
                           showDate != null
                             ? new Date(showDate).valueOf()

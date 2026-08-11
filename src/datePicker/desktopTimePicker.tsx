@@ -9,7 +9,7 @@ import moment from '../dateEngine';
 import { toPersianDigits } from '../core/helper';
 import style from '../main.module.css';
 import { DesktopTimePickerProps } from '../persianDatePicker/type';
-import { TimeColumns } from '../timePicker/timeColumns';
+import { scrollTimeColumn, TimeColumns } from '../timePicker/timeColumns';
 
 type TUnit = 'hour' | 'minute' | 'second';
 
@@ -26,13 +26,15 @@ export const DesktopTimePicker: React.FC<DesktopTimePickerProps> = ({
   secondStep = 1,
   onGetValue,
   showSecond = false,
+  idPrefix,
 }) => {
   const [time, setTime] = useState<number | null>(null);
   const buttonRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const locale = calendarType == 'jalali' ? 'fa' : 'en';
-  const timeColumnsIdPrefix = useRef(
+  const generatedPrefix = useRef(
     `dtp-${Math.random().toString(36).slice(2, 9)}`
   ).current;
+  const timeColumnsIdPrefix = idPrefix ?? generatedPrefix;
 
   const renderHeight =
     displayButtonCount * (buttonRefs.current[0]?.offsetHeight ?? 24) +
@@ -86,10 +88,17 @@ export const DesktopTimePicker: React.FC<DesktopTimePickerProps> = ({
   };
 
   useEffect(() => {
-    if (defaultValue) {
-      setTime(defaultValue);
-    }
-  }, [defaultValue]);
+    if (defaultValue == null || Number.isNaN(defaultValue)) return;
+    setTime(defaultValue);
+    const m = moment(defaultValue).locale(locale);
+    requestAnimationFrame(() => {
+      scrollTimeColumn(timeColumnsIdPrefix, 'hour', m.hour());
+      scrollTimeColumn(timeColumnsIdPrefix, 'minute', m.minute());
+      if (showSecond) {
+        scrollTimeColumn(timeColumnsIdPrefix, 'second', m.second());
+      }
+    });
+  }, [defaultValue, locale, showSecond, timeColumnsIdPrefix]);
   useEffect(() => {
     if (onGetValue && time) {
       onGetValue(time);
