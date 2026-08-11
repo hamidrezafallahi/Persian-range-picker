@@ -1,4 +1,4 @@
-﻿# SEO Checklist — Jalali / Persian date picker (React)
+# SEO Checklist — Jalali / Persian date picker (React)
 
 Status legend: ✅ done in repo · ⏳ needs deploy/publish · 👤 you must do manually
 

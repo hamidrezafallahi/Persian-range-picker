@@ -1,4 +1,4 @@
-﻿# From Simple Date Picking to ERP Range Comparison in React (Jalali + Gregorian)
+# From Simple Date Picking to ERP Range Comparison in React (Jalali + Gregorian)
 
 > **Best for:** Dev.to, Hashnode, Medium, Reddit r/reactjs / r/javascript, LinkedIn, Hacker News “Show HN” (short pitch), Product Hunt (later)  
 > **Keywords:** React Jalali date picker, Persian calendar React, Shamsi datepicker, date range comparison, ERP range picker, keyboard date mask, TimePicker, leap year Jalali

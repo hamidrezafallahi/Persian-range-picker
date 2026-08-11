@@ -1,4 +1,4 @@
-﻿# GitHub repo SEO (manual steps)
+# GitHub repo SEO (manual steps)
 
 Do these in the GitHub UI (Settings / About). Agents cannot reliably change them without your token.
 

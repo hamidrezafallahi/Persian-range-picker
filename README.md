@@ -1,4 +1,4 @@
-﻿# React Jalali / Persian Date Picker & Range Picker
+# React Jalali / Persian Date Picker & Range Picker
 
 [![npm version](https://img.shields.io/npm/v/react-persian-range-picker.svg)](https://www.npmjs.com/package/react-persian-range-picker)
 [![npm downloads](https://img.shields.io/npm/dm/react-persian-range-picker.svg)](https://www.npmjs.com/package/react-persian-range-picker)
