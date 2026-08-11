@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>React Jalali Date Picker for ERP — Persian Range Comparison</title>
+    <meta
+      name="description"
+      content="Build a Jalali / Persian date picker and range picker in React with compare ranges, synced navigation, Mask, and TimePicker for ERP dashboards."
+    />
+    <meta
+      name="keywords"
+      content="jalali date picker react, persian date picker, shamsi datepicker, date range comparison, ERP range picker, persian calendar react"
+    />
+    <meta name="robots" content="index,follow" />
+    <link rel="canonical" href="https://hamidrezafallahi.github.io/Persian-range-picker/blog/en/" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="From Simple Date Picking to ERP Range Comparison in React" />
+    <meta
+      property="og:description"
+      content="Comparative Jalali date-range UX for ERP and dashboards with react-persian-range-picker."
+    />
+    <meta property="og:url" content="https://hamidrezafallahi.github.io/Persian-range-picker/blog/en/" />
+    <meta
+      property="og:image"
+      content="https://raw.githubusercontent.com/hamidrezafallahi/Persian-range-picker/refs/heads/main/public/assets/calendar-range-picker.PNG"
+    />
+    <style>
+      body {
+        margin: 0;
+        font-family: Georgia, "Times New Roman", serif;
+        line-height: 1.7;
+        color: #162033;
+        background: linear-gradient(180deg, #eef2ff 0%, #fff 45%);
+      }
+      main { max-width: 760px; margin: 0 auto; padding: 2.5rem 1.25rem 4rem; }
+      h1 { font-size: clamp(1.6rem, 4vw, 2.2rem); line-height: 1.25; }
+      h2 { margin-top: 2rem; font-size: 1.3rem; }
+      p, li, td, th { font-family: system-ui, Segoe UI, sans-serif; }
+      a { color: #1c39bb; }
+      table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.95rem; }
+      th, td { border: 1px solid #dbe3ff; padding: 0.5rem 0.6rem; text-align: left; }
+      th { background: #eef2ff; }
+      pre, code { font-family: ui-monospace, Menlo, Consolas, monospace; background: #eef2ff; border-radius: 6px; }
+      code { padding: 0.1rem 0.35rem; }
+      pre { padding: 1rem; overflow: auto; border: 1px solid #dbe3ff; }
+      .nav { display: flex; flex-wrap: wrap; gap: 0.75rem 1.25rem; margin-bottom: 1.5rem; font-family: system-ui, sans-serif; }
+      blockquote { border-left: 3px solid #1c39bb; margin: 1rem 0; padding: 0.25rem 0 0.25rem 1rem; color: #334155; }
+    </style>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "headline": "From Simple Date Picking to ERP Range Comparison in React (Jalali + Gregorian)",
+        "description": "How react-persian-range-picker solves ERP date-range comparison in React.",
+        "url": "https://hamidrezafallahi.github.io/Persian-range-picker/blog/en/",
+        "author": { "@type": "Person", "name": "Hamidreza Fallahi", "url": "https://github.com/hamidrezafallahi" },
+        "mainEntityOfPage": "https://hamidrezafallahi.github.io/Persian-range-picker/blog/en/",
+        "keywords": ["react-persian-range-picker", "Jalali", "React date picker", "ERP"]
+      }
+    </script>
+  </head>
+  <body>
+    <main>
+      <nav class="nav" aria-label="Site">
+        <a href="../../">Demo</a>
+        <a href="../../guide/">Guide</a>
+        <a href="./">EN</a>
+        <a href="../fa/">FA</a>
+        <a href="https://www.npmjs.com/package/react-persian-range-picker">npm</a>
+      </nav>
+
+      <h1>From Simple Date Picking to ERP Range Comparison in React (Jalali + Gregorian)</h1>
+      <p>
+        Most React date libraries answer: “Which day did the user pick?” Enterprise dashboards ask:
+        “Compare this period to another — then move both ranges together.”
+        That is the gap
+        <a href="https://www.npmjs.com/package/react-persian-range-picker"><strong>react-persian-range-picker</strong></a>
+        is built for.
+      </p>
+
+      <h2>Capability ladder</h2>
+      <table>
+        <thead>
+          <tr><th>Level</th><th>Need</th><th>Component</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>1</td><td>Single date</td><td><code>DatePicker</code></td></tr>
+          <tr><td>2</td><td>Keyboard <code>YYYY/MM/DD</code></td><td><code>Mask</code></td></tr>
+          <tr><td>3</td><td>Time</td><td><code>TimePicker</code></td></tr>
+          <tr><td>4</td><td>One range</td><td><code>RangePicker</code></td></tr>
+          <tr><td>5</td><td>Primary vs compare</td><td><code>showComparison</code></td></tr>
+          <tr><td>6</td><td>Synced stepping</td><td><code>isShowNavigationButton</code></td></tr>
+        </tbody>
+      </table>
+
+      <h2>Install</h2>
+      <pre><code>npm i react-persian-range-picker</code></pre>
+
+      <h2>Range + compare example</h2>
+      <pre><code>import { RangePicker } from 'react-persian-range-picker';
+
+&lt;RangePicker
+  calendarType="jalali"
+  exportType="timeStamp"
+  showComparison
+  isShowNavigationButton
+  onChange={(e) =&gt; console.log(e.Data?.date)}
+/&gt;</code></pre>
+
+      <h2>What makes it different?</h2>
+      <ul>
+        <li>Enterprise-style <strong>range comparison</strong></li>
+        <li><strong>Synced</strong> primary + compare period navigation</li>
+        <li>Jalali-native engine via <code>jalaali-js</code> (leap-year aware)</li>
+        <li>Gregorian mode via <code>calendarType="gregorian"</code></li>
+        <li>Keyboard Mask, TimePicker, TypeScript, React 17–19</li>
+      </ul>
+
+      <h2>FAQ</h2>
+      <p><strong>Does it handle Jalali leap years?</strong> Yes — via <code>jalaali-js</code>.</p>
+      <p><strong>Jalali only?</strong> No. Use <code>calendarType="gregorian"</code>.</p>
+      <p><strong>React 19?</strong> Yes.</p>
+
+      <h2>Links</h2>
+      <ul>
+        <li><a href="../../">Live demo</a></li>
+        <li><a href="../../guide/">Install guide</a></li>
+        <li><a href="https://www.npmjs.com/package/react-persian-range-picker">npm</a></li>
+        <li><a href="https://github.com/hamidrezafallahi/Persian-range-picker">GitHub</a></li>
+        <li><a href="../fa/">نسخه فارسی</a></li>
+      </ul>
+    </main>
+  </body>
+</html>

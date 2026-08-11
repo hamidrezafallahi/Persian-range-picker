@@ -72,12 +72,12 @@ const THEME = {
 
 const SEO = {
   fa: {
-    title: 'Persian Range Picker | انتخابگر بازه و مقایسه تاریخ شمسی برای React',
+    title: 'انتخابگر تاریخ شمسی React | DatePicker و RangePicker جلالی',
     description:
-      'کتابخانه React برای مقایسه بازه زمانی (مشابه Dynamics/Analytics) در ERP و داشبوردها؛ با ناوبری هم‌زمان بازه اصلی و مقایسه، DatePicker جلالی، Mask و TimePicker.',
-    h1: 'مقایسه بازه زمانی شمسی برای React و ERP',
+      'دیت پیکر شمسی و RangePicker جلالی برای React — انتخاب تاریخ، بازه زمانی، مقایسه بازه (مناسب ERP/داشبورد)، ماسک کیبوردی و TimePicker.',
+    h1: 'انتخابگر تاریخ شمسی و RangePicker جلالی برای React',
     lead:
-      'RangePicker مقایسه‌ای به سبک Google Dynamics برای پروژه‌های بزرگ و ERP — با ناوبری گامی که بازه اصلی و بازه مقایسه را هم‌زمان جابه‌جا می‌کند؛ به‌همراه DatePicker، Mask و TimePicker جلالی/میلادی.',
+      'DatePicker شمسی، انتخاب بازه، و مقایسه دو بازه به سبک داشبوردهای تحلیلی — با ناوبری هم‌زمان، Mask و TimePicker؛ مناسب فرم‌ها و ERP.',
     docs: 'مستندات زنده',
     playground: 'نمایش زنده کامپوننت',
     live: 'Live',
@@ -113,12 +113,12 @@ const SEO = {
     ],
   },
   en: {
-    title: 'Persian Range Picker | Jalali range comparison picker for React',
+    title: 'React Jalali Date Picker & Range Picker | Persian (Shamsi) Calendar',
     description:
-      'React library for date-range comparison (Dynamics/Analytics-style) in ERP and dashboards — synced period navigation for primary + compare ranges, plus Jalali DatePicker, Mask, and TimePicker.',
-    h1: 'Jalali range comparison for React & ERP',
+      'Jalali / Persian date picker for React — DatePicker, Shamsi range picker with compare, keyboard mask, and TimePicker for forms and ERP dashboards.',
+    h1: 'Jalali Date Picker & Persian Range Picker for React',
     lead:
-      'Dynamics-inspired comparative RangePicker for enterprise dashboards and ERP — with step navigation that moves the primary range and compare range together. Includes Jalali/Gregorian DatePicker, Mask, and TimePicker.',
+      'Shamsi calendar DatePicker plus analytics-style range comparison — synced period navigation for primary and compare ranges. Includes Mask and TimePicker.',
     docs: 'Live docs',
     playground: 'Interactive playground',
     live: 'Live',
@@ -472,10 +472,11 @@ export function InitialComponent() {
         {
           '@context': 'https://schema.org',
           '@type': 'SoftwareApplication',
-          name: 'react-persian-range-picker',
+          name: 'Persian Jalali Date Picker for React',
+          alternateName: 'react-persian-range-picker',
           applicationCategory: 'DeveloperApplication',
           operatingSystem: 'Web',
-          softwareVersion: '1.0.36',
+          softwareVersion: '1.1.0',
           offers: {
             '@type': 'Offer',
             price: '0',
@@ -492,15 +493,19 @@ export function InitialComponent() {
             name: 'Hamidreza Fallahi',
             url: 'https://github.com/hamidrezafallahi',
           },
-          sameAs: [NPM_URL, GITHUB_URL],
+          sameAs: [
+            NPM_URL,
+            GITHUB_URL,
+            'https://www.jsdelivr.com/package/npm/react-persian-range-picker',
+          ],
           programmingLanguage: ['TypeScript', 'JavaScript'],
           keywords:
-            'React, Jalali, Persian date picker, range picker, Shamsi calendar, TimePicker, date mask',
+            'jalali date picker, persian date picker react, shamsi datepicker, range picker, انتخابگر تاریخ شمسی, تقویم جلالی',
         },
         {
           '@context': 'https://schema.org',
           '@type': 'WebSite',
-          name: 'Persian Range Picker',
+          name: 'Jalali Persian Date Picker for React',
           url: SITE_URL,
           inLanguage: [lang === 'fa' ? 'fa-IR' : 'en-US'],
           description: seo.description,
@@ -518,8 +523,8 @@ export function InitialComponent() {
     ensureMeta(
       'keywords',
       lang === 'fa'
-        ? 'انتخابگر تاریخ شمسی, تقویم جلالی React, range picker, Jalali datepicker, TimePicker, date mask, react-persian-range-picker'
-        : 'Persian date picker, Jalali datepicker, Shamsi React, range picker, compare range, TimePicker, date mask, react-persian-range-picker'
+        ? 'انتخابگر تاریخ شمسی, دیت پیکر شمسی react, تقویم جلالی, range picker شمسی, jalali datepicker, persian date picker'
+        : 'jalali date picker react, persian date picker, shamsi datepicker, react datepicker jalali, date range picker, persian calendar'
     );
     ensureMeta('robots', 'index,follow,max-image-preview:large');
     ensureMeta('theme-color', '#1c39bb');
@@ -529,8 +534,8 @@ export function InitialComponent() {
     ensureMeta('og:type', 'website', 'property');
     ensureMeta('og:url', SITE_URL, 'property');
     ensureMeta('og:image', OG_IMAGE, 'property');
-    ensureMeta('og:image:alt', 'Persian Jalali range picker UI', 'property');
-    ensureMeta('og:site_name', 'Persian Range Picker', 'property');
+    ensureMeta('og:image:alt', 'Jalali Persian date range picker for React', 'property');
+    ensureMeta('og:site_name', 'Jalali Date Picker for React', 'property');
     ensureMeta('og:locale', lang === 'fa' ? 'fa_IR' : 'en_US', 'property');
 
     ensureMeta('twitter:card', 'summary_large_image');
@@ -539,8 +544,8 @@ export function InitialComponent() {
     ensureMeta('twitter:image', OG_IMAGE);
 
     ensureLink('canonical', SITE_URL);
-    ensureLink('alternate', SITE_URL, 'fa');
-    ensureLink('alternate', SITE_URL, 'en');
+    ensureLink('alternate', `${SITE_URL}blog/fa/`, 'fa');
+    ensureLink('alternate', `${SITE_URL}blog/en/`, 'en');
     ensureLink('alternate', SITE_URL, 'x-default');
   }, [lang, seo.description, seo.title]);
 
@@ -581,12 +586,23 @@ export function InitialComponent() {
           >
             <span className={styles.logo} aria-hidden />
             <span className={styles.brandText}>
-              <span className={styles.brandName}>Persian Range Picker</span>
+              <span className={styles.brandName}>
+                {lang === 'fa' ? 'دیت پیکر شمسی' : 'Jalali Date Picker'}
+              </span>
               <span className={styles.brandSub}>react-persian-range-picker</span>
             </span>
           </a>
 
           <div className={styles.topActions}>
+            <a className={styles.linkBtn} href={`${SITE_URL}guide/`}>
+              {lang === 'fa' ? 'راهنما' : 'Guide'}
+            </a>
+            <a
+              className={styles.linkBtn}
+              href={lang === 'fa' ? `${SITE_URL}blog/fa/` : `${SITE_URL}blog/en/`}
+            >
+              {lang === 'fa' ? 'مقاله' : 'Article'}
+            </a>
             <a className={styles.linkBtn} href={NPM_URL} target="_blank" rel="noreferrer">
               npm
             </a>

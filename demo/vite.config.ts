@@ -13,6 +13,12 @@ export default defineConfig(({ command }) => ({
       "@lib": path.resolve(__dirname, "../src"),
     },
   },
+  // Ensure SEO static files under public/ are copied into demo/dist
+  publicDir: path.resolve(__dirname, "public"),
+  build: {
+    outDir: "dist",
+    emptyOutDir: true,
+  },
   server: {
     port: 5174,
     open: true,

@@ -1,4 +1,4 @@
-# react-persian-range-picker
+# React Jalali / Persian Date Picker & Range Picker
 
 [![npm version](https://img.shields.io/npm/v/react-persian-range-picker.svg)](https://www.npmjs.com/package/react-persian-range-picker)
 [![npm downloads](https://img.shields.io/npm/dm/react-persian-range-picker.svg)](https://www.npmjs.com/package/react-persian-range-picker)
@@ -6,11 +6,11 @@
 [![React](https://img.shields.io/badge/React-18%20%7C%2019-61dafb)](https://react.dev/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-ready-3178c6)](https://www.typescriptlang.org/)
 
-**Persian (Jalali / Shamsi) date picker, range picker, time picker, and keyboard date mask for React.**
+**Jalali (Persian / Shamsi) date picker and range picker for React** — plus TimePicker and keyboard date mask.
 
-Lightweight React components for **Jalali** and **Gregorian** calendars — single date, date range with comparison (analytics-style), time selection, and a keyboard-friendly input mask. Built for dashboards, forms, and enterprise apps.
+Lightweight components for **Jalali** and **Gregorian** calendars: single date, date-range selection with comparison (analytics/ERP-style), time selection, and a keyboard-friendly input mask.
 
-> Package: [`react-persian-range-picker`](https://www.npmjs.com/package/react-persian-range-picker) · Author: [Hamidreza Fallahi](https://github.com/hamidrezafallahi)
+> npm package: [`react-persian-range-picker`](https://www.npmjs.com/package/react-persian-range-picker) · Author: [Hamidreza Fallahi](https://github.com/hamidrezafallahi)
 
 ---
 
@@ -25,6 +25,7 @@ Lightweight React components for **Jalali** and **Gregorian** calendars — sing
 - [Keyboard & accessibility](#keyboard--accessibility)
 - [Demo](#demo)
 - [Comparison](#comparison)
+- [SEO & docs](#seo--docs)
 - [فارسی](#فارسی)
 - [License](#license)
 
@@ -309,6 +310,13 @@ Use `formatExport` / `formatIDateExport` when you need the same mapping outside 
 **Live demo (GitHub Pages):**  
 [https://hamidrezafallahi.github.io/Persian-range-picker/](https://hamidrezafallahi.github.io/Persian-range-picker/)
 
+**Docs & articles (crawlable HTML):**
+
+- [Install guide](https://hamidrezafallahi.github.io/Persian-range-picker/guide/)
+- [English article](https://hamidrezafallahi.github.io/Persian-range-picker/blog/en/)
+- [مقاله فارسی](https://hamidrezafallahi.github.io/Persian-range-picker/blog/fa/)
+- npm: [`react-persian-range-picker`](https://www.npmjs.com/package/react-persian-range-picker)
+
 Local playground:
 
 ```bash
@@ -352,7 +360,23 @@ Preview assets:
 | MUI pickers + Jalali adapter | Limited | Yes | No | Medium | High |
 | antd-jalali | Yes | Yes | Limited | Limited | High |
 
-**Keywords:** React Persian date picker, Jalali datepicker, Shamsi calendar React, date range picker, compare ranges, Persian input mask, React 19 date picker, TypeScript Jalali.
+**Keywords:** React Persian date picker, Jalali datepicker, Shamsi calendar React, date range picker, compare ranges, Persian input mask, React 19 date picker, TypeScript Jalali, **react-persian-range-picker**.
+
+---
+
+## SEO & docs
+
+Crawlable pages (better for Google than SPA-only content):
+
+| Page | URL |
+|------|-----|
+| Demo | https://hamidrezafallahi.github.io/Persian-range-picker/ |
+| Guide | https://hamidrezafallahi.github.io/Persian-range-picker/guide/ |
+| Article EN | https://hamidrezafallahi.github.io/Persian-range-picker/blog/en/ |
+| Article FA | https://hamidrezafallahi.github.io/Persian-range-picker/blog/fa/ |
+| Sitemap | https://hamidrezafallahi.github.io/Persian-range-picker/sitemap.xml |
+
+Repo SEO checklist: [`docs/SEO-CHECKLIST.md`](./docs/SEO-CHECKLIST.md) · Manual GitHub steps: [`docs/REPO-SEO-MANUAL.md`](./docs/REPO-SEO-MANUAL.md)
 
 ---
 

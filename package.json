@@ -8,6 +8,7 @@
   "types": "dist/index.d.ts",
   "author": "hamidreza fallahi",
   "keywords": [
+    "react-persian-range-picker",
     "react",
     "datepicker",
     "date picker",
@@ -17,10 +18,14 @@
     "comparison range picker",
     "persian",
     "jalali",
+    "jalaali",
     "shamsi",
     "persian date picker",
     "jalali datepicker",
+    "jalaali datepicker",
     "react persian calendar",
+    "persian calendar react",
+    "shamsi datepicker",
     "gregorian",
     "time picker",
     "date mask",
@@ -29,9 +34,11 @@
     "analytics",
     "typescript",
     "react 19",
-    "jalaali-js"
+    "jalaali-js",
+    "react jalali",
+    "react shamsi"
   ],
-  "description": "Lightweight React Jalali/Gregorian DatePicker, RangePicker with compare + synced period navigation, keyboard date mask, and TimePicker. Built for ERP/dashboards — leap-year aware, TypeScript-ready, minimal deps (jalaali-js).",
+  "description": "Jalali / Persian (Shamsi) date picker and range picker for React — DatePicker, compare ranges, keyboard mask, TimePicker. Gregorian mode, TypeScript, ERP-ready, minimal deps (jalaali-js).",
   "files": [
     "dist"
   ],

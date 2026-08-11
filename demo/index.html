@@ -9,43 +9,43 @@
     <meta name="theme-color" content="#1c39bb" />
     <meta name="color-scheme" content="light" />
 
-    <title>Persian Range Picker | انتخابگر تاریخ و بازه شمسی برای React</title>
+    <title>انتخابگر تاریخ شمسی React | DatePicker و RangePicker جلالی (Jalali)</title>
     <meta
       name="description"
-      content="دمو زنده react-persian-range-picker: DatePicker جلالی/میلادی، RangePicker با مقایسه بازه، Mask کیبوردی و TimePicker برای React 18/19."
+      content="DatePicker و RangePicker شمسی (جلالی) برای React — انتخاب تاریخ، بازه زمانی، مقایسه بازه، ماسک کیبوردی و TimePicker. سبک، TypeScript، مناسب فرم و ERP."
     />
     <meta
       name="keywords"
-      content="Persian date picker, Jalali, Shamsi, React datepicker, range picker, compare range, TimePicker, date mask, react-persian-range-picker, انتخابگر تاریخ شمسی"
+      content="انتخابگر تاریخ شمسی, دیت پیکر شمسی react, jalali date picker, persian date picker react, تقویم جلالی react, range picker شمسی, shamsi datepicker, date range picker jalali"
     />
     <meta name="author" content="Hamidreza Fallahi" />
     <meta name="robots" content="index,follow,max-image-preview:large" />
     <link rel="canonical" href="https://hamidrezafallahi.github.io/Persian-range-picker/" />
-    <link rel="alternate" hreflang="fa" href="https://hamidrezafallahi.github.io/Persian-range-picker/" />
-    <link rel="alternate" hreflang="en" href="https://hamidrezafallahi.github.io/Persian-range-picker/" />
+    <link rel="alternate" hreflang="fa" href="https://hamidrezafallahi.github.io/Persian-range-picker/blog/fa/" />
+    <link rel="alternate" hreflang="en" href="https://hamidrezafallahi.github.io/Persian-range-picker/blog/en/" />
     <link rel="alternate" hreflang="x-default" href="https://hamidrezafallahi.github.io/Persian-range-picker/" />
 
     <meta property="og:type" content="website" />
-    <meta property="og:site_name" content="Persian Range Picker" />
+    <meta property="og:site_name" content="Persian Jalali Date Picker for React" />
     <meta property="og:locale" content="fa_IR" />
     <meta property="og:locale:alternate" content="en_US" />
-    <meta property="og:title" content="Persian Range Picker | Jalali date & range picker for React" />
+    <meta property="og:title" content="React Jalali Date Picker &amp; Range Picker | Persian (Shamsi) Calendar" />
     <meta
       property="og:description"
-      content="Interactive demo: Jalali DatePicker, analytics-style RangePicker with compare, Mask, and TimePicker."
+      content="Jalali/Persian date picker and range picker for React — compare ranges, keyboard mask, and time picker for forms and ERP dashboards."
     />
     <meta property="og:url" content="https://hamidrezafallahi.github.io/Persian-range-picker/" />
     <meta
       property="og:image"
       content="https://raw.githubusercontent.com/hamidrezafallahi/Persian-range-picker/refs/heads/main/public/assets/calendar-range-picker.PNG"
     />
-    <meta property="og:image:alt" content="Persian Jalali range picker desktop UI" />
+    <meta property="og:image:alt" content="Jalali Persian date range picker for React" />
 
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Persian Range Picker" />
+    <meta name="twitter:title" content="React Jalali / Persian Date Picker &amp; Range Picker" />
     <meta
       name="twitter:description"
-      content="Jalali & Gregorian React date/range pickers with mask and time support."
+      content="Shamsi calendar DatePicker, RangePicker, Mask, and TimePicker for React."
     />
     <meta
       name="twitter:image"
@@ -62,49 +62,154 @@
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
-        "@type": "SoftwareApplication",
-        "name": "react-persian-range-picker",
-        "applicationCategory": "DeveloperApplication",
-        "operatingSystem": "Web",
-        "softwareVersion": "1.0.36",
-        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
-        "url": "https://hamidrezafallahi.github.io/Persian-range-picker/",
-        "downloadUrl": "https://www.npmjs.com/package/react-persian-range-picker",
-        "codeRepository": "https://github.com/hamidrezafallahi/Persian-range-picker",
-        "license": "https://opensource.org/licenses/MIT",
-        "description": "React Jalali/Gregorian date picker, range picker with compare, keyboard mask, and time picker.",
-        "screenshot": "https://raw.githubusercontent.com/hamidrezafallahi/Persian-range-picker/refs/heads/main/public/assets/calendar-range-picker.PNG",
-        "author": {
-          "@type": "Person",
-          "name": "Hamidreza Fallahi",
-          "url": "https://github.com/hamidrezafallahi"
-        },
-        "sameAs": [
-          "https://www.npmjs.com/package/react-persian-range-picker",
-          "https://github.com/hamidrezafallahi/Persian-range-picker"
-        ],
-        "programmingLanguage": ["TypeScript", "JavaScript"],
-        "keywords": "React, Jalali, Persian date picker, range picker, Shamsi, TimePicker, date mask"
+        "@graph": [
+          {
+            "@type": "SoftwareApplication",
+            "name": "Persian Jalali Date Picker for React",
+            "alternateName": "react-persian-range-picker",
+            "applicationCategory": "DeveloperApplication",
+            "operatingSystem": "Web",
+            "softwareVersion": "1.1.0",
+            "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+            "url": "https://hamidrezafallahi.github.io/Persian-range-picker/",
+            "downloadUrl": "https://www.npmjs.com/package/react-persian-range-picker",
+            "codeRepository": "https://github.com/hamidrezafallahi/Persian-range-picker",
+            "license": "https://opensource.org/licenses/MIT",
+            "description": "Jalali (Persian/Shamsi) and Gregorian date picker, range picker with compare, keyboard mask, and time picker for React.",
+            "screenshot": "https://raw.githubusercontent.com/hamidrezafallahi/Persian-range-picker/refs/heads/main/public/assets/calendar-range-picker.PNG",
+            "author": {
+              "@type": "Person",
+              "name": "Hamidreza Fallahi",
+              "url": "https://github.com/hamidrezafallahi"
+            },
+            "sameAs": [
+              "https://www.npmjs.com/package/react-persian-range-picker",
+              "https://github.com/hamidrezafallahi/Persian-range-picker",
+              "https://www.jsdelivr.com/package/npm/react-persian-range-picker"
+            ],
+            "programmingLanguage": ["TypeScript", "JavaScript"],
+            "keywords": "jalali date picker, persian date picker react, shamsi datepicker, range picker, تقویم جلالی, انتخابگر تاریخ شمسی"
+          },
+          {
+            "@type": "WebSite",
+            "name": "Jalali Persian Date Picker for React",
+            "url": "https://hamidrezafallahi.github.io/Persian-range-picker/",
+            "description": "Demo for React Jalali/Persian date picker and range picker components.",
+            "publisher": {
+              "@type": "Person",
+              "name": "Hamidreza Fallahi"
+            }
+          },
+          {
+            "@type": "FAQPage",
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "بهترین DatePicker شمسی برای React چیست؟",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "برای فرم و ERP می‌توانید از یک Jalali DatePicker سبک با پشتیبانی RangePicker و مقایسه بازه استفاده کنید. این دمو شامل DatePicker، RangePicker، Mask و TimePicker جلالی/میلادی است. نصب: npm i react-persian-range-picker"
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "How do I add a Jalali date picker in React?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Install with npm i react-persian-range-picker, then import DatePicker or RangePicker and set calendarType=\"jalali\". Gregorian is available via calendarType=\"gregorian\"."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "آیا RangePicker شمسی از مقایسه بازه پشتیبانی می‌کند؟",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "بله. با showComparison می‌توانید بازه اصلی و بازه مقایسه را مثل داشبوردهای تحلیلی انتخاب کنید و با ناوبری گامی هر دو را هم‌زمان جابه‌جا کنید."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Does the Persian calendar handle Jalali leap years?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Yes. Date math uses jalaali-js and mask/calendar validation is leap-year aware."
+                }
+              }
+            ]
+          }
+        ]
       }
     </script>
+    <style>
+      #seo-crawl {
+        max-width: 920px;
+        margin: 0 auto;
+        padding: 2rem 1.25rem 3rem;
+        font-family: Tahoma, "Segoe UI", sans-serif;
+        line-height: 1.8;
+        color: #1e293b;
+        border-top: 1px solid #e2e8f0;
+        background: #f8fafc;
+      }
+      #seo-crawl h1 { font-size: 1.45rem; margin: 0 0 0.75rem; }
+      #seo-crawl h2 { font-size: 1.15rem; margin: 1.5rem 0 0.5rem; }
+      #seo-crawl a { color: #1c39bb; }
+      #seo-crawl ul { padding-inline-start: 1.25rem; }
+      #seo-crawl nav { display: flex; flex-wrap: wrap; gap: 0.75rem 1.25rem; margin: 1rem 0; }
+    </style>
   </head>
   <body>
     <noscript>
       <main style="font-family: Tahoma, sans-serif; max-width: 720px; margin: 2rem auto; padding: 1rem; direction: rtl; line-height: 1.8">
-        <h1>Persian Range Picker</h1>
+        <h1>انتخابگر تاریخ شمسی برای React</h1>
         <p>
-          کتابخانه React برای انتخاب تاریخ شمسی (جلالی) و میلادی، بازه زمانی مقایسه‌ای،
-          ماسک ورودی و TimePicker.
+          DatePicker و RangePicker جلالی (شمسی) برای React — انتخاب تاریخ، بازه زمانی،
+          مقایسه بازه، ماسک ورودی و TimePicker.
         </p>
         <p>Install: <code>npm i react-persian-range-picker</code></p>
         <p>
           <a href="https://www.npmjs.com/package/react-persian-range-picker">npm</a>
           ·
           <a href="https://github.com/hamidrezafallahi/Persian-range-picker">GitHub</a>
+          ·
+          <a href="./guide/">Guide</a>
         </p>
       </main>
     </noscript>
     <div id="root"></div>
+
+    <section id="seo-crawl">
+      <div lang="fa" dir="rtl">
+        <h1>انتخابگر تاریخ شمسی (جلالی) برای React</h1>
+        <p>
+          اگر دنبال <strong>دیت پیکر شمسی React</strong>،
+          <strong>تقویم جلالی</strong> یا <strong>RangePicker بازه تاریخ</strong> هستید:
+          این کتابخانه DatePicker، انتخاب بازه، مقایسه دو بازه (مناسب داشبورد/ERP)،
+          ماسک کیبوردی و TimePicker را یکجا می‌دهد — با پشتیبانی میلادی هم.
+        </p>
+      </div>
+      <div lang="en" dir="ltr">
+        <h2>React Jalali / Persian Date Picker &amp; Range Picker</h2>
+        <p>
+          Looking for a <strong>Jalali date picker</strong>, <strong>Persian (Shamsi) datepicker</strong>,
+          or <strong>date range picker</strong> in React? Get single-date selection, analytics-style
+          range comparison, keyboard mask, and time picking — with Gregorian mode too.
+        </p>
+      </div>
+      <nav aria-label="Documentation">
+        <a href="./guide/">Install guide</a>
+        <a href="./blog/en/">English article</a>
+        <a href="./blog/fa/">مقاله فارسی</a>
+        <a href="https://www.npmjs.com/package/react-persian-range-picker">npm</a>
+        <a href="https://github.com/hamidrezafallahi/Persian-range-picker">GitHub</a>
+      </nav>
+      <ul>
+        <li>Install: <code>npm i react-persian-range-picker</code></li>
+        <li>Keywords people search: Jalali date picker, Persian datepicker React, انتخابگر تاریخ شمسی</li>
+        <li>Features: RangePicker + compare, Mask, TimePicker, TypeScript, React 17–19</li>
+      </ul>
+    </section>
+
     <script type="module" src="/main.tsx"></script>
   </body>
 </html>

@@ -1,0 +1,37 @@
+# Jalali / Persian Date Picker for React
+
+> React Jalali (Shamsi) DatePicker and RangePicker with compare, keyboard mask, and TimePicker.
+
+- Demo: https://hamidrezafallahi.github.io/Persian-range-picker/
+- Guide: https://hamidrezafallahi.github.io/Persian-range-picker/guide/
+- npm: https://www.npmjs.com/package/react-persian-range-picker
+- GitHub: https://github.com/hamidrezafallahi/Persian-range-picker
+- Article EN: https://hamidrezafallahi.github.io/Persian-range-picker/blog/en/
+- Article FA: https://hamidrezafallahi.github.io/Persian-range-picker/blog/fa/
+
+## Install
+
+```bash
+npm i react-persian-range-picker
+```
+
+## Search intents
+
+- jalali date picker react
+- persian date picker
+- shamsi datepicker
+- انتخابگر تاریخ شمسی
+- دیت پیکر شمسی react
+- تقویم جلالی react
+- jalali range picker / RangePicker شمسی
+
+## Exports
+
+- DatePicker
+- RangePicker
+- Mask
+- TimePicker
+- Calendar
+- useRenderPosition
+- useMediaQuery
+- formatExport / formatIDateExport

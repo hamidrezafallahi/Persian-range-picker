@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>انتخابگر تاریخ شمسی React برای ERP | DatePicker و RangePicker جلالی</title>
+    <meta
+      name="description"
+      content="دیت پیکر شمسی و RangePicker جلالی برای React — مقایسه بازه زمانی، ماسک کیبوردی و TimePicker مناسب ERP و داشبورد."
+    />
+    <meta
+      name="keywords"
+      content="انتخابگر تاریخ شمسی React, دیت پیکر شمسی, DatePicker جلالی, RangePicker شمسی, مقایسه بازه زمانی, تقویم جلالی"
+    />
+    <meta name="robots" content="index,follow" />
+    <link rel="canonical" href="https://hamidrezafallahi.github.io/Persian-range-picker/blog/fa/" />
+    <meta property="og:type" content="article" />
+    <meta property="og:locale" content="fa_IR" />
+    <meta property="og:title" content="از انتخاب تاریخ ساده تا مقایسه بازه در ERP" />
+    <meta
+      property="og:description"
+      content="کتابخانه React برای مقایسه بازه زمانی شمسی در داشبورد و ERP."
+    />
+    <meta property="og:url" content="https://hamidrezafallahi.github.io/Persian-range-picker/blog/fa/" />
+    <meta
+      property="og:image"
+      content="https://raw.githubusercontent.com/hamidrezafallahi/Persian-range-picker/refs/heads/main/public/assets/calendar-range-picker.PNG"
+    />
+    <style>
+      body {
+        margin: 0;
+        font-family: Tahoma, "Segoe UI", sans-serif;
+        line-height: 1.9;
+        color: #162033;
+        background: linear-gradient(180deg, #eef2ff 0%, #fff 45%);
+      }
+      main { max-width: 760px; margin: 0 auto; padding: 2.5rem 1.25rem 4rem; }
+      h1 { font-size: clamp(1.5rem, 4vw, 2rem); line-height: 1.35; }
+      h2 { margin-top: 2rem; font-size: 1.25rem; }
+      a { color: #1c39bb; }
+      table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.95rem; }
+      th, td { border: 1px solid #dbe3ff; padding: 0.5rem 0.6rem; text-align: right; }
+      th { background: #eef2ff; }
+      pre, code { font-family: ui-monospace, Menlo, Consolas, monospace; background: #eef2ff; border-radius: 6px; direction: ltr; text-align: left; }
+      code { padding: 0.1rem 0.35rem; }
+      pre { padding: 1rem; overflow: auto; border: 1px solid #dbe3ff; }
+      .nav { display: flex; flex-wrap: wrap; gap: 0.75rem 1.25rem; margin-bottom: 1.5rem; }
+    </style>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "inLanguage": "fa",
+        "headline": "از انتخاب تاریخ ساده تا مقایسه بازه در ERP: معرفی react-persian-range-picker",
+        "description": "کتابخانه React برای مقایسه بازه زمانی شمسی در داشبورد و ERP.",
+        "url": "https://hamidrezafallahi.github.io/Persian-range-picker/blog/fa/",
+        "author": { "@type": "Person", "name": "Hamidreza Fallahi", "url": "https://github.com/hamidrezafallahi" },
+        "keywords": ["react-persian-range-picker", "تقویم شمسی", "RangePicker", "ERP"]
+      }
+    </script>
+  </head>
+  <body>
+    <main>
+      <nav class="nav" aria-label="ناوبری">
+        <a href="../../">دمو</a>
+        <a href="../../guide/">راهنما</a>
+        <a href="../en/">EN</a>
+        <a href="./">FA</a>
+        <a href="https://www.npmjs.com/package/react-persian-range-picker">npm</a>
+      </nav>
+
+      <h1>از انتخاب تاریخ ساده تا مقایسه بازه در ERP با <code>react-persian-range-picker</code></h1>
+      <p>
+        بیشتر Date Pickerها فقط یک تاریخ یا یک بازه می‌گیرند. در ERP و داشبورد، نیاز واقعی اغلب
+        <strong>مقایسه دو بازه</strong> و حرکت هم‌زمان آن‌هاست — روی تقویم شمسی.
+        کتابخانه
+        <a href="https://www.npmjs.com/package/react-persian-range-picker"><strong>react-persian-range-picker</strong></a>
+        برای همین سناریو ساخته شده است.
+      </p>
+
+      <h2>طیف نیازمندی‌ها</h2>
+      <table>
+        <thead>
+          <tr><th>سطح</th><th>نیاز</th><th>کامپوننت</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>۱</td><td>یک تاریخ</td><td><code>DatePicker</code></td></tr>
+          <tr><td>۲</td><td>تایپ کیبوردی</td><td><code>Mask</code></td></tr>
+          <tr><td>۳</td><td>ساعت</td><td><code>TimePicker</code></td></tr>
+          <tr><td>۴</td><td>یک بازه</td><td><code>RangePicker</code></td></tr>
+          <tr><td>۵</td><td>مقایسه دو بازه</td><td><code>showComparison</code></td></tr>
+          <tr><td>۶</td><td>ناوبری هم‌زمان</td><td><code>isShowNavigationButton</code></td></tr>
+        </tbody>
+      </table>
+
+      <h2>نصب</h2>
+      <pre><code>npm i react-persian-range-picker</code></pre>
+
+      <h2>نمونه Range + Compare</h2>
+      <pre><code>import { RangePicker } from 'react-persian-range-picker';
+
+&lt;RangePicker
+  calendarType="jalali"
+  exportType="timeStamp"
+  showComparison
+  isShowNavigationButton
+  onChange={(e) =&gt; console.log(e.Data?.date)}
+/&gt;</code></pre>
+
+      <h2>تمایز اصلی</h2>
+      <ul>
+        <li>مقایسه بازه به سبک ابزارهای سازمانی</li>
+        <li>جابه‌جایی هم‌زمان بازه اصلی و مقایسه</li>
+        <li>موتور جلالی با <code>jalaali-js</code> (سال کبیسه)</li>
+        <li>پشتیبانی میلادی، ماسک کیبوردی، TypeScript، React ۱۷ تا ۱۹</li>
+      </ul>
+
+      <h2>لینک‌ها</h2>
+      <ul>
+        <li><a href="../../">دمو زنده</a></li>
+        <li><a href="../../guide/">راهنمای نصب</a></li>
+        <li><a href="https://www.npmjs.com/package/react-persian-range-picker">صفحه npm</a></li>
+        <li><a href="https://github.com/hamidrezafallahi/Persian-range-picker">گیت‌هاب</a></li>
+        <li><a href="../en/">English version</a></li>
+      </ul>
+    </main>
+  </body>
+</html>
