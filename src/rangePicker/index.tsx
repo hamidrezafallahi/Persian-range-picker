@@ -137,7 +137,14 @@ export function RangePicker(props: RangePickerProps) {
 
   const handleAccept = () => {
     if (date) {
-      if (date.from && date.to && date.from < date.to) {
+      const fromTs = getTimestamp(date.from);
+      const toTs = getTimestamp(date.to);
+      // Allow same-day ranges (from === to); only reject when end is before start.
+      if (
+        fromTs !== undefined &&
+        toTs !== undefined &&
+        fromTs <= toTs
+      ) {
         if (onSubmit) {
           if (type == "range") {
             onSubmit({

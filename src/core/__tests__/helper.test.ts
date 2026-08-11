@@ -44,5 +44,23 @@ describe('core/helper', () => {
       const yesterday = getTimestampsForPeriod('yesterday', 'fa');
       expect(yesterday.to).toBeLessThan(today.from);
     });
+
+    it('lastMonth fa ends on Shahrivar 31 when today is in Mehr', async () => {
+      // 2024-10-06 ≈ 1403/07/15 (Mehr) — previous month Shahrivar has 31 days
+      vi.setSystemTime(new Date('2024-10-06T12:00:00'));
+      const { from, to } = getTimestampsForPeriod('lastMonth', 'fa');
+      const moment = (await import('../../dateEngine')).default;
+      expect(moment(from).format('jYYYY/jMM/jDD')).toBe('1403/06/01');
+      expect(moment(to).format('jYYYY/jMM/jDD')).toBe('1403/06/31');
+    });
+
+    it('lastMonth en ends on last day of previous Gregorian month', async () => {
+      // March 15 → February end (2024 leap → 29)
+      vi.setSystemTime(new Date('2024-03-15T12:00:00'));
+      const { from, to } = getTimestampsForPeriod('lastMonth', 'en');
+      const moment = (await import('../../dateEngine')).default;
+      expect(moment(from).format('YYYY-MM-DD')).toBe('2024-02-01');
+      expect(moment(to).format('YYYY-MM-DD')).toBe('2024-02-29');
+    });
   });
 });

@@ -2,9 +2,11 @@ import { describe, expect, it } from 'vitest';
 import moment from '../../dateEngine';
 import {
   checkDateByRegex,
+  changeToTimestamp,
   compactToParts,
   formatMaskExport,
   getEndOfMonth,
+  isValidMaskCompact,
   partsToCompact,
   resolveMaskTimestamp,
   timestampToDateNumbers,
@@ -35,6 +37,18 @@ describe('mask/utils', () => {
   it('validates formatted dates via regex helper', () => {
     const valid = moment('1403/01/15', 'jYYYY/jMM/jDD').startOf('day').valueOf();
     expect(checkDateByRegex(valid, 'fa')).toBe(true);
+  });
+
+  it('rejects Gregorian Feb 31 (no silent overflow)', () => {
+    expect(isValidMaskCompact('20230231', 'en')).toBe(false);
+    expect(Number.isNaN(changeToTimestamp('20230231', 'en'))).toBe(true);
+    expect(isValidMaskCompact('20240229', 'en')).toBe(true);
+    expect(isValidMaskCompact('20230229', 'en')).toBe(false);
+  });
+
+  it('rejects invalid Jalali day beyond month length', () => {
+    expect(isValidMaskCompact('14031231', 'fa')).toBe(false); // Esfand max 29/30
+    expect(isValidMaskCompact('14030115', 'fa')).toBe(true);
   });
 
   it('returns end of month for leap/common Esfand', () => {

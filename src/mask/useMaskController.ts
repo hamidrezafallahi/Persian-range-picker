@@ -19,9 +19,9 @@ import {
   changeToTimestamp,
   checkDateByRegex,
   compactToParts,
-  formatFullValueToTimestamp,
   formatMaskExport,
   getEndOfMonth,
+  isValidMaskCompact,
   partsToCompact,
   resolveMaskTimestamp,
   segmentIndex,
@@ -151,7 +151,11 @@ export function useMaskController({
       }
 
       const ts = changeToTimestamp(latin, locale);
-      if (!checkDateByRegex(ts, locale)) {
+      if (
+        !Number.isFinite(ts) ||
+        !isValidMaskCompact(latin, locale) ||
+        !checkDateByRegex(ts, locale)
+      ) {
         onError?.(invalidMessage);
         setErrorTargets((prev) => [...prev.filter((item) => item !== 3), 3]);
         return false;
@@ -280,10 +284,7 @@ export function useMaskController({
     if (e.target.name === 'full') {
       setCompactValue(newValue);
       compactRef.current = newValue;
-      if (
-        newValue.length === 8 &&
-        !checkDateByRegex(formatFullValueToTimestamp(newValue, locale), locale)
-      ) {
+      if (newValue.length === 8 && !isValidMaskCompact(newValue, locale)) {
         onError?.(invalidMessage);
         setErrorTargets((prev) => [...prev.filter((item) => item !== 3), 3]);
       }

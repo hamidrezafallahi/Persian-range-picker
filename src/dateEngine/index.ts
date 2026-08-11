@@ -30,6 +30,11 @@ function pad(n: number, len = 2): string {
   return String(n).padStart(len, '0');
 }
 
+/** Days in Gregorian month (month is 1–12). */
+function gregorianMonthLength(year: number, month: number): number {
+  return new Date(Date.UTC(year, month, 0)).getUTCDate();
+}
+
 function parseParts(input: string, format: string): Record<string, number> | null {
   const tokens = format.match(/jYYYY|jMM|jDD|jM|jD|YYYY|MM|DD|M|D/g);
   if (!tokens) return null;
@@ -188,7 +193,30 @@ export class PDate {
           const y = parts.YYYY ?? 1970;
           const m = parts.MM ?? parts.M ?? 1;
           const d = parts.DD ?? parts.D ?? 1;
+          if (m < 1 || m > 12 || d < 1 || d > gregorianMonthLength(y, m)) {
+            // Allow partial parses like year-only / year-month for mask
+            if (!parts.DD && !parts.D) {
+              const safeDay = 1;
+              const safeMonth = Math.min(Math.max(m, 1), 12);
+              this._d = new Date(
+                gregorianToTimestamp(y, safeMonth, safeDay, h, mi, s, 0, utc)
+              );
+              return;
+            }
+            this._d = new Date(NaN);
+            this._valid = false;
+            return;
+          }
           this._d = new Date(gregorianToTimestamp(y, m, d, h, mi, s, 0, utc));
+          // Reject silent overflow (e.g. Feb 31 → March) if Date still mutated.
+          const gy = utc ? this._d.getUTCFullYear() : this._d.getFullYear();
+          const gm = (utc ? this._d.getUTCMonth() : this._d.getMonth()) + 1;
+          const gd = utc ? this._d.getUTCDate() : this._d.getDate();
+          if (gy !== y || gm !== m || gd !== d) {
+            this._d = new Date(NaN);
+            this._valid = false;
+            return;
+          }
         }
         if (Number.isNaN(this._d.getTime())) this._valid = false;
         return;

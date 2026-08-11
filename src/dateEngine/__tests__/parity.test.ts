@@ -40,4 +40,17 @@ describe('dateEngine parity', () => {
     expect(typeof engine(Date.now()).day()).toBe('number');
     expect(engine(Date.now()).day(6).format('ddd')).toBe('Sat');
   });
+
+  it('rejects invalid Gregorian dates instead of overflowing', () => {
+    const invalid = engine('20230231', 'YYYYMMDD');
+    expect(invalid.isValid()).toBe(false);
+    expect(Number.isNaN(invalid.valueOf())).toBe(true);
+
+    const leap = engine('20240229', 'YYYYMMDD');
+    expect(leap.isValid()).toBe(true);
+    expect(leap.format('YYYY-MM-DD')).toBe('2024-02-29');
+
+    const nonLeap = engine('20230229', 'YYYYMMDD');
+    expect(nonLeap.isValid()).toBe(false);
+  });
 });

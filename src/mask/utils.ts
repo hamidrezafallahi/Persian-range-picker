@@ -86,10 +86,13 @@ export function changeToTimestamp(fullvalue: string, locale: TLocale): number {
         ? moment(value, 'jYYYYjMM').valueOf()
         : moment(value, 'YYYYMM').valueOf();
     case 7:
-    case 8:
-      return locale === 'fa'
-        ? moment(value, 'jYYYYjMMjDD').valueOf()
-        : moment(value, 'YYYYMMDD').valueOf();
+    case 8: {
+      const parsed =
+        locale === 'fa'
+          ? moment(value, 'jYYYYjMMjDD')
+          : moment(value, 'YYYYMMDD');
+      return parsed.isValid() ? parsed.valueOf() : Number.NaN;
+    }
     default:
       return Date.now();
   }
@@ -100,18 +103,48 @@ export function formatFullValueToTimestamp(
   locale: TLocale
 ): number {
   const value = toLatinDigits(fullValue);
-  return locale === 'en'
-    ? moment(value, 'YYYYMMDD').valueOf()
-    : moment(value, 'jYYYYjMMjDD').valueOf();
+  const parsed =
+    locale === 'en'
+      ? moment(value, 'YYYYMMDD')
+      : moment(value, 'jYYYYjMMjDD');
+  return parsed.isValid() ? parsed.valueOf() : Number.NaN;
+}
+
+/**
+ * True when compact YYYYMMDD (or Jalali) is a real calendar date.
+ * Does not trust overflowed Date objects (e.g. 20230231 → March).
+ */
+export function isValidMaskCompact(compact: string, locale: TLocale): boolean {
+  const value = toLatinDigits(compact).replace(/\D/g, '');
+  if (value.length !== 8 || Number.isNaN(Number(value))) return false;
+
+  const year = Number(value.slice(0, 4));
+  const month = Number(value.slice(4, 6));
+  const day = Number(value.slice(6, 8));
+  const dayMax = getEndOfMonth(year, month, locale, undefined, 3);
+  if (month < 1 || month > 12 || day < 1 || day > dayMax) return false;
+
+  const parsed =
+    locale === 'fa'
+      ? moment(value, 'jYYYYjMMjDD')
+      : moment(value, 'YYYYMMDD');
+  if (!parsed.isValid()) return false;
+
+  const roundTrip =
+    locale === 'fa'
+      ? toLatinDigits(parsed.format('jYYYYjMMjDD'))
+      : parsed.format('YYYYMMDD');
+  return roundTrip === value;
 }
 
 export function checkDateByRegex(timestamp: number, locale: TLocale): boolean {
+  if (!Number.isFinite(timestamp)) return false;
   const dateRegex = /^\d{4}\/(0[1-9]|1[0-2])\/(0[1-9]|[12]\d|3[01])$/;
   const formatted =
     locale === 'fa'
       ? moment(timestamp).format('jYYYY/jMM/jDD')
       : moment(timestamp).format('YYYY/MM/DD');
-  return dateRegex.test(formatted);
+  return dateRegex.test(toLatinDigits(formatted));
 }
 
 export function getEndOfMonth(
