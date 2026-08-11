@@ -1,10 +1,13 @@
 import moment from '../dateEngine';
 import type { ExportType, IDate, TLocale } from './type';
-import { getTimestamp } from './helper';
+import { calendarMoment, getTimestamp } from './helper';
 
 /**
  * Single export adapter for public API boundaries.
  * Internal state stays as Unix ms; consumers receive IsoString or timeStamp.
+ *
+ * Policy: both fa and en use local wall-clock for IsoString (offset in Z).
+ * `timeStamp` is absolute ms (identical regardless of utc/local).
  */
 export function formatExport(
   timestamp: number,
@@ -12,17 +15,16 @@ export function formatExport(
   exportType: ExportType = 'IsoString'
 ): number | string {
   if (exportType === 'IsoString') {
-    if (locale === 'fa') {
-      return moment(timestamp)
-        .format('YYYY-MM-DDTHH:mm:ss.SSSZ')
-        .replace(/[۰-۹]/g, (d) => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d).toString());
-    }
-    return moment.utc(timestamp).format('YYYY-MM-DDTHH:mm:ss.SSSZ');
+    const formatted = calendarMoment(timestamp, locale).format(
+      'YYYY-MM-DDTHH:mm:ss.SSSZ'
+    );
+    // Guard against accidental Persian digits from host fonts / engines.
+    return formatted.replace(/[۰-۹]/g, (d) =>
+      '۰۱۲۳۴۵۶۷۸۹'.indexOf(d).toString()
+    );
   }
 
-  return locale === 'fa'
-    ? moment(timestamp).valueOf()
-    : moment.utc(timestamp).valueOf();
+  return calendarMoment(timestamp, locale).valueOf();
 }
 
 /** Map an internal IDate (ms) to public export shape. */

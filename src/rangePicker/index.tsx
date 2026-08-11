@@ -12,6 +12,7 @@ import { DownTriangle } from '../assets/icons/DownTriangle';
 import { MenuArrowBack } from '../assets/icons/MenuArrowBack';
 import {
   getTimestamp,
+  normalizeIDate,
   toPersianDigits,
 } from '../core/helper';
 import { formatIDateExport } from '../core/formatExport';
@@ -70,24 +71,14 @@ export function RangePicker(props: RangePickerProps) {
   const isFa = locale === "fa";
   const initValue: IDate = (() => {
     if (defaultValue !== undefined) {
-      return {
-        from: isFa
-          ? moment(defaultValue.from).locale("fa").startOf("day").valueOf()
-          : moment(defaultValue.from).utc().startOf("day").valueOf(),
-        to: isFa
-          ? moment(defaultValue.to).locale("fa").endOf("day").valueOf()
-          : moment(defaultValue.to).utc().endOf("day").valueOf(),
-      };
-    } else {
-      return {
-        from: isFa
-          ? moment().locale("fa").startOf("jYear").valueOf()
-          : moment().utc().startOf("year").valueOf(),
-        to: isFa
-          ? moment().locale("fa").endOf("day").valueOf()
-          : moment().utc().endOf("day").valueOf(),
-      };
+      return normalizeIDate(defaultValue, locale as TLocale);
     }
+    return {
+      from: isFa
+        ? moment().locale("fa").startOf("jYear").valueOf()
+        : moment().locale("en").startOf("year").valueOf(),
+      to: moment().locale(locale).endOf("day").valueOf(),
+    };
   })();
   const { match } = useMediaQuery("XSUP");
   const [date, setDate] = useState<IDate>(initValue);
@@ -319,12 +310,12 @@ export function RangePicker(props: RangePickerProps) {
       }));
       return;
     }
-    setDate({ from: value.from, to: value.to });
+    setDate(normalizeIDate(value, locale as TLocale));
     setShowDate((prev) => ({
       ...prev,
-      date: { from: value.from, to: value.to },
+      date: normalizeIDate(value, locale as TLocale),
     }));
-  }, [value]);
+  }, [value, locale]);
   return (
     <>
       {match ? (
@@ -427,16 +418,19 @@ export function RangePicker(props: RangePickerProps) {
   ${style.flex_row_reverse}
   ${style.justify_end}
 `}
-                    dir={locale == "fa" ? "ltr" : "rtl"}
+                    dir={locale == "fa" ? "rtl" : "ltr"}
                   >
                     <button
+                      type="button"
                       style={{ color: primaryColor }}
                       className={`${style.p_2} ${style.px_3} ${style.rounded_md} ${style.border_none}`}
                       onClick={handleCancel}
+                      aria-label={locale == "fa" ? "لغو" : "Cancel"}
                     >
                       {locale == "fa" ? "لغو" : "Cancel"}
                     </button>
                     <button
+                      type="button"
                       onClick={() => handleAccept()}
                       style={{
                         background: primaryColor,
@@ -444,6 +438,7 @@ export function RangePicker(props: RangePickerProps) {
                         color: backgroundColor,
                       }}
                       className={`${style.p_2} ${style.px_3} ${style.border} ${style.rounded_md}`}
+                      aria-label={locale == "fa" ? "اعمال" : "Accept"}
                     >
                       {locale == "fa" ? "اعمال" : "Accept"}
                     </button>

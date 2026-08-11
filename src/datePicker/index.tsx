@@ -24,7 +24,7 @@ import {
   DatePickerProps,
   TUnit,
 } from '../persianDatePicker/type';
-import { TimeColumns } from '../timePicker/timeColumns';
+import { scrollTimeColumn, TimeColumns } from '../timePicker/timeColumns';
 import { useMediaQuery } from '../useMediaQuery';
 import { useRenderPosition } from '../useRenderPosition';
 import { DesktopTimePicker } from './desktopTimePicker';
@@ -67,6 +67,9 @@ export function DatePicker({ ...props }: DatePickerProps) {
   const locale = calendarType == "jalali" ? "fa" : "en";
   const isFa = calendarType === "jalali";
   const dynamicFormat = showSecond ? showTimeFormat : "HH:mm";
+  const timeColumnsIdPrefix = useRef(
+    `dp-${Math.random().toString(36).slice(2, 9)}`
+  ).current;
   const initValue: number | null = (() => {
     if (
       (defaultValue &&
@@ -74,9 +77,7 @@ export function DatePicker({ ...props }: DatePickerProps) {
         typeof defaultValue === "string") ||
       typeof defaultValue === "number"
     ) {
-      return isFa
-        ? moment(defaultValue).locale("fa").startOf("day").valueOf()
-        : moment(defaultValue).utc().startOf("day").valueOf();
+      return moment(defaultValue).locale(locale).startOf("day").valueOf();
     } else {
       return null;
     }
@@ -165,10 +166,7 @@ export function DatePicker({ ...props }: DatePickerProps) {
       ? moment(showDate).locale(locale).set(unit, value)
       : moment().locale(locale).set(unit, value);
     setShowDate(updated.valueOf());
-    const targetDiv = document.getElementById(unit);
-    if (targetDiv) {
-      targetDiv.scrollTop = value * 40;
-    }
+    scrollTimeColumn(timeColumnsIdPrefix, unit, value);
   };
 
   const renderOptions = (count: number, unit: TUnit, step = 1) => {
@@ -208,9 +206,7 @@ export function DatePicker({ ...props }: DatePickerProps) {
       (value !== undefined && typeof value === "string") ||
       typeof value === "number"
     ) {
-      const parsed = isFa
-        ? moment(value).locale("fa")
-        : moment(value).utc();
+      const parsed = moment(value).locale(locale);
       setShowDate(
         showTime ? parsed.valueOf() : parsed.startOf("day").valueOf()
       );
@@ -323,20 +319,13 @@ export function DatePicker({ ...props }: DatePickerProps) {
                 </button>
               </>
             ) : (
-              <button
-                type="button"
-                disabled={disabled}
-                onClick={handleDropdown}
-                className={`${styles.flex} ${styles.justify_between} ${styles.items_center} ${styles.gap_1} ${styles.w_full} ${styles.h_full} ${styles.border_none} ${styles.px_0}`}
-                style={{
-                  background: "transparent",
-                  cursor: disabled ? "not-allowed" : "pointer",
-                  color: tertiaryColor,
-                }}
-              >
-                {allowClear ? (
-                  <span
+              <>
+                {allowClear && (
+                  <button
+                    type="button"
+                    disabled={disabled}
                     onClick={handleClear}
+                    aria-label="clear date"
                     className={`
   ${styles.flex}
   ${styles.justify_center}
@@ -346,21 +335,35 @@ export function DatePicker({ ...props }: DatePickerProps) {
   ${styles.rounded_full}
   ${styles.border_none}
   `}
+                    style={{ background: "transparent" }}
                   >
                     <ClearIcon />
-                  </span>
-                ) : (
-                  <>{icon && <span>{icon}</span>}</>
+                  </button>
                 )}
-                {title && (
-                  <div
-                    className={` ${styles.text_start} ${styles.text_gray_gray7} `}
-                    style={{ color: tertiaryColor, flex: 1 }}
-                  >
-                    {title}
-                  </div>
-                )}
-              </button>
+                <button
+                  type="button"
+                  disabled={disabled}
+                  onClick={handleDropdown}
+                  className={`${styles.flex} ${styles.justify_between} ${styles.items_center} ${styles.gap_1} ${styles.w_full} ${styles.h_full} ${styles.border_none} ${styles.px_0}`}
+                  style={{
+                    background: "transparent",
+                    cursor: disabled ? "not-allowed" : "pointer",
+                    color: tertiaryColor,
+                  }}
+                  aria-label="open calendar"
+                  aria-expanded={isOpen}
+                >
+                  {!allowClear && icon && <span>{icon}</span>}
+                  {title && (
+                    <div
+                      className={` ${styles.text_start} ${styles.text_gray_gray7} `}
+                      style={{ color: tertiaryColor, flex: 1 }}
+                    >
+                      {title}
+                    </div>
+                  )}
+                </button>
+              </>
             )}
           </div>
           {isOpen &&
@@ -457,6 +460,7 @@ export function DatePicker({ ...props }: DatePickerProps) {
                   showTime={showTime}
                   onSubmit={handleSubmit}
                   onChange={changeHandler}
+                  timeColumnsIdPrefix={timeColumnsIdPrefix}
                 />
               </div>,
               document.body
@@ -576,6 +580,7 @@ export function DatePicker({ ...props }: DatePickerProps) {
                         </button>
                       </div>
                       <TimeColumns
+                        idPrefix={timeColumnsIdPrefix}
                         TimeColumnsClassName={`
                       ${styles.flex}
                       ${styles.justify_center}
@@ -621,6 +626,7 @@ export function DatePicker({ ...props }: DatePickerProps) {
                     onTodayButton={() => setIsOpen(false)}
                     onSubmit={handleSubmit}
                     onChange={changeHandler}
+                    timeColumnsIdPrefix={timeColumnsIdPrefix}
                   />
                 </div>
               </div>,

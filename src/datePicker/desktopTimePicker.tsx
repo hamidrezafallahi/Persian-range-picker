@@ -30,6 +30,9 @@ export const DesktopTimePicker: React.FC<DesktopTimePickerProps> = ({
   const [time, setTime] = useState<number | null>(null);
   const buttonRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const locale = calendarType == 'jalali' ? 'fa' : 'en';
+  const timeColumnsIdPrefix = useRef(
+    `dtp-${Math.random().toString(36).slice(2, 9)}`
+  ).current;
 
   const renderHeight =
     displayButtonCount * (buttonRefs.current[0]?.offsetHeight ?? 24) +
@@ -103,6 +106,7 @@ export const DesktopTimePicker: React.FC<DesktopTimePickerProps> = ({
         `}
       >
         <TimeColumns
+          idPrefix={timeColumnsIdPrefix}
           renderHeight={`${renderHeight}px`}
           renderOptions={(count, unit) =>
             renderOptions(

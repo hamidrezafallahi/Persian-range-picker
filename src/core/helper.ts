@@ -13,6 +13,40 @@ import type {
 export const toPersianDigits = (str: string) => {
   return str.replace(/\d/g, (d) => "۰۱۲۳۴۵۶۷۸۹"[parseInt(d)]);
 };
+
+/**
+ * Calendar-facing moment: always local wall-clock for both fa and en.
+ * Gregorian previously mixed utc() which shifted day boundaries near midnight.
+ */
+export function calendarMoment(
+  input?: number | string | Date | null,
+  locale: TLocale | string = "fa"
+) {
+  const m =
+    input === undefined || input === null || input === ""
+      ? moment()
+      : moment(input);
+  return m.locale(locale === "fa" ? "fa" : "en");
+}
+
+/** Normalize range ends to local start/end of day for internal state. */
+export function normalizeIDate(
+  date: IDate,
+  locale: TLocale
+): IDate {
+  const fromTs = getTimestamp(date.from);
+  const toTs = getTimestamp(date.to);
+  return {
+    from:
+      fromTs === undefined || date.from == null
+        ? date.from ?? null
+        : calendarMoment(fromTs, locale).startOf("day").valueOf(),
+    to:
+      toTs === undefined || date.to == null
+        ? date.to ?? null
+        : calendarMoment(toTs, locale).endOf("day").valueOf(),
+  };
+}
 export const getTimestampsForPeriod = (period: ITimeZone, locale: string) => {
   let from, to;
 
@@ -45,9 +79,9 @@ export const getTimestampsForPeriod = (period: ITimeZone, locale: string) => {
           to = moment().locale("fa").clone().endOf("day").valueOf();
         }
       } else {
-        // Gregorian week: Sunday → today
-        from = moment.utc().day(0).startOf("day").valueOf();
-        to = moment.utc().endOf("day").valueOf();
+        // Gregorian week: Sunday → today (local wall-clock)
+        from = moment().day(0).startOf("day").valueOf();
+        to = moment().endOf("day").valueOf();
       }
       break;
     case "lastWeek":
@@ -84,8 +118,8 @@ export const getTimestampsForPeriod = (period: ITimeZone, locale: string) => {
             .valueOf();
         }
       } else {
-        from = moment.utc().day(0).subtract(7, "day").startOf("day").valueOf();
-        to = moment.utc().day(0).subtract(1, "day").endOf("day").valueOf();
+        from = moment().day(0).subtract(7, "day").startOf("day").valueOf();
+        to = moment().day(0).subtract(1, "day").endOf("day").valueOf();
       }
       break;
     case "last7Days":

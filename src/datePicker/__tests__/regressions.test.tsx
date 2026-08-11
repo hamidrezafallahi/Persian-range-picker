@@ -72,7 +72,7 @@ describe('regression: week periods respect locale', () => {
 
   it('en thisWeek starts on Sunday', () => {
     const { from } = getTimestampsForPeriod('thisWeek', 'en');
-    expect(moment.utc(from).day()).toBe(0);
+    expect(moment(from).day()).toBe(0);
   });
 
   it('fa thisWeek starts on Saturday', () => {

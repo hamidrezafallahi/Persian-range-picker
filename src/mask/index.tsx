@@ -131,6 +131,7 @@ export function Mask(props: MaskProps) {
           <button
             type="button"
             onClick={handleClear}
+            aria-label="clear"
             className={`
               ${style.flex}
               ${style.justify_center}

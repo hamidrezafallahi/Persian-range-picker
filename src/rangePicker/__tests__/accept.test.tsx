@@ -4,12 +4,12 @@ import moment from '../../dateEngine';
 import { RangePicker } from '../index';
 
 describe('RangePicker Accept same-day', () => {
-  it('accepts a range where from === to (controlled value)', () => {
+  it('accepts a range where from and to are the same calendar day', () => {
     const day = moment('1403/01/15', 'jYYYY/jMM/jDD').startOf('day').valueOf();
     const onSubmit = vi.fn();
     const onError = vi.fn();
 
-    // Controlled path copies value as-is (no endOf normalization).
+    // Controlled path normalizes to startOf/endOf day.
     render(
       <RangePicker
         isOpenDropdown
@@ -27,8 +27,10 @@ describe('RangePicker Accept same-day', () => {
     expect(onError).not.toHaveBeenCalled();
     expect(onSubmit).toHaveBeenCalledTimes(1);
     const payload = onSubmit.mock.calls[0][0];
-    expect(payload.Data.date.from).toBe(day);
-    expect(payload.Data.date.to).toBe(day);
+    expect(payload.Data.date.from).toBe(
+      moment(day).startOf('day').valueOf()
+    );
+    expect(payload.Data.date.to).toBe(moment(day).endOf('day').valueOf());
   });
 
   it('still rejects when end is before start', () => {

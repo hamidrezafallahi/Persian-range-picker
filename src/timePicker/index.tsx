@@ -18,7 +18,7 @@ import {
 } from '../persianDatePicker/type';
 import { useMediaQuery } from '../useMediaQuery';
 import { useRenderPosition } from '../useRenderPosition';
-import { TimeColumns } from './timeColumns';
+import { scrollTimeColumn, TimeColumns } from './timeColumns';
 
 export const TimePicker = ({ ...props }: TimePickerProps) => {
   const {
@@ -51,14 +51,17 @@ export const TimePicker = ({ ...props }: TimePickerProps) => {
   const [open, setOpen] = useState(false);
   const locale = calendarType == "jalali" ? "fa" : "en";
   const isFa = locale === "fa";
+  const timeColumnsIdPrefix = useRef(
+    `tp-${Math.random().toString(36).slice(2, 9)}`
+  ).current;
 
   const initValue: number | null = (() => {
     if (defaultValue !== undefined) {
-      return isFa
-        ? moment(defaultValue as number|string).locale("fa").valueOf()
-        : moment(defaultValue as number|string).utc().valueOf();
+      return moment(defaultValue as number | string)
+        .locale(locale)
+        .valueOf();
     } else {
-      return null; // isFa ? moment().locale("fa").valueOf() : moment().utc().valueOf();
+      return null;
     }
   })();
   const [time, setTime] = useState<number | null>(initValue);
@@ -84,10 +87,7 @@ export const TimePicker = ({ ...props }: TimePickerProps) => {
       ? moment(time).locale(locale).set(unit, value)
       : moment().locale(locale).set(unit, value);
     setTime(updated.valueOf());
-    const targetDiv = document.getElementById(unit);
-    if (targetDiv) {
-      targetDiv.scrollTop = value * 40;
-    }
+    scrollTimeColumn(timeColumnsIdPrefix, unit, value);
   };
   const handleSubmit = () => {
 
@@ -98,15 +98,15 @@ export const TimePicker = ({ ...props }: TimePickerProps) => {
   };
 
   const handleNow = () => {
-    const now = locale === "fa" ? moment() : moment.utc();
+    const now = moment().locale(locale);
     let updated;
 
     const isInvalid = !time || isNaN(time) || !moment(time).isValid();
 
     if (isInvalid) {
-      updated = locale === "fa" ? moment() : moment.utc();
+      updated = moment().locale(locale);
     } else {
-      updated = locale === "fa" ? moment(time) : moment.utc(moment(time));
+      updated = moment(time).locale(locale);
     }
 
     updated = updated
@@ -115,18 +115,9 @@ export const TimePicker = ({ ...props }: TimePickerProps) => {
       .set("second", now.second());
 
     setTime(updated.valueOf());
-    const hourDiv = document.getElementById("hour");
-    if (hourDiv) {
-      hourDiv.scrollTop = now.hour() * 40;
-    }
-    const minuteDiv = document.getElementById("minute");
-    if (minuteDiv) {
-      minuteDiv.scrollTop = now.minute() * 40;
-    }
-    const secondDiv = document.getElementById("second");
-    if (secondDiv) {
-      secondDiv.scrollTop = now.second() * 40;
-    }
+    scrollTimeColumn(timeColumnsIdPrefix, "hour", now.hour());
+    scrollTimeColumn(timeColumnsIdPrefix, "minute", now.minute());
+    scrollTimeColumn(timeColumnsIdPrefix, "second", now.second());
   };
   const renderOptions = (count: number, unit: TUnit, step = 1) => {
     const pad = (num: number) => num.toString().padStart(2, "0");
@@ -178,9 +169,9 @@ export const TimePicker = ({ ...props }: TimePickerProps) => {
       moment(value as number|string).valueOf() !== moment(time).valueOf()
     ) {
       setTime(
-        isFa
-          ? moment(value as number|string).locale("fa").valueOf()
-          : moment(value as number|string).utc().valueOf()
+        moment(value as number | string)
+          .locale(locale)
+          .valueOf()
       );
     }
   }, [value]);
@@ -246,6 +237,7 @@ export const TimePicker = ({ ...props }: TimePickerProps) => {
               `}
               >
                 <TimeColumns
+                  idPrefix={timeColumnsIdPrefix}
                   renderHeight={`${renderHeight}px`}
                   renderOptions={(count, unit) =>
                     renderOptions(
@@ -324,6 +316,7 @@ export const TimePicker = ({ ...props }: TimePickerProps) => {
               `}
               >
                 <TimeColumns
+                  idPrefix={timeColumnsIdPrefix}
                   TimeColumnsClassName={`${style.h_full}`}
                   renderHeight={`${renderHeight}px`}
                   renderOptions={(count, unit) =>

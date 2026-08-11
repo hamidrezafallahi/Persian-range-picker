@@ -31,12 +31,8 @@ export function timestampToDateNumbers(
 ): MaskParts {
   const source =
     timestamp === undefined || timestamp === 0
-      ? locale === 'fa'
-        ? moment()
-        : moment.utc()
-      : locale === 'fa'
-        ? moment(timestamp)
-        : moment.utc(timestamp);
+      ? moment().locale(locale)
+      : moment(timestamp).locale(locale);
 
   const year =
     locale === 'fa' ? source.format('jYYYY') : source.format('YYYY');
@@ -210,9 +206,7 @@ export function formatMaskExport(
 }
 
 export function todayTimestamp(locale: TLocale): number {
-  return locale === 'fa'
-    ? moment().startOf('day').valueOf()
-    : moment.utc().startOf('day').valueOf();
+  return moment().locale(locale).startOf('day').valueOf();
 }
 
 export function segmentIndex(name: string): MaskErrorTarget {

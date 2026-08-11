@@ -81,7 +81,11 @@ function Comparison({ ...props }: IProps) {
           {locale == "fa" ? "مقایسه" : "Compare"}
         </div>
 
-        <CustomSwitch checked={showCompare} onChange={handleShowCompare} />
+        <CustomSwitch
+          checked={showCompare}
+          onChange={handleShowCompare}
+          ariaLabel={locale == "fa" ? "مقایسه" : "Compare"}
+        />
       </div>
       {showCompare && (
         <>

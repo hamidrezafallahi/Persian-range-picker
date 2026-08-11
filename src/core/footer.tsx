@@ -7,6 +7,7 @@ import type {
 import moment from '../dateEngine';
 
 import style from '../main.module.css';
+import { scrollTimeColumn } from '../timePicker/timeColumns';
 import { TLocale } from './type';
 
 interface IFooter {
@@ -23,6 +24,8 @@ interface IFooter {
   onSubmit?: () => void;
   onNowButton?: () => void;
   onTodayButton?: () => void;
+  /** Must match TimeColumns idPrefix when scrolling time columns. */
+  timeColumnsIdPrefix?: string;
 }
 
 export const Footer = ({ ...props }: IFooter) => {
@@ -39,6 +42,7 @@ export const Footer = ({ ...props }: IFooter) => {
     onNowButton,
     onTodayButton,
     showDate,
+    timeColumnsIdPrefix,
   } = props;
 
   const handleSelect = (key: "today" | "now" | "submit") => {
@@ -50,17 +54,16 @@ export const Footer = ({ ...props }: IFooter) => {
       onTodayButton?.();
       setIsOpen?.(false);
     } else if (key === "now") {
-      const now = locale === "fa" ? moment() : moment.utc();
+      const now = moment().locale(locale);
       let updated;
 
       const isInvalid =
         !showDate || isNaN(showDate) || !moment(showDate).isValid();
 
       if (isInvalid) {
-        updated = locale === "fa" ? moment() : moment.utc();
+        updated = moment().locale(locale);
       } else {
-        updated =
-          locale === "fa" ? moment(showDate) : moment.utc(moment(showDate));
+        updated = moment(showDate).locale(locale);
       }
 
       updated = updated
@@ -69,17 +72,10 @@ export const Footer = ({ ...props }: IFooter) => {
         .set("second", now.second());
 
       setShowDate( updated.valueOf() );
-      const hourDiv = document.getElementById("hour");
-      if (hourDiv) {
-        hourDiv.scrollTop = now.hour() * 40;
-      }
-      const minuteDiv = document.getElementById("minute");
-      if (minuteDiv) {
-        minuteDiv.scrollTop = now.minute() * 40;
-      }
-      const secondDiv = document.getElementById("second");
-      if (secondDiv) {
-        secondDiv.scrollTop = now.second() * 40;
+      if (timeColumnsIdPrefix) {
+        scrollTimeColumn(timeColumnsIdPrefix, "hour", now.hour());
+        scrollTimeColumn(timeColumnsIdPrefix, "minute", now.minute());
+        scrollTimeColumn(timeColumnsIdPrefix, "second", now.second());
       }
       onNowButton?.();
     } else if (key === "submit") {

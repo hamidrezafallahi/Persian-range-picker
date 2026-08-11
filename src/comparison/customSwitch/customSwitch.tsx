@@ -2,7 +2,13 @@ import style from '../../main.module.css';
 import { CustomSwitchProps } from '../../persianDatePicker/type';
 
 function CustomSwitch({ ...props }: CustomSwitchProps) {
-  const { checked, className, disabled, onChange } = props;
+  const {
+    checked,
+    className,
+    disabled,
+    onChange,
+    ariaLabel = 'Compare',
+  } = props;
 
   return (
     <>
@@ -13,8 +19,9 @@ function CustomSwitch({ ...props }: CustomSwitchProps) {
           checked={checked}
           disabled={disabled}
           className={className}
+          aria-label={ariaLabel}
         />
-        <span className={`${style.slider}`}></span>
+        <span className={`${style.slider}`} aria-hidden="true"></span>
       </label>
     </>
   );

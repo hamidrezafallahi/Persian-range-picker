@@ -22,9 +22,9 @@ describe('strict regressions', () => {
         onChange={onChange}
       />
     );
-    const clearIcon = container.querySelector('span');
-    expect(clearIcon).toBeTruthy();
-    fireEvent.click(clearIcon!);
+    const clearBtn = container.querySelector('button[aria-label="clear date"]');
+    expect(clearBtn).toBeTruthy();
+    fireEvent.click(clearBtn!);
     expect(onChange).toHaveBeenCalledWith(null);
   });
 
@@ -137,8 +137,8 @@ describe('week navigation locale (helper)', () => {
 
   it('lastWeek en is previous Sunday–Saturday', () => {
     const { from, to } = getTimestampsForPeriod('lastWeek', 'en');
-    expect(moment.utc(from).day()).toBe(0);
-    expect(moment.utc(to).day()).toBe(6);
+    expect(moment(from).day()).toBe(0);
+    expect(moment(to).day()).toBe(6);
     expect(to).toBeLessThan(getTimestampsForPeriod('thisWeek', 'en').from);
   });
 

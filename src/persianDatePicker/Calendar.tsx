@@ -317,17 +317,24 @@ export const Calendar: FC<CalendarProps> = ({
       const prevDays = getNumberOfDays(prevYear, prevMonth, locale);
 
       for (let i = prevOffset; i > 0; i--) {
-        const date = new Date(
+        const dayNum = prevDays - i + 1;
+        const timestamp =
           locale === "fa"
             ? jmoment(
-                `${prevYear}/${prevMonth + 1}/${prevDays - i + 1}`,
+                `${prevYear}/${prevMonth + 1}/${dayNum}`,
                 "jYYYY/jM/jD"
-              ).startOf("day").valueOf()
-            : `${prevYear}/${prevMonth + 1}/${prevDays - i + 1}`
-        );
+              )
+                .startOf("day")
+                .valueOf()
+            : jmoment(
+                `${prevYear}/${prevMonth + 1}/${dayNum}`,
+                "YYYY/M/D"
+              )
+                .startOf("day")
+                .valueOf();
 
         days.push({
-          timestamp: date.setHours(0, 0, 0, 0),
+          timestamp,
           currentMonth: false,
         });
       }
@@ -335,25 +342,31 @@ export const Calendar: FC<CalendarProps> = ({
 
     // Current month
     for (let i = 1; i <= daysInMonth; i++) {
-      const date = new Date(
+      const timestamp =
         locale === "fa"
-          ? jmoment(`${year}/${month + 1}/${i}`, "jYYYY/jM/jD").startOf("day").valueOf()
-          : `${year}/${month + 1}/${i}`
-      );
-      days.push({ timestamp: date.setHours(0, 0, 0, 0), currentMonth: true });
+          ? jmoment(`${year}/${month + 1}/${i}`, "jYYYY/jM/jD")
+              .startOf("day")
+              .valueOf()
+          : jmoment(`${year}/${month + 1}/${i}`, "YYYY/M/D")
+              .startOf("day")
+              .valueOf();
+      days.push({ timestamp, currentMonth: true });
     }
 
     // Next month
     for (let i = 1; i <= nextOffset; i++) {
       const nextMonth = month === 11 ? 0 : month + 1;
       const nextYear = month === 11 ? year + 1 : year;
-      const date = new Date(
+      const timestamp =
         locale === "fa"
-          ? jmoment(`${nextYear}/${nextMonth + 1}/${i}`, "jYYYY/jM/jD").startOf("day").valueOf()
-          : `${nextYear}/${nextMonth + 1}/${i}`
-      );
- 
-      days.push({ timestamp: date.setHours(0, 0, 0, 0), currentMonth: false });
+          ? jmoment(`${nextYear}/${nextMonth + 1}/${i}`, "jYYYY/jM/jD")
+              .startOf("day")
+              .valueOf()
+          : jmoment(`${nextYear}/${nextMonth + 1}/${i}`, "YYYY/M/D")
+              .startOf("day")
+              .valueOf();
+
+      days.push({ timestamp, currentMonth: false });
     }
 
     return days;
@@ -635,7 +648,7 @@ export const Calendar: FC<CalendarProps> = ({
       if (!Array.isArray(value) && typeof value !== "object") {
         const ts = new Date(value as number).valueOf();
         if (Number.isNaN(ts)) return;
-        const m = locale === "fa" ? jmoment(ts) : jmoment.utc(ts);
+        const m = jmoment(ts);
         dispatchState({
           type: "SYNC_VALUE",
           payload: {
@@ -654,7 +667,7 @@ export const Calendar: FC<CalendarProps> = ({
       const toTs = value?.to != null ? new Date(value.to).valueOf() : null;
       const anchor = fromTs ?? toTs;
       if (anchor != null && !Number.isNaN(anchor)) {
-        const m = locale === "fa" ? jmoment(anchor) : jmoment.utc(anchor);
+        const m = jmoment(anchor);
         dispatchState({
           type: "SYNC_VALUE",
           payload: {

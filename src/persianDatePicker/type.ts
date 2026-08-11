@@ -114,6 +114,7 @@ export interface CustomSwitchProps {
   disabled?: boolean;
   onChange?: () => void;
   className?: string;
+  ariaLabel?: string;
 }
 
 // =========================

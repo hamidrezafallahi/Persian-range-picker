@@ -18,5 +18,7 @@ describe('formatExport', () => {
     expect(fa).toMatch(/^\d{4}-\d{2}-\d{2}T/);
     expect(en).toMatch(/^\d{4}-\d{2}-\d{2}T/);
     expect(String(fa)).not.toMatch(/[۰-۹]/);
+    // Both locales use local wall-clock (not forced UTC +00:00 for en).
+    expect(String(en)).toMatch(/[Zz]|[+-]\d{2}:\d{2}$/);
   });
 });

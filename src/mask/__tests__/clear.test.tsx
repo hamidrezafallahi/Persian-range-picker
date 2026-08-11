@@ -51,7 +51,7 @@ describe('calculateDate week locale', () => {
 
   it('thisWeek en starts Sunday for counter 0', () => {
     const { from } = calculateDate(ESteps.week, 'thisWeek', 0, 'en');
-    expect(moment.utc(from).day()).toBe(0);
+    expect(moment(from).day()).toBe(0);
   });
 
   it('thisWeek fa starts Saturday for counter 0', () => {
